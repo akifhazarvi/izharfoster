@@ -762,6 +762,89 @@ h1, h2, h3, h4 {
   .ind-row { grid-template-columns: 80px 1fr; padding: 20px 0; }
 }
 
+/* ============= LOGO CAROUSEL — infinite auto-scroll ============= */
+.logo-carousel {
+  max-width: 100%;
+  overflow: hidden;
+  position: relative;
+  padding: 12px 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+}
+.logo-track {
+  display: flex;
+  align-items: center;
+  gap: 96px;
+  width: max-content;
+  animation: logo-scroll 40s linear infinite;
+}
+.logo-carousel:hover .logo-track {
+  animation-play-state: paused;
+}
+.logo-slide {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 96px;
+  min-width: 180px;
+}
+.logo-slide img {
+  height: 72px;
+  width: auto;
+  max-width: 220px;
+  object-fit: contain;
+  filter: grayscale(1);
+  opacity: .7;
+  transition: filter .25s, opacity .25s, transform .25s;
+}
+.logo-slide:hover img {
+  filter: grayscale(0);
+  opacity: 1;
+  transform: scale(1.08);
+}
+@keyframes logo-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* Trust bar carousel variation — homepage */
+.trust-bar-carousel {
+  display: block;
+  padding: 64px var(--gutter) 56px;
+}
+.trust-bar-carousel .trust-bar-head {
+  max-width: 1320px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  gap: 24px;
+}
+.trust-bar-carousel .logo-slide {
+  height: 80px;
+  min-width: 160px;
+}
+.trust-bar-carousel .logo-slide img {
+  height: 60px;
+  max-width: 200px;
+}
+
+@media (max-width: 720px) {
+  .logo-track { gap: 56px; animation-duration: 30s; }
+  .logo-slide { height: 72px; min-width: 130px; }
+  .logo-slide img { height: 52px; max-width: 150px; }
+  .trust-bar-carousel { padding: 40px var(--gutter); }
+  .trust-bar-carousel .trust-bar-head { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .trust-bar-carousel .logo-slide { height: 60px; min-width: 120px; }
+  .trust-bar-carousel .logo-slide img { height: 44px; max-width: 130px; }
+}
+
+/* Reduce motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .logo-track { animation: none; }
+}
+
 /* ============= CLIENTS PAGE ============= */
 .clients-section {
   padding: 110px var(--gutter);
