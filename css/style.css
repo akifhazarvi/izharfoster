@@ -746,7 +746,7 @@ h1, h2, h3, h4 {
 
 /* ============= ECO STRIP — sustainability credentials ============= */
 .eco-strip {
-  background: linear-gradient(180deg, #F0F7EE 0%, var(--paper-2) 100%);
+  background: var(--paper-2);
   padding: 100px var(--gutter);
   border-bottom: 1px solid var(--line);
   position: relative;
@@ -755,7 +755,7 @@ h1, h2, h3, h4 {
   content: '';
   position: absolute; top: 0; left: 0; right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #22C55E 0%, #4FC3D9 50%, var(--t-cold) 100%);
+  background: linear-gradient(90deg, var(--t-cold) 0%, var(--t-mid) 55%, var(--t-warm) 100%);
 }
 .eco-inner { max-width: 1320px; }
 .eco-head {
@@ -772,16 +772,17 @@ h1, h2, h3, h4 {
 .eco-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0,1fr));
-  gap: 2px;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
 }
 .eco-cell {
-  background: rgba(255,255,255,.6);
-  border: 1px solid rgba(34,197,94,.18);
+  background: var(--paper-2);
   padding: 44px 36px;
   position: relative;
   transition: background .2s;
 }
-.eco-cell:hover { background: rgba(255,255,255,.9); }
+.eco-cell:hover { background: var(--paper); }
 .eco-icon {
   margin-bottom: 24px;
 }
@@ -794,7 +795,7 @@ h1, h2, h3, h4 {
   color: var(--ink);
 }
 .eco-num {
-  color: #22C55E;
+  color: var(--t-mid);
   font-family: var(--font-mono);
 }
 .eco-cell p {
@@ -807,12 +808,12 @@ h1, h2, h3, h4 {
 .eco-link {
   font-family: var(--font-mono);
   font-size: .82rem;
-  color: #22C55E;
+  color: var(--t-cold);
   letter-spacing: .04em;
   display: inline-flex; align-items: center; gap: 6px;
   transition: gap .2s;
 }
-.eco-link:hover { gap: 10px; }
+.eco-link:hover { gap: 10px; color: var(--t-warm); }
 .eco-link span { transition: transform .2s; }
 .eco-link:hover span { transform: translateX(3px); }
 
@@ -828,41 +829,44 @@ h1, h2, h3, h4 {
 /* Trust logos inside impact section */
 .trust-logos {
   margin-top: 80px;
-  padding-top: 56px;
+  padding-top: 48px;
   border-top: 1px solid rgba(245,242,236,.1);
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 40px;
-  flex-wrap: wrap;
 }
 .trust-label {
   font-family: var(--font-mono);
-  font-size: .7rem;
-  letter-spacing: .16em;
+  font-size: .68rem;
+  letter-spacing: .18em;
   text-transform: uppercase;
-  color: rgba(245,242,236,.4);
+  color: rgba(245,242,236,.35);
   white-space: nowrap;
 }
 .trust-logo-row {
   display: flex;
   align-items: center;
-  gap: 36px;
-  flex-wrap: wrap;
-  flex: 1;
+  justify-content: space-around;
+  gap: 0;
+  padding: 0 20px;
+  border-left: 1px solid rgba(245,242,236,.1);
+  border-right: 1px solid rgba(245,242,236,.1);
 }
 .trust-logo-row img {
-  height: 32px;
+  height: 28px;
   width: auto;
+  max-width: 90px;
   object-fit: contain;
   filter: brightness(0) invert(1);
-  opacity: .45;
+  opacity: .4;
   transition: opacity .2s;
 }
-.trust-logo-row img:hover { opacity: .8; }
+.trust-logo-row img:hover { opacity: .75; }
 .trust-more {
   font-family: var(--font-mono);
-  font-size: .82rem;
-  color: rgba(245,242,236,.5);
+  font-size: .8rem;
+  color: rgba(245,242,236,.45);
   white-space: nowrap;
   transition: color .2s;
   display: inline-flex; align-items: center; gap: 6px;
@@ -1857,13 +1861,15 @@ h1, h2, h3, h4 {
 }
 
 /* ============================================================
-   LOGO GRID — clients page
+   LOGO GRID — clients page + homepage trust strip
    ============================================================ */
 .logo-grid {
   display: grid;
   grid-template-columns: repeat(7, minmax(0,1fr));
-  gap: 2px;
-  border: 1px solid var(--paper-3);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  max-width: 1320px;
   margin-bottom: 64px;
 }
 .logo-cell {
@@ -1871,28 +1877,30 @@ h1, h2, h3, h4 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 28px 16px 20px;
-  border: 1px solid var(--paper-3);
+  gap: 12px;
+  padding: 36px 20px 28px;
   background: var(--paper);
   transition: background .18s;
+  min-height: 130px;
 }
 .logo-cell:hover { background: var(--paper-2); }
 .logo-cell img {
-  max-height: 56px;
+  height: 44px;
+  width: auto;
   max-width: 100%;
   object-fit: contain;
   filter: grayscale(1);
-  opacity: .75;
+  opacity: .65;
   transition: filter .2s, opacity .2s;
 }
 .logo-cell:hover img { filter: grayscale(0); opacity: 1; }
 .logo-cell span {
-  font-size: .72rem;
+  font-size: .7rem;
   font-family: var(--font-mono);
   color: var(--muted);
   text-align: center;
-  letter-spacing: .04em;
+  letter-spacing: .06em;
+  text-transform: uppercase;
 }
 .section-eyebrow {
   font-size: .8rem;
