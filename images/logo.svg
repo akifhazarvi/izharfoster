@@ -1,40 +1,52 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 110" role="img" aria-label="Izhar Foster — Division of Izhar Engineering">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 130" role="img" aria-label="Izhar Foster — Division of Izhar Engineering">
   <defs>
+    <linearGradient id="apple-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F08338"/>
+      <stop offset="55%" stop-color="#E36A1E"/>
+      <stop offset="100%" stop-color="#B84F12"/>
+    </linearGradient>
+    <linearGradient id="apple-shine" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
     <style>
-      .wm-box { fill: none; stroke: #0A1F3D; stroke-width: 3.5; }
-      .wm-text { fill: #0A1F3D; font-family: 'Inter', system-ui, sans-serif; font-weight: 700; font-size: 38px; letter-spacing: 0.5px; }
-      .wm-tag { fill: #2A2D33; font-family: 'JetBrains Mono', ui-monospace, monospace; font-weight: 500; font-size: 10.5px; letter-spacing: 2.4px; text-transform: uppercase; }
-      .apple-body { fill: #E36A1E; }
-      .apple-shine { fill: #ffffff; opacity: 0.32; }
-      .apple-leaf { fill: #4FC3D9; }
-      .apple-stem { fill: #0A1F3D; }
+      .wm-box { fill: none; stroke: #0A1F3D; stroke-width: 5; }
+      .wm-text { fill: #0A1F3D; font-family: 'Inter', system-ui, sans-serif; font-weight: 800; font-size: 56px; letter-spacing: -1px; }
+      .wm-tag { fill: #0A1F3D; font-family: 'Inter', system-ui, sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 3.4px; text-transform: uppercase; }
+      .leaf { fill: #4FC3D9; }
+      .stem { fill: #2A2D33; }
     </style>
   </defs>
 
-  <!-- Outline box (rounded corners, thinner stroke than the original for a cleaner feel) -->
-  <rect x="2" y="6" width="476" height="68" rx="3" class="wm-box"/>
+  <!-- Bold outline box -->
+  <rect x="3" y="6" width="514" height="92" rx="2" class="wm-box"/>
 
-  <!-- IZHAR -->
-  <text x="22" y="52" class="wm-text">IZHAR</text>
+  <!-- IZHAR F -->
+  <text x="22" y="72" class="wm-text">IZHAR F</text>
 
-  <!-- F -->
-  <text x="155" y="52" class="wm-text">F</text>
-
-  <!-- Apple replaces the first O -->
-  <!-- Apple body (slightly squashed circle, suggests fruit) -->
-  <g transform="translate(196, 28)">
-    <path class="apple-body" d="M 14 4 C 7 4 1 10 1 18 C 1 26 5 33 9 36 C 11 37 13 37 14 37 C 15 37 17 37 19 36 C 23 33 27 26 27 18 C 27 10 21 4 14 4 Z"/>
-    <!-- highlight on apple -->
-    <ellipse class="apple-shine" cx="9" cy="14" rx="3" ry="5"/>
-    <!-- stem -->
-    <path class="apple-stem" d="M 14 5 L 14 1 L 16 0"/>
-    <!-- leaf -->
-    <path class="apple-leaf" d="M 16 3 C 19 0 25 1 25 5 C 22 7 17 6 16 3 Z"/>
+  <!-- The apple sits where the O would be, properly sized -->
+  <g transform="translate(264, 26)">
+    <!-- stem leaning right -->
+    <path class="stem" d="M 22 6 C 24 0 28 -2 30 1 C 28 3 26 6 25 9 Z"/>
+    <!-- leaf flowing right from stem -->
+    <path class="leaf" d="M 25 5 C 36 -2 50 4 48 12 C 44 16 32 14 25 9 Z"/>
+    <!-- apple body — rounder, proper apple silhouette with cleft at top -->
+    <path fill="url(#apple-grad)" d="
+      M 24 8
+      C 14 8 4 14 2 26
+      C 0 38 4 52 12 60
+      C 16 64 22 65 24 64
+      C 26 65 32 64 36 60
+      C 44 52 48 38 46 26
+      C 44 14 34 8 24 8 Z"/>
+    <!-- highlight gloss on the apple -->
+    <ellipse fill="url(#apple-shine)" cx="14" cy="22" rx="6" ry="11"/>
   </g>
 
-  <!-- STER -->
-  <text x="232" y="52" class="wm-text">STER</text>
+  <!-- STER (rest of FOSTER) -->
+  <text x="320" y="72" class="wm-text">STER</text>
 
-  <!-- Division tagline -->
-  <text x="2" y="98" class="wm-tag">Division of Izhar Engineering · Since 1959</text>
+  <!-- Tagline below the box -->
+  <text x="3" y="120" class="wm-tag">Division of Izhar Engineering</text>
+  <text x="350" y="120" class="wm-tag" text-anchor="start" style="fill:#E36A1E">Since 1959</text>
 </svg>
