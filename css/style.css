@@ -1619,4 +1619,123 @@ h1, h2, h3, h4 {
   }
   .faq-item .answer { padding-left: 56px; }
   .contact-channels a { grid-template-columns: 90px 1fr auto; }
+  .logo-grid { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
+  .logo-cell img { max-height: 40px; }
+  .video-inner { padding: 0 var(--gutter); }
+}
+
+/* ============================================================
+   LOGO GRID — clients page
+   ============================================================ */
+.logo-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0,1fr));
+  gap: 2px;
+  border: 1px solid var(--paper-3);
+  margin-bottom: 64px;
+}
+.logo-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 28px 16px 20px;
+  border: 1px solid var(--paper-3);
+  background: var(--paper);
+  transition: background .18s;
+}
+.logo-cell:hover { background: var(--paper-2); }
+.logo-cell img {
+  max-height: 56px;
+  max-width: 100%;
+  object-fit: contain;
+  filter: grayscale(1);
+  opacity: .75;
+  transition: filter .2s, opacity .2s;
+}
+.logo-cell:hover img { filter: grayscale(0); opacity: 1; }
+.logo-cell span {
+  font-size: .72rem;
+  font-family: var(--font-mono);
+  color: var(--muted);
+  text-align: center;
+  letter-spacing: .04em;
+}
+.section-eyebrow {
+  font-size: .8rem;
+  font-family: var(--font-mono);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 24px;
+}
+.section-label {
+  font-size: .8rem;
+  font-family: var(--font-mono);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ============================================================
+   BLOG CARDS WITH THUMBNAILS
+   ============================================================ */
+.blog-thumb {
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 16/9;
+  background: var(--paper-2);
+  margin-bottom: 0;
+}
+.blog-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .4s ease;
+}
+.blog-card:hover .blog-thumb img { transform: scale(1.04); }
+.blog-body {
+  padding: 20px 0 0;
+}
+
+/* ============================================================
+   YOUTUBE VIDEO SECTION
+   ============================================================ */
+.video-section {
+  background: var(--paper-2);
+  text-align: center;
+}
+.video-inner {
+  max-width: 860px;
+  margin: 0 auto;
+}
+.video-inner .eyebrow { display: block; margin-bottom: 12px; }
+.video-inner h2 {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  margin-bottom: 12px;
+}
+.video-inner p {
+  color: var(--muted);
+  margin-bottom: 32px;
+  max-width: 52ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+.video-frame {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  background: var(--t-cold);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.video-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
