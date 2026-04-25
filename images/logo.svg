@@ -1,52 +1,36 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 130" role="img" aria-label="Izhar Foster — Division of Izhar Engineering">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 100" role="img" aria-label="Izhar Foster — Cold Chain Since 1959">
   <defs>
-    <linearGradient id="apple-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#F08338"/>
-      <stop offset="55%" stop-color="#E36A1E"/>
-      <stop offset="100%" stop-color="#B84F12"/>
-    </linearGradient>
-    <linearGradient id="apple-shine" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.55"/>
-      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    <linearGradient id="spec" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#0A1F3D"/>
+      <stop offset="50%"  stop-color="#4FC3D9"/>
+      <stop offset="100%" stop-color="#E36A1E"/>
     </linearGradient>
     <style>
-      .wm-box { fill: none; stroke: #0A1F3D; stroke-width: 5; }
-      .wm-text { fill: #0A1F3D; font-family: 'Inter', system-ui, sans-serif; font-weight: 800; font-size: 56px; letter-spacing: -1px; }
-      .wm-tag { fill: #0A1F3D; font-family: 'Inter', system-ui, sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 3.4px; text-transform: uppercase; }
-      .leaf { fill: #4FC3D9; }
-      .stem { fill: #2A2D33; }
+      .name { fill: #0A1F3D; font-family: 'Inter', system-ui, sans-serif; font-weight: 700; font-size: 42px; letter-spacing: -1.2px; }
+      .name-light { fill: #F5F2EC; }
+      .tag  { fill: #2A2D33; font-family: 'JetBrains Mono', ui-monospace, monospace; font-weight: 500; font-size: 11px; letter-spacing: 3.4px; text-transform: uppercase; }
+      .tag-light { fill: rgba(245,242,236,0.65); }
+      .accent { fill: #E36A1E; font-family: 'JetBrains Mono', ui-monospace, monospace; font-weight: 600; font-size: 11px; letter-spacing: 1.6px; }
     </style>
   </defs>
 
-  <!-- Bold outline box -->
-  <rect x="3" y="6" width="514" height="92" rx="2" class="wm-box"/>
-
-  <!-- IZHAR F -->
-  <text x="22" y="72" class="wm-text">IZHAR F</text>
-
-  <!-- The apple sits where the O would be, properly sized -->
-  <g transform="translate(264, 26)">
-    <!-- stem leaning right -->
-    <path class="stem" d="M 22 6 C 24 0 28 -2 30 1 C 28 3 26 6 25 9 Z"/>
-    <!-- leaf flowing right from stem -->
-    <path class="leaf" d="M 25 5 C 36 -2 50 4 48 12 C 44 16 32 14 25 9 Z"/>
-    <!-- apple body — rounder, proper apple silhouette with cleft at top -->
-    <path fill="url(#apple-grad)" d="
-      M 24 8
-      C 14 8 4 14 2 26
-      C 0 38 4 52 12 60
-      C 16 64 22 65 24 64
-      C 26 65 32 64 36 60
-      C 44 52 48 38 46 26
-      C 44 14 34 8 24 8 Z"/>
-    <!-- highlight gloss on the apple -->
-    <ellipse fill="url(#apple-shine)" cx="14" cy="22" rx="6" ry="11"/>
+  <!-- Brand mark: vertical temperature spectrum bar -->
+  <rect x="0" y="14" width="6" height="68" rx="3" fill="url(#spec)"/>
+  <!-- tick marks beside the bar -->
+  <g stroke="#0A1F3D" stroke-width="1.5" stroke-linecap="round" opacity="0.55">
+    <line x1="10" y1="20" x2="14" y2="20"/>
+    <line x1="10" y1="38" x2="14" y2="38"/>
+    <line x1="10" y1="56" x2="14" y2="56"/>
+    <line x1="10" y1="74" x2="14" y2="74"/>
   </g>
 
-  <!-- STER (rest of FOSTER) -->
-  <text x="320" y="72" class="wm-text">STER</text>
+  <!-- Wordmark -->
+  <text x="32" y="56" class="name">IZHAR FOSTER</text>
 
-  <!-- Tagline below the box -->
-  <text x="3" y="120" class="wm-tag">Division of Izhar Engineering</text>
-  <text x="350" y="120" class="wm-tag" text-anchor="start" style="fill:#E36A1E">Since 1959</text>
+  <!-- Tagline lockup -->
+  <g transform="translate(32, 80)">
+    <text x="0" y="0" class="tag">Cold Chain</text>
+    <line x1="92" y1="-4" x2="100" y2="-4" stroke="#E36A1E" stroke-width="1.5"/>
+    <text x="108" y="0" class="accent">SINCE 1959</text>
+  </g>
 </svg>
