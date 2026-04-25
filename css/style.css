@@ -166,6 +166,11 @@ h1, h2, h3, h4 {
   min-width: 0;
   white-space: nowrap;
 }
+.brand-logo {
+  height: 44px;
+  width: auto;
+  display: block;
+}
 .brand-name {
   font-family: var(--font-display);
   font-weight: 700;
@@ -173,12 +178,7 @@ h1, h2, h3, h4 {
   letter-spacing: -.03em;
   color: var(--ink);
   position: relative;
-}
-.brand-name::before {
-  content: ''; position: absolute;
-  bottom: -3px; left: 0;
-  width: 8px; height: 3px;
-  background: linear-gradient(90deg, var(--t-cold) 0%, var(--t-mid) 60%, var(--t-warm) 100%);
+  display: none; /* hidden — replaced by logo image */
 }
 .brand-tag {
   font-family: var(--font-mono);
@@ -189,6 +189,7 @@ h1, h2, h3, h4 {
   padding-left: 14px;
   border-left: 1px solid var(--line);
   white-space: nowrap;
+  display: none; /* tagline already inside the logo */
 }
 
 .nav-center { display: flex; gap: 4px; list-style: none; flex-wrap: nowrap; }
