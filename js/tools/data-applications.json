@@ -1,19 +1,16 @@
 {
-  "comment": "22 application presets: 15 from K-RP loadcalc.k-rp.com + 7 Pakistan-specific. Box temp °C, RH %, TD K. defaultProductId optionally seeds a starter product so Add Product is one-click. Source: walkthrough-v7/presets.json (K-RP captures), Izhar engineering (PK additions).",
+  "comment": "19 application presets: 12 generic + 7 Pakistan-specific. Box temp °C, RH %, TD K. defaultProductId optionally seeds a starter product so Add Product is one-click.",
   "applications": [
     { "id": "general_cooler",        "name": "General Walk-in Cooler",      "boxC":   2, "rh": 84, "tdK": 5.6, "runHours": 16, "image": "Application_1.jpg",  "description": "Multipurpose cooler — product enters at or near room temperature." },
     { "id": "general_freezer",       "name": "General Walk-in Freezer",     "boxC": -23, "rh": 95, "tdK": 5.6, "runHours": 18, "image": "Application_2.jpg",  "description": "Standard freezer storage." },
     { "id": "convenience_cooler",    "name": "Convenience Store Cooler",    "boxC":   3, "rh": 78, "tdK": 6.8, "runHours": 16, "image": "Application_3.jpg",  "description": "Glass-door reach-in / walk-in for retail." },
     { "id": "produce_cooler",        "name": "Produce Cooler",              "boxC":   4, "rh": 87, "tdK": 5.1, "runHours": 16, "image": "Application_4.jpg",  "description": "Mixed fresh produce — high RH preserves moisture.", "defaultProductId": 1001 },
-    { "id": "beer_cooler",           "name": "Beer Cooler",                 "boxC":   3, "rh": 75, "tdK": 7.4, "runHours": 16, "image": "Application_5.jpg",  "description": "Bottled / canned beverage display + storage.", "defaultProductId": 102 },
     { "id": "prep_room",             "name": "Prep Room",                   "boxC":   7, "rh": 70, "tdK": 8.3, "runHours": 16, "image": "Application_6.jpg",  "description": "Worker comfort + ingredient holding." },
     { "id": "floral_cooler",         "name": "Floral Cooler",               "boxC":   3, "rh": 87, "tdK": 5.1, "runHours": 16, "image": "Application_7.jpg",  "description": "Cut flower storage — gentle dehumidification." },
     { "id": "ice_cream_freezer",     "name": "Ice Cream Freezer",           "boxC": -26, "rh": 95, "tdK": 5.0, "runHours": 18, "image": "Application_8.jpg",  "description": "Hardening / display below ice-cream freezing point.", "defaultProductId": 316 },
-    { "id": "wine_cellar",           "name": "Wine Room or Cellar",         "boxC":  13, "rh": 65, "tdK": 9.3, "runHours": 14, "image": "Application_9.jpg",  "description": "Wine storage — drier, warmer than typical cooler.", "defaultProductId": 102 },
     { "id": "warehouse_cooler",      "name": "Warehouse Cooler",            "boxC":   2, "rh": 83, "tdK": 5.8, "runHours": 16, "image": "Application_10.jpg", "description": "Large-volume cooler storage." },
     { "id": "warehouse_freezer",     "name": "Warehouse Freezer",           "boxC": -23, "rh": 95, "tdK": 5.6, "runHours": 18, "image": "Application_11.jpg", "description": "Large-volume frozen storage." },
     { "id": "produce_warehouse",     "name": "Produce Warehouse",           "boxC":   4, "rh": 85, "tdK": 5.4, "runHours": 16, "image": "Application_12.jpg", "description": "Bulk produce, longer storage cycles.", "defaultProductId": 1001 },
-    { "id": "beer_warehouse",        "name": "Beer Warehouse",              "boxC":   4, "rh": 95, "tdK": 7.2, "runHours": 16, "image": "Application_13.jpg", "description": "Bulk beverage warehouse.", "defaultProductId": 102 },
     { "id": "dock_std",              "name": "Refrigerated Dock (std)",     "boxC":   7, "rh": 72, "tdK": 7.9, "runHours": 16, "image": "Application_14.jpg", "description": "Loading dock at moderate temp." },
     { "id": "dock_cold",             "name": "Refrigerated Dock (cold)",    "boxC":   2, "rh": 82, "tdK": 6.0, "runHours": 16, "image": "Application_15.jpg", "description": "Loading dock at cooler setpoint." },
 
