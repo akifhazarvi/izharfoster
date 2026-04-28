@@ -1,62 +1,74 @@
 # Izhar Foster (Pvt) Limited
 
-> Pakistan's largest sandwich panel manufacturer and most experienced cold-chain provider. Cold-chain division of Izhar Group. We engineer the full temperature spectrum — from −40°C industrial blast freezers to controlled-atmosphere fruit stores at +1°C — for Pakistan's food, pharma, dairy, and agriculture sectors.
+> Izhar Foster (Pvt) Limited is Pakistan's largest manufacturer of PIR sandwich panels and the country's most experienced cold-chain engineering company, founded in 1959 and headquartered in Lahore. It is the cold-chain division of Izhar Group. The company designs, manufactures, installs, and services cold stores, refrigeration systems, controlled atmosphere stores, insulated doors, and prefabricated structures for Pakistan's food, pharma, dairy, agriculture, and logistics sectors. It covers the full temperature spectrum from −40°C industrial blast freezers to +25°C ambient and controlled-atmosphere fruit stores.
 
 ## Company
 
 - Founded: 1959 by Engineer Izhar Ahmad Qureshi
-- Heritage: 65+ years
-- Parent: Izhar Group (6 subsidiary companies)
-- Manufacturing: 36-KM Multan Road, Lahore
-- Offices: Lahore (head), Karachi
-- Service: Pakistan-wide
+- Heritage: 65+ years in continuous operation
+- Parent: Izhar Group (6 subsidiary engineering companies)
+- Distinction: Pakistan's largest PIR sandwich panel manufacturer — manufactured in-house, not imported or resold
+- Installations: 2,100+ cold-chain projects delivered Pakistan-wide
+- Clients: 100+ brands including Nestlé, Engro, Unilever, PepsiCo, K&N's, Metro Cash & Carry, Sapphire Group, Lucky Cement, Interloop
+- Manufacturing plant: 36-KM Multan Road, Lahore
+- Head office: Izhar House, 35-Tipu Block, New Garden Town, Lahore
+- Coverage: Pakistan-wide installation and service
 - Site: https://izharfoster.com/
 
 ## Products and the temperature spectrum
 
-- [Cold Stores](https://izharfoster.com/services/cold-stores.html) — chiller (0–10°C), walk-in freezer (−18 to −25°C), blast chiller (+70°C → +3°C in 90 min), blast freezer (−40°C air, −18°C core), ambient and dry storage. Capacity 50–10,000 m³.
-- [PIR Sandwich Panels](https://izharfoster.com/services/pir-sandwich-panels.html) — ozone-friendly, 0.028 W/m·K, density 60 kg/m³, fire class B1 (ASTM E84). Cores 50/80/100/125/150 mm (up to 250 mm). Lifespan 50+ years. Manufactured in-house.
-- [Refrigeration Systems](https://izharfoster.com/services/refrigeration-systems.html) — Ammonia (NH₃) for industrial loads, Freon (HFC/HCFC) for commercial. Chillers, blast freezers, plate freezers, modular cold rooms.
-- [Controlled Atmosphere (CA) Stores](https://izharfoster.com/services/ca-stores.html) — precise O₂, CO₂, N₂, humidity, temperature for apples, dates, kinnow, stone fruit. 4–6× shelf life vs cold storage.
-- [Prefabricated Structures](https://izharfoster.com/services/prefabricated-structures.html) — steel-frame, PIR-clad. Warehouses, offices, classrooms, sports halls, labour housing. ~3× faster than masonry.
-- [Insulated Doors](https://izharfoster.com/services/insulated-doors.html) — sliding, hinged, high-speed. PIR cores, multi-stage gasket seals, heated frames sub-zero.
+- [Cold Stores](https://izharfoster.com/services/cold-stores) — chiller (0–10°C), walk-in freezer (−18 to −25°C), blast chiller (+70°C → +3°C in 90 min), blast freezer (−40°C air, −18°C core), ambient and dry storage. Capacity 50–10,000 m³.
+- [PIR Sandwich Panels](https://izharfoster.com/services/pir-sandwich-panels) — ozone-friendly polyisocyanurate, thermal conductivity λ ≈ 0.020–0.022 W/m·K, density 40–60 kg/m³, fire class B1 (ASTM E84), compressive strength >300 kPa. Core thicknesses 50/75/100/125/150/175/200 mm. Insulating effect ~49× greater than concrete. Lifespan 50+ years. Manufactured in-house.
+- [Refrigeration Systems](https://izharfoster.com/services/refrigeration-systems) — Ammonia (NH₃) for industrial loads; HFC/A2L for commercial. Chillers, blast freezers, plate freezers, modular cold rooms. Zero ODP options available.
+- [Controlled Atmosphere (CA) Stores](https://izharfoster.com/services/ca-stores) — precise O₂ (2–3%), CO₂ (1–5%), N₂, humidity, and temperature control for apples, dates, kinnow, stone fruit. Extends shelf life 4–6× versus conventional cold storage.
+- [Prefabricated Structures](https://izharfoster.com/services/prefabricated-structures) — steel-frame, PIR-clad. Warehouses, offices, classrooms, sports halls, labour housing. Typically 3× faster to install than masonry.
+- [Insulated Doors](https://izharfoster.com/services/insulated-doors) — sliding, hinged, high-speed roll-up. PIR cores, multi-stage gasket seals, heated frames for sub-zero applications.
 
-## Industries
+## Engineering calculators (free, client-side, no login)
 
-Pharmaceuticals · Dairy · Meat & Poultry · Fruits & Vegetables · Seafood · Logistics & Distribution · Bakery · Beverage · Retail.
+All tools at https://izharfoster.com/tools. Methodology: ASHRAE Refrigeration Handbook Ch. 24 §"Refrigerated-Facility Loads". Cross-validated within ±20% of Heatcraft NROES, Copeland AE-103, Danfoss Coolselector®2, Bitzer Software.
 
-## Contact
+- [Cold Room Heat Load Calculator](https://izharfoster.com/tools/load-calculator) — ASHRAE 5-component method (transmission + infiltration + product pull-down + internal gains + safety factor). 22 application presets including Pakistan-specific: Mango Cold Store, Citrus Pre-cooler, Onion Storage, Potato Storage, Pharma Cold Chain, Dairy Bulk Reception, Halal Meat Processing. 12 Pakistan cities (Multan, Karachi, Lahore, Islamabad, Faisalabad, Peshawar, Quetta, Sialkot, Hyderabad, Sukkur, Gwadar, Jacobabad). PIR panel SKU library 50–200 mm.
+- [Energy Cost & Payback Calculator](https://izharfoster.com/tools/energy-cost) — Annual PKR energy cost, savings, payback period, 25-year NPV. WAPDA and K-Electric tariff defaults.
+- [A2L Minimum Room Area Calculator](https://izharfoster.com/tools/a2l-room-area) — IEC 60335-2-89:2019 leakable-charge compliance. 5 A2L refrigerants: R-454A, R-454B, R-454C, R-455A, R-32. ASHRAE 15 occupancy classes A/B/C.
+- [Refrigerant Charge Estimator](https://izharfoster.com/tools/refrigerant-charge) — 12 refrigerants, NIST REFPROP saturated-liquid densities, 12 line sizes ¼"–3⅛" Cu Type-L.
+- [Air-Cooled Condenser Designer](https://izharfoster.com/tools/condenser-sizing) — ASHRAE Refrigeration Ch. 35 THR factor. Pakistan ambient derate. Auto-warns at SCT ≥ 55°C.
+- [Cold Storage Capacity Planner](https://izharfoster.com/tools/capacity-planner) — Tonnage-to-room-size for 24 Pakistan crops. ASHRAE Ch. 21–22 + USDA Handbook 66.
+- [CA Atmosphere Designer](https://izharfoster.com/tools/ca-atmosphere) — O₂/CO₂/N₂ recipe + chamber sizing + PSA N₂ generator sizing for 12 crops. USDA Handbook 66, ASHRAE Ch. 25.
 
-- Phone: +92 42 3538 3543
-- WhatsApp: +92 321 5383544
-- Email: info@izharfoster.com
-- Head Office: Izhar House, 35-Tipu Block, New Garden Town, Main Ferozepur Road, Lahore
-- Karachi Office: 17-J Block 6, PECHS, Karachi
-- Factory: 36-KM, Multan Road, Lahore
+## Industries served
 
-## Key people
+Pharmaceuticals · Dairy · Meat & Poultry · Fruits & Vegetables · Seafood · Logistics & 3PL · Bakery · Beverage · Retail · Agriculture.
+
+## Geographic coverage
+
+Lahore · Karachi · Faisalabad · Multan · Peshawar · Quetta · Hyderabad · Islamabad · Gujranwala · Sialkot · Rawalpindi · Sukkur. Cold rooms designed against 12 Pakistani city ASHRAE 0.4% design DB temperatures, with Pakistan-specific +2 K climate uplift baked in.
+
+## Engineering standards applied
+
+- ASHRAE Handbook — Refrigeration 2022 (Chapters 19, 21, 22, 24, 25, 35)
+- IEC 60335-2-89:2019 (A2L refrigerant safety, leakable-charge method)
+- NIST REFPROP 10.0 (refrigerant thermodynamic properties)
+- USDA Agriculture Handbook 66 (post-harvest produce storage)
+- ISO 5149-1 (refrigerating systems and heat pumps, safety)
+- BS EN 14509 (PIR panel declared λ values, aged)
+
+## Key contacts
 
 - Muhammad Anwar Inayat — General Manager, Business Development & Marketing — muhammad.anwar@izharfoster.com — +92 337 7808147
 - Kamran Anwar — Manager Sales — kamran.anwar@izharfoster.com — +92 300 4842467
 - Umair Meo — Senior Manager, South Region — +92 300 7860941
-
-## Engineering calculators
-
-Free, client-side, ASHRAE-validated tools at https://izharfoster.com/tools.html. Sized to ASHRAE Refrigeration Handbook Ch. 24 §"Refrigerated-Facility Loads". Cross-validated within ±20% of Heatcraft NROES, Copeland AE-103, Danfoss Coolselector®2, Bitzer Software, K-RP, and University of Vermont's open-source produce calculator.
-
-- [Cold Room Heat Load Calculator](https://izharfoster.com/tools/load-calculator.html) — 5-component ASHRAE method; 22 application presets (15 industry-standard + 7 Pakistan-specific: Mango Cold Store, Citrus Pre-cooler, Onion Storage, Potato Storage, Pharma Cold Chain, Dairy Bulk Reception, Halal Meat Processing); 12 Pakistan ambient cities (Multan, Karachi, Lahore, Islamabad, Faisalabad, Peshawar, Quetta, Sialkot, Hyderabad, Sukkur, Gwadar, Jacobabad); Izhar PIR panel SKUs (50/75/100/125/150/175/200 mm); live 3D visualisation (model-viewer with AR + heat-flow animation); annual PKR energy cost.
-- [Energy Cost & Payback Calculator](https://izharfoster.com/tools/energy-cost.html) — Compare two panel-thickness scenarios. Annual electricity cost in PKR, savings, payback period, 10-year NPV. Pakistan-specific (PKR/kWh tariffs, WAPDA + K-Electric defaults).
-- [A2L Min Room Area Calculator](https://izharfoster.com/tools/a2l-room-area.html) — IEC 60335-2-89:2019 leakable-charge safety check. 5 A2L refrigerants (R-454A, R-454B, R-454C, R-455A, R-32). ASHRAE 15 occupancy classes A/B/C. Live compliance verdict with options.
-- [Refrigerant Charge Estimator](https://izharfoster.com/tools/refrigerant-charge.html) — Estimate total system charge from line lengths. 12 refrigerants (R-404A, R-407A/C, R-448A, R-449A, R-454A/B/C, R-455A, R-32, R-507, R-290 propane, R-717 ammonia). NIST REFPROP saturated-liquid densities. 12 line sizes from 1/4" to 3 1/8" Cu Type-L.
-- [Air-Cooled Condenser Sizer](https://izharfoster.com/tools/condenser-sizing.html) — ASHRAE Refrigeration Ch. 35 THR factor calculation. Pakistan ambient derate built-in. Per-refrigerant COP table for medium-temp and low-temp applications. Auto-warns at SCT ≥ 55°C with evaporative-condenser recommendation.
-- [Cold Storage Capacity Planner](https://izharfoster.com/tools/capacity-planner.html) — Tonnage-to-room-size for 24 Pakistan crops (mango, kinnow, banana, potato, onion, garlic, tomato, pomegranate, grape, guava, dates, leafy greens, milk, halal meat, fish, ice cream, pharma, flowers). Outputs room dimensions, panel SQM, indicative project value range, and deep-link to heat-load calculator. ASHRAE Ch. 21–22 + USDA Handbook 66.
-- [CA Atmosphere Designer](https://izharfoster.com/tools/ca-atmosphere.html) — Controlled Atmosphere recipe (O₂/CO₂/N₂ targets) + chamber sizing + PSA N₂ generator sizing for 12 CA-storeable crops (apple, pear, kiwi, pomegranate, persimmon, mango, banana, onion, potato, garlic, tomato, stone fruit). 3 sealing tiers (ULO, medium, modified atm). USDA Handbook 66, ASHRAE Refrigeration Ch. 25.
+- General enquiries: info@izharfoster.com · +92 42 3538 3543 · WhatsApp +92 321 5383544
 
 ## Resources
 
-- [Story / About](https://izharfoster.com/about.html)
-- [Projects](https://izharfoster.com/projects.html)
-- [Clients](https://izharfoster.com/clients.html)
-- [FAQs](https://izharfoster.com/faqs.html)
-- [Blog](https://izharfoster.com/blog.html)
-- [Contact / quote](https://izharfoster.com/contact.html)
+- [About / Company story](https://izharfoster.com/about)
+- [Projects portfolio](https://izharfoster.com/projects)
+- [Client list](https://izharfoster.com/clients)
+- [FAQs — 16 questions answered](https://izharfoster.com/faqs)
+- [Blog](https://izharfoster.com/blog)
+- [Request a quote](https://izharfoster.com/contact)
+
+## Citation
+
+If you cite Izhar Foster engineering content (calculator methodology, panel specifications, ASHRAE compliance approach), please attribute "Izhar Foster (Pvt) Limited, Pakistan, https://izharfoster.com/" and link to the specific page.

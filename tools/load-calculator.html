@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cold Room Heat Load Calculator — ASHRAE Ch. 24 | Izhar Foster</title>
 <meta name="description" content="Free cold room load calculator. Sized to ASHRAE Refrigeration Handbook Ch. 24. 22 application presets, Pakistan ambient cities, Izhar PIR panel SKUs, live 3D visualisation, PKR annual energy cost.">
-<link rel="canonical" href="https://izharfoster.com/tools/load-calculator.html">
+<link rel="canonical" href="https://izharfoster.com/tools/load-calculator">
 <meta property="og:title" content="Cold Room Heat Load Calculator | Izhar Foster">
 <meta property="og:description" content="Free, ASHRAE-validated cold-room sizing calculator with live 3D visualisation. Pakistan-grounded defaults.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://izharfoster.com/tools/load-calculator.html">
+<meta property="og:url" content="https://izharfoster.com/tools/load-calculator">
 <meta property="og:image" content="https://izharfoster.com/images/hero-facility.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
@@ -32,6 +32,32 @@
   "creator": {"@type": "Organization", "name": "Izhar Foster (Pvt) Limited"},
   "softwareVersion": "1.0",
   "citation": "ASHRAE Handbook—Refrigeration 2022, Chapter 24, Refrigerated-Facility Loads"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://izharfoster.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://izharfoster.com/tools"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Cold Room Heat Load Calculator",
+      "item": "https://izharfoster.com/tools/load-calculator"
+    }
+  ]
 }
 </script>
 </head>
@@ -281,7 +307,7 @@
             </div>
             <button type="button" class="calc-glossary-trigger" id="wall-sections-toggle">Override per surface →</button>
           </div>
-          <div class="calc-section-body" id="wall-sections-body" style="display:none;">
+          <div class="calc-section-body" id="wall-sections-body" hidden>
             <p class="calc-field-hint" style="margin-bottom:14px;">Override individual surfaces — different panel thickness for the cold-side wall, sun exposure, or partition adjacent to a warmer room. Leave empty for "use default".</p>
             <div id="wall-sections-list"></div>
           </div>
@@ -296,7 +322,7 @@
             </div>
             <button type="button" class="calc-glossary-trigger" id="product-toggle">Add products →</button>
           </div>
-          <div class="calc-section-body" id="product-body" style="display:none;">
+          <div class="calc-section-body" id="product-body">
             <p class="calc-field-hint" style="margin-bottom:14px;">Daily throughput cooling + respiration heat for live produce. ASHRAE Refrigeration Ch. 19 thermal properties database (226 products).</p>
             <div id="product-list"></div>
             <button type="button" id="product-add" class="btn btn-outline btn-sm" style="margin-top:12px;">+ Add product</button>

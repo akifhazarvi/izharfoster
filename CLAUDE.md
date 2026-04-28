@@ -1,30 +1,28 @@
 # Izhar Foster — Claude Code Instructions
 
 ## Project overview
-Premium redesign of izharfoster.com — Pakistan's largest sandwich panel manufacturer and cold-chain provider since 1959 (division of Izhar Group). Static HTML + CSS + vanilla JS. No build step. Served via `python3 -m http.server 8090` from `~/projects/izharfoster/`. Port 8080 is taken by a separate project — always use 8090.
 
-## File structure
+Premium redesign of izharfoster.com — Pakistan's largest sandwich panel manufacturer and cold-chain provider since 1959 (division of Izhar Group). Static HTML + CSS + vanilla JS. **No build step.** Served via `python3 -m http.server 8090` from `~/projects/izharfoster/`. Port 8080 is taken by a separate project — always use 8090. Vercel deploys directly from `main`.
+
+## Architecture
 
 ```
 izharfoster/
 ├── index.html                  # Homepage (approved — do not regress)
-├── about.html
-├── contact.html
-├── faqs.html
-├── clients.html
-├── projects.html
-├── blog.html
-├── sitemap.xml
-├── robots.txt
-├── llms.txt
-├── services/
+├── about.html · contact.html · faqs.html · clients.html · projects.html · blog.html
+├── tools.html                  # Engineering calculator suite index
+├── sitemap.xml · robots.txt · llms.txt
+├── vercel.json · .vercelignore · package.json · DEPLOY.md
+│
+├── services/                   # 6 product pages
 │   ├── cold-stores.html
 │   ├── pir-sandwich-panels.html
 │   ├── refrigeration-systems.html
 │   ├── prefabricated-structures.html
 │   ├── ca-stores.html
 │   └── insulated-doors.html
-├── blog/
+│
+├── blog/                       # 9 long-form posts
 │   ├── cold-storage-solutions-pakistan-demand-rising.html
 │   ├── pir-panels-thermal-efficiency-smart-building.html
 │   ├── refrigeration-systems-cold-chain-pakistan.html
@@ -34,53 +32,122 @@ izharfoster/
 │   ├── green-refrigeration-energy-carbon-footprint.html
 │   ├── cold-storage-pakistan-export-growth.html
 │   └── insulated-industrial-doors-types-benefits-guide.html
-├── css/
-│   └── style.css               # Full design system (~1600 lines)
+│
+├── tools/                      # Engineering calculator suite (post-launch)
+│   ├── project.html            # Multi-system project shell
+│   ├── load-calculator.html    # Tool 1 — ASHRAE Ch. 24
+│   ├── energy-cost.html        # Tool 2 — A vs B panel comparison
+│   ├── a2l-room-area.html      # Tool 3 — IEC 60335-2-89:2019
+│   ├── refrigerant-charge.html # Tool 4 — NIST REFPROP densities
+│   ├── condenser-sizing.html   # Tool 5 — ASHRAE Ch. 35 + NEW JOB chooser
+│   ├── capacity-planner.html   # Tool 6 — 24 PK crops, 3D visualiser
+│   └── ca-atmosphere.html      # Tool 7 — USDA Handbook 66
+│
 ├── js/
-│   └── main.js                 # Scrubber + counters + rail pin
+│   ├── main.js                 # Scrubber + counters + rail pin
+│   └── tools/
+│       ├── _shared.js          # Izhar global; unit conversion, PDF, save/open, project session
+│       ├── visualiser.js       # IzharViz; 3D model-viewer mount + heat-flow overlay
+│       ├── <tool>.js           # one per tool
+│       └── data-*.json         # 12 data files (refrigerants, cities, panels, crops, equipment...)
+│
+├── css/
+│   ├── style.css               # Full design system (~3900 lines)
+│   └── consultant.css          # Cold Consultant drawer (linked from CTAs)
+│
 └── images/
-    └── *.jpg / *.png / *.webp  # 18 curated production images
+    ├── *.jpg / *.png / *.webp  # Curated production photography
+    └── applications/           # 15 K-RP application tiles for Tool 1
 ```
 
-`_scrape/` (39MB, gitignored) — full scrape of live site: 79 HTML pages, 79 text files, 333 raw images. Source of truth for remaining copy and imagery.
+`_scrape/` (39 MB) — full scrape of legacy site (gitignored).
+`_kr_scrape/` (research + audits) — K-RP teardown, RESEARCH.md, VALIDATION.md, CROSS-VALIDATION.md, GAP-AUDIT.md, E2E-AUDIT.md, mobile-deep-audit/ (gitignored).
 
-## Critical rules for any code change
+## Critical rules — never regress
 
-### CSS grid — always use minmax
-All grid columns must use `minmax(0, Nfr)` not bare `Nfr`. Without it, flex/grid children with long text collapse at mid-viewport widths.
+### CSS layout
 
-```css
-/* correct */
-grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-/* wrong — will break */
-grid-template-columns: 1.4fr 1fr;
-```
+| Rule | Why | Where |
+|---|---|---|
+| Grid columns must use `minmax(0, Nfr)` not bare `Nfr` | Children with long text collapse otherwise | every `grid-template-columns` |
+| Rail is `position: fixed` — never inside a grid | Double-counts width and breaks responsive | `.rail` + `.shell` |
+| `html` and `body` both have `overflow-x: clip` + `max-width: 100vw` | Stops phantom scroll from off-screen drawers (`.cc-panel`, `.calc-modal`) without breaking sticky | `style.css` reset |
+| `img, video, iframe, svg { max-width: 100%; height: auto }` global | Belt-and-braces for rich content | `style.css` reset |
+| Header phone + brand-tag must `white-space: nowrap; flex-shrink: 0` | Layout breaks on narrow tablets | `.nav-phone`, `.nav-cta` |
+| Italic gradient text needs `padding-right: .14em` + `display: inline-block` | `-webkit-background-clip: text` clips italic tails — "cold" → "cola" | `.em` |
 
-### Rail is position:fixed — never double-account for it
-The spectrum rail is `position: fixed; left: 0; width: var(--rail)`. The shell offsets content with `padding-left: var(--rail)` only — NOT a grid column. Never put the rail inside a grid.
+### Mobile breakpoints
 
-### Italic gradient text needs padding-right
-`-webkit-background-clip: text` clips the italic tail of letters like 'd'. Always apply:
-```css
-.em { display: inline-block; padding-right: .14em; -webkit-box-decoration-break: clone; }
-```
-Without this, "cold" renders as "cola".
+The site uses a 4-breakpoint scheme:
+- **≤480 px** — iPhone SE; nav-CTA collapses to a 36×36 ember pill, hero rules tighten
+- **≤720 px** — phones in general; rail hides, hamburger appears, calc-grid stacks
+- **≤900 px** — small tablets / large phones landscape; calc-grid switches to single column
+- **≤1100 px** — narrow desktop / iPad; rail shrinks to 56 px, hero/scrub stacks
 
-### Header flex children — white-space: nowrap
-Phone numbers and the brand tag must never wrap. Always set `white-space: nowrap; flex-shrink: 0` on `.nav-phone` and `.nav-cta`.
+**Tap targets ≥44×44 px** (WCAG 2.5.5). Body text ≥14 px on mobile. Footer links must use `padding: 8px 0` to reach 36+ px tall.
 
 ### Path depth for assets
-- Root pages (`about.html` etc.): assets at `css/style.css`, `js/main.js`, `images/`
-- Subdirectory pages (`services/`, `blog/`): assets at `../css/style.css`, `../js/main.js`, `../images/`
 
-## Brand system (locked — do not change without explicit instruction)
-See DESIGN.md for the full specification.
+- Root pages (`about.html` etc.): `css/style.css`, `js/main.js`, `images/`
+- Subdirectory (`services/`, `blog/`, `tools/`): `../css/style.css`, `../js/main.js`, `../images/`
 
-## Page builder
-`/tmp/izhar-build2.py` — Python script that generated all interior pages from a shared header/footer template. Re-run it to regenerate any page or add new ones. It writes directly to `~/projects/izharfoster/`.
+## Engineering calculator suite
+
+7 tools + project shell, all client-side, no backend. Cross-validated within ±20% of Heatcraft NROES, Copeland AE-103, Bitzer Software, Coolselector®2.
+
+**Authoritative engineering math** lives in:
+- `js/tools/load-calculator.js` — ASHRAE Ch. 24 5-component method
+- `js/tools/condenser-sizing.js` — THR factor + ambient derate (MT 2.0%/K, LT 2.7%/K)
+- `js/tools/a2l.js` — IEC 60335-2-89:2019 leakable charge
+- `js/tools/refrigerant-charge.js` — NIST REFPROP saturated-liquid densities
+
+**Engineering constants — verified against ASHRAE / IEC / NIST. Don't change without a citation.**
+- Strip-curtain F_Protection = **0.10** (ASHRAE Ref Ch. 24 — F=0.9 reduction). Was wrong at 0.5 originally.
+- Air-curtain F_Protection = 0.50.
+- Above-grade floor uses **ambient air** as boundary (not soil 18°C); on-grade and insulated-slab use 18°C soil.
+- Bare-concrete floor U = **0.7 W/m²K** (concrete + screed over compacted earth, with 18°C soil sink already capturing ground coupling).
+- Buoyancy F_m by box temp: 1.0 (cooler) → 1.20 (−10°C) → 1.45 (−25°C) → 1.55 (≤−30°C).
+- Condenser ambient derate: MT 2.0%/K, LT 2.7%/K, hard floor 0.6 (60%).
+- Door geometry tracked but does NOT scale ACH-24 (already empirical).
+
+**Shared chrome** (`Izhar.wireToolChrome` in `_shared.js`) auto-injects:
+- Save (.json) / Open (.json) / Print PDF buttons in the titlebar
+- Email CTA mirroring the quote summary
+- Methodology + citations panel below the result aside
+- Project-session banner if user came from `tools/project.html`
+
+**Project shell** (`tools/project.html`):
+- "Add System" → set `localStorage.izhar_active_project_session` → tool detects → orange banner "Adding zone to: <name>" → "Attach & return" writes back to `localStorage.izhar_project.systems[]`.
+- Edit zone reopens tool with hash + `editingZoneIndex` so attach overwrites.
+- Aggregate roll-up uses `raw.capacityKw` from each saved system.
+
+## Brand system
+
+See [DESIGN.md](DESIGN.md) for the full visual specification. Locked palette / type / spacing — do not change without explicit instruction.
+
+## Audit + verification scripts
+
+`_kr_scrape/` (gitignored) holds Playwright scripts:
+- `mobile-deep-audit.mjs` — drives all 23 pages × 3 viewports, logs overflow / tap-targets / font sizes / dense sections
+- `cls-lcp-audit.mjs` — measures CLS + LCP via PerformanceObserver
+- `e2e-deep.mjs` — drives every tool with realistic Pakistan scenarios
+- `audit-izhar.mjs` — quick smoke test: load every tool, capture screenshots, log console errors
+
+Run from `_kr_scrape/` directory (Playwright is in `_kr_scrape/node_modules/`).
 
 ## What's not built yet
-- Energy cost calculator (live kWh/PKR tool, planned for product pages)
+
 - Open Spec Sheet Library (downloadable PDFs, no email gate)
 - Cold Map of Pakistan (filterable interactive project map)
 - Additional client testimonials / case studies
+- Visual upgrades V4–V8 from `_kr_scrape/E2E-AUDIT.md` (Pakistan map picker, live-derate slider, panel comparison table, Sankey diagram, etc.)
+
+## Deploy
+
+```bash
+git push origin main          # auto-deploys via Vercel
+# or
+vercel deploy --prod
+```
+
+`.vercelignore` excludes `_scrape/`, `_kr_scrape/`, `node_modules/`, internal docs (`CLAUDE.md`, `DESIGN.md`, `DEPLOY.md`), Playwright artefacts.

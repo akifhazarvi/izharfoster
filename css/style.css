@@ -222,7 +222,10 @@ h1, h2, h3, h4 {
   display: inline-flex; align-items: center; gap: 8px;
   color: var(--ink);
   white-space: nowrap;
+  padding: 12px 4px;        /* 44px tap target */
+  min-height: 44px;
 }
+.nav-phone:focus-visible { outline: 2px solid var(--t-warm); outline-offset: 2px; border-radius: 2px; }
 .nav-phone .live {
   width: 7px; height: 7px; border-radius: 50%;
   background: var(--t-warm);
@@ -1819,9 +1822,17 @@ h1, h2, h3, h4 {
   font-weight: 500;
   margin-bottom: 22px;
 }
-.footer-grid ul { list-style: none; display: flex; flex-direction: column; gap: 12px; font-size: .94rem; }
-.footer-grid a { color: rgba(245,242,236,.85); transition: color .15s; }
+.footer-grid ul { list-style: none; display: flex; flex-direction: column; gap: 4px; font-size: .94rem; }
+.footer-grid a {
+  color: rgba(245,242,236,.85);
+  transition: color .15s;
+  display: inline-block;
+  padding: 8px 0;       /* 36+ px tap target on mobile */
+  min-height: 36px;
+  line-height: 1.4;
+}
 .footer-grid a:hover { color: var(--t-warm); }
+.footer-grid a:focus-visible { outline: 2px solid var(--t-warm); outline-offset: 4px; border-radius: 2px; }
 .footer-grid .mono { font-family: var(--font-mono); }
 
 .footer-bottom {
@@ -1864,6 +1875,15 @@ h1, h2, h3, h4 {
   :root { --rail: 0px; --gutter: 22px; }
   .shell { grid-template-columns: 1fr; }
   .rail { display: none; }
+  /* Mobile font-size floor: bump anything under 13px so body content stays legible.
+     Specific tiny classes (eyebrows, disclaimers) opt out via override below. */
+  body { font-size: 16px; }
+  p, li { font-size: clamp(.875rem, 3.4vw, 1rem); line-height: 1.6; }
+  .footer-grid p, .footer-grid li, .footer-grid a { font-size: .94rem; }
+  .calc-field-hint { font-size: .82rem; }
+  .calc-disclaimer { font-size: .78rem; }
+  .calc-eyebrow { font-size: .76rem; }
+  .calc-breadcrumb { font-size: .82rem; }
   .nav { height: 64px; padding: 0 var(--gutter); gap: 12px; }
   .nav-center { display: none; }
   .nav-center.open {
@@ -3074,9 +3094,20 @@ h1, h2, h3, h4 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 12px;
+  /* Reserve space to prevent CLS when 19 tiles populate via JSON fetch.
+     Roughly: 5 cols × 4 rows × 220px on desktop, 2 cols × 10 rows × 220px on mobile. */
+  min-height: 880px;
+  contain-intrinsic-size: 880px;
 }
 @media (max-width: 600px) {
-  .calc-app-grid { grid-template-columns: repeat(2, 1fr); }
+  .calc-app-grid {
+    grid-template-columns: repeat(2, 1fr);
+    min-height: 2200px;
+    contain-intrinsic-size: 2200px;
+  }
+}
+@media (max-width: 900px) and (min-width: 601px) {
+  .calc-app-grid { min-height: 1500px; contain-intrinsic-size: 1500px; }
 }
 .calc-app-tile {
   position: relative;
