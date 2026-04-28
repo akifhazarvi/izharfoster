@@ -208,7 +208,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Robo
 <header class="rep-head">
   <div>
     <div class="rep-brand">Izhar Foster</div>
-    <div class="rep-tag">Engineered cold since 1959 · Cold-chain division of Izhar Group</div>
+    <div class="rep-tag">Engineered cold · Cold-chain division of Izhar Group</div>
   </div>
   <div class="rep-meta">
     Report date: ${today}<br>
