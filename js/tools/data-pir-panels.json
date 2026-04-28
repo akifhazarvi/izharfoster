@@ -1,0 +1,14 @@
+{
+  "comment": "Izhar PIR sandwich panel SKUs. U-value computed per RESEARCH.md §2 (lambda 0.020 W/m·K aged, R_si+R_so 0.17 m²K/W).",
+  "lambda": 0.020,
+  "filmResistance": 0.17,
+  "panels": [
+    { "thicknessMm": 50,  "rValueSI": 2.67, "uValueSI": 0.374, "uValueIP": 0.0660, "tier": "Light commercial",   "useCase": "Chiller +5°C, ambient cooler" },
+    { "thicknessMm": 75,  "rValueSI": 3.92, "uValueSI": 0.255, "uValueIP": 0.0450, "tier": "Standard cooler",    "useCase": "Walk-in cooler 0 to +10°C" },
+    { "thicknessMm": 100, "rValueSI": 5.17, "uValueSI": 0.193, "uValueIP": 0.0341, "tier": "Premium cooler",     "useCase": "Walk-in cooler / freezer to -18°C", "default": true },
+    { "thicknessMm": 125, "rValueSI": 6.42, "uValueSI": 0.156, "uValueIP": 0.0274, "tier": "Standard freezer",   "useCase": "Walk-in freezer -18 to -25°C" },
+    { "thicknessMm": 150, "rValueSI": 7.67, "uValueSI": 0.130, "uValueIP": 0.0230, "tier": "Premium freezer",    "useCase": "Blast freezer / low-temp warehouse" },
+    { "thicknessMm": 175, "rValueSI": 8.92, "uValueSI": 0.112, "uValueIP": 0.0198, "tier": "Industrial freezer", "useCase": "-30°C and below" },
+    { "thicknessMm": 200, "rValueSI": 10.17,"uValueSI": 0.098, "uValueIP": 0.0173, "tier": "Blast freezer",      "useCase": "-40°C blast / pharma critical" }
+  ]
+}

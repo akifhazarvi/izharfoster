@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multi-System Cold-Chain Project | Izhar Foster</title>
+<meta name="description" content="Plan a multi-zone cold-chain facility — chiller + freezer + dock + pharma — under one project. Save and reload .json projects.">
+<link rel="canonical" href="https://izharfoster.com/tools/project.html">
+<meta name="robots" content="noindex,follow">
+<link rel="icon" href="../images/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="rail" aria-hidden="true">
+    <span class="wm">−40°C → +25°C</span>
+    <div class="marks">
+      <span class="mark">−40°</span><span class="mark">−25°</span><span class="mark">0°</span><span class="mark">+10°</span><span class="mark warm">+25°</span>
+    </div>
+    <span class="pin" style="top:50%;"></span>
+  </aside>
+  <div class="shell-content">
+    <header class="site-header"><div class="nav">
+      <a href="../index.html" class="brand" aria-label="Izhar Foster home"><img src="../images/logo.svg" alt="Izhar Foster" class="brand-logo"></a>
+      <ul class="nav-center" id="nav">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../services/cold-stores.html">Products</a></li>
+        <li><a href="../projects.html">Projects</a></li>
+        <li><a href="../tools.html" class="active">Tools</a></li>
+        <li><a href="../about.html">Story</a></li>
+        <li><a href="../clients.html">Clients</a></li>
+        <li><a href="../blog.html">Blog</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="tel:+924235383543" class="nav-phone"><span class="live"></span>+92 42 3538 3543</a>
+        <a href="../contact.html" class="btn btn-primary btn-sm">Request quote <span class="arr">→</span></a>
+        <button class="menu-toggle" aria-label="Open menu"><span></span><span></span><span></span></button>
+      </div>
+    </div></header>
+
+    <div class="calc-titlebar">
+      <div>
+        <div class="calc-breadcrumb">
+          <a href="../index.html">Home</a>
+          <span class="sep">/</span>
+          <a href="../tools.html">Tools</a>
+          <span class="sep">/</span>
+          <span>Multi-System Project</span>
+        </div>
+        <h1 class="calc-title">Multi-System Cold-Chain Project</h1>
+        <span class="calc-eyebrow">One project · many zones · saved as .json</span>
+      </div>
+      <div class="calc-titlebar-actions">
+        <button type="button" id="btn-new" class="btn btn-outline btn-sm">New project</button>
+        <button type="button" id="btn-open" class="btn btn-outline btn-sm">Open (.json)</button>
+        <button type="button" id="btn-save" class="btn btn-primary btn-sm">Save (.json)</button>
+        <button type="button" id="btn-print" class="btn btn-primary btn-sm">Print summary PDF</button>
+      </div>
+    </div>
+
+    <div class="container" style="padding: 24px var(--gutter); max-width: 1200px; margin: 0 auto;">
+
+      <section class="calc-section" style="margin-bottom: 22px;">
+        <div class="calc-section-head">
+          <div>
+            <span class="calc-eyebrow">Project metadata</span>
+            <h2>Who, what, where</h2>
+          </div>
+        </div>
+        <div class="calc-section-body" style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px;">
+          <div class="calc-field">
+            <label class="calc-field-label" for="proj-name">Project name</label>
+            <input class="calc-num" type="text" id="proj-name" placeholder="e.g. Karachi Mango Hub Phase 1" style="width: 100%;">
+          </div>
+          <div class="calc-field">
+            <label class="calc-field-label" for="proj-site">Site / location</label>
+            <input class="calc-num" type="text" id="proj-site" placeholder="e.g. Korangi Industrial Area, Karachi" style="width: 100%;">
+          </div>
+          <div class="calc-field" style="grid-column: 1 / -1;">
+            <label class="calc-field-label" for="proj-customer">Customer (CUSTOMER INFORMATION)</label>
+            <textarea class="calc-num" id="proj-customer" rows="2" placeholder="Name, company, contact details..." style="width: 100%; resize: vertical;"></textarea>
+          </div>
+          <div class="calc-field" style="grid-column: 1 / -1;">
+            <label class="calc-field-label" for="proj-engineer">Engineer (MY INFO)</label>
+            <textarea class="calc-num" id="proj-engineer" rows="2" placeholder="Your name, firm, registration number..." style="width: 100%; resize: vertical;"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <section class="calc-section" style="margin-bottom: 22px;">
+        <div class="calc-section-head">
+          <div>
+            <span class="calc-eyebrow">Zones</span>
+            <h2>Systems in this project</h2>
+          </div>
+          <button type="button" id="btn-add-system" class="btn btn-primary btn-sm">+ Add system</button>
+        </div>
+        <div class="calc-section-body">
+          <p class="calc-field-hint" style="margin-bottom: 14px;">Each zone is a separate cold room (or other tool calculation) in this facility. Pick a tool to start a fresh calc — when you're done, return here, save the project, and the result locks into this list.</p>
+          <div id="systems-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
+          <p id="systems-empty" style="font-size: .9rem; color: var(--muted); padding: 22px; text-align: center; background: var(--paper-2); border-radius: 4px; margin-top: 14px;">No systems yet — click <strong>+ Add system</strong> to begin.</p>
+        </div>
+      </section>
+
+      <section class="calc-section" style="margin-bottom: 22px;">
+        <div class="calc-section-head">
+          <div>
+            <span class="calc-eyebrow">Total project load</span>
+            <h2>Aggregate roll-up</h2>
+          </div>
+        </div>
+        <div class="calc-section-body">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 18px;">
+            <div class="calc-cost"><div class="calc-cost-label">Systems</div><div class="calc-cost-value" id="agg-count">0</div></div>
+            <div class="calc-cost"><div class="calc-cost-label">Total capacity</div><div class="calc-cost-value" id="agg-cap">— kW</div></div>
+            <div class="calc-cost"><div class="calc-cost-label">Total volume</div><div class="calc-cost-value" id="agg-vol">— m³</div></div>
+            <div class="calc-cost"><div class="calc-cost-label">PIR panel area</div><div class="calc-cost-value" id="agg-panel">— m²</div></div>
+          </div>
+          <p class="calc-disclaimer" style="margin-top: 18px;">
+            This project file aggregates only what each tool wrote into its saved .json. Any system you opened but never saved is not included. Final electrical and refrigerant sizing must be performed once all systems are confirmed.
+          </p>
+        </div>
+      </section>
+
+    </div>
+
+    <footer class="site-footer">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand-name">Izhar&nbsp;Foster</div>
+          <p>Cold-chain division of Izhar Group. Engineered cold across the temperature spectrum since 1959 — for Pakistan's food, medicine, and harvests.</p>
+        </div>
+        <div>
+          <h4>Tools</h4>
+          <ul>
+            <li><a href="../tools/load-calculator.html">Cold Room Heat Load</a></li>
+            <li><a href="../tools/condenser-sizing.html">Condenser Sizing</a></li>
+            <li><a href="../tools/refrigerant-charge.html">Refrigerant Charge</a></li>
+            <li><a href="../tools.html">All calculators →</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Get in touch</h4>
+          <ul>
+            <li class="mono"><a href="tel:+924235383543">+92 42 3538 3543</a></li>
+            <li class="mono"><a href="https://wa.me/923215383544">+92 321 5383544 · WhatsApp</a></li>
+            <li class="mono"><a href="mailto:info@izharfoster.com">info@izharfoster.com</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span id="y">2026</span> Izhar Foster (Pvt) Limited · A division of Izhar Group</span>
+        <span><a href="#">Privacy</a> · <a href="../sitemap.xml">Sitemap</a></span>
+      </div>
+    </footer>
+
+  </div>
+</div>
+<a href="https://wa.me/923215383544" class="fab-wa" target="_blank" rel="noopener" aria-label="WhatsApp">WA</a>
+<script src="../js/main.js" defer></script>
+<script src="../js/tools/_shared.js" defer></script>
+<script src="../js/tools/project.js" defer></script>
+<script>document.getElementById('y').textContent=new Date().getFullYear();</script>
+</body></html>

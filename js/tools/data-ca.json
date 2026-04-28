@@ -1,0 +1,22 @@
+{
+  "comment": "Controlled Atmosphere storage recipes per crop. Source: USDA Agriculture Handbook 66; ASHRAE Refrigeration Ch. 21 (Apples), Ch. 22 (Pears), Ch. 25 (CA Storage). Pakistan-relevant CA-storeable crops only.",
+  "crops": [
+    { "id": "apple",       "name": "Apple",                         "tempC":   0,    "tempLow":  -1, "tempHigh": 1,   "rh": 92, "o2": 2.0,  "co2": 3.0,  "tightness": "high",   "shelfMonths": 12, "extension": "+8 months vs cold-only" },
+    { "id": "pear",        "name": "Pear (Bartlett)",               "tempC":  -0.5,  "tempLow":  -1, "tempHigh": 0,   "rh": 92, "o2": 2.0,  "co2": 1.0,  "tightness": "high",   "shelfMonths": 8,  "extension": "+5 months" },
+    { "id": "kiwi",        "name": "Kiwifruit",                     "tempC":   0,    "tempLow":  -0.5, "tempHigh": 0.5, "rh": 95, "o2": 2.0,  "co2": 5.0,  "tightness": "high",   "shelfMonths": 6,  "extension": "+3 months" },
+    { "id": "pomegranate", "name": "Pomegranate",                   "tempC":   5,    "tempLow":   4, "tempHigh": 6,   "rh": 92, "o2": 5.0,  "co2": 10.0, "tightness": "medium", "shelfMonths": 6,  "extension": "+2 months" },
+    { "id": "persimmon",   "name": "Persimmon",                     "tempC":   0,    "tempLow":  -1, "tempHigh": 1,   "rh": 90, "o2": 5.0,  "co2": 8.0,  "tightness": "medium", "shelfMonths": 4,  "extension": "+2 months" },
+    { "id": "mango_ca",    "name": "Mango (export)",                "tempC":  13,    "tempLow":  12, "tempHigh": 14,  "rh": 90, "o2": 5.0,  "co2": 5.0,  "tightness": "medium", "shelfMonths": 1.5, "extension": "+2 weeks" },
+    { "id": "banana_ca",   "name": "Banana (sea-shipping)",         "tempC":  14,    "tempLow":  13, "tempHigh": 15,  "rh": 90, "o2": 3.0,  "co2": 5.0,  "tightness": "medium", "shelfMonths": 1.2, "extension": "+10 days" },
+    { "id": "onion_ca",    "name": "Onion (long-storage)",          "tempC":   0,    "tempLow":  -1, "tempHigh": 1,   "rh": 70, "o2": 1.5,  "co2": 5.0,  "tightness": "medium", "shelfMonths": 9,  "extension": "+3 months" },
+    { "id": "potato_ca",   "name": "Potato (seed CA)",              "tempC":   3,    "tempLow":   2, "tempHigh": 4,   "rh": 95, "o2": 3.0,  "co2": 5.0,  "tightness": "medium", "shelfMonths": 10, "extension": "+2 months" },
+    { "id": "garlic_ca",   "name": "Garlic (long-storage)",         "tempC":   0,    "tempLow":  -1, "tempHigh": 1,   "rh": 65, "o2": 1.0,  "co2": 5.0,  "tightness": "medium", "shelfMonths": 10, "extension": "+3 months" },
+    { "id": "tomato_ca",   "name": "Tomato (mature green)",         "tempC":  13,    "tempLow":  12, "tempHigh": 14,  "rh": 90, "o2": 4.0,  "co2": 5.0,  "tightness": "medium", "shelfMonths": 1,  "extension": "+10 days" },
+    { "id": "stonefruit",  "name": "Peach / Plum / Apricot",        "tempC":   0,    "tempLow":  -1, "tempHigh": 1,   "rh": 90, "o2": 1.5,  "co2": 5.0,  "tightness": "high",   "shelfMonths": 2,  "extension": "+3 weeks" }
+  ],
+  "tightness": {
+    "high":   { "leakageMaxPctPerDay": 0.5, "n2GenSizingFactor": 1.0,  "description": "≤ 0.5% volume/day, gas-tight ULO chamber, full sealing" },
+    "medium": { "leakageMaxPctPerDay": 1.5, "n2GenSizingFactor": 1.5,  "description": "≤ 1.5%/day, partial sealing, refresh-cycle CA" },
+    "loose":  { "leakageMaxPctPerDay": 5.0, "n2GenSizingFactor": 3.0,  "description": "Modified atmosphere only, sealed bags or shrouds" }
+  }
+}

@@ -1,4 +1,6 @@
 _scrape/
+_kr_scrape/
+node_modules/
 .DS_Store
 Thumbs.db
 *.log

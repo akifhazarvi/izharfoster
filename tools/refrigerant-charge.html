@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Refrigerant Charge Calculator — 12 Refrigerants | Izhar Foster</title>
+<meta name="description" content="Estimate total refrigerant charge from line lengths, climate, and equipment. 12 refrigerants including R-449A, R-454C, R-290, R-717. NIST REFPROP densities.">
+<link rel="canonical" href="https://izharfoster.com/tools/refrigerant-charge.html">
+<meta property="og:title" content="Refrigerant Charge Calculator | Izhar Foster">
+<meta property="og:description" content="Free, accurate refrigerant charge calculator. NIST REFPROP densities. 12 refrigerants.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://izharfoster.com/tools/refrigerant-charge.html">
+<meta property="og:image" content="https://izharfoster.com/images/hero-facility.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+<link rel="icon" href="../images/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Refrigerant Charge Calculator — Izhar Foster",
+  "applicationCategory": "EngineeringApplication",
+  "operatingSystem": "Web",
+  "url": "https://izharfoster.com/tools/refrigerant-charge.html",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "PKR"},
+  "creator": {"@type": "Organization", "name": "Izhar Foster (Pvt) Limited"}
+}
+</script>
+</head>
+<body>
+<div class="shell">
+  <aside class="rail" aria-hidden="true">
+    <span class="wm">−40°C → +25°C</span>
+    <div class="marks">
+      <span class="mark">−40°</span><span class="mark">−25°</span><span class="mark">0°</span><span class="mark">+10°</span><span class="mark warm">+25°</span>
+    </div>
+    <span class="pin" style="top:50%;"></span>
+  </aside>
+  <div class="shell-content">
+    <header class="site-header"><div class="nav">
+      <a href="../index.html" class="brand" aria-label="Izhar Foster home"><img src="../images/logo.svg" alt="Izhar Foster" class="brand-logo"></a>
+      <ul class="nav-center" id="nav">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../services/cold-stores.html">Products</a></li>
+        <li><a href="../projects.html">Projects</a></li>
+        <li><a href="../tools.html" class="active">Tools</a></li>
+        <li><a href="../about.html">Story</a></li>
+        <li><a href="../clients.html">Clients</a></li>
+        <li><a href="../blog.html">Blog</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="tel:+924235383543" class="nav-phone"><span class="live"></span>+92 42 3538 3543</a>
+        <a href="../contact.html" class="btn btn-primary btn-sm">Request quote <span class="arr">→</span></a>
+        <button class="menu-toggle" aria-label="Open menu"><span></span><span></span><span></span></button>
+      </div>
+    </div></header>
+
+    <div class="calc-titlebar">
+      <div>
+        <div class="calc-breadcrumb">
+          <a href="../index.html">Home</a>
+          <span class="sep">/</span>
+          <a href="../tools.html">Tools</a>
+          <span class="sep">/</span>
+          <span>Refrigerant Charge</span>
+        </div>
+        <h1 class="calc-title">Refrigerant Charge Estimator</h1>
+        <span class="calc-eyebrow">Tool · 04 of 07 · NIST REFPROP densities</span>
+      </div>
+      <div class="calc-titlebar-actions">
+        <button type="button" id="job-open" class="btn btn-outline btn-sm">Open job (.json)</button>
+        <button type="button" id="job-save" class="btn btn-outline btn-sm">Save (.json)</button>
+        <button type="button" id="job-print" class="btn btn-primary btn-sm">Print PDF</button>
+      </div>
+    </div>
+
+    <div class="calc-grid">
+
+      <form class="calc-form" id="charge-form" novalidate>
+
+        <section class="calc-section">
+          <div class="calc-section-head">
+            <div>
+              <span class="calc-eyebrow">Step 1</span>
+              <h2>Refrigerant &amp; climate</h2>
+            </div>
+          </div>
+          <div class="calc-section-body">
+            <div class="calc-field">
+              <label class="calc-field-label" for="ref">Refrigerant</label>
+              <select class="calc-select" id="ref"></select>
+              <div class="calc-field-hint" id="ref-hint">12 refrigerants. R-449A is Izhar's medium-temp default; R-454C low-temp.</div>
+            </div>
+            <div class="calc-field">
+              <span class="calc-field-label">Climate</span>
+              <div class="calc-segmented" id="climate-seg" role="group">
+                <button type="button" data-val="40" aria-pressed="false">Highland<br><small style="opacity:.6">40°C SCT</small></button>
+                <button type="button" data-val="45" aria-pressed="true">Plains<br><small style="opacity:.6">45°C SCT</small></button>
+                <button type="button" data-val="50" aria-pressed="false">Coastal<br><small style="opacity:.6">50°C SCT</small></button>
+              </div>
+              <div class="calc-field-hint">Sets the saturated condensing temperature for liquid-line density.</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="calc-section">
+          <div class="calc-section-head">
+            <div>
+              <span class="calc-eyebrow">Step 2</span>
+              <h2>Liquid line</h2>
+            </div>
+          </div>
+          <div class="calc-section-body">
+            <div class="calc-field">
+              <label class="calc-field-label" for="liq-od">Liquid line OD</label>
+              <select class="calc-select" id="liq-od"></select>
+            </div>
+            <div class="calc-field">
+              <label class="calc-field-label" for="liq-len">Liquid line length</label>
+              <div class="calc-num-with-unit">
+                <input class="calc-num" type="number" id="liq-len" min="0" max="500" step="0.5" value="20">
+                <span class="calc-num-unit">m</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="calc-section">
+          <div class="calc-section-head">
+            <div>
+              <span class="calc-eyebrow">Step 3</span>
+              <h2>Suction line</h2>
+            </div>
+          </div>
+          <div class="calc-section-body">
+            <div class="calc-field">
+              <label class="calc-field-label" for="suc-od">Suction line OD</label>
+              <select class="calc-select" id="suc-od"></select>
+            </div>
+            <div class="calc-field">
+              <label class="calc-field-label" for="suc-len">Suction line length</label>
+              <div class="calc-num-with-unit">
+                <input class="calc-num" type="number" id="suc-len" min="0" max="500" step="0.5" value="20">
+                <span class="calc-num-unit">m</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="calc-section">
+          <div class="calc-section-head">
+            <div>
+              <span class="calc-eyebrow">Step 4</span>
+              <h2>Equipment</h2>
+            </div>
+          </div>
+          <div class="calc-section-body">
+            <div class="calc-field">
+              <span class="calc-field-label">Condensing unit</span>
+              <button type="button" id="cu-pick" class="btn btn-outline" style="justify-content:flex-start; padding:10px 14px; min-height:44px;">Select model →</button>
+              <div class="calc-field-hint" id="cu-summary">Class-typical or manual datasheet entry. Adds factory pre-charge + receiver fill.</div>
+            </div>
+            <div class="calc-field">
+              <span class="calc-field-label">Evaporator</span>
+              <button type="button" id="evap-pick" class="btn btn-outline" style="justify-content:flex-start; padding:10px 14px; min-height:44px;">Select model →</button>
+              <div class="calc-field-hint" id="evap-summary">Adds the evaporator pumpdown charge. Optional for liquid-line-only checks.</div>
+            </div>
+            <div class="calc-field">
+              <label class="calc-field-label" for="evap-qty">Evaporator quantity</label>
+              <div class="calc-num-with-unit">
+                <input class="calc-num" type="number" id="evap-qty" min="1" max="20" step="1" value="1">
+                <span class="calc-num-unit">units</span>
+              </div>
+              <div class="calc-field-hint">Multiply evaporator pumpdown by this many units.</div>
+            </div>
+          </div>
+        </section>
+
+      </form>
+
+      <aside class="calc-aside">
+        <div class="calc-result" id="result">
+          <div class="calc-result-head">
+            <span class="calc-eyebrow">Estimated charge</span>
+            <div class="calc-result-big" id="big">—</div>
+            <div class="calc-result-sub" id="sub"></div>
+          </div>
+
+          <div class="calc-breakdown-bar" id="bd-bar"><div style="flex:1; background: var(--paper-3);"></div></div>
+          <div id="breakdown"></div>
+
+          <div class="calc-cta-pair">
+            <a href="#" id="cta-quote" class="btn btn-primary">Get a refrigerant quote <span class="arr">→</span></a>
+            <a href="#" id="cta-wa" class="btn btn-outline" target="_blank" rel="noopener">WhatsApp</a>
+            <a href="#" id="cta-email" class="btn btn-outline">Email engineers</a>
+          </div>
+
+          <details class="calc-show-math">
+            <summary>Show the math</summary>
+            <div class="calc-show-math-body" id="math-body">—</div>
+          </details>
+
+          <p class="calc-disclaimer">
+            Installation variability, geographic location, and environmental conditions at the time of charging will affect the site-specific required refrigerant charge. The values shown here are suggestions and should only be used as a general guideline. This equipment may not be suitable for use with all refrigerants — refer to manufacturer literature for compatibility.
+          </p>
+        </div>
+      </aside>
+
+    </div>
+
+    <footer class="site-footer">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand-name">Izhar&nbsp;Foster</div>
+          <p>Cold-chain division of Izhar Group. Engineered cold across the temperature spectrum since 1959 — for Pakistan's food, medicine, and harvests.</p>
+        </div>
+        <div>
+          <h4>Tools</h4>
+          <ul>
+            <li><a href="../tools/load-calculator.html">Cold Room Heat Load</a></li>
+            <li><a href="../tools/energy-cost.html">Energy Cost &amp; Payback</a></li>
+            <li><a href="../tools/a2l-room-area.html">A2L Min Room Area</a></li>
+            <li><a href="../tools/refrigerant-charge.html">Refrigerant Charge</a></li>
+            <li><a href="../tools/condenser-sizing.html">Condenser Sizing</a></li>
+            <li><a href="../tools.html">All calculators →</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Get in touch</h4>
+          <ul>
+            <li class="mono"><a href="tel:+924235383543">+92 42 3538 3543</a></li>
+            <li class="mono"><a href="https://wa.me/923215383544">+92 321 5383544 · WhatsApp</a></li>
+            <li class="mono"><a href="mailto:info@izharfoster.com">info@izharfoster.com</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span id="y">2026</span> Izhar Foster (Pvt) Limited · A division of Izhar Group</span>
+        <span><a href="#">Privacy</a> · <a href="../sitemap.xml">Sitemap</a></span>
+      </div>
+    </footer>
+
+  </div>
+</div>
+<a href="https://wa.me/923215383544" class="fab-wa" target="_blank" rel="noopener" aria-label="WhatsApp">WA</a>
+<script src="../js/main.js" defer></script>
+<script src="../js/tools/_shared.js" defer></script>
+<script src="../js/tools/refrigerant-charge.js" defer></script>
+<script>document.getElementById('y').textContent=new Date().getFullYear();</script>
+</body></html>

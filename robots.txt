@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /_scrape/
+Disallow: /_kr_scrape/
 Disallow: /tmp/
 
 # AI crawlers — explicitly allow for GEO / AI search visibility

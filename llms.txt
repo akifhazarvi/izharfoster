@@ -40,6 +40,18 @@ Pharmaceuticals · Dairy · Meat & Poultry · Fruits & Vegetables · Seafood · 
 - Kamran Anwar — Manager Sales — kamran.anwar@izharfoster.com — +92 300 4842467
 - Umair Meo — Senior Manager, South Region — +92 300 7860941
 
+## Engineering calculators
+
+Free, client-side, ASHRAE-validated tools at https://izharfoster.com/tools.html. Sized to ASHRAE Refrigeration Handbook Ch. 24 §"Refrigerated-Facility Loads". Cross-validated within ±20% of Heatcraft NROES, Copeland AE-103, Danfoss Coolselector®2, Bitzer Software, K-RP, and University of Vermont's open-source produce calculator.
+
+- [Cold Room Heat Load Calculator](https://izharfoster.com/tools/load-calculator.html) — 5-component ASHRAE method; 22 application presets (15 industry-standard + 7 Pakistan-specific: Mango Cold Store, Citrus Pre-cooler, Onion Storage, Potato Storage, Pharma Cold Chain, Dairy Bulk Reception, Halal Meat Processing); 12 Pakistan ambient cities (Multan, Karachi, Lahore, Islamabad, Faisalabad, Peshawar, Quetta, Sialkot, Hyderabad, Sukkur, Gwadar, Jacobabad); Izhar PIR panel SKUs (50/75/100/125/150/175/200 mm); live 3D visualisation (model-viewer with AR + heat-flow animation); annual PKR energy cost.
+- [Energy Cost & Payback Calculator](https://izharfoster.com/tools/energy-cost.html) — Compare two panel-thickness scenarios. Annual electricity cost in PKR, savings, payback period, 10-year NPV. Pakistan-specific (PKR/kWh tariffs, WAPDA + K-Electric defaults).
+- [A2L Min Room Area Calculator](https://izharfoster.com/tools/a2l-room-area.html) — IEC 60335-2-89:2019 leakable-charge safety check. 5 A2L refrigerants (R-454A, R-454B, R-454C, R-455A, R-32). ASHRAE 15 occupancy classes A/B/C. Live compliance verdict with options.
+- [Refrigerant Charge Estimator](https://izharfoster.com/tools/refrigerant-charge.html) — Estimate total system charge from line lengths. 12 refrigerants (R-404A, R-407A/C, R-448A, R-449A, R-454A/B/C, R-455A, R-32, R-507, R-290 propane, R-717 ammonia). NIST REFPROP saturated-liquid densities. 12 line sizes from 1/4" to 3 1/8" Cu Type-L.
+- [Air-Cooled Condenser Sizer](https://izharfoster.com/tools/condenser-sizing.html) — ASHRAE Refrigeration Ch. 35 THR factor calculation. Pakistan ambient derate built-in. Per-refrigerant COP table for medium-temp and low-temp applications. Auto-warns at SCT ≥ 55°C with evaporative-condenser recommendation.
+- [Cold Storage Capacity Planner](https://izharfoster.com/tools/capacity-planner.html) — Tonnage-to-room-size for 24 Pakistan crops (mango, kinnow, banana, potato, onion, garlic, tomato, pomegranate, grape, guava, dates, leafy greens, milk, halal meat, fish, ice cream, pharma, flowers). Outputs room dimensions, panel SQM, indicative project value range, and deep-link to heat-load calculator. ASHRAE Ch. 21–22 + USDA Handbook 66.
+- [CA Atmosphere Designer](https://izharfoster.com/tools/ca-atmosphere.html) — Controlled Atmosphere recipe (O₂/CO₂/N₂ targets) + chamber sizing + PSA N₂ generator sizing for 12 CA-storeable crops (apple, pear, kiwi, pomegranate, persimmon, mango, banana, onion, potato, garlic, tomato, stone fruit). 3 sealing tiers (ULO, medium, modified atm). USDA Handbook 66, ASHRAE Refrigeration Ch. 25.
+
 ## Resources
 
 - [Story / About](https://izharfoster.com/about.html)

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Engineering Calculators — Cold Chain Sizing | Izhar Foster</title>
+<meta name="description" content="Seven free engineering calculators for cold rooms, refrigerant charge, A2L safety, energy cost, and capacity planning. Sized to ASHRAE Refrigeration Handbook Ch. 24. Pakistan-grounded defaults.">
+<link rel="canonical" href="https://izharfoster.com/tools.html">
+<meta property="og:title" content="Engineering Calculators — Cold Chain Sizing | Izhar Foster">
+<meta property="og:description" content="Seven free engineering calculators for cold rooms, refrigerant charge, A2L safety, energy cost, and capacity planning. Sized to ASHRAE Refrigeration Handbook Ch. 24. Pakistan-grounded defaults.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://izharfoster.com/tools.html">
+<meta property="og:image" content="https://izharfoster.com/images/hero-facility.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+<link rel="icon" href="images/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Engineering Calculators — Izhar Foster",
+  "description": "Free cold-chain engineering calculators sized to ASHRAE Refrigeration Handbook Ch. 24.",
+  "url": "https://izharfoster.com/tools.html",
+  "mainEntity": [
+    {"@type": "SoftwareApplication", "name": "Cold Room Heat Load Calculator", "applicationCategory": "EngineeringApplication", "operatingSystem": "Web", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "PKR"}, "url": "https://izharfoster.com/tools/load-calculator.html"},
+    {"@type": "SoftwareApplication", "name": "Energy Cost & Payback Calculator", "applicationCategory": "EngineeringApplication", "operatingSystem": "Web", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "PKR"}, "url": "https://izharfoster.com/tools/energy-cost.html"}
+  ]
+}
+</script>
+</head>
+<body>
+<div class="shell">
+  <aside class="rail" aria-hidden="true">
+    <span class="wm">−40°C → +25°C</span>
+    <div class="marks">
+      <span class="mark">−40°</span><span class="mark">−25°</span><span class="mark">0°</span><span class="mark">+10°</span><span class="mark warm">+25°</span>
+    </div>
+    <span class="pin" style="top:50%;"></span>
+  </aside>
+  <div class="shell-content">
+    <header class="site-header"><div class="nav">
+      <a href="index.html" class="brand" aria-label="Izhar Foster home"><img src="images/logo.svg" alt="Izhar Foster" class="brand-logo"></a>
+      <ul class="nav-center" id="nav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services/cold-stores.html">Products</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="tools.html" class="active">Tools</a></li>
+        <li><a href="about.html">Story</a></li>
+        <li><a href="clients.html">Clients</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="tel:+924235383543" class="nav-phone"><span class="live"></span>+92 42 3538 3543</a>
+        <a href="contact.html" class="btn btn-primary btn-sm">Request quote <span class="arr">→</span></a>
+        <button class="menu-toggle" aria-label="Open menu"><span></span><span></span><span></span></button>
+      </div>
+    </div></header>
+
+    <section class="tools-hero">
+      <span class="eyebrow">Engineering tools</span>
+      <h1>Calculate, validate, <em>decide</em>.</h1>
+      <p class="lead">Seven free calculators for cold-chain sizing, sized to ASHRAE Refrigeration Handbook Ch. 24 and cross-validated against eight industry tools (Heatcraft, Copeland, Coolselector, Bitzer, K-RP). Defaults match Pakistan ambient and Izhar PIR panel SKUs.</p>
+    </section>
+
+    <section class="tools-grid">
+
+      <a href="tools/project.html" class="tools-card" style="border-color: var(--t-warm); background: linear-gradient(135deg, var(--paper-2) 0%, rgba(227,106,30,.04) 100%);">
+        <span class="num" style="color: var(--t-warm);">Project Shell</span>
+        <h3>Multi-System Project</h3>
+        <p>Plan a multi-zone facility — chiller + freezer + dock + pharma — under one project file. Save and reload as .json. Aggregate roll-up across all systems.</p>
+        <div class="meta">
+          <span class="tag">.json save / load</span>
+          <span class="tag">Multi-zone</span>
+        </div>
+        <span class="arr">→</span>
+      </a>
+
+      <a href="tools/load-calculator.html" class="tools-card">
+        <span class="num">Tool · 01</span>
+        <h3>Cold Room Heat Load</h3>
+        <p>Size the refrigeration capacity for your cold room — by application, geometry, panels, product, and Pakistan ambient. Live 3D visualisation.</p>
+        <div class="meta">
+          <span class="tag">ASHRAE Ch. 24</span>
+          <span class="tag">22 presets</span>
+        </div>
+        <span class="arr">→</span>
+      </a>
+
+      <a href="tools/energy-cost.html" class="tools-card">
+        <span class="num">Tool · 02</span>
+        <h3>Energy Cost &amp; Payback</h3>
+        <p>Compare two panel-thickness scenarios. Annual PKR cost, savings, payback period, 10-year NPV. The ROI tool nobody else has.</p>
+        <div class="meta">
+          <span class="tag pk">Pakistan-only</span>
+          <span class="tag">PKR / kWh</span>
+        </div>
+        <span class="arr">→</span>
+      </a>
+
+      <a href="tools/a2l-room-area.html" class="tools-card">
+        <span class="num">Tool · 03</span>
+        <h3>A2L Min Room Area</h3>
+        <p>Verify minimum floor area for A2L refrigerants per IEC 60335-2-89:2019. Leakable-charge method, ASHRAE 15 occupancy classes.</p>
+        <div class="meta">
+          <span class="tag">IEC 60335-2-89</span>
+          <span class="tag">5 A2L refrigerants</span>
+        </div>
+        <span class="arr">→</span>
+      </a>
+
+      <a href="tools/refrigerant-charge.html" class="tools-card">
+        <span class="num">Tool · 04</span>
+        <h3>Refrigerant Charge</h3>
+        <p>Estimate total system charge from line lengths, climate, and equipment. 12 refrigerants — R-449A, R-454C, R-290, R-717.</p>
+        <div class="meta">
+          <span class="tag">12 refrigerants</span>
+          <span class="tag">NIST REFPROP</span>
+        </div>
+        <span class="arr">→</span>
+      </a>
+
+      <a href="tools/condenser-sizing.html" class="tools-card">
+        <span class="num">Tool · 05</span>
+        <h3>Condenser Sizing</h3>
+        <p>Air-cooled condenser capacity from evaporator load + ambient + refrigerant. Pakistan ambient derate built in.</p>
+        <div class="meta">
+          <span class="tag">THR factor</span>
+          <span class="tag">ASHRAE Ch. 35</span>
+        </div>
+        <span class="arr">→</span>
+      </a>
+
+      <a href="tools/capacity-planner.html" class="tools-card">
+        <span class="num">Tool · 06</span>
+        <h3>Capacity Planner</h3>
+        <p>"I have 50 tonnes of mangoes" → "you need a 200 m³ room with 380 m² of panels." 24 Pakistan crops with stacking densities. For non-engineer buyers.</p>
+        <div class="meta">
+          <span class="tag pk">Pakistan-only</span>
+          <span class="tag">24 PK crops</span>
+        </div>
+        <span class="arr">→</span>
+      </a>
+
+      <a href="tools/ca-atmosphere.html" class="tools-card">
+        <span class="num">Tool · 07</span>
+        <h3>CA Atmosphere Designer</h3>
+        <p>Controlled atmosphere O₂ / CO₂ / N₂ recipe + chamber sizing + N₂ generator. 12 CA-storeable crops per USDA Handbook 66.</p>
+        <div class="meta">
+          <span class="tag pk">Pakistan-only</span>
+          <span class="tag">USDA Handbook 66</span>
+        </div>
+        <span class="arr">→</span>
+      </a>
+
+    </section>
+
+    <section class="tools-trust">
+      <div class="container">
+        <div>
+          <span class="eyebrow">Methodology</span>
+          <h3>Engineering you can defend in front of a regulator.</h3>
+        </div>
+        <div class="citations">
+          <span>ASHRAE Handbook — Refrigeration 2022, Chapter 24 "Refrigerated-Facility Loads"</span>
+          <span>IEC 60335-2-89:2019 — A2L charge limits, leakable-charge method</span>
+          <span>ISO 5149-1 — Refrigerating systems and heat pumps, safety</span>
+          <span>NIST REFPROP 10.0 — Refrigerant thermodynamic properties</span>
+          <span>Cross-validated within ±20% of Heatcraft NROES, Copeland AE-103, Danfoss Coolselector®2, Bitzer Software, UVM ageng calculator</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-banner">
+      <div class="grid">
+        <div>
+          <span class="eyebrow" style="color:rgba(245,242,236,.6)">Get in touch</span>
+          <h2>Tell us your product and your temperature — we'll quote it in <em>24 hours</em>.</h2>
+          <p>Computed a load, sized a room, picked a panel — now let our engineers verify and quote.</p>
+        </div>
+        <div class="btns">
+          <a href="contact.html" class="btn btn-primary btn-lg">Request a quote <span class="arr">→</span></a>
+          <a href="https://wa.me/923215383544" target="_blank" rel="noopener" class="btn btn-outline btn-lg">WhatsApp our team</a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand-name">Izhar&nbsp;Foster</div>
+          <p>Cold-chain division of Izhar Group. Engineered cold across the temperature spectrum since 1959 — for Pakistan's food, medicine, and harvests.</p>
+          <p class="mono" style="font-size:.78rem;color:rgba(245,242,236,.4);letter-spacing:.06em">A division of <a href="about.html">Izhar Group</a> · 6 engineering companies</p>
+        </div>
+        <div>
+          <h4>Products</h4>
+          <ul>
+            <li><a href="services/cold-stores.html">Cold Stores</a></li>
+            <li><a href="services/pir-sandwich-panels.html">PIR Panels</a></li>
+            <li><a href="services/refrigeration-systems.html">Refrigeration</a></li>
+            <li><a href="services/ca-stores.html">CA Stores</a></li>
+            <li><a href="services/insulated-doors.html">Insulated Doors</a></li>
+            <li><a href="services/prefabricated-structures.html">Prefab Structures</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Tools</h4>
+          <ul>
+            <li><a href="tools/load-calculator.html">Cold Room Heat Load</a></li>
+            <li><a href="tools/energy-cost.html">Energy Cost &amp; Payback</a></li>
+            <li><a href="tools.html">All calculators →</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Get in touch</h4>
+          <ul>
+            <li class="mono"><a href="tel:+924235383543">+92 42 3538 3543</a></li>
+            <li class="mono"><a href="https://wa.me/923215383544">+92 321 5383544 · WhatsApp</a></li>
+            <li class="mono"><a href="mailto:info@izharfoster.com">info@izharfoster.com</a></li>
+            <li style="margin-top:14px;color:rgba(245,242,236,.5);font-size:.86rem">Izhar House, 35-Tipu Block,<br>New Garden Town, Lahore — Pakistan</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span id="y">2026</span> Izhar Foster (Pvt) Limited · A division of Izhar Group</span>
+        <span><a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="sitemap.xml">Sitemap</a></span>
+      </div>
+    </footer>
+
+  </div>
+</div>
+<a href="https://wa.me/923215383544" class="fab-wa" target="_blank" rel="noopener" aria-label="WhatsApp">WA</a>
+<script src="js/main.js" defer></script>
+<script>document.getElementById('y').textContent=new Date().getFullYear();</script>
+</body></html>

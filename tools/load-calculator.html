@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cold Room Heat Load Calculator — ASHRAE Ch. 24 | Izhar Foster</title>
+<meta name="description" content="Free cold room load calculator. Sized to ASHRAE Refrigeration Handbook Ch. 24. 22 application presets, Pakistan ambient cities, Izhar PIR panel SKUs, live 3D visualisation, PKR annual energy cost.">
+<link rel="canonical" href="https://izharfoster.com/tools/load-calculator.html">
+<meta property="og:title" content="Cold Room Heat Load Calculator | Izhar Foster">
+<meta property="og:description" content="Free, ASHRAE-validated cold-room sizing calculator with live 3D visualisation. Pakistan-grounded defaults.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://izharfoster.com/tools/load-calculator.html">
+<meta property="og:image" content="https://izharfoster.com/images/hero-facility.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+<link rel="icon" href="../images/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<script type="module" src="https://unpkg.com/@google/model-viewer@4.0.0/dist/model-viewer.min.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Cold Room Heat Load Calculator — Izhar Foster",
+  "applicationCategory": "EngineeringApplication",
+  "applicationSubCategory": "Refrigeration Load Calculation",
+  "operatingSystem": "Web",
+  "url": "https://izharfoster.com/tools/load-calculator.html",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "PKR"},
+  "creator": {"@type": "Organization", "name": "Izhar Foster (Pvt) Limited"},
+  "softwareVersion": "1.0",
+  "citation": "ASHRAE Handbook—Refrigeration 2022, Chapter 24, Refrigerated-Facility Loads"
+}
+</script>
+</head>
+<body>
+<div class="shell">
+  <aside class="rail" aria-hidden="true">
+    <span class="wm">−40°C → +25°C</span>
+    <div class="marks">
+      <span class="mark">−40°</span><span class="mark">−25°</span><span class="mark">0°</span><span class="mark">+10°</span><span class="mark warm">+25°</span>
+    </div>
+    <span class="pin" style="top:50%;"></span>
+  </aside>
+  <div class="shell-content">
+    <header class="site-header"><div class="nav">
+      <a href="../index.html" class="brand" aria-label="Izhar Foster home"><img src="../images/logo.svg" alt="Izhar Foster" class="brand-logo"></a>
+      <ul class="nav-center" id="nav">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../services/cold-stores.html">Products</a></li>
+        <li><a href="../projects.html">Projects</a></li>
+        <li><a href="../tools.html" class="active">Tools</a></li>
+        <li><a href="../about.html">Story</a></li>
+        <li><a href="../clients.html">Clients</a></li>
+        <li><a href="../blog.html">Blog</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="tel:+924235383543" class="nav-phone"><span class="live"></span>+92 42 3538 3543</a>
+        <a href="../contact.html" class="btn btn-primary btn-sm">Request quote <span class="arr">→</span></a>
+        <button class="menu-toggle" aria-label="Open menu"><span></span><span></span><span></span></button>
+      </div>
+    </div></header>
+
+    <div class="calc-titlebar">
+      <div>
+        <div class="calc-breadcrumb">
+          <a href="../index.html">Home</a>
+          <span class="sep">/</span>
+          <a href="../tools.html">Tools</a>
+          <span class="sep">/</span>
+          <span>Load Calculator</span>
+        </div>
+        <h1 class="calc-title">Cold Room Heat Load — sized to ASHRAE</h1>
+        <span class="calc-eyebrow">Tool · 01 of 07</span>
+      </div>
+      <div class="calc-titlebar-actions">
+        <button type="button" id="job-open" class="btn btn-outline btn-sm">Open job (.json)</button>
+        <button type="button" id="job-save" class="btn btn-outline btn-sm">Save (.json)</button>
+        <button type="button" id="job-print" class="btn btn-primary btn-sm">Print PDF</button>
+      </div>
+      <div class="calc-units-toggle" role="group" aria-label="Unit system">
+        <button id="units-si" aria-pressed="true">SI</button>
+        <button id="units-ip" aria-pressed="false">Imperial</button>
+      </div>
+    </div>
+
+    <div class="calc-grid">
+
+      <!-- ===== LEFT: FORM ===== -->
+      <form class="calc-form" id="load-form" novalidate>
+
+        <!-- S1 · Application -->
+        <section class="calc-section">
+          <div class="calc-section-head">
+            <div>
+              <span class="calc-eyebrow">Step 1</span>
+              <h2>Pick an application</h2>
+            </div>
+            <button type="button" class="calc-glossary-trigger" data-glossary="td">[?] What's TD?</button>
+          </div>
+          <p class="calc-field-hint" style="margin-bottom:14px;">We'll set typical defaults for your application — you can change anything.</p>
+          <div class="calc-app-grid" id="app-grid" role="radiogroup" aria-label="Application"></div>
+        </section>
+
+        <!-- S2 · Geometry -->
+        <section class="calc-section">
+          <div class="calc-section-head">
+            <div>
+              <span class="calc-eyebrow">Step 2</span>
+              <h2>Room geometry</h2>
+            </div>
+          </div>
+          <div class="calc-section-body">
+            <div class="calc-field">
+              <label class="calc-field-label" for="length">Length</label>
+              <div class="calc-num-with-unit">
+                <input class="calc-num" type="number" id="length" min="1" max="100" step="0.1" value="10" required>
+                <span class="calc-num-unit" data-unit-type="length">m</span>
+              </div>
+              <div class="calc-field-hint">Internal length, wall to wall.</div>
+            </div>
+            <div class="calc-field">
+              <label class="calc-field-label" for="width">Width</label>
+              <div class="calc-num-with-unit">
+                <input class="calc-num" type="number" id="width" min="1" max="100" step="0.1" value="10" required>
+                <span class="calc-num-unit" data-unit-type="length">m</span>
+              </div>
+              <div class="calc-field-hint">Internal width, wall to wall.</div>
+            </div>
+            <div class="calc-field">
+              <label class="calc-field-label" for="height">Height</label>
+              <div class="calc-num-with-unit">
+                <input class="calc-num" type="number" id="height" min="2" max="15" step="0.1" value="5" required>
+                <span class="calc-num-unit" data-unit-type="length">m</span>
+              </div>
+              <div class="calc-field-hint">Internal height, floor to ceiling.</div>
+            </div>
+            <div class="calc-field">
+              <span class="calc-field-label">Box location</span>
+              <div class="calc-radio-tiles" id="box-location">
+                <label><input type="radio" name="loc" value="indoor" checked><span class="calc-radio-tile"><span>Indoor</span><span>Inside a larger building</span></span></label>
+                <label><input type="radio" name="loc" value="outdoor"><span class="calc-radio-tile"><span>Outdoor</span><span>Standalone, exposed</span></span></label>
+                <label><input type="radio" name="loc" value="sun"><span class="calc-radio-tile"><span>Outdoor + Sun</span><span>Direct sun on walls/roof</span></span></label>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- S3 · Conditions -->
+        <section class="calc-section">
+          <div class="calc-section-head">
+            <div>
+              <span class="calc-eyebrow">Step 3</span>
+              <h2>Conditions</h2>
+            </div>
+            <button type="button" class="calc-glossary-trigger" data-glossary="mcwb">[?] MCWB</button>
+          </div>
+          <div class="calc-section-body">
+            <div class="calc-field">
+              <label class="calc-field-label" for="city">Pakistan city</label>
+              <select class="calc-select" id="city"></select>
+              <div class="calc-field-hint">Auto-fills ASHRAE 0.4% design DB + 2 K climate uplift. Override below if needed.</div>
+            </div>
+            <div class="calc-field">
+              <label class="calc-field-label" for="ambient">Ambient temp</label>
+              <div class="calc-num-with-unit">
+                <input class="calc-num" type="number" id="ambient" min="5" max="60" step="0.5" value="43">
+                <span class="calc-num-unit" data-unit-type="temp">°C</span>
+              </div>
+            </div>
+            <div class="calc-field">
+              <label class="calc-field-label" for="ambient-rh">Ambient RH</label>
+              <div class="calc-num-with-unit">
+                <input class="calc-num" type="number" id="ambient-rh" min="5" max="100" step="1" value="14">
+                <span class="calc-num-unit">%</span>
+              </div>
+            </div>
+            <div class="calc-field">
+              <label class="calc-field-label" for="interior">Room temp</label>
+              <div class="calc-num-with-unit">
+                <input class="calc-num" type="number" id="interior" min="-40" max="25" step="0.5" value="2">
+                <span class="calc-num-unit" data-unit-type="temp">°C</span>
+              </div>
+            </div>
+            <div class="calc-field">
+              <label class="calc-field-label" for="interior-rh">Room RH</label>
+              <div class="calc-num-with-unit">
+                <input class="calc-num" type="number" id="interior-rh" min="30" max="100" step="1" value="84">
+                <span class="calc-num-unit">%</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- S4 · Walls -->
+        <section class="calc-section">
+          <div class="calc-section-head">
+            <div>
+              <span class="calc-eyebrow">Step 4</span>
+              <h2>Walls (Izhar PIR panels)</h2>
+            </div>
+            <button type="button" class="calc-glossary-trigger" data-glossary="lambda">[?] λ</button>
+          </div>
+          <div class="calc-section-body">
+            <div class="calc-field">
+              <label class="calc-field-label" for="wall-thickness">Wall thickness</label>
+              <select class="calc-select" id="wall-thickness"></select>
+              <div class="calc-field-hint" id="wall-u-hint">U-value computed live below.</div>
+            </div>
+            <div class="calc-field">
+              <label class="calc-field-label" for="roof-thickness">Roof thickness</label>
+              <select class="calc-select" id="roof-thickness"></select>
+            </div>
+            <div class="calc-field">
+              <label class="calc-field-label" for="floor-thickness">Floor build-up</label>
+              <select class="calc-select" id="floor-thickness">
+                <option value="0">Concrete on grade (R = 0.55 m²K/W)</option>
+                <option value="75" selected>Concrete + 75 mm PIR</option>
+                <option value="100">Concrete + 100 mm PIR (heavy traffic)</option>
+              </select>
+            </div>
+            <div class="calc-field">
+              <span class="calc-field-label">Floor type</span>
+              <div class="calc-radio-tiles">
+                <label><input type="radio" name="floor-type" value="on-grade" checked><span class="calc-radio-tile"><span>On grade</span><span>Slab on soil</span></span></label>
+                <label><input type="radio" name="floor-type" value="above-grade"><span class="calc-radio-tile"><span>Above grade</span><span>Suspended / mezzanine</span></span></label>
+                <label><input type="radio" name="floor-type" value="insulated-slab"><span class="calc-radio-tile"><span>Insulated slab</span><span>Premium ground-coupling</span></span></label>
+              </div>
+              <div class="calc-field-hint">Above-grade floors lose more heat (no ground sink). Insulated slab is the premium build for freezers.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- S4c · Doors -->
+        <section class="calc-section">
+          <div class="calc-section-head">
+            <div>
+              <span class="calc-eyebrow">Step 4c</span>
+              <h2>Doors &amp; infiltration</h2>
+            </div>
+            <button type="button" class="calc-glossary-trigger" data-glossary="ach">[?] ACH</button>
+          </div>
+          <div class="calc-section-body">
+            <div class="calc-field">
+              <label class="calc-field-label" for="door-w">Door width</label>
+              <div class="calc-num-with-unit">
+                <input class="calc-num" type="number" id="door-w" min="0.6" max="6" step="0.1" value="1.2">
+                <span class="calc-num-unit">m</span>
+              </div>
+            </div>
+            <div class="calc-field">
+              <label class="calc-field-label" for="door-h">Door height</label>
+              <div class="calc-num-with-unit">
+                <input class="calc-num" type="number" id="door-h" min="1.5" max="6" step="0.1" value="2.1">
+                <span class="calc-num-unit">m</span>
+              </div>
+            </div>
+            <div class="calc-field">
+              <label class="calc-field-label" for="door-n">Door count</label>
+              <input class="calc-num" type="number" id="door-n" min="1" max="20" step="1" value="1">
+            </div>
+            <div class="calc-field">
+              <label class="calc-field-label" for="door-curtain">
+                <input type="checkbox" id="door-curtain" style="margin-right:8px; transform:translateY(2px);">
+                Strip / air curtain installed
+              </label>
+              <div class="calc-field-hint">Reduces door air exchange by ~50% (E factor per ASHRAE Refrigeration Ch. 24 Table 14).</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- S4b · Wall sections (advanced) -->
+        <section class="calc-section">
+          <div class="calc-section-head">
+            <div>
+              <span class="calc-eyebrow">Step 4b · Advanced</span>
+              <h2>Wall sections (optional)</h2>
+            </div>
+            <button type="button" class="calc-glossary-trigger" id="wall-sections-toggle">Override per surface →</button>
+          </div>
+          <div class="calc-section-body" id="wall-sections-body" style="display:none;">
+            <p class="calc-field-hint" style="margin-bottom:14px;">Override individual surfaces — different panel thickness for the cold-side wall, sun exposure, or partition adjacent to a warmer room. Leave empty for "use default".</p>
+            <div id="wall-sections-list"></div>
+          </div>
+        </section>
+
+        <!-- S5 · Product Load -->
+        <section class="calc-section">
+          <div class="calc-section-head">
+            <div>
+              <span class="calc-eyebrow">Step 5</span>
+              <h2>Product load</h2>
+            </div>
+            <button type="button" class="calc-glossary-trigger" id="product-toggle">Add products →</button>
+          </div>
+          <div class="calc-section-body" id="product-body" style="display:none;">
+            <p class="calc-field-hint" style="margin-bottom:14px;">Daily throughput cooling + respiration heat for live produce. ASHRAE Refrigeration Ch. 19 thermal properties database (226 products).</p>
+            <div id="product-list"></div>
+            <button type="button" id="product-add" class="btn btn-outline btn-sm" style="margin-top:12px;">+ Add product</button>
+          </div>
+        </section>
+
+        <!-- S6 · Internal Loads -->
+        <section class="calc-section">
+          <div class="calc-section-head">
+            <div>
+              <span class="calc-eyebrow">Step 6</span>
+              <h2>Internal loads</h2>
+            </div>
+          </div>
+          <div class="calc-section-body">
+            <div class="calc-field">
+              <label class="calc-field-label" for="lighting">Lighting</label>
+              <div class="calc-num-with-unit">
+                <input class="calc-num" type="number" id="lighting" min="0" max="50" step="0.5" value="8">
+                <span class="calc-num-unit">W/m²</span>
+              </div>
+              <div class="calc-field-hint">Modern LED installs run 6–10 W/m².</div>
+            </div>
+            <div class="calc-field">
+              <label class="calc-field-label" for="lighting-hours">Lighting hours</label>
+              <div class="calc-num-with-unit">
+                <input class="calc-num" type="number" id="lighting-hours" min="0" max="24" step="0.5" value="4">
+                <span class="calc-num-unit">h/day</span>
+              </div>
+            </div>
+            <div class="calc-field">
+              <label class="calc-field-label" for="people">People</label>
+              <div class="calc-num-with-unit">
+                <input class="calc-num" type="number" id="people" min="0" max="50" step="1" value="2">
+                <span class="calc-num-unit">count</span>
+              </div>
+            </div>
+            <div class="calc-field">
+              <label class="calc-field-label" for="people-hours">People hours</label>
+              <div class="calc-num-with-unit">
+                <input class="calc-num" type="number" id="people-hours" min="0" max="24" step="0.5" value="4">
+                <span class="calc-num-unit">h/day</span>
+              </div>
+            </div>
+            <div class="calc-field">
+              <label class="calc-field-label" for="motors">Motors / forklifts</label>
+              <div class="calc-num-with-unit">
+                <input class="calc-num" type="number" id="motors" min="0" max="50" step="0.1" value="0">
+                <span class="calc-num-unit">kW</span>
+              </div>
+            </div>
+            <div class="calc-field">
+              <span class="calc-field-label">Defrost</span>
+              <div class="calc-segmented" id="defrost-seg" role="group">
+                <button type="button" data-val="none" aria-pressed="true">None</button>
+                <button type="button" data-val="electric" aria-pressed="false">Electric</button>
+                <button type="button" data-val="hot-gas" aria-pressed="false">Hot-gas</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- S7 · Safety + Run-time -->
+        <section class="calc-section">
+          <div class="calc-section-head">
+            <div>
+              <span class="calc-eyebrow">Step 7</span>
+              <h2>Safety &amp; run-time</h2>
+            </div>
+            <button type="button" class="calc-glossary-trigger" data-glossary="ach">[?] ACH</button>
+          </div>
+          <div class="calc-section-body">
+            <div class="calc-field">
+              <span class="calc-field-label">Safety factor</span>
+              <div class="calc-segmented" id="safety-seg" role="group">
+                <button type="button" data-val="5" aria-pressed="false">5%</button>
+                <button type="button" data-val="10" aria-pressed="true">10%</button>
+                <button type="button" data-val="15" aria-pressed="false">15%</button>
+                <button type="button" data-val="20" aria-pressed="false">20%</button>
+              </div>
+            </div>
+            <div class="calc-field">
+              <label class="calc-field-label" for="run-hours">Compressor run-time</label>
+              <select class="calc-select" id="run-hours">
+                <option value="14">14 h/day</option>
+                <option value="16" selected>16 h/day (cooler)</option>
+                <option value="18">18 h/day (freezer)</option>
+                <option value="20">20 h/day</option>
+              </select>
+            </div>
+            <div class="calc-field">
+              <span class="calc-field-label">Usage intensity</span>
+              <div class="calc-segmented" id="usage-seg" role="group">
+                <button type="button" data-val="0.6" aria-pressed="false">Light</button>
+                <button type="button" data-val="1.0" aria-pressed="true">Normal</button>
+                <button type="button" data-val="2.0" aria-pressed="false">Heavy</button>
+              </div>
+              <div class="calc-field-hint">Door usage / traffic. Heavy = busy retail / loading dock.</div>
+            </div>
+          </div>
+        </section>
+
+      </form>
+
+      <!-- ===== RIGHT: VISUALISER + RESULT ===== -->
+      <aside class="calc-aside">
+
+        <div class="calc-visualiser" id="visualiser">
+          <div class="calc-visualiser-fallback">Loading 3D preview…</div>
+        </div>
+
+        <div class="calc-result" id="result">
+          <div class="calc-result-head">
+            <span class="calc-eyebrow">Required capacity</span>
+            <div class="calc-result-big" id="big-num">—</div>
+            <div class="calc-result-sub" id="sub-num"></div>
+          </div>
+
+          <div class="calc-breakdown-card">
+            <div class="calc-breakdown-head">
+              <span class="calc-eyebrow">Where the load comes from</span>
+              <span class="calc-breakdown-largest" id="bd-largest">—</span>
+            </div>
+            <div class="calc-breakdown-bar" id="bd-bar">
+              <div style="flex:1; background: var(--paper-3);"></div>
+            </div>
+            <div id="breakdown"></div>
+          </div>
+
+          <div class="calc-cost">
+            <div class="calc-cost-label">Annual electricity cost</div>
+            <div class="calc-cost-value" id="annual-cost">—</div>
+            <div class="calc-cost-tariff">
+              <span>@ Rs</span>
+              <input type="number" id="tariff" value="35" min="5" max="100" step="0.5">
+              <span>/ kWh · 24 h × 365 days</span>
+            </div>
+          </div>
+
+          <div class="calc-cost">
+            <div class="calc-cost-label">Suggested equipment class</div>
+            <div class="calc-cost-value" id="equip-suggested" style="font-size:.95rem;">—</div>
+            <div class="calc-cost-tariff" id="equip-suggested-explain">Auto-suggested from your computed load. Browse to refine.</div>
+            <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+              <button type="button" id="evap-pick" class="btn btn-outline btn-sm">Browse evaporators →</button>
+              <button type="button" id="cu-pick" class="btn btn-outline btn-sm">Browse condensing units →</button>
+            </div>
+          </div>
+
+          <div class="calc-cta-pair">
+            <a href="#" id="cta-quote" class="btn btn-primary">Get a quote on this design <span class="arr">→</span></a>
+            <a href="#" id="cta-wa" class="btn btn-outline" target="_blank" rel="noopener">WhatsApp</a>
+            <a href="#" id="cta-email" class="btn btn-outline">Email engineers</a>
+          </div>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap; font-family:var(--font-mono); font-size:.78rem;">
+            <button type="button" id="btn-share" class="btn-ghost" style="padding:8px 12px; border-radius:3px;">Copy share link</button>
+            <a href="../tools/energy-cost.html" id="cta-energy" class="btn-ghost" style="padding:8px 12px; border-radius:3px;">Compute payback →</a>
+            <a href="../tools/condenser-sizing.html" id="cta-condenser" class="btn-ghost" style="padding:8px 12px; border-radius:3px;">Size condenser →</a>
+            <a href="../tools/refrigerant-charge.html" id="cta-charge" class="btn-ghost" style="padding:8px 12px; border-radius:3px;">Estimate charge →</a>
+            <a href="../tools/a2l-room-area.html" id="cta-a2l" class="btn-ghost" style="padding:8px 12px; border-radius:3px;">Check A2L safety →</a>
+          </div>
+
+          <details class="calc-show-math">
+            <summary>Show the math</summary>
+            <div class="calc-show-math-body" id="math-body">—</div>
+          </details>
+
+          <p class="calc-disclaimer" id="disclaimer">
+            Calculator results are an engineering estimate based on ASHRAE Handbook—Refrigeration Ch. 24 and the inputs you provided. Final equipment selection, refrigerant charge, and electrical sizing must be verified by a qualified refrigeration engineer. Izhar Foster does not warrant capacity until a sealed system test report is issued.
+          </p>
+        </div>
+
+      </aside>
+    </div>
+
+    <footer class="site-footer">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand-name">Izhar&nbsp;Foster</div>
+          <p>Cold-chain division of Izhar Group. Engineered cold across the temperature spectrum since 1959 — for Pakistan's food, medicine, and harvests.</p>
+          <p class="mono" style="font-size:.78rem;color:rgba(245,242,236,.4);letter-spacing:.06em">A division of <a href="../about.html">Izhar Group</a> · 6 engineering companies</p>
+        </div>
+        <div>
+          <h4>Products</h4>
+          <ul>
+            <li><a href="../services/cold-stores.html">Cold Stores</a></li>
+            <li><a href="../services/pir-sandwich-panels.html">PIR Panels</a></li>
+            <li><a href="../services/refrigeration-systems.html">Refrigeration</a></li>
+            <li><a href="../services/ca-stores.html">CA Stores</a></li>
+            <li><a href="../services/insulated-doors.html">Insulated Doors</a></li>
+            <li><a href="../services/prefabricated-structures.html">Prefab Structures</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Tools</h4>
+          <ul>
+            <li><a href="../tools/load-calculator.html">Cold Room Heat Load</a></li>
+            <li><a href="../tools/energy-cost.html">Energy Cost &amp; Payback</a></li>
+            <li><a href="../tools.html">All calculators →</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Get in touch</h4>
+          <ul>
+            <li class="mono"><a href="tel:+924235383543">+92 42 3538 3543</a></li>
+            <li class="mono"><a href="https://wa.me/923215383544">+92 321 5383544 · WhatsApp</a></li>
+            <li class="mono"><a href="mailto:info@izharfoster.com">info@izharfoster.com</a></li>
+            <li style="margin-top:14px;color:rgba(245,242,236,.5);font-size:.86rem">Izhar House, 35-Tipu Block,<br>New Garden Town, Lahore — Pakistan</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span id="y">2026</span> Izhar Foster (Pvt) Limited · A division of Izhar Group</span>
+        <span><a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="../sitemap.xml">Sitemap</a></span>
+      </div>
+    </footer>
+
+  </div>
+</div>
+<a href="https://wa.me/923215383544" class="fab-wa" target="_blank" rel="noopener" aria-label="WhatsApp">WA</a>
+<script src="../js/main.js" defer></script>
+<script src="../js/tools/_shared.js" defer></script>
+<script src="../js/tools/visualiser.js" defer></script>
+<script src="../js/tools/load-calculator.js" defer></script>
+<script>document.getElementById('y').textContent=new Date().getFullYear();</script>
+</body></html>

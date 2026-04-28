@@ -1,0 +1,28 @@
+# Source-of-truth scrapes + research — kept locally, NOT deployed
+_scrape/
+_kr_scrape/
+
+# Node + Playwright artefacts
+node_modules/
+package-lock.json
+
+# Local build / dev / OS junk
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
+
+# Anything starting with _ is dev/internal
+_*.mjs
+_*.html
+
+# Claude / project-internal docs (won't deploy by default but explicit)
+.claude/
+CLAUDE.md
+DESIGN.md
+
+# Sensitive — none expected, but explicit
+.env
+.env.local
+.env.*.local

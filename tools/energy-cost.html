@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cold Storage Energy Cost &amp; Payback Calculator | Izhar Foster</title>
+<meta name="description" content="Compare two panel-thickness scenarios. Annual electricity cost in PKR, savings, payback period, 10-year NPV. The ROI tool nobody else has — Pakistan-specific.">
+<link rel="canonical" href="https://izharfoster.com/tools/energy-cost.html">
+<meta property="og:title" content="Cold Storage Energy Cost &amp; Payback | Izhar Foster">
+<meta property="og:description" content="Free calculator. Compare panel thickness scenarios. Annual PKR cost, payback, NPV.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://izharfoster.com/tools/energy-cost.html">
+<meta property="og:image" content="https://izharfoster.com/images/hero-facility.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+<link rel="icon" href="../images/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Cold Storage Energy Cost & Payback Calculator — Izhar Foster",
+  "applicationCategory": "EngineeringApplication",
+  "operatingSystem": "Web",
+  "url": "https://izharfoster.com/tools/energy-cost.html",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "PKR"},
+  "creator": {"@type": "Organization", "name": "Izhar Foster (Pvt) Limited"}
+}
+</script>
+</head>
+<body>
+<div class="shell">
+  <aside class="rail" aria-hidden="true">
+    <span class="wm">−40°C → +25°C</span>
+    <div class="marks">
+      <span class="mark">−40°</span><span class="mark">−25°</span><span class="mark">0°</span><span class="mark">+10°</span><span class="mark warm">+25°</span>
+    </div>
+    <span class="pin" style="top:50%;"></span>
+  </aside>
+  <div class="shell-content">
+    <header class="site-header"><div class="nav">
+      <a href="../index.html" class="brand" aria-label="Izhar Foster home"><img src="../images/logo.svg" alt="Izhar Foster" class="brand-logo"></a>
+      <ul class="nav-center" id="nav">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../services/cold-stores.html">Products</a></li>
+        <li><a href="../projects.html">Projects</a></li>
+        <li><a href="../tools.html" class="active">Tools</a></li>
+        <li><a href="../about.html">Story</a></li>
+        <li><a href="../clients.html">Clients</a></li>
+        <li><a href="../blog.html">Blog</a></li>
+        <li><a href="../contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="tel:+924235383543" class="nav-phone"><span class="live"></span>+92 42 3538 3543</a>
+        <a href="../contact.html" class="btn btn-primary btn-sm">Request quote <span class="arr">→</span></a>
+        <button class="menu-toggle" aria-label="Open menu"><span></span><span></span><span></span></button>
+      </div>
+    </div></header>
+
+    <div class="calc-titlebar">
+      <div>
+        <div class="calc-breadcrumb">
+          <a href="../index.html">Home</a>
+          <span class="sep">/</span>
+          <a href="../tools.html">Tools</a>
+          <span class="sep">/</span>
+          <span>Energy Cost &amp; Payback</span>
+        </div>
+        <h1 class="calc-title">Energy Cost &amp; Payback — compare panel scenarios</h1>
+        <span class="calc-eyebrow">Tool · 02 of 07</span>
+      </div>
+      <div class="calc-titlebar-actions">
+        <button type="button" id="job-open" class="btn btn-outline btn-sm">Open job (.json)</button>
+        <button type="button" id="job-save" class="btn btn-outline btn-sm">Save (.json)</button>
+        <button type="button" id="job-print" class="btn btn-primary btn-sm">Print PDF</button>
+      </div>
+    </div>
+
+    <div class="calc-grid">
+
+      <form class="calc-form" id="energy-form" novalidate>
+
+        <section class="calc-section">
+          <div class="calc-section-head">
+            <div>
+              <span class="calc-eyebrow">Step 1</span>
+              <h2>Cold-room load</h2>
+            </div>
+          </div>
+          <div class="calc-section-body">
+            <div class="calc-field">
+              <label class="calc-field-label" for="load-kw">Required capacity</label>
+              <div class="calc-num-with-unit">
+                <input class="calc-num" type="number" id="load-kw" min="1" max="500" step="0.1" value="28">
+                <span class="calc-num-unit">kW</span>
+              </div>
+              <div class="calc-field-hint">From the Load Calculator (Tool 1) — or enter your own.</div>
+            </div>
+            <div class="calc-field">
+              <span class="calc-field-label">System type</span>
+              <div class="calc-segmented" id="systype-seg" role="group">
+                <button type="button" data-val="cooler" aria-pressed="true">Cooler</button>
+                <button type="button" data-val="freezer" aria-pressed="false">Freezer</button>
+              </div>
+              <div class="calc-field-hint">Drives default COP — cooler ≈ 2.5, freezer ≈ 1.6.</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="calc-section">
+          <div class="calc-section-head">
+            <div>
+              <span class="calc-eyebrow">Step 2</span>
+              <h2>Operation profile</h2>
+            </div>
+          </div>
+          <div class="calc-section-body">
+            <div class="calc-field">
+              <label class="calc-field-label" for="op-hours">Operating hours</label>
+              <div class="calc-num-with-unit">
+                <input class="calc-num" type="number" id="op-hours" min="1" max="24" step="1" value="24">
+                <span class="calc-num-unit">h/day</span>
+              </div>
+            </div>
+            <div class="calc-field">
+              <label class="calc-field-label" for="op-days">Operating days</label>
+              <div class="calc-num-with-unit">
+                <input class="calc-num" type="number" id="op-days" min="1" max="365" step="1" value="365">
+                <span class="calc-num-unit">days/year</span>
+              </div>
+            </div>
+            <div class="calc-field">
+              <label class="calc-field-label" for="load-factor">Load factor</label>
+              <div class="calc-num-with-unit">
+                <input class="calc-num" type="number" id="load-factor" min="20" max="100" step="1" value="70">
+                <span class="calc-num-unit">%</span>
+              </div>
+              <div class="calc-field-hint">Compressor doesn't run at 100%. Typical 60–80%.</div>
+            </div>
+            <div class="calc-field">
+              <label class="calc-field-label" for="cop-a">COP (Scenario A)</label>
+              <div class="calc-num-with-unit">
+                <input class="calc-num" type="number" id="cop-a" min="1" max="6" step="0.1" value="2.5">
+                <span class="calc-num-unit">—</span>
+              </div>
+              <div class="calc-field-hint">Cold output ÷ electric input.</div>
+            </div>
+            <div class="calc-field">
+              <label class="calc-field-label" for="cop-b">COP (Scenario B)</label>
+              <div class="calc-num-with-unit">
+                <input class="calc-num" type="number" id="cop-b" min="1" max="6" step="0.1" value="2.6">
+                <span class="calc-num-unit">—</span>
+              </div>
+              <div class="calc-field-hint">Better-insulated room ⟹ slightly higher COP (smaller compressor at the design point).</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="calc-section">
+          <div class="calc-section-head">
+            <div>
+              <span class="calc-eyebrow">Step 3</span>
+              <h2>Scenario A — current / baseline</h2>
+            </div>
+          </div>
+          <div class="calc-section-body">
+            <div class="calc-field">
+              <label class="calc-field-label" for="thick-a">Wall thickness A</label>
+              <select class="calc-select" id="thick-a"></select>
+            </div>
+            <div class="calc-field">
+              <label class="calc-field-label" for="label-a">Label</label>
+              <input class="calc-num" type="text" id="label-a" value="75 mm baseline" maxlength="40">
+            </div>
+          </div>
+        </section>
+
+        <section class="calc-section">
+          <div class="calc-section-head">
+            <div>
+              <span class="calc-eyebrow">Step 4</span>
+              <h2>Scenario B — Izhar upgrade</h2>
+            </div>
+          </div>
+          <div class="calc-section-body">
+            <div class="calc-field">
+              <label class="calc-field-label" for="thick-b">Wall thickness B</label>
+              <select class="calc-select" id="thick-b"></select>
+            </div>
+            <div class="calc-field">
+              <label class="calc-field-label" for="label-b">Label</label>
+              <input class="calc-num" type="text" id="label-b" value="150 mm upgrade" maxlength="40">
+            </div>
+            <div class="calc-field">
+              <label class="calc-field-label" for="cost-delta">Panel cost delta</label>
+              <div class="calc-num-with-unit">
+                <input class="calc-num" type="number" id="cost-delta" min="0" max="50000000" step="10000" value="800000">
+                <span class="calc-num-unit">Rs</span>
+              </div>
+              <div class="calc-field-hint">Cost premium of B over A (panels + extra installation).</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="calc-section">
+          <div class="calc-section-head">
+            <div>
+              <span class="calc-eyebrow">Step 5</span>
+              <h2>Tariff &amp; finance</h2>
+            </div>
+          </div>
+          <div class="calc-section-body">
+            <div class="calc-field">
+              <label class="calc-field-label" for="tariff-e">Electricity tariff</label>
+              <div class="calc-num-with-unit">
+                <input class="calc-num" type="number" id="tariff-e" min="5" max="100" step="0.5" value="35">
+                <span class="calc-num-unit">Rs/kWh</span>
+              </div>
+              <div class="calc-field-hint">WAPDA industrial ≈ 32, K-Electric ≈ 38.</div>
+            </div>
+            <div class="calc-field">
+              <label class="calc-field-label" for="inflation">Inflation</label>
+              <div class="calc-num-with-unit">
+                <input class="calc-num" type="number" id="inflation" min="0" max="30" step="0.5" value="8">
+                <span class="calc-num-unit">%/year</span>
+              </div>
+            </div>
+            <div class="calc-field">
+              <label class="calc-field-label" for="discount">Discount rate</label>
+              <div class="calc-num-with-unit">
+                <input class="calc-num" type="number" id="discount" min="0" max="30" step="0.5" value="12">
+                <span class="calc-num-unit">%/year</span>
+              </div>
+              <div class="calc-field-hint">For 10-year NPV.</div>
+            </div>
+          </div>
+        </section>
+
+      </form>
+
+      <aside class="calc-aside">
+
+        <div class="calc-result" id="result">
+          <div class="calc-result-head">
+            <span class="calc-eyebrow">Annual savings</span>
+            <div class="calc-result-big" id="big-savings">—</div>
+            <div class="calc-result-sub" id="sub-savings"></div>
+          </div>
+
+          <div class="calc-compare-card">
+            <div class="calc-compare-head">
+              <span class="calc-eyebrow">Cost comparison</span>
+              <div class="calc-compare-toggle" id="compare-toggle" role="group">
+                <button type="button" data-period="year1" aria-pressed="true">Year 1</button>
+                <button type="button" data-period="year25" aria-pressed="false">25-yr cumulative</button>
+              </div>
+            </div>
+            <div class="calc-compare-chart">
+              <div class="calc-compare-row">
+                <div class="calc-compare-label">
+                  <span class="calc-compare-dot" style="background:var(--ink-2);"></span>
+                  <span id="lbl-a">Scenario A</span>
+                </div>
+                <div class="calc-compare-track">
+                  <div class="calc-compare-bar" id="bar-a" style="background:var(--ink-2);"></div>
+                </div>
+                <div class="calc-compare-amt" id="cost-a">—</div>
+              </div>
+              <div class="calc-compare-row">
+                <div class="calc-compare-label">
+                  <span class="calc-compare-dot" style="background:var(--t-warm);"></span>
+                  <span id="lbl-b">Scenario B (Izhar)</span>
+                </div>
+                <div class="calc-compare-track">
+                  <div class="calc-compare-bar" id="bar-b" style="background:var(--t-warm);"></div>
+                </div>
+                <div class="calc-compare-amt" id="cost-b">—</div>
+              </div>
+              <div class="calc-compare-savings">
+                <span>Savings vs A</span>
+                <strong id="bar-savings-amt">—</strong>
+              </div>
+            </div>
+            <div class="calc-compare-foot">
+              <span id="kwh-a">—</span>
+              <span id="kwh-b">—</span>
+            </div>
+          </div>
+
+          <div class="calc-cost">
+            <div class="calc-cost-label">Payback period</div>
+            <div class="calc-cost-value" id="payback">—</div>
+          </div>
+
+          <div class="calc-cost">
+            <div class="calc-cost-label">10-year NPV</div>
+            <div class="calc-cost-value" id="npv">—</div>
+          </div>
+
+          <div class="calc-cta-pair">
+            <a href="#" id="cta-quote" class="btn btn-primary">Get a quote on the upgrade <span class="arr">→</span></a>
+            <a href="#" id="cta-wa" class="btn btn-outline" target="_blank" rel="noopener">WhatsApp</a>
+            <a href="#" id="cta-email" class="btn btn-outline">Email engineers</a>
+          </div>
+
+          <details class="calc-show-math">
+            <summary>Show the math</summary>
+            <div class="calc-show-math-body" id="math-body">—</div>
+          </details>
+
+          <p class="calc-disclaimer">
+            Annual cost is an estimate at the supplied tariff and assumed COP. Real-world cost varies with load profile, ambient swing, and equipment age. For a binding number, request a free site survey.
+          </p>
+        </div>
+
+      </aside>
+    </div>
+
+    <footer class="site-footer">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand-name">Izhar&nbsp;Foster</div>
+          <p>Cold-chain division of Izhar Group. Engineered cold across the temperature spectrum since 1959 — for Pakistan's food, medicine, and harvests.</p>
+        </div>
+        <div>
+          <h4>Tools</h4>
+          <ul>
+            <li><a href="../tools/load-calculator.html">Cold Room Heat Load</a></li>
+            <li><a href="../tools/energy-cost.html">Energy Cost &amp; Payback</a></li>
+            <li><a href="../tools.html">All calculators →</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Get in touch</h4>
+          <ul>
+            <li class="mono"><a href="tel:+924235383543">+92 42 3538 3543</a></li>
+            <li class="mono"><a href="https://wa.me/923215383544">+92 321 5383544 · WhatsApp</a></li>
+            <li class="mono"><a href="mailto:info@izharfoster.com">info@izharfoster.com</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span id="y">2026</span> Izhar Foster (Pvt) Limited · A division of Izhar Group</span>
+        <span><a href="#">Privacy</a> · <a href="../sitemap.xml">Sitemap</a></span>
+      </div>
+    </footer>
+
+  </div>
+</div>
+<a href="https://wa.me/923215383544" class="fab-wa" target="_blank" rel="noopener" aria-label="WhatsApp">WA</a>
+<script src="../js/main.js" defer></script>
+<script src="../js/tools/_shared.js" defer></script>
+<script src="../js/tools/energy-cost.js" defer></script>
+<script>document.getElementById('y').textContent=new Date().getFullYear();</script>
+</body></html>

@@ -1,0 +1,117 @@
+{
+  "comment": "Generic refrigeration equipment classes for Izhar calculator suite. Values are CLASS-TYPICAL — the typical published spec for a unit of that profile + tier from major commercial brands (Bohn / Heatcraft, Embraco, Bitzer, Kelvion-Searle, Lu-Ve, Onda). DO NOT use these as binding specifications — every project must verify against the actual equipment datasheet at procurement. Updated 2026-04. Source review: Bohn Engineering Manual H-ENG-1, Bitzer Software v6.18 catalogue ranges, Embraco condensing unit nominal data, Kelvion Searle Friga-Bohn product range, Lu-Ve evaporator catalogue.",
+  "_legalDisclaimer": "Class-typical values for engineering reference only. Final equipment selection must be verified against the actual manufacturer datasheet. Izhar Foster does not warrant any specific number until a procurement-grade selection is performed by a qualified refrigeration engineer.",
+
+  "evaporators": {
+    "_description": "Unit-cooler evaporator profiles. Pumpdown = refrigerant mass held in the evaporator coil + accumulator at design condition.",
+    "profiles": [
+      {
+        "id": "two_way_medium",
+        "name": "Two-Way Medium Profile",
+        "description": "Dual air-throw, balanced for medium-temp walk-in coolers. Common for general dairy/produce/meat coolers.",
+        "tiers": [
+          { "id": "tier_s", "label": "Small",      "capacityKwLow": 1.5,  "capacityKwHigh": 4,   "pumpdownKg": 0.5, "fanW": 200,  "refrigerants": ["R449A","R448A","R454C","R290"] },
+          { "id": "tier_m", "label": "Medium",     "capacityKwLow": 4,    "capacityKwHigh": 10,  "pumpdownKg": 1.2, "fanW": 450,  "refrigerants": ["R449A","R448A","R454C","R290","R717"] },
+          { "id": "tier_l", "label": "Large",      "capacityKwLow": 10,   "capacityKwHigh": 25,  "pumpdownKg": 2.6, "fanW": 950,  "refrigerants": ["R449A","R448A","R454A","R717"] },
+          { "id": "tier_x", "label": "Industrial", "capacityKwLow": 25,   "capacityKwHigh": 60,  "pumpdownKg": 5.5, "fanW": 2200, "refrigerants": ["R449A","R448A","R717"] }
+        ]
+      },
+      {
+        "id": "low_velocity",
+        "name": "Low Velocity",
+        "description": "Quiet operation, gentle airflow. Best for floral, pharmaceutical, and produce coolers where dehydration must be minimised.",
+        "tiers": [
+          { "id": "tier_s", "label": "Small",      "capacityKwLow": 1,    "capacityKwHigh": 3,   "pumpdownKg": 0.4, "fanW": 130, "refrigerants": ["R449A","R448A","R454C","R290"] },
+          { "id": "tier_m", "label": "Medium",     "capacityKwLow": 3,    "capacityKwHigh": 7,   "pumpdownKg": 0.9, "fanW": 320, "refrigerants": ["R449A","R448A","R454C","R290"] },
+          { "id": "tier_l", "label": "Large",      "capacityKwLow": 7,    "capacityKwHigh": 18,  "pumpdownKg": 2.0, "fanW": 720, "refrigerants": ["R449A","R448A","R454A"] }
+        ]
+      },
+      {
+        "id": "low_profile",
+        "name": "Low Profile",
+        "description": "Compact ceiling-mount, minimum vertical clearance. Common for retrofits and rooms with low ceiling.",
+        "tiers": [
+          { "id": "tier_s", "label": "Small",      "capacityKwLow": 1,    "capacityKwHigh": 3,   "pumpdownKg": 0.3, "fanW": 120, "refrigerants": ["R449A","R454C","R290"] },
+          { "id": "tier_m", "label": "Medium",     "capacityKwLow": 3,    "capacityKwHigh": 7,   "pumpdownKg": 0.7, "fanW": 280, "refrigerants": ["R449A","R448A","R454C","R290"] },
+          { "id": "tier_l", "label": "Large",      "capacityKwLow": 7,    "capacityKwHigh": 14,  "pumpdownKg": 1.5, "fanW": 560, "refrigerants": ["R449A","R448A","R454A"] }
+        ]
+      },
+      {
+        "id": "medium_profile",
+        "name": "Medium Profile",
+        "description": "Standard freezer + medium-temp walk-in. The default unit-cooler choice for most cold rooms.",
+        "tiers": [
+          { "id": "tier_s", "label": "Small",      "capacityKwLow": 2,    "capacityKwHigh": 5,   "pumpdownKg": 0.6, "fanW": 230,  "refrigerants": ["R449A","R448A","R454C","R454A","R290"] },
+          { "id": "tier_m", "label": "Medium",     "capacityKwLow": 5,    "capacityKwHigh": 12,  "pumpdownKg": 1.4, "fanW": 530,  "refrigerants": ["R449A","R448A","R454C","R454A","R717"] },
+          { "id": "tier_l", "label": "Large",      "capacityKwLow": 12,   "capacityKwHigh": 30,  "pumpdownKg": 3.2, "fanW": 1200, "refrigerants": ["R449A","R448A","R454A","R717"] },
+          { "id": "tier_x", "label": "Industrial", "capacityKwLow": 30,   "capacityKwHigh": 75,  "pumpdownKg": 7.0, "fanW": 2800, "refrigerants": ["R449A","R448A","R717"] }
+        ]
+      },
+      {
+        "id": "extended_profile",
+        "name": "Extended Profile",
+        "description": "Long-throw airflow for warehouses, blast freezers, and large-volume cold storage. Higher fan power, larger coil.",
+        "tiers": [
+          { "id": "tier_m", "label": "Medium",     "capacityKwLow": 8,    "capacityKwHigh": 20,  "pumpdownKg": 2.5, "fanW": 1100, "refrigerants": ["R449A","R448A","R454A","R717"] },
+          { "id": "tier_l", "label": "Large",      "capacityKwLow": 20,   "capacityKwHigh": 50,  "pumpdownKg": 5.5, "fanW": 2400, "refrigerants": ["R449A","R448A","R717"] },
+          { "id": "tier_x", "label": "Industrial", "capacityKwLow": 50,   "capacityKwHigh": 150, "pumpdownKg": 12.0, "fanW": 5500, "refrigerants": ["R449A","R448A","R717"] }
+        ]
+      },
+      {
+        "id": "high_profile",
+        "name": "High Profile",
+        "description": "Tall coil for high-bay rack warehouses and industrial cold storage. Max capacity per footprint.",
+        "tiers": [
+          { "id": "tier_l", "label": "Large",      "capacityKwLow": 25,   "capacityKwHigh": 70,  "pumpdownKg": 7.5,  "fanW": 3200, "refrigerants": ["R449A","R448A","R717"] },
+          { "id": "tier_x", "label": "Industrial", "capacityKwLow": 70,   "capacityKwHigh": 250, "pumpdownKg": 18.0, "fanW": 8500, "refrigerants": ["R449A","R448A","R717"] }
+        ]
+      }
+    ]
+  },
+
+  "condensingUnits": {
+    "_description": "Air-cooled condensing units (compressor + condenser packaged together). Refrigerant charge = factory pre-charge + receiver fill. Capacity is at standard condition (SST −10°C, ambient 35°C for medium-temp).",
+    "profiles": [
+      {
+        "id": "scroll_mt",
+        "name": "Scroll — Medium Temp",
+        "description": "Hermetic scroll compressors. Quiet, simple, modern default. SST −5 to −15°C.",
+        "tiers": [
+          { "id": "tier_s", "label": "Small",      "capacityKwLow": 1,    "capacityKwHigh": 4,   "factoryChargeKg": 1.2, "receiverL": 4,   "powerKw": 1.5,  "refrigerants": ["R449A","R448A","R454C","R454A"] },
+          { "id": "tier_m", "label": "Medium",     "capacityKwLow": 4,    "capacityKwHigh": 12,  "factoryChargeKg": 3.5, "receiverL": 12,  "powerKw": 4.5,  "refrigerants": ["R449A","R448A","R454A"] },
+          { "id": "tier_l", "label": "Large",      "capacityKwLow": 12,   "capacityKwHigh": 35,  "factoryChargeKg": 9.0, "receiverL": 30,  "powerKw": 13,   "refrigerants": ["R449A","R448A"] }
+        ]
+      },
+      {
+        "id": "recip_mt",
+        "name": "Reciprocating — Medium Temp",
+        "description": "Semi-hermetic reciprocating. Field-serviceable, robust for harsh ambient. SST −5 to −15°C.",
+        "tiers": [
+          { "id": "tier_s", "label": "Small",      "capacityKwLow": 2,    "capacityKwHigh": 6,   "factoryChargeKg": 2.0, "receiverL": 8,   "powerKw": 2.5,  "refrigerants": ["R449A","R448A","R454A"] },
+          { "id": "tier_m", "label": "Medium",     "capacityKwLow": 6,    "capacityKwHigh": 18,  "factoryChargeKg": 5.5, "receiverL": 20,  "powerKw": 7,    "refrigerants": ["R449A","R448A","R454A"] },
+          { "id": "tier_l", "label": "Large",      "capacityKwLow": 18,   "capacityKwHigh": 60,  "factoryChargeKg": 16,  "receiverL": 60,  "powerKw": 22,   "refrigerants": ["R449A","R448A"] },
+          { "id": "tier_x", "label": "Industrial", "capacityKwLow": 60,   "capacityKwHigh": 200, "factoryChargeKg": 45,  "receiverL": 200, "powerKw": 75,   "refrigerants": ["R449A","R448A","R717"] }
+        ]
+      },
+      {
+        "id": "recip_lt",
+        "name": "Reciprocating — Low Temp",
+        "description": "Semi-hermetic for freezer applications. SST −20 to −35°C.",
+        "tiers": [
+          { "id": "tier_s", "label": "Small",      "capacityKwLow": 1,    "capacityKwHigh": 3,   "factoryChargeKg": 2.0, "receiverL": 8,   "powerKw": 2,    "refrigerants": ["R449A","R448A","R454C","R454A"] },
+          { "id": "tier_m", "label": "Medium",     "capacityKwLow": 3,    "capacityKwHigh": 10,  "factoryChargeKg": 6.0, "receiverL": 25,  "powerKw": 6,    "refrigerants": ["R449A","R448A","R454C","R454A"] },
+          { "id": "tier_l", "label": "Large",      "capacityKwLow": 10,   "capacityKwHigh": 30,  "factoryChargeKg": 15,  "receiverL": 60,  "powerKw": 16,   "refrigerants": ["R449A","R448A"] }
+        ]
+      },
+      {
+        "id": "screw_industrial",
+        "name": "Screw — Industrial",
+        "description": "Twin-screw compressor for industrial cold storage. Typically NH₃ (R-717). Field-built or skid-mounted.",
+        "tiers": [
+          { "id": "tier_m", "label": "Medium",     "capacityKwLow": 50,   "capacityKwHigh": 200, "factoryChargeKg": 90,  "receiverL": 400, "powerKw": 60,   "refrigerants": ["R717","R449A"] },
+          { "id": "tier_l", "label": "Large",      "capacityKwLow": 200,  "capacityKwHigh": 800, "factoryChargeKg": 300, "receiverL": 1500,"powerKw": 250,  "refrigerants": ["R717"] }
+        ]
+      }
+    ]
+  }
+}

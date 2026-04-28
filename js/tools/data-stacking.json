@@ -1,0 +1,29 @@
+{
+  "comment": "Pakistan-relevant crops + bulk product stacking densities. Source: ASHRAE Handbook—Refrigeration Ch. 21-22 (produce storage), USDA Agriculture Handbook 66 (commercial storage of fruits, vegetables, and florist crops), Pakistan Agricultural Research Council (PARC) cold-storage guidelines.",
+  "crops": [
+    { "id": "mango",       "name": "Mango (Sindhri / Chaunsa)",  "kgPerM3": 280, "boxC":  13, "rh": 90, "stackable": "crate", "shelfMonths": 1.5,  "image": null },
+    { "id": "apple",       "name": "Apple (Kashmir / Quetta)",   "kgPerM3": 350, "boxC":  -1, "rh": 92, "stackable": "crate", "shelfMonths": 6,    "image": null },
+    { "id": "kinnow",      "name": "Kinnow / Citrus",            "kgPerM3": 320, "boxC":   5, "rh": 90, "stackable": "crate", "shelfMonths": 3,    "image": null },
+    { "id": "banana",      "name": "Banana",                     "kgPerM3": 250, "boxC":  14, "rh": 90, "stackable": "crate", "shelfMonths": 0.7,  "image": null },
+    { "id": "potato_seed", "name": "Potato (seed)",              "kgPerM3": 600, "boxC":   3, "rh": 95, "stackable": "bulk",  "shelfMonths": 8,    "image": null },
+    { "id": "potato_table","name": "Potato (table)",             "kgPerM3": 600, "boxC":   7, "rh": 95, "stackable": "bulk",  "shelfMonths": 6,    "image": null },
+    { "id": "onion",       "name": "Onion (red / yellow)",       "kgPerM3": 580, "boxC":   1, "rh": 70, "stackable": "bulk",  "shelfMonths": 6,    "image": null },
+    { "id": "garlic",      "name": "Garlic",                     "kgPerM3": 550, "boxC":   0, "rh": 65, "stackable": "bulk",  "shelfMonths": 7,    "image": null },
+    { "id": "tomato",      "name": "Tomato (mature green)",      "kgPerM3": 550, "boxC":  13, "rh": 90, "stackable": "crate", "shelfMonths": 0.5,  "image": null },
+    { "id": "pomegranate", "name": "Pomegranate",                "kgPerM3": 480, "boxC":   5, "rh": 90, "stackable": "crate", "shelfMonths": 4,    "image": null },
+    { "id": "grape",       "name": "Grape",                      "kgPerM3": 360, "boxC":  -1, "rh": 92, "stackable": "crate", "shelfMonths": 2.5,  "image": null },
+    { "id": "guava",       "name": "Guava",                      "kgPerM3": 280, "boxC":   8, "rh": 90, "stackable": "crate", "shelfMonths": 1,    "image": null },
+    { "id": "dates",       "name": "Dates (fresh)",              "kgPerM3": 700, "boxC":  -1, "rh": 75, "stackable": "crate", "shelfMonths": 6,    "image": null },
+    { "id": "leafy",       "name": "Leafy greens",               "kgPerM3": 180, "boxC":   1, "rh": 95, "stackable": "crate", "shelfMonths": 0.5,  "image": null },
+    { "id": "milk",        "name": "Milk (bulk reception)",      "kgPerM3": 980, "boxC":   4, "rh": 85, "stackable": "tank",  "shelfMonths": 0.1,  "image": null },
+    { "id": "yoghurt",     "name": "Yoghurt / cream",            "kgPerM3": 850, "boxC":   4, "rh": 80, "stackable": "crate", "shelfMonths": 0.7,  "image": null },
+    { "id": "halal_meat",  "name": "Halal meat (carcass)",       "kgPerM3": 250, "boxC":  -2, "rh": 95, "stackable": "rail",  "shelfMonths": 0.5,  "image": null },
+    { "id": "frozen_meat", "name": "Frozen meat",                "kgPerM3": 900, "boxC": -20, "rh": 95, "stackable": "bulk",  "shelfMonths": 12,   "image": null },
+    { "id": "fish_fresh",  "name": "Fish (fresh)",               "kgPerM3": 700, "boxC":   0, "rh": 95, "stackable": "crate", "shelfMonths": 0.3,  "image": null },
+    { "id": "fish_frozen", "name": "Fish (frozen)",              "kgPerM3": 800, "boxC": -25, "rh": 95, "stackable": "bulk",  "shelfMonths": 12,   "image": null },
+    { "id": "ice_cream",   "name": "Ice cream",                  "kgPerM3": 500, "boxC": -25, "rh": 95, "stackable": "crate", "shelfMonths": 6,    "image": null },
+    { "id": "pharma_2_8",  "name": "Pharma 2–8°C (vaccines)",    "kgPerM3": 300, "boxC":   5, "rh": 60, "stackable": "rack",  "shelfMonths": 24,   "image": null },
+    { "id": "pharma_15_25","name": "Pharma 15–25°C",             "kgPerM3": 350, "boxC":  20, "rh": 50, "stackable": "rack",  "shelfMonths": 36,   "image": null },
+    { "id": "flowers",     "name": "Cut flowers",                "kgPerM3": 100, "boxC":   3, "rh": 90, "stackable": "rack",  "shelfMonths": 0.3,  "image": null }
+  ]
+}

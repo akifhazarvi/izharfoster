@@ -1,0 +1,15 @@
+{
+  "name": "izharfoster-com",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Izhar Foster (Pvt) Limited — cold-chain division of Izhar Group. Static marketing site + 5-tool engineering calculator suite. Pure HTML/CSS/JS, no framework, no build step.",
+  "homepage": "https://izharfoster.com",
+  "scripts": {
+    "dev": "python3 -m http.server 8090",
+    "start": "python3 -m http.server 8090",
+    "preview": "python3 -m http.server 8090"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

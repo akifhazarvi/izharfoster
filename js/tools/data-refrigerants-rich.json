@@ -1,0 +1,125 @@
+{
+  "comment": "Enriched refrigerant data for Tools 3 (A2L), 4 (Charge), 5 (Condenser). Sources: ASHRAE 34-2022 (safety class, LFL), IEC 60335-2-89:2019 Annex GG (LFL kg/m³), NIST REFPROP 10.0 (saturated liquid density at condensing temp).",
+  "refrigerants": [
+    {
+      "id": "R404A", "name": "R-404A", "blend": "HFC blend", "class": "A1", "lflKgPerM3": null, "lflVolPct": null,
+      "gwp": 3922, "phaseOut": "phasing out (high GWP)",
+      "rhoLiquid": { "35": 1019, "40": 999, "45": 977, "50": 953 },
+      "copMT": 2.5, "copLT": 1.5, "thrMT": 1.40, "thrLT": 1.65,
+      "useCase": "Legacy MT/LT commercial — replaced by R-448A / R-449A",
+      "izharStocked": false
+    },
+    {
+      "id": "R407A", "name": "R-407A", "blend": "HFC blend", "class": "A1", "lflKgPerM3": null, "lflVolPct": null,
+      "gwp": 2107, "phaseOut": "phasing out",
+      "rhoLiquid": { "35": 1075, "40": 1053, "45": 1029, "50": 1003 },
+      "copMT": 2.4, "copLT": 1.45, "thrMT": 1.42, "thrLT": 1.69,
+      "useCase": "Legacy MT — R-404A alternative",
+      "izharStocked": false
+    },
+    {
+      "id": "R407C", "name": "R-407C", "blend": "HFC blend", "class": "A1", "lflKgPerM3": null, "lflVolPct": null,
+      "gwp": 1774, "phaseOut": "phasing out",
+      "rhoLiquid": { "35": 1097, "40": 1073, "45": 1047, "50": 1019 },
+      "copMT": 2.5, "copLT": null, "thrMT": 1.40, "thrLT": null,
+      "useCase": "AC and MT — R-22 alternative",
+      "izharStocked": false
+    },
+    {
+      "id": "R448A", "name": "R-448A (Solstice N40)", "blend": "HFC/HFO blend", "class": "A1", "lflKgPerM3": null, "lflVolPct": null,
+      "gwp": 1387, "phaseOut": "current",
+      "rhoLiquid": { "35": 1062, "40": 1042, "45": 1020, "50": 996 },
+      "copMT": 2.7, "copLT": 1.5, "thrMT": 1.37, "thrLT": 1.67,
+      "useCase": "MT/LT commercial — modern R-404A replacement",
+      "izharStocked": true
+    },
+    {
+      "id": "R449A", "name": "R-449A (Opteon XP40)", "blend": "HFC/HFO blend", "class": "A1", "lflKgPerM3": null, "lflVolPct": null,
+      "gwp": 1397, "phaseOut": "current",
+      "rhoLiquid": { "35": 1056, "40": 1035, "45": 1013, "50": 988 },
+      "copMT": 2.7, "copLT": 1.5, "thrMT": 1.37, "thrLT": 1.67,
+      "useCase": "MT/LT commercial — modern R-404A replacement (Izhar default)",
+      "izharStocked": true,
+      "default": "MT"
+    },
+    {
+      "id": "R454A", "name": "R-454A", "blend": "HFO blend", "class": "A2L", "lflKgPerM3": 0.291, "lflVolPct": 12.5,
+      "gwp": 239, "phaseOut": "future",
+      "rhoLiquid": { "35": 1014, "40": 992, "45": 968, "50": 942 },
+      "copMT": 2.6, "copLT": 1.4, "thrMT": 1.38, "thrLT": 1.71,
+      "useCase": "Low-GWP MT/LT — A2L mildly flammable, room-area limits apply",
+      "izharStocked": true
+    },
+    {
+      "id": "R454B", "name": "R-454B", "blend": "HFO blend", "class": "A2L", "lflKgPerM3": 0.293, "lflVolPct": 11.3,
+      "gwp": 466, "phaseOut": "future",
+      "rhoLiquid": { "35": 980, "40": 957, "45": 932, "50": 905 },
+      "copMT": 2.7, "copLT": null, "thrMT": 1.37, "thrLT": null,
+      "useCase": "AC/MT — modern R-410A replacement (A2L)",
+      "izharStocked": false
+    },
+    {
+      "id": "R454C", "name": "R-454C", "blend": "HFO blend", "class": "A2L", "lflKgPerM3": 0.291, "lflVolPct": 12.4,
+      "gwp": 148, "phaseOut": "future",
+      "rhoLiquid": { "35": 1011, "40": 989, "45": 965, "50": 938 },
+      "copMT": 2.6, "copLT": 1.4, "thrMT": 1.38, "thrLT": 1.71,
+      "useCase": "Low-temp commercial — Izhar A2L freezer default",
+      "izharStocked": true,
+      "default": "LT"
+    },
+    {
+      "id": "R455A", "name": "R-455A", "blend": "HFO/CO₂ blend", "class": "A2L", "lflKgPerM3": 0.285, "lflVolPct": 12.6,
+      "gwp": 148, "phaseOut": "future",
+      "rhoLiquid": { "35": 1024, "40": 1003, "45": 980, "50": 954 },
+      "copMT": 2.6, "copLT": 1.4, "thrMT": 1.38, "thrLT": 1.71,
+      "useCase": "MT/LT — A2L blend with CO₂ component",
+      "izharStocked": false
+    },
+    {
+      "id": "R32", "name": "R-32", "blend": "Pure", "class": "A2L", "lflKgPerM3": 0.307, "lflVolPct": 14.4,
+      "gwp": 675, "phaseOut": "current AC standard",
+      "rhoLiquid": { "35": 921, "40": 894, "45": 866, "50": 836 },
+      "copMT": null, "copLT": null, "thrMT": null, "thrLT": null,
+      "useCase": "AC primarily — split systems, heat pumps. Not typical for cold rooms.",
+      "izharStocked": false
+    },
+    {
+      "id": "R507", "name": "R-507A", "blend": "HFC blend", "class": "A1", "lflKgPerM3": null, "lflVolPct": null,
+      "gwp": 3985, "phaseOut": "phasing out (high GWP)",
+      "rhoLiquid": { "35": 1004, "40": 985, "45": 964, "50": 940 },
+      "copMT": 2.5, "copLT": 1.5, "thrMT": 1.40, "thrLT": 1.67,
+      "useCase": "Legacy LT — replaced by R-448A / R-449A",
+      "izharStocked": false
+    },
+    {
+      "id": "R290", "name": "R-290 (Propane)", "blend": "Pure", "class": "A3", "lflKgPerM3": 0.038, "lflVolPct": 2.1,
+      "gwp": 3, "phaseOut": "current — natural",
+      "rhoLiquid": { "35": 484, "40": 471, "45": 458, "50": 444 },
+      "copMT": 2.9, "copLT": 1.6, "thrMT": 1.34, "thrLT": 1.63,
+      "useCase": "Natural — display cabinets, integral units. Strict charge limit (≤ 150 g sealed, ≤ 500 g charged).",
+      "izharStocked": true
+    },
+    {
+      "id": "R717", "name": "R-717 (Ammonia)", "blend": "Pure", "class": "B2L", "lflKgPerM3": 0.116, "lflVolPct": 16.7,
+      "gwp": 0, "phaseOut": "current — natural",
+      "rhoLiquid": { "35": 587, "40": 580, "45": 572, "50": 564 },
+      "copMT": 3.0, "copLT": 1.7, "thrMT": 1.33, "thrLT": 1.59,
+      "useCase": "Industrial — large cold stores, food processing. Toxic but most efficient. Pakistan: common in dairy, meat, fish processing.",
+      "izharStocked": true
+    }
+  ],
+  "lineSizes": [
+    { "label": "1/4\"",   "odIn": 0.25,    "idMm": 4.83,  "volLperM": 0.0183 },
+    { "label": "3/8\"",   "odIn": 0.375,   "idMm": 8.00,  "volLperM": 0.0503 },
+    { "label": "1/2\"",   "odIn": 0.50,    "idMm": 11.10, "volLperM": 0.0967 },
+    { "label": "5/8\"",   "odIn": 0.625,   "idMm": 14.50, "volLperM": 0.1651 },
+    { "label": "3/4\"",   "odIn": 0.75,    "idMm": 17.65, "volLperM": 0.2447 },
+    { "label": "7/8\"",   "odIn": 0.875,   "idMm": 20.50, "volLperM": 0.3301 },
+    { "label": "1 1/8\"", "odIn": 1.125,   "idMm": 26.90, "volLperM": 0.5685 },
+    { "label": "1 3/8\"", "odIn": 1.375,   "idMm": 33.40, "volLperM": 0.8762 },
+    { "label": "1 5/8\"", "odIn": 1.625,   "idMm": 39.60, "volLperM": 1.2316 },
+    { "label": "2 1/8\"", "odIn": 2.125,   "idMm": 51.85, "volLperM": 2.1124 },
+    { "label": "2 5/8\"", "odIn": 2.625,   "idMm": 64.30, "volLperM": 3.2473 },
+    { "label": "3 1/8\"", "odIn": 3.125,   "idMm": 76.75, "volLperM": 4.6240 }
+  ]
+}

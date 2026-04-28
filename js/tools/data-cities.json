@@ -1,0 +1,17 @@
+{
+  "comment": "Pakistan ASHRAE 0.4% cooling design conditions per RESEARCH.md §6 + 2 K climate uplift recommended for cold-room sizing",
+  "cities": [
+    { "id": "multan",     "name": "Multan",     "wmo": "41675", "zone": "1B", "tempC": 43, "rh": 14, "wbC": 21.5, "note": "Hottest design DB",            "default": true },
+    { "id": "jacobabad",  "name": "Jacobabad",  "wmo": "41685", "zone": "1B", "tempC": 45, "rh": 12, "wbC": 22.0, "note": "Often hottest in Sindh" },
+    { "id": "sukkur",     "name": "Sukkur",     "wmo": "41715", "zone": "1B", "tempC": 45, "rh": 13, "wbC": 22.0, "note": "Tied as hottest" },
+    { "id": "faisalabad", "name": "Faisalabad", "wmo": "41641", "zone": "1B", "tempC": 43, "rh": 16, "wbC": 22.0, "note": "Industrial belt" },
+    { "id": "hyderabad",  "name": "Hyderabad",  "wmo": "41764", "zone": "1B", "tempC": 42, "rh": 20, "wbC": 24.0, "note": "Sindh interior" },
+    { "id": "lahore",     "name": "Lahore",     "wmo": "41640", "zone": "2B", "tempC": 42, "rh": 17, "wbC": 22.5, "note": "Continental" },
+    { "id": "peshawar",   "name": "Peshawar",   "wmo": "41530", "zone": "2B", "tempC": 41, "rh": 19, "wbC": 22.0, "note": "KP plain" },
+    { "id": "sialkot",    "name": "Sialkot",    "wmo": "41594", "zone": "2B", "tempC": 41, "rh": 22, "wbC": 24.0, "note": "Higher humidity" },
+    { "id": "islamabad",  "name": "Islamabad",  "wmo": "41571", "zone": "2B", "tempC": 40, "rh": 18, "wbC": 20.5, "note": "Elevation 508 m" },
+    { "id": "karachi",    "name": "Karachi",    "wmo": "41780", "zone": "1B", "tempC": 39, "rh": 30, "wbC": 26.0, "note": "Coastal, humid" },
+    { "id": "quetta",     "name": "Quetta",     "wmo": "41660", "zone": "4B", "tempC": 36, "rh": 14, "wbC": 16.5, "note": "Elevation 1620 m" },
+    { "id": "gwadar",     "name": "Gwadar",     "wmo": "41756", "zone": "1B", "tempC": 36, "rh": 50, "wbC": 27.5, "note": "Coastal, very humid" }
+  ]
+}

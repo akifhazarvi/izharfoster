@@ -1,0 +1,83 @@
+{
+  "comment": "Tooltip definitions for technical terms. Source: ASHRAE Handbook—Refrigeration 2022 Ch. 24, IEC 60335-2-89:2019, ASHRAE 34-2022.",
+  "terms": {
+    "td": {
+      "term": "TD (Temperature Difference)",
+      "def": "Air-to-coil ΔT — how much warmer the room air is than the evaporator coil surface. Lower TD = larger evaporator, gentler dehumidification, higher product RH preserved.",
+      "typical": "5–7 K (cooler), 4–5 K (freezer)",
+      "source": "ASHRAE Refrigeration 2022, Ch. 24"
+    },
+    "sst": {
+      "term": "SST (Saturated Suction Temperature)",
+      "def": "Refrigerant saturation temperature at the evaporator outlet — sets the cold-side operating point. Lower SST = colder coil = larger TD = more capacity per kg refrigerant.",
+      "typical": "−10°C (medium temp), −30°C (low temp)",
+      "source": "ASHRAE Refrigeration Ch. 26"
+    },
+    "sct": {
+      "term": "SCT (Saturated Condensing Temperature)",
+      "def": "Refrigerant saturation temperature at the condenser outlet — sets the hot-side operating point. For Pakistan ambient 43°C, SCT typically 55°C air-cooled.",
+      "typical": "45°C cool climate, 50°C plains, 55°C hot",
+      "source": "ASHRAE Refrigeration Ch. 26"
+    },
+    "ach": {
+      "term": "ACH (Air Changes per Hour)",
+      "def": "How many times the room air volume is replaced by ambient air through doors and gaps in 24 hours. Drives infiltration heat load.",
+      "typical": "Ranges from 1.4 (huge warehouse) to 38 (tiny 5 m³ box) — see ASHRAE Ch. 24 Table 5",
+      "source": "ASHRAE Refrigeration 2022, Ch. 24, Table 5"
+    },
+    "rh": {
+      "term": "RH (Relative Humidity)",
+      "def": "Water vapour content of air as a % of saturation. Inside a cold room, target RH depends on product: produce 85–95%, frozen 95%, dry storage 50–70%.",
+      "typical": "84% general cooler, 95% freezer, 60% pharma",
+      "source": "ASHRAE Fundamentals Ch. 1"
+    },
+    "tr": {
+      "term": "TR (Ton of Refrigeration)",
+      "def": "Imperial unit of cooling capacity. 1 TR = 12 000 BTU/hr = 3.517 kW. Common in South Asia for chiller sizing.",
+      "typical": "1 TR ≈ small walk-in cooler; 50 TR ≈ medium cold store",
+      "source": "Industry standard"
+    },
+    "lfl": {
+      "term": "LFL (Lower Flammability Limit)",
+      "def": "Minimum vol% of refrigerant in air to support flame propagation. A2L refrigerants need rooms large enough that a full leak can't reach ¼ of LFL.",
+      "typical": "R-32: 14.4 vol% / 0.307 kg/m³ ; R-454C: 12.4 vol% / 0.291 kg/m³",
+      "source": "ASHRAE 34-2022, IEC 60335-2-89:2019"
+    },
+    "awef": {
+      "term": "AWEF (Annual Walk-in Energy Factor)",
+      "def": "US DOE 10 CFR 431 minimum efficiency for commercial walk-in coolers/freezers. Pakistan has no equivalent regulation.",
+      "typical": "AWEF ≥ 4.45 (medium-temp) / ≥ 5.10 (low-temp)",
+      "source": "10 CFR 431 Subpart R"
+    },
+    "thr": {
+      "term": "THR (Total Heat of Rejection)",
+      "def": "The heat the condenser must dissipate = evaporator load + compressor work = Q_evap × (1 + 1/COP). Drives condenser sizing.",
+      "typical": "MT 1.30, LT 1.65 of evaporator capacity",
+      "source": "ASHRAE Refrigeration Ch. 35"
+    },
+    "lambda": {
+      "term": "λ (Thermal conductivity)",
+      "def": "How easily heat passes through a material. Lower λ = better insulation. Izhar PIR uses λ = 0.020 W/m·K (aged), among the best commercial cold-store insulations.",
+      "typical": "PIR 0.020, PUR 0.022, EPS 0.038, mineral wool 0.040",
+      "source": "BS EN 14509"
+    },
+    "mcwb": {
+      "term": "MCWB (Mean Coincident Wet Bulb)",
+      "def": "Wet bulb temperature occurring on average at the design dry bulb hour. Drives infiltration enthalpy load and evaporative condenser sizing.",
+      "typical": "Karachi 26°C, Multan 21°C — coastal cities have higher MCWB",
+      "source": "ASHRAE Fundamentals Ch. 14"
+    },
+    "leakable": {
+      "term": "Leakable Charge (A2L)",
+      "def": "Refrigerant that could escape into the conditioned room if the system leaks — = evaporator + piping inside the room (downstream of safety shut-off valves). NOT the total system charge.",
+      "typical": "Smaller than total charge; smarter safety basis than legacy formulas.",
+      "source": "IEC 60335-2-89:2019"
+    },
+    "cop": {
+      "term": "COP (Coefficient of Performance)",
+      "def": "Cold output divided by electrical input. Higher COP = more efficient. R-290 (propane) typically gives 5–10% better COP than R-404A.",
+      "typical": "AC 4.0, MT 2.5, LT 1.5",
+      "source": "ASHRAE Fundamentals"
+    }
+  }
+}
