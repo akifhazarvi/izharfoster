@@ -364,11 +364,12 @@
   color: var(--muted);
 }
 
-/* ============= Mobile ============= */
+/* The legacy consultant pill is fully replaced by .lc-root (live chat widget).
+   Hide its launcher on every viewport — the multi-step brief flow remains
+   reachable from in-page CTAs that open .cc-panel directly. */
+.cc-launcher { display: none !important; }
+
 @media (max-width: 720px) {
-  /* Hide the floating consultant pill on mobile — WhatsApp FAB owns the bottom-right corner.
-     The drawer itself remains accessible from any in-page CTA that opens it. */
-  .cc-launcher { display: none !important; }
   .cc-panel { width: 100vw; }
   .cc-body { padding: 22px 20px; }
   .cc-panel-head { padding: 18px 20px 12px; }
