@@ -15,11 +15,21 @@
         '<a href="https://wa.me/923215383544" target="_blank" rel="noopener" class="wa">WhatsApp our team</a>';
       menu.appendChild(actions);
     }
-    // Teleport the drawer to <body> so it escapes the header's backdrop-filter stacking context
-    const placeholder = document.createComment('nav-center-anchor');
-    menu.parentNode.insertBefore(placeholder, menu);
-    document.body.appendChild(menu);
-    menu.dataset.teleported = '1';
+    // Teleport the drawer to <body> on mobile so it escapes the header's stacking context.
+    // On desktop the nav must stay inline inside <header>.
+    const anchor = document.createComment('nav-center-anchor');
+    menu.parentNode.insertBefore(anchor, menu);
+    const mqMobile = window.matchMedia('(max-width: 720px)');
+    const syncTeleport = (m) => {
+      const matches = m.matches !== undefined ? m.matches : mqMobile.matches;
+      if (matches && menu.parentElement !== document.body) {
+        document.body.appendChild(menu);
+      } else if (!matches && menu.parentElement === document.body) {
+        anchor.parentNode.insertBefore(menu, anchor.nextSibling);
+      }
+    };
+    syncTeleport(mqMobile);
+    mqMobile.addEventListener('change', syncTeleport);
 
     const setOpen = (open) => {
       menu.classList.toggle('open', open);

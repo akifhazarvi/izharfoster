@@ -1907,7 +1907,7 @@ h1, h2, h3, h4 {
     background: var(--paper);
     border-top: 1px solid var(--line);
     padding: 28px 24px 32px;
-    z-index: 90;
+    z-index: 200;
     overflow-y: auto;
     animation: navSlide .28s cubic-bezier(.2,.7,.2,1);
   }
