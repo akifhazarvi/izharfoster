@@ -2,6 +2,26 @@
 (function () {
   'use strict';
 
+  // --- Floating action stack (WhatsApp + Call + Quote)
+  // Replace the legacy single .fab-wa anchor with a stack of three FABs.
+  (function buildFabStack() {
+    if (document.querySelector('.fab-stack')) return;
+    const legacy = document.querySelector('.fab-wa');
+    // Determine the contact-page path prefix for the Quote link
+    const quoteHref = location.pathname.includes('/services/') || location.pathname.includes('/blog/') || location.pathname.includes('/tools/')
+      ? '../contact.html'
+      : 'contact.html';
+    const stack = document.createElement('div');
+    stack.className = 'fab-stack';
+    stack.setAttribute('aria-label', 'Quick contact');
+    stack.innerHTML =
+      '<a href="' + quoteHref + '" class="fab-quote" data-label="Request a quote" aria-label="Request a quote"></a>' +
+      '<a href="tel:+924235383543" class="fab-call" data-label="Call · +92 42 3538 3543" aria-label="Call Izhar Foster"></a>' +
+      '<a href="https://wa.me/923215383544" target="_blank" rel="noopener" class="fab-wa" data-label="WhatsApp our team" aria-label="WhatsApp Izhar Foster"></a>';
+    if (legacy) legacy.replaceWith(stack);
+    else document.body.appendChild(stack);
+  })();
+
   // --- Mobile menu
   const toggle = document.querySelector('.menu-toggle');
   const menu = document.querySelector('.nav-center');
@@ -31,11 +51,29 @@
     syncTeleport(mqMobile);
     mqMobile.addEventListener('change', syncTeleport);
 
+    let savedScrollY = 0;
     const setOpen = (open) => {
       menu.classList.toggle('open', open);
       toggle.classList.toggle('is-open', open);
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-      document.body.style.overflow = open ? 'hidden' : '';
+      const b = document.body;
+      if (open) {
+        savedScrollY = window.scrollY;
+        b.style.position = 'fixed';
+        b.style.top = `-${savedScrollY}px`;
+        b.style.left = '0';
+        b.style.right = '0';
+        b.style.width = '100%';
+        b.style.overflow = 'hidden';
+      } else {
+        b.style.position = '';
+        b.style.top = '';
+        b.style.left = '';
+        b.style.right = '';
+        b.style.width = '';
+        b.style.overflow = '';
+        if (savedScrollY) window.scrollTo(0, savedScrollY);
+      }
     };
     toggle.setAttribute('aria-expanded', 'false');
     toggle.addEventListener('click', () => setOpen(!menu.classList.contains('open')));
