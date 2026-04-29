@@ -799,16 +799,17 @@ h1, h2, h3, h4 {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 96px;
-  min-width: 180px;
+  height: 130px;
+  min-width: 240px;
 }
 .logo-slide img {
-  height: 72px;
+  height: 110px;
   width: auto;
-  max-width: 220px;
+  max-width: 300px;
   object-fit: contain;
+  mix-blend-mode: multiply;
   filter: grayscale(1);
-  opacity: .7;
+  opacity: .8;
   transition: filter .25s, opacity .25s, transform .25s;
 }
 .logo-slide:hover img {
@@ -835,22 +836,22 @@ h1, h2, h3, h4 {
   gap: 24px;
 }
 .trust-bar-carousel .logo-slide {
-  height: 80px;
-  min-width: 160px;
+  height: 110px;
+  min-width: 210px;
 }
 .trust-bar-carousel .logo-slide img {
-  height: 60px;
-  max-width: 200px;
+  height: 90px;
+  max-width: 260px;
 }
 
 @media (max-width: 720px) {
   .logo-track { gap: 56px; animation-duration: 30s; }
-  .logo-slide { height: 72px; min-width: 130px; }
-  .logo-slide img { height: 52px; max-width: 150px; }
+  .logo-slide { height: 96px; min-width: 170px; }
+  .logo-slide img { height: 76px; max-width: 200px; }
   .trust-bar-carousel { padding: 40px var(--gutter); }
   .trust-bar-carousel .trust-bar-head { flex-direction: column; align-items: flex-start; gap: 12px; }
-  .trust-bar-carousel .logo-slide { height: 60px; min-width: 120px; }
-  .trust-bar-carousel .logo-slide img { height: 44px; max-width: 130px; }
+  .trust-bar-carousel .logo-slide { height: 84px; min-width: 160px; }
+  .trust-bar-carousel .logo-slide img { height: 64px; max-width: 180px; }
 }
 
 /* Reduce motion preference */
