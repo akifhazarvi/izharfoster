@@ -365,10 +365,10 @@
 }
 
 /* ============= Mobile ============= */
-@media (max-width: 600px) {
-  .cc-pill-label { display: none; }
-  .cc-pill { padding: 12px 14px; }
-  .cc-teaser { font-size: .68rem; max-width: 200px; }
+@media (max-width: 720px) {
+  /* Hide the floating consultant pill on mobile — WhatsApp FAB owns the bottom-right corner.
+     The drawer itself remains accessible from any in-page CTA that opens it. */
+  .cc-launcher { display: none !important; }
   .cc-panel { width: 100vw; }
   .cc-body { padding: 22px 20px; }
   .cc-panel-head { padding: 18px 20px 12px; }

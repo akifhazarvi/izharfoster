@@ -1848,14 +1848,28 @@ h1, h2, h3, h4 {
 
 /* Floating WhatsApp */
 .fab-wa {
-  position: fixed; bottom: 22px; right: 22px; z-index: 80;
-  width: 54px; height: 54px; border-radius: 50%;
+  position: fixed; bottom: 20px; right: 20px; z-index: 80;
+  width: 58px; height: 58px; border-radius: 50%;
   background: #25d366; color: #fff;
   display: none; place-items: center;
   font-family: var(--font-mono); font-weight: 700;
-  font-size: .8rem; letter-spacing: .04em;
-  box-shadow: 0 10px 26px rgba(37,211,102,.42);
+  font-size: 0;
+  letter-spacing: .04em;
+  text-decoration: none;
+  box-shadow:
+    0 14px 30px rgba(37,211,102,.42),
+    0 2px 6px rgba(10,31,61,.18);
+  transition: transform .22s ease, box-shadow .22s ease;
 }
+.fab-wa::before {
+  content: '';
+  width: 28px; height: 28px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='%23fff'><path d='M19.11 17.205c-.372 0-1.088 1.39-1.518 1.39a.63.63 0 0 1-.315-.1c-.802-.402-1.504-.817-2.163-1.4-.545-.489-1.09-1.07-1.52-1.652-.043-.067-.087-.124-.13-.198l-.13-.198a.602.602 0 0 1-.13-.272c0-.196.39-.35.532-.45a3.038 3.038 0 0 0 .7-.778c.097-.187.13-.418.066-.62-.064-.207-.49-1.235-.665-1.673-.176-.422-.422-.844-.99-.844-.27 0-.539-.063-.81-.063-.43 0-.879.095-1.219.41-.39.358-.81 1.057-.81 2.275 0 1.183.85 2.32 1.55 3.14 1.286 1.7 2.74 3.022 4.55 3.96.628.336 1.301.616 2.014.812.547.142 1.115.236 1.679.247.547 0 1.135-.246 1.5-.66.224-.272.32-.598.32-.953 0-.157-.063-.305-.13-.46-.16-.295-.694-.495-.69-.495z'/><path d='M16.005 2.07C8.351 2.07 2.137 8.276 2.137 15.93c0 2.45.624 4.853 1.808 6.969L2 30l7.272-1.91a13.96 13.96 0 0 0 6.733 1.722c7.654 0 13.868-6.215 13.868-13.882C29.873 8.275 23.659 2.07 16.005 2.07zm0 25.392a11.534 11.534 0 0 1-5.85-1.598l-.42-.252-4.366 1.146 1.166-4.27-.273-.443A11.477 11.477 0 0 1 4.512 15.93c0-6.34 5.156-11.49 11.493-11.49 6.337 0 11.493 5.15 11.493 11.49 0 6.34-5.156 11.532-11.493 11.532z'/></svg>");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.fab-wa:hover { transform: translateY(-2px); box-shadow: 0 18px 36px rgba(37,211,102,.5), 0 3px 8px rgba(10,31,61,.22); }
 
 /* ============= Responsive ============= */
 @media (max-width: 1100px) {
@@ -1888,24 +1902,97 @@ h1, h2, h3, h4 {
   .nav-center { display: none; }
   .nav-center.open {
     display: flex; flex-direction: column; gap: 0;
-    position: absolute; top: 64px; left: 0; right: 0;
+    position: fixed; top: 64px; left: 0; right: 0;
+    bottom: 0;
     background: var(--paper);
-    border-bottom: 1px solid var(--line);
-    padding: 14px 22px;
-    z-index: 50;
+    border-top: 1px solid var(--line);
+    padding: 28px 24px 32px;
+    z-index: 90;
+    overflow-y: auto;
+    animation: navSlide .28s cubic-bezier(.2,.7,.2,1);
   }
-  .nav-center.open a { padding: 14px 0; border-bottom: 1px solid var(--line-2); }
-  .menu-toggle { display: flex; }
+  .nav-center.open a {
+    padding: 16px 4px;
+    border-bottom: 1px solid var(--line-2);
+    font-size: 1.15rem;
+    font-weight: 500;
+    letter-spacing: -.01em;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: padding-left .2s ease, color .2s ease;
+  }
+  .nav-center.open a::after {
+    content: '→';
+    font-family: var(--font-mono);
+    font-size: .9rem;
+    color: var(--muted);
+    opacity: .55;
+    transition: transform .2s ease, color .2s ease, opacity .2s ease;
+  }
+  .nav-center.open a:hover,
+  .nav-center.open a:focus-visible,
+  .nav-center.open a.active {
+    padding-left: 8px;
+    color: var(--brand);
+    background: transparent;
+  }
+  .nav-center.open a.active::after,
+  .nav-center.open a:hover::after {
+    color: var(--t-warm);
+    opacity: 1;
+    transform: translateX(4px);
+  }
+  @keyframes navSlide {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  /* Hamburger is the single mobile entry point — hide the redundant CTA */
+  .menu-toggle {
+    display: flex;
+    width: 44px; height: 44px;
+    align-items: center; justify-content: center;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    transition: background .2s ease, border-color .2s ease;
+  }
+  .menu-toggle:hover { background: var(--paper-2); border-color: var(--line-2); }
+  .menu-toggle span { width: 18px; }
+  .menu-toggle.is-open span:nth-child(1) { transform: translateY(5px) rotate(45deg); }
+  .menu-toggle.is-open span:nth-child(2) { opacity: 0; }
+  .menu-toggle.is-open span:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
+  .menu-toggle span { transition: transform .22s ease, opacity .18s ease; }
   .nav-phone { display: none; }
   .brand-tag { display: none; }
-  /* Header CTA collapses to a small icon-button on mobile to prevent overflow */
-  .nav-cta { gap: 8px; }
-  .nav-cta .btn-primary {
-    padding: 8px 12px;
-    font-size: .82rem;
-    letter-spacing: 0;
+  .nav-cta { gap: 10px; }
+  /* Drop the redundant arrow CTA on mobile — hamburger covers nav already */
+  .nav-cta .btn-primary { display: none; }
+  /* Mobile drawer footer: phone + WhatsApp inside the menu */
+  .nav-center.open .nav-mobile-actions {
+    display: flex; flex-direction: column; gap: 10px;
+    margin-top: 22px; padding-top: 22px;
+    border-top: 1px solid var(--line-2);
   }
-  .nav-cta .btn-primary .arr { display: none; }
+  .nav-center.open .nav-mobile-actions a {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 18px;
+    background: var(--paper-2);
+    font-family: var(--font-mono);
+    font-size: .92rem;
+    letter-spacing: .02em;
+    color: var(--ink);
+  }
+  .nav-center.open .nav-mobile-actions a::after { content: ''; }
+  .nav-center.open .nav-mobile-actions a.wa {
+    background: #25d366; color: #fff; border-color: #25d366;
+    box-shadow: 0 8px 20px rgba(37,211,102,.28);
+  }
+  .nav-center.open .nav-mobile-actions a.call {
+    background: var(--ink); color: var(--paper); border-color: var(--ink);
+  }
   .brand-logo { max-height: 32px; width: auto; }
   .section { padding: 80px var(--gutter); }
   .hero { padding: 56px var(--gutter) 64px; }
@@ -1924,20 +2011,7 @@ h1, h2, h3, h4 {
 @media (max-width: 480px) {
   /* Tighten header further at very small phones (iPhone SE etc.) */
   .nav { padding: 0 16px; gap: 8px; }
-  .nav-cta .btn-primary {
-    /* Replace text with an arrow-only ember pill */
-    padding: 8px 10px;
-    font-size: 0;
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    display: inline-flex; align-items: center; justify-content: center;
-  }
-  .nav-cta .btn-primary::before {
-    content: "→";
-    font-size: 1.1rem;
-    font-weight: 600;
-  }
-  .nav-cta .btn-primary span { display: none; }
+  .menu-toggle { width: 42px; height: 42px; }
 }
 
 /* ==========================================================================

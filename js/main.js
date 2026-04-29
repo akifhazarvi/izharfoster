@@ -6,7 +6,40 @@
   const toggle = document.querySelector('.menu-toggle');
   const menu = document.querySelector('.nav-center');
   if (toggle && menu) {
-    toggle.addEventListener('click', () => menu.classList.toggle('open'));
+    // Inject phone + WhatsApp action block at the bottom of the drawer
+    if (!menu.querySelector('.nav-mobile-actions')) {
+      const actions = document.createElement('div');
+      actions.className = 'nav-mobile-actions';
+      actions.innerHTML =
+        '<a href="tel:+924235383543" class="call">Call · +92 42 3538 3543</a>' +
+        '<a href="https://wa.me/923215383544" target="_blank" rel="noopener" class="wa">WhatsApp our team</a>';
+      menu.appendChild(actions);
+    }
+    // Teleport the drawer to <body> so it escapes the header's backdrop-filter stacking context
+    const placeholder = document.createComment('nav-center-anchor');
+    menu.parentNode.insertBefore(placeholder, menu);
+    document.body.appendChild(menu);
+    menu.dataset.teleported = '1';
+
+    const setOpen = (open) => {
+      menu.classList.toggle('open', open);
+      toggle.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      document.body.style.overflow = open ? 'hidden' : '';
+    };
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.addEventListener('click', () => setOpen(!menu.classList.contains('open')));
+    // Close on link tap (drawer should not linger after navigating)
+    menu.addEventListener('click', (e) => {
+      if (e.target.closest('a')) setOpen(false);
+    });
+    // Close on escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menu.classList.contains('open')) setOpen(false);
+    });
+    // Auto-close if viewport grows past mobile breakpoint
+    const mq = window.matchMedia('(min-width: 721px)');
+    mq.addEventListener('change', (e) => { if (e.matches) setOpen(false); });
   }
 
   // --- The Temperature Scrubber: signature interaction
