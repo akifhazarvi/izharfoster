@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 110" role="img" aria-label="Izhar Foster — Cold-Chain Division of Izhar Engineering">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 365 110" role="img" aria-label="Izhar Foster — Cold-Chain Division of Izhar Engineering">
   <defs>
     <!-- PIR foam core: heritage ember preserved, now meaning the actual insulating foam -->
     <linearGradient id="pirCore" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -27,8 +27,8 @@
   </defs>
 
   <!-- Heritage frame -->
-  <rect x="3" y="6" width="534" height="72" rx="10" fill="none" stroke="url(#frameInk)" stroke-width="2"/>
-  <rect x="7" y="10" width="526" height="64" rx="6" fill="none" stroke="#0A1F3D" stroke-width="0.6" opacity="0.35"/>
+  <rect x="3" y="6" width="359" height="72" rx="10" fill="none" stroke="url(#frameInk)" stroke-width="2"/>
+  <rect x="7" y="10" width="351" height="64" rx="6" fill="none" stroke="#0A1F3D" stroke-width="0.6" opacity="0.35"/>
 
   <text x="26" y="55" class="wm-text">IZHAR</text>
   <text x="170" y="55" class="wm-text">F</text>
