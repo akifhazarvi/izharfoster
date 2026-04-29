@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Izhar Foster mark">
+  <defs>
+    <linearGradient id="pirCore-i" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"  stop-color="#F08A3E"/>
+      <stop offset="100%" stop-color="#C75615"/>
+    </linearGradient>
+    <linearGradient id="skinWarm-i" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#152D52"/>
+      <stop offset="100%" stop-color="#0A1F3D"/>
+    </linearGradient>
+    <linearGradient id="skinCold-i" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#7FD4E5"/>
+      <stop offset="100%" stop-color="#3BAFCC"/>
+    </linearGradient>
+    <clipPath id="panelClip-i">
+      <path d="M 6 12
+               L 52 12
+               L 52 24
+               L 58 30
+               L 58 38
+               L 52 44
+               L 52 56
+               L 6 56
+               L 6 44
+               L 0 38
+               L 0 30
+               L 6 24
+               Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- Standalone PIR panel cross-section mark — favicon / app icon.
+       Tongue on the right, groove on the left = visibly a panel that interlocks. -->
+  <path d="M 6 12
+           L 52 12
+           L 52 24
+           L 58 30
+           L 58 38
+           L 52 44
+           L 52 56
+           L 6 56
+           L 6 44
+           L 0 38
+           L 0 30
+           L 6 24
+           Z"
+        fill="url(#pirCore-i)"
+        stroke="#0A1F3D"
+        stroke-width="1"
+        stroke-linejoin="round"/>
+
+  <g clip-path="url(#panelClip-i)">
+    <rect x="-2" y="12" width="64" height="11" fill="url(#skinCold-i)"/>
+    <rect x="-2" y="45" width="64" height="11" fill="url(#skinWarm-i)"/>
+    <line x1="-2" y1="23" x2="60" y2="23" stroke="#0A1F3D" stroke-width="0.8" opacity="0.6"/>
+    <line x1="-2" y1="45" x2="60" y2="45" stroke="#0A1F3D" stroke-width="0.8" opacity="0.6"/>
+  </g>
+
+  <!-- Dimension ticks -->
+  <g stroke="#0A1F3D" stroke-width="1.2" stroke-linecap="round" opacity="0.6">
+    <line x1="6" y1="6" x2="6" y2="9"/>
+    <line x1="52" y1="6" x2="52" y2="9"/>
+    <line x1="6" y1="59" x2="6" y2="62"/>
+    <line x1="52" y1="59" x2="52" y2="62"/>
+  </g>
+</svg>
