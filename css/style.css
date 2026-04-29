@@ -1848,6 +1848,41 @@ h1, h2, h3, h4 {
   color: rgba(245,242,236,.4);
 }
 
+/* Footer social row — JS-injected by main.js */
+.footer-social {
+  max-width: 1320px;
+  padding: 22px 0 24px;
+  border-top: 1px solid rgba(245,242,236,.08);
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;
+}
+.footer-social-label {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(245,242,236,.5);
+}
+.footer-social-icons { display: flex; gap: 10px; }
+.footer-social-icons a {
+  width: 40px; height: 40px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 10px;
+  background: rgba(245,242,236,.06);
+  border: 1px solid rgba(245,242,236,.1);
+  color: rgba(245,242,236,.85);
+  transition: background .18s ease, transform .18s ease, color .18s ease, border-color .18s ease;
+}
+.footer-social-icons a svg { width: 18px; height: 18px; fill: currentColor; }
+.footer-social-icons a:hover { transform: translateY(-2px); border-color: transparent; color: #fff; }
+.footer-social-icons a[aria-label="Facebook"]:hover,
+.footer-social-icons a[aria-label="Facebook on Facebook"]:hover { background: #1877F2; }
+.footer-social-icons a[aria-label="Instagram"]:hover { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+.footer-social-icons a[aria-label="YouTube"]:hover { background: #FF0000; }
+.footer-social-icons a[aria-label="LinkedIn"]:hover { background: #0A66C2; }
+@media (max-width: 720px) {
+  .footer-social { justify-content: center; flex-direction: column; gap: 12px; padding: 20px 0; }
+}
+
 /* ============= Live chat widget ============= */
 /* Single FAB that expands into a card with all contact options */
 .lc-root {
@@ -2011,6 +2046,36 @@ h1, h2, h3, h4 {
   transform: translateX(3px);
   color: var(--t-warm);
 }
+.lc-social-row {
+  padding: 14px 22px 10px;
+  border-top: 1px solid var(--line-2);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+}
+.lc-social-label {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.lc-social-icons { display: flex; gap: 6px; }
+.lc-social {
+  width: 34px; height: 34px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 8px;
+  color: var(--ink-2);
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  transition: background .18s ease, color .18s ease, transform .18s ease, border-color .18s ease;
+}
+.lc-social svg { width: 16px; height: 16px; fill: currentColor; }
+.lc-social:hover { transform: translateY(-1px); color: #fff; border-color: transparent; }
+.lc-social-fb:hover { background: #1877F2; }
+.lc-social-ig:hover { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+.lc-social-yt:hover { background: #FF0000; }
+.lc-social-li:hover { background: #0A66C2; }
+
 .lc-foot {
   padding: 12px 22px 14px;
   border-top: 1px solid var(--line-2);
@@ -2617,6 +2682,42 @@ body.lc-open .lc-backdrop {
   transition: transform .2s, color .2s;
 }
 .contact-channels a:hover .arrow { color: var(--ink); transform: translateX(4px); }
+
+.contact-social {
+  margin-top: 28px;
+  padding: 22px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.contact-social-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+.contact-social-icons { display: flex; flex-wrap: wrap; gap: 10px; }
+.cs {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  font-family: var(--font-mono);
+  font-size: .82rem;
+  font-weight: 500;
+  letter-spacing: .02em;
+  color: var(--ink);
+  transition: background .18s ease, color .18s ease, border-color .18s ease, transform .18s ease;
+}
+.cs svg { width: 16px; height: 16px; fill: currentColor; }
+.cs:hover { transform: translateY(-1px); color: #fff; border-color: transparent; }
+.cs-fb:hover { background: #1877F2; }
+.cs-ig:hover { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+.cs-yt:hover { background: #FF0000; }
+.cs-li:hover { background: #0A66C2; }
 
 .locations {
   display: grid; grid-template-columns: 1fr; gap: 14px;
