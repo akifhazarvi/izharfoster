@@ -25,6 +25,10 @@ DEPLOY.md
 .claude/
 CLAUDE.md
 DESIGN.md
+FULL-AUDIT-REPORT.md
+ACTION-PLAN.md
+SEO-PLAN.md
+_scrape_coldstore/
 
 # Sensitive — none expected, but explicit
 .env
