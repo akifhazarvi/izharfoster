@@ -20,7 +20,11 @@
 <meta property="og:image" content="/images/hero-facility.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
-<link rel="icon" href="images/favicon.png">
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -137,8 +141,8 @@
         </div>
         <div class="form-group"><label for="t">Required temperature</label><input id="t" name="temperature" placeholder="e.g. −20°C / +2 to +8°C"></div>
         <div class="form-group"><label for="m">Project notes</label><textarea id="m" name="notes" placeholder="Anything else our engineers should know."></textarea></div>
-        <button type="submit" class="btn btn-primary btn-lg">Send to our engineers <span class="arr">→</span></button>
-        <div class="note" id="form-note">We'll never share your details. Reply within 24 hours.</div>
+        <button type="submit" class="btn btn-primary btn-lg">Send via WhatsApp <span class="arr">→</span></button>
+        <div class="note" id="form-note">Opens WhatsApp with your details prefilled. Engineering reply within 24 hours.</div>
       </form>
     </div>
   </div>
@@ -206,4 +210,62 @@
 <a href="https://wa.me/923215383544" class="fab-wa" target="_blank" rel="noopener" aria-label="WhatsApp">WA</a>
 <script src="js/main.js" defer></script>
 <script>document.getElementById('y').textContent=new Date().getFullYear();</script>
+<script>
+(function(){
+  var form = document.getElementById('quote-form');
+  if (!form) return;
+  var note = document.getElementById('form-note');
+  var WA_NUMBER = '923215383544';
+
+  function val(name){
+    var el = form.elements[name];
+    return el && el.value ? String(el.value).trim() : '';
+  }
+  function line(label, v){ return v ? '• ' + label + ': ' + v + '\n' : ''; }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    var name     = val('name');
+    var company  = val('company');
+    var phone    = val('phone');
+    var email    = val('email');
+    var location = val('location');
+    var industry = val('industry');
+    var product  = val('product');
+    var capacity = val('capacity');
+    var temp     = val('temperature');
+    var notes    = val('notes');
+
+    var msg = ''
+      + 'Hi Izhar Foster — quote request from the website.\n\n'
+      + '*Contact*\n'
+      + line('Name', name)
+      + line('Company', company)
+      + line('Phone / WhatsApp', phone)
+      + line('Email', email)
+      + '\n*Project*\n'
+      + line('Location', location)
+      + line('Industry', industry)
+      + line('Product', product)
+      + line('Capacity / size', capacity)
+      + line('Temperature', temp);
+    if (notes) msg += '\n*Notes*\n' + notes + '\n';
+    msg += '\nPlease send back a sized concept and indicative budget. Thanks.';
+
+    var url = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(msg);
+    var win = window.open(url, '_blank', 'noopener');
+    if (!win) { window.location.href = url; }
+
+    if (note) {
+      note.textContent = 'WhatsApp opened in a new tab — tap Send to deliver your specs. Engineers reply within 24 hours.';
+      note.style.color = 'var(--ink, #111)';
+    }
+  });
+})();
+</script>
 </body></html>

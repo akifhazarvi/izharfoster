@@ -116,13 +116,18 @@ h1, h2, h3, h4 {
 .rail .wm {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: .9rem;
-  color: rgba(255,255,255,.92);
+  font-size: .82rem;
+  color: rgba(255,255,255,.78);
   letter-spacing: .22em;
   writing-mode: vertical-rl;
   transform: rotate(180deg);
   text-transform: uppercase;
-  margin: auto;
+  /* Sit in the cool gradient band, clear of the 0° and −25° tick marks */
+  position: absolute;
+  top: 62%;
+  left: 50%;
+  translate: -50% -50%;
+  pointer-events: none;
 }
 .rail .marks {
   position: absolute; inset: 24px 0;
