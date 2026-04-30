@@ -133,7 +133,7 @@
   <!-- ==== GREEN COMPRESSOR MEDALLION (the "O" of FOSTER) ====
        Detailed twin-cylinder reciprocating refrigeration compressor.
        Green body matching the reference logo's iconic compressor color. -->
-  <g transform="translate(253, 54)">
+  <g transform="translate(250, 54)">
     <!-- Outer cream ring -->
     <circle cx="0" cy="0" r="25" fill="#F5F2EC" stroke="#0A1F3D" stroke-width="1"/>
     <!-- Inner cream backdrop (so the green machine has a clean field) -->
@@ -224,7 +224,7 @@
     </g>
   </g>
 
-  <text x="280" y="70" class="wm-text">STER</text>
+  <text x="274" y="70" class="wm-text">STER</text>
 
   <!-- ==== TAGLINE BELOW PLAQUE ==== -->
   <g transform="translate(40, 116)">
