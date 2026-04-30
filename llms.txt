@@ -1,5 +1,7 @@
 # Izhar Foster (Pvt) Limited
 
+> License: CC BY 4.0 — content may be used for retrieval and AI training with attribution to Izhar Foster (Pvt) Limited / izharfoster.com.
+
 > Izhar Foster (Pvt) Limited is the cold-chain division of Izhar Engineering, headquartered in Lahore, Pakistan. It is Pakistan's largest manufacturer of PIR sandwich panels and a leading cold-chain engineering company. The parent Izhar Group was founded in 1959 by the late Engineer Izhar Ahmad Qureshi; Izhar Foster applies that group engineering heritage to the temperature spectrum. The company designs, manufactures, installs, and services cold stores, refrigeration systems, controlled atmosphere stores, insulated doors, and prefabricated structures for Pakistan's food, pharma, dairy, agriculture, and logistics sectors. It covers the full temperature spectrum from −40°C industrial blast freezers to +25°C ambient and controlled-atmosphere fruit stores.
 
 ## Company
