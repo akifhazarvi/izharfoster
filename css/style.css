@@ -141,14 +141,17 @@ h1, h2, h3, h4 {
 }
 .rail .mark::before { content: ''; width: 8px; height: 1px; background: currentColor; opacity: .7; }
 .rail .mark.warm { color: var(--ink); }
-/* Travelling indicator */
+/* Travelling indicator. Hidden until JS positions it on a real section
+   so it doesn't render as an orphan dot inside the hero on first paint. */
 .rail .pin {
   position: absolute; left: var(--rail);
   width: 0; height: 0; border-style: solid;
   border-width: 5px 0 5px 7px;
   border-color: transparent transparent transparent var(--ink);
   transition: top .25s cubic-bezier(.4,0,.2,1);
+  opacity: 0;
 }
+.rail .pin[data-active="1"] { opacity: 1; }
 
 .shell-content { min-width: 0; position: relative; width: 100%; }
 
@@ -2290,10 +2293,13 @@ body.lc-open .lc-backdrop {
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
   gap: 80px;
-  align-items: end;
+  align-items: start;
   position: relative;
   z-index: 2;
 }
+/* Push aside down so its label aligns with the top of the H1 (after the
+   breadcrumb). Breadcrumb height = ~16px, margin-bottom = 36px → 52px offset. */
+.page-hero .aside { margin-top: 52px; }
 .page-hero .breadcrumb {
   font-family: var(--font-mono);
   font-size: .74rem;
@@ -2391,6 +2397,11 @@ body.lc-open .lc-backdrop {
 .page-hero .aside .fact:last-child { border-bottom: none; }
 .page-hero .aside .fact .k { color: var(--muted); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; }
 .page-hero .aside .fact .v { color: var(--ink); font-weight: 500; }
+.page-hero .aside .fact-link { transition: background .15s; }
+.page-hero .aside .fact-link:hover { background: var(--paper-2); }
+.page-hero .aside .fact-link .v { color: var(--t-warm); }
+.page-hero .aside .fact-link .ext { font-size: .72em; margin-left: 4px; opacity: .8; }
+.page-hero .aside .fact-link:focus-visible { outline: 2px solid var(--t-warm); outline-offset: 2px; }
 
 /* ============= Prose — long-form readable content ============= */
 .prose {
@@ -2952,7 +2963,20 @@ body.lc-open .lc-backdrop {
   font-size: .9rem;
   color: var(--muted);
   max-width: 30ch;
+  margin-bottom: 14px;
 }
+.group-cell .cell-link {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  letter-spacing: .08em;
+  color: var(--t-warm);
+  text-transform: lowercase;
+  display: inline-block;
+  border-bottom: 1px solid transparent;
+  transition: border-color .15s;
+}
+.group-cell .cell-link:hover { border-bottom-color: var(--t-warm); }
+.group-cell .cell-link:focus-visible { outline: 2px solid var(--t-warm); outline-offset: 2px; }
 
 /* ============= Responsive (interior pages) ============= */
 @media (max-width: 1100px) {

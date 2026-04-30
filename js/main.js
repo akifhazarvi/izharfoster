@@ -233,6 +233,7 @@
       if (pin) {
         const pct = idx / (stops.length - 1);
         pin.style.top = `calc(24px + (100% - 48px) * ${pct})`;
+        pin.dataset.active = '1';
       }
     };
 
@@ -305,6 +306,7 @@
     const setPin = (t) => {
       const pct = tempToPct(t);
       pin.style.top = `calc(24px + (100% - 48px) * ${pct})`;
+      pin.dataset.active = '1';
     };
     const obs = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
