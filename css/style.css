@@ -173,10 +173,10 @@ h1, h2, h3, h4 {
   white-space: nowrap;
 }
 .brand-logo {
-  height: 52px;
+  height: 60px;
   width: auto;
   display: block;
-  max-width: 240px;
+  max-width: 280px;
   object-fit: contain;
 }
 .nav { height: 88px; }
@@ -2238,7 +2238,7 @@ body.lc-open .lc-backdrop {
   .nav-center.open .nav-mobile-actions a.call {
     background: var(--ink); color: var(--paper); border-color: var(--ink);
   }
-  .brand-logo { max-height: 32px; width: auto; }
+  .brand-logo { max-height: 36px; width: auto; max-width: 180px; }
   .section { padding: 80px var(--gutter); }
   .hero { padding: 56px var(--gutter) 64px; }
   .hero h1 { font-size: clamp(2.4rem, 11vw, 3.6rem); }

@@ -1,66 +1,77 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Izhar Foster mark">
   <defs>
-    <linearGradient id="pirCore-i" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%"  stop-color="#F08A3E"/>
-      <stop offset="100%" stop-color="#C75615"/>
+    <linearGradient id="greenBodyI" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#3FA85F"/>
+      <stop offset="55%"  stop-color="#2E8A4A"/>
+      <stop offset="100%" stop-color="#1F6B36"/>
     </linearGradient>
-    <linearGradient id="skinWarm-i" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%"   stop-color="#152D52"/>
-      <stop offset="100%" stop-color="#0A1F3D"/>
+    <linearGradient id="greenHeadI" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#5BC079"/>
+      <stop offset="100%" stop-color="#2E8A4A"/>
     </linearGradient>
-    <linearGradient id="skinCold-i" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%"   stop-color="#7FD4E5"/>
-      <stop offset="100%" stop-color="#3BAFCC"/>
-    </linearGradient>
-    <clipPath id="panelClip-i">
-      <path d="M 6 12
-               L 52 12
-               L 52 24
-               L 58 30
-               L 58 38
-               L 52 44
-               L 52 56
-               L 6 56
-               L 6 44
-               L 0 38
-               L 0 30
-               L 6 24
-               Z"/>
-    </clipPath>
   </defs>
 
-  <!-- Standalone PIR panel cross-section mark — favicon / app icon.
-       Tongue on the right, groove on the left = visibly a panel that interlocks. -->
-  <path d="M 6 12
-           L 52 12
-           L 52 24
-           L 58 30
-           L 58 38
-           L 52 44
-           L 52 56
-           L 6 56
-           L 6 44
-           L 0 38
-           L 0 30
-           L 6 24
-           Z"
-        fill="url(#pirCore-i)"
-        stroke="#0A1F3D"
-        stroke-width="1"
-        stroke-linejoin="round"/>
+  <!-- Cream ring -->
+  <circle cx="32" cy="32" r="31" fill="#F5F2EC" stroke="#0A1F3D" stroke-width="1.4"/>
+  <!-- Cream interior backdrop for the green machine -->
+  <circle cx="32" cy="32" r="27" fill="#F5F2EC"/>
+  <circle cx="32" cy="32" r="27" fill="none" stroke="#0A1F3D" stroke-width="0.6" stroke-opacity="0.25"/>
 
-  <g clip-path="url(#panelClip-i)">
-    <rect x="-2" y="12" width="64" height="11" fill="url(#skinCold-i)"/>
-    <rect x="-2" y="45" width="64" height="11" fill="url(#skinWarm-i)"/>
-    <line x1="-2" y1="23" x2="60" y2="23" stroke="#0A1F3D" stroke-width="0.8" opacity="0.6"/>
-    <line x1="-2" y1="45" x2="60" y2="45" stroke="#0A1F3D" stroke-width="0.8" opacity="0.6"/>
-  </g>
+  <!-- Compressor scaled ~1.22× of the medallion in main logo -->
+  <g transform="translate(32, 33)" stroke="#0A1F3D" stroke-linejoin="round" stroke-linecap="round">
+    <!-- Baseplate -->
+    <rect x="-21" y="13.5" width="42" height="3.6" rx="0.6" fill="url(#greenBodyI)" stroke-width="0.7"/>
+    <rect x="-18" y="17.1" width="3" height="2.4" fill="#0A1F3D"/>
+    <rect x="-1.5" y="17.1" width="3" height="2.4" fill="#0A1F3D"/>
+    <rect x="15" y="17.1" width="3" height="2.4" fill="#0A1F3D"/>
 
-  <!-- Dimension ticks -->
-  <g stroke="#0A1F3D" stroke-width="1.2" stroke-linecap="round" opacity="0.6">
-    <line x1="6" y1="6" x2="6" y2="9"/>
-    <line x1="52" y1="6" x2="52" y2="9"/>
-    <line x1="6" y1="59" x2="6" y2="62"/>
-    <line x1="52" y1="59" x2="52" y2="62"/>
+    <!-- Crankcase -->
+    <path d="M -19.5 13.5 L -19.5 4 Q -19.5 1.5 -17 1.5 L 17 1.5 Q 19.5 1.5 19.5 4 L 19.5 13.5 Z"
+          fill="url(#greenBodyI)" stroke-width="0.8"/>
+    <line x1="-17" y1="8" x2="17" y2="8" stroke-width="0.45" opacity="0.5"/>
+    <circle cx="-14" cy="11" r="0.75" fill="#0A1F3D"/>
+    <circle cx="-7"  cy="11" r="0.75" fill="#0A1F3D"/>
+    <circle cx="0"   cy="11" r="0.75" fill="#0A1F3D"/>
+    <circle cx="7"   cy="11" r="0.75" fill="#0A1F3D"/>
+    <circle cx="14"  cy="11" r="0.75" fill="#0A1F3D"/>
+
+    <!-- Left cylinder -->
+    <rect x="-14.5" y="-11" width="11" height="12.5" rx="1.4" fill="url(#greenHeadI)" stroke-width="0.85"/>
+    <g stroke-width="0.4" opacity="0.6">
+      <line x1="-14.5" y1="-8.5" x2="-3.5" y2="-8.5"/>
+      <line x1="-14.5" y1="-6"   x2="-3.5" y2="-6"/>
+      <line x1="-14.5" y1="-3.5" x2="-3.5" y2="-3.5"/>
+      <line x1="-14.5" y1="-1"   x2="-3.5" y2="-1"/>
+    </g>
+    <rect x="-15.5" y="-13.5" width="13" height="3" rx="0.7" fill="url(#greenHeadI)" stroke-width="0.7"/>
+    <circle cx="-13" cy="-12" r="0.7" fill="#0A1F3D"/>
+    <circle cx="-4" cy="-12" r="0.7" fill="#0A1F3D"/>
+
+    <!-- Right cylinder -->
+    <rect x="3.5" y="-11" width="11" height="12.5" rx="1.4" fill="url(#greenHeadI)" stroke-width="0.85"/>
+    <g stroke-width="0.4" opacity="0.6">
+      <line x1="3.5" y1="-8.5" x2="14.5" y2="-8.5"/>
+      <line x1="3.5" y1="-6"   x2="14.5" y2="-6"/>
+      <line x1="3.5" y1="-3.5" x2="14.5" y2="-3.5"/>
+      <line x1="3.5" y1="-1"   x2="14.5" y2="-1"/>
+    </g>
+    <rect x="2.5" y="-13.5" width="13" height="3" rx="0.7" fill="url(#greenHeadI)" stroke-width="0.7"/>
+    <circle cx="4.5" cy="-12" r="0.7" fill="#0A1F3D"/>
+    <circle cx="13.5" cy="-12" r="0.7" fill="#0A1F3D"/>
+
+    <!-- Manifold -->
+    <rect x="-17" y="-16.5" width="33" height="2.5" rx="1" fill="url(#greenHeadI)" stroke-width="0.6"/>
+    <circle cx="-11" cy="-18.5" r="1.7" fill="url(#greenHeadI)" stroke-width="0.6"/>
+    <line x1="-11" y1="-20.2" x2="-11" y2="-16.5" stroke-width="0.5"/>
+    <circle cx="10" cy="-18.5" r="1.7" fill="url(#greenHeadI)" stroke-width="0.6"/>
+    <line x1="10" y1="-20.2" x2="10" y2="-16.5" stroke-width="0.5"/>
+
+    <!-- Pressure gauge -->
+    <circle cx="-0.5" cy="-19" r="1.95" fill="#F5F2EC" stroke-width="0.6"/>
+    <line x1="-0.5" y1="-19" x2="0.6" y2="-20" stroke-width="0.5"/>
+
+    <!-- Suction/discharge piping -->
+    <path d="M -17 -15.5 Q -22 -13 -22 -8 Q -22 -2 -19.5 1.5" fill="none" stroke-width="1.2"/>
+    <path d="M 17 -15.5 Q 22 -13 22 -8 Q 22 -2 19.5 1.5" fill="none" stroke-width="1.2"/>
   </g>
 </svg>
