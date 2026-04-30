@@ -1,5 +1,6 @@
 _scrape/
 _kr_scrape/
+_scrape_coldstore/
 node_modules/
 .DS_Store
 Thumbs.db

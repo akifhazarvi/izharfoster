@@ -2536,6 +2536,43 @@ body.lc-open .lc-backdrop {
   max-width: 70ch;
 }
 
+/* ============= Installation gallery (real photos) ============= */
+.installation-gallery {
+  max-width: 1320px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: 200px;
+  gap: 8px;
+}
+.install-tile {
+  margin: 0;
+  overflow: hidden;
+  border-radius: 14px;
+  background: var(--paper-2);
+  position: relative;
+  isolation: isolate;
+}
+.install-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.install-tile:hover img { transform: scale(1.04); }
+.install-tile-large {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+@media (max-width: 1100px) {
+  .installation-gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 180px; }
+  .install-tile-large { grid-column: span 2; grid-row: span 2; }
+}
+@media (max-width: 720px) {
+  .installation-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 150px; }
+  .install-tile-large { grid-column: span 2; grid-row: span 2; }
+}
+
 /* ============= Project / case-study grid ============= */
 .project-grid {
   max-width: 1320px;
