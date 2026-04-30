@@ -208,6 +208,53 @@
   // Default selection
   selectApp(selectedAppId);
 
+  // ---------- URL-param pre-fill (deep-link from Cold Storage Guide) ----------
+  // Accepts: ?commodity=Apples&temp=4&tempF=40&rh=90
+  // Picks a sensible application preset based on temp range, then overrides
+  // interior temp + RH from the URL so the calculator opens already sized
+  // around the commodity the user clicked.
+  (function applyCommodityFromUrl () {
+    const p = new URLSearchParams(location.search);
+    const name = p.get('commodity');
+    if (!name) return;
+    let tempC = parseFloat(p.get('temp'));
+    if (isNaN(tempC) && p.get('tempF') !== null) {
+      const f = parseFloat(p.get('tempF'));
+      if (!isNaN(f)) tempC = (f - 32) * 5 / 9;
+    }
+    const rh = parseFloat(p.get('rh'));
+    // Pick application bucket from temp:
+    //   tempC < -10 → freezer; -10..+4 → chiller; > 4 → cool/cellar
+    let appId = 'general_cooler';
+    if (!isNaN(tempC)) {
+      if (tempC <= -10) appId = 'general_freezer';
+      else if (tempC <= 4) appId = 'general_cooler';
+      else appId = 'general_cooler';
+    }
+    selectApp(appId);
+    if (!isNaN(tempC)) els.interior.value = Math.round(tempC * 10) / 10;
+    if (!isNaN(rh)) els.interiorRh.value = Math.round(rh);
+    compute();
+
+    // Render an inline banner above the calculator so the user knows where
+    // these defaults came from. Removed when the user dismisses it.
+    const wrap = document.querySelector('.calc-grid') || document.querySelector('.calc-form') || document.body;
+    if (wrap && !document.getElementById('csg-prefill-banner')) {
+      const banner = document.createElement('div');
+      banner.id = 'csg-prefill-banner';
+      banner.className = 'csg-prefill';
+      const tempStr = !isNaN(tempC) ? `${(Math.round(tempC * 10) / 10)}°C` : '—';
+      const rhStr = !isNaN(rh) ? `${Math.round(rh)}% RH` : '—';
+      banner.innerHTML =
+        `<span class="csg-prefill-eyebrow mono">Pre-filled from Cold Storage Guide</span>` +
+        `<span class="csg-prefill-name">${name.replace(/[<>]/g, '')}</span>` +
+        `<span class="csg-prefill-spec mono">${tempStr} · ${rhStr}</span>` +
+        `<button type="button" class="csg-prefill-close" aria-label="Dismiss">×</button>`;
+      wrap.parentNode.insertBefore(banner, wrap);
+      banner.querySelector('.csg-prefill-close').addEventListener('click', () => banner.remove());
+    }
+  })();
+
   // ---------- Box location radio ----------
   document.querySelectorAll('input[name="loc"]').forEach(r => {
     r.addEventListener('change', compute);

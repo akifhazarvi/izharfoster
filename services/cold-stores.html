@@ -43,6 +43,26 @@
   ]
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "Cold Storage Guide — Temperature, Humidity & Shelf Life",
+  "description": "144 commodities (fruits, vegetables, dairy, meat, fish, dry goods) with optimal cold-storage temperature in °F, relative humidity in %, and approximate shelf life. Compiled from ASHRAE Refrigeration Handbook Ch. 21 and USDA Agriculture Handbook 66, cross-referenced with internal commissioning records by Izhar Foster engineering.",
+  "creator": { "@type": "Organization", "name": "Izhar Foster (Pvt) Limited" },
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "isAccessibleForFree": true,
+  "keywords": "cold storage temperature, relative humidity, shelf life, commodity storage, ASHRAE, USDA Handbook 66, Pakistan cold chain",
+  "distribution": [
+    { "@type": "DataDownload", "encodingFormat": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "contentUrl": "/downloads/izhar-foster-cold-storage-guide.xlsx" }
+  ],
+  "variableMeasured": [
+    { "@type": "PropertyValue", "name": "Storage temperature", "unitText": "°F" },
+    { "@type": "PropertyValue", "name": "Relative humidity", "unitText": "%" },
+    { "@type": "PropertyValue", "name": "Approximate shelf life", "unitText": "days/weeks/months" }
+  ]
+}
+</script>
 </head>
 <body>
 <div class="shell">
@@ -126,13 +146,129 @@
   <div class="industries-grid"><div class="ind-cell" style="--dot:#7DD3FC"><span class="num">01</span><span class="temp-tag mono"><span class="dot"></span>+5°C</span><h4>Pharma</h4><p>Validated cold rooms with documentation regulators expect</p></div><div class="ind-cell" style="--dot:#4FC3D9"><span class="num">02</span><span class="temp-tag mono"><span class="dot"></span>+4°C</span><h4>Dairy</h4><p>Bulk milk reception and finished-goods rooms</p></div><div class="ind-cell" style="--dot:#0A1F3D"><span class="num">03</span><span class="temp-tag mono"><span class="dot"></span>−25°C</span><h4>Meat & Poultry</h4><p>Slaughter chillers and blast freezers, HACCP-friendly</p></div><div class="ind-cell" style="--dot:#22C55E"><span class="num">04</span><span class="temp-tag mono"><span class="dot"></span>+1°C</span><h4>Fruit & Veg</h4><p>Pre-cooling and storage purpose-built for Pakistan</p></div><div class="ind-cell" style="--dot:#173E66"><span class="num">05</span><span class="temp-tag mono"><span class="dot"></span>−40°C</span><h4>Seafood</h4><p>Plate freezers and frozen storage for export processors</p></div><div class="ind-cell" style="--dot:#E36A1E"><span class="num">06</span><span class="temp-tag mono"><span class="dot"></span>multi</span><h4>Logistics</h4><p>Multi-temperature distribution centres with monitoring</p></div></div>
 </section>
 
-<section class="section" data-temp="0">
+<!-- ============================================================
+     COLD STORAGE GUIDE — interactive reference table (THE PEAK).
+     Comes first so the buyer experiences product depth before being
+     asked to download or commit. Click any row → opens load calculator
+     pre-filled for that product.
+============================================================ -->
+<section class="section section-soft" data-temp="0" id="cold-storage-guide" style="background:var(--paper-2);">
   <div class="section-head">
-    <div><span class="eyebrow">Frequently asked</span><h2>Cold Stores — questions buyers ask.</h2></div>
-    <p>The technical and commercial questions we hear most often before a contract is signed.</p>
+    <div>
+      <span class="eyebrow">Cold storage guide</span>
+      <h2>Temperature, humidity &amp; shelf life — for everything you'll store.</h2>
+    </div>
+    <p>Search 144 commodities. Click any row to size a cold room for it in our load calculator — pre-filled with your product's exact temperature and humidity.</p>
+  </div>
+
+  <div class="csg" id="csg-app" data-source="../js/tools/data-cold-storage-guide.json">
+    <!-- Filter / search bar -->
+    <div class="csg-controls">
+      <div class="csg-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="csg-search-icon"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="search" id="csg-search" placeholder="Search apples, mango, beef, milk…" aria-label="Search commodities">
+        <button type="button" class="csg-clear" id="csg-clear" aria-label="Clear search" hidden>×</button>
+      </div>
+      <div class="csg-chips" role="tablist" aria-label="Filter by temperature class">
+        <button type="button" class="csg-chip is-active" data-class="all" role="tab" aria-selected="true">All</button>
+        <button type="button" class="csg-chip" data-class="frozen" role="tab" aria-selected="false">Frozen <span class="mono">(LT)</span></button>
+        <button type="button" class="csg-chip" data-class="chilled" role="tab" aria-selected="false">Chilled <span class="mono">(MT)</span></button>
+        <button type="button" class="csg-chip" data-class="cool" role="tab" aria-selected="false">Cool <span class="mono">(HT)</span></button>
+      </div>
+    </div>
+
+    <!-- Result counter -->
+    <div class="csg-counter mono" aria-live="polite">
+      <span id="csg-count">144</span> of <span id="csg-total">144</span> commodities
+    </div>
+
+    <!-- Table -->
+    <div class="csg-table-wrap" role="region" aria-label="Cold storage commodity reference" tabindex="0">
+      <table class="csg-table">
+        <thead>
+          <tr>
+            <th scope="col" class="csg-col-name">Commodity</th>
+            <th scope="col" class="csg-col-temp">Storage temp <span class="csg-unit mono">°F</span></th>
+            <th scope="col" class="csg-col-rh">Relative humidity <span class="csg-unit mono">%</span></th>
+            <th scope="col" class="csg-col-shelf">Approximate shelf life</th>
+            <th scope="col" class="csg-col-action" aria-label="Action"></th>
+          </tr>
+        </thead>
+        <tbody id="csg-rows">
+          <tr><td colspan="5" class="csg-loading mono">Loading commodity data…</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Empty state (hidden by default) -->
+    <div class="csg-empty" id="csg-empty" hidden>
+      <p>No commodities match <strong id="csg-empty-q"></strong>. Try a different term, or clear the filter.</p>
+    </div>
+
+    <!-- Methodology + sources, collapsible to match the calculator suite pattern -->
+    <details class="csg-method">
+      <summary><span class="mono">Methodology &amp; sources</span></summary>
+      <div class="csg-method-body">
+        <p>Storage values are reference targets for properly pre-cooled commodities of standard variety, surface texture, and packaging. Real-world shelf life depends on harvest discipline, pre-cool, ethylene management, room loading, and door-opening frequency. Use the load calculator to size a room around your specific product, target temperature, and infiltration assumptions.</p>
+        <ul class="csg-sources mono">
+          <li>ASHRAE 2022 Refrigeration Handbook · Ch. 21 — Commodity Storage Requirements</li>
+          <li>USDA Agriculture Handbook 66 — Commercial Storage of Fruits, Vegetables, and Florist &amp; Nursery Stocks</li>
+          <li>Internal commissioning records — Izhar Foster engineering, 2018–2026</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ============================================================
+     DOWNLOADS — the reciprocity moment. The buyer just spent time
+     in the Cold Storage Guide above; offer to give it to them in
+     downloadable form before any further ask.
+============================================================ -->
+<section class="section" data-temp="0" id="downloads">
+  <div class="section-head">
+    <div><span class="eyebrow">Take it with you</span><h2>Downloads — reference assets for engineers and buyers.</h2></div>
+    <p>The same data we use to size systems on Pakistan-scale projects, in the formats your team already works in.</p>
+  </div>
+  <div class="downloads-grid">
+    <a class="dl-card" href="../downloads/izhar-foster-cold-store-product-datasheet.pdf" download>
+      <div class="dl-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="14" x2="15" y2="14"/><line x1="9" y1="18" x2="15" y2="18"/></svg>
+      </div>
+      <div class="dl-body">
+        <span class="dl-eyebrow mono">Product datasheet · PDF</span>
+        <h3>Cold Stores — Product Data Sheet</h3>
+        <p>Construction details, panel specs, refrigeration architecture, and standard scope of supply.</p>
+      </div>
+      <span class="dl-cta mono">Download <span aria-hidden="true">↓</span></span>
+    </a>
+    <a class="dl-card dl-card-feature" href="../downloads/izhar-foster-cold-storage-guide.xlsx" download>
+      <div class="dl-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+      </div>
+      <div class="dl-body">
+        <span class="dl-eyebrow mono">Reference table · Excel</span>
+        <h3>Cold Storage Guide (Temperature, Humidity &amp; Shelf Life)</h3>
+        <p>144 commodities — fruits, vegetables, dairy, meat, fish, dry goods — with optimal storage temperature, humidity, and approximate storage life.</p>
+      </div>
+      <span class="dl-cta mono">Download .xlsx <span aria-hidden="true">↓</span></span>
+    </a>
+  </div>
+</section>
+
+<!-- ============================================================
+     FAQs — objection handling, just before the CTA. Catches
+     "what about installation time / civil works / power" doubts
+     at the buyer's last moment of hesitation.
+============================================================ -->
+<section class="section section-soft" data-temp="0" style="background:var(--paper-2);">
+  <div class="section-head">
+    <div><span class="eyebrow">Before you ask</span><h2>The technical questions buyers ask first.</h2></div>
+    <p>If you're sizing a project right now, these are the answers we give every day on first calls.</p>
   </div>
   <div class="faq-list"><details class="faq-item" open><summary><span class="num">01</span><span>What's the smallest cold store you'll build?</span></summary><div class="answer">We've delivered rooms under 50 m³ for restaurants, pharmacies, and small processors. There's no minimum — only a sensible engineering fit.</div></details><details class="faq-item"><summary><span class="num">02</span><span>How long does installation take?</span></summary><div class="answer">Typical cold rooms 6–8 weeks from order to commissioning. Larger or specialised projects 10–16 weeks. Site readiness affects timing.</div></details><details class="faq-item"><summary><span class="num">03</span><span>Do you handle the civil works too?</span></summary><div class="answer">We design the slab specifications, drainage, and pre-installation civil interface. Most clients use a local civil contractor for the slab itself, working to our drawings.</div></details><details class="faq-item"><summary><span class="num">04</span><span>Voltage stabilisation and backup power?</span></summary><div class="answer">Our refrigeration designs assume Pakistan's grid realities. Generator integration, soft starters, and voltage stabilisers are part of standard scope where needed.</div></details></div>
 </section>
+
 <section class="cta-banner">
       <div class="grid">
         <div>
@@ -152,7 +288,7 @@
         <div>
           <div class="footer-brand-name">Izhar&nbsp;Foster</div>
           <p>Cold-chain division of Izhar Group. Engineered cold across the temperature spectrum — for Pakistan's food, medicine, and harvests.</p>
-          <p class="mono" style="font-size:.78rem;color:rgba(245,242,236,.4);letter-spacing:.06em">A division of <a href="../about.html">Izhar Group</a> · 6 engineering companies</p>
+          <p class="mono" style="font-size:.78rem;color:rgba(245,242,236,.4);letter-spacing:.06em">A division of <a href="../about.html">Izhar Group</a> · 12 engineering companies</p>
         </div>
         <div>
           <h4>Products</h4>
@@ -195,5 +331,6 @@
   </div></div>
 <a href="https://wa.me/923215383544" class="fab-wa" target="_blank" rel="noopener" aria-label="WhatsApp">WA</a>
 <script src="../js/main.js" defer></script>
+<script src="../js/tools/cold-storage-guide.js" defer></script>
 <script>document.getElementById('y').textContent=new Date().getFullYear();</script>
 </body></html>

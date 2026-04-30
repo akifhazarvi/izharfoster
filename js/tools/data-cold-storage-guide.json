@@ -1,0 +1,1025 @@
+{
+  "meta": {
+    "title": "Cold Storage Guide — Temperature, Humidity & Shelf Life",
+    "description": "Optimal cold-storage temperature, humidity, and approximate shelf life for common commodities. Source data supplied by Izhar Foster engineering.",
+    "note": "All temperature values are in °F as supplied; relative humidity in %; storage life is approximate.",
+    "count": 144,
+    "updated": "2026-04-30",
+    "columns": [
+      "name",
+      "temp",
+      "rh",
+      "shelf"
+    ]
+  },
+  "commodities": [
+    {
+      "name": "Apples",
+      "temp": "30 - 40",
+      "rh": "90",
+      "shelf": "3 -8 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Apricots",
+      "temp": "31 - 32",
+      "rh": "90",
+      "shelf": "1 - 2 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "Artichokes (Globe)",
+      "temp": "31 - 32",
+      "rh": "95",
+      "shelf": "2 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "Asparagus",
+      "temp": "32 - 36",
+      "rh": "95",
+      "shelf": "2 -3 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "Avocados",
+      "temp": "45 - 55",
+      "rh": "85 - 90",
+      "shelf": "2 -4 weeks",
+      "class": "cool"
+    },
+    {
+      "name": "Bananas",
+      "temp": "55 - 65",
+      "rh": "85 - 90",
+      "shelf": "—",
+      "class": "cool"
+    },
+    {
+      "name": "Beans (Green or Snap)",
+      "temp": "40 - 45",
+      "rh": "90 - 95",
+      "shelf": "7 - 10 days",
+      "class": "chilled"
+    },
+    {
+      "name": "Lima",
+      "temp": "32 - 40",
+      "rh": "90",
+      "shelf": "1 week",
+      "class": "chilled"
+    },
+    {
+      "name": "Beer, Keg",
+      "temp": "35 - 40",
+      "rh": "—",
+      "shelf": "3 - 8 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "Bottles, Cans",
+      "temp": "35 - 40",
+      "rh": "65 or below",
+      "shelf": "3 - 6 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Beets, Topped",
+      "temp": "32",
+      "rh": "95 - 100",
+      "shelf": "4 - 6 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Blackberries",
+      "temp": "31 - 32",
+      "rh": "95",
+      "shelf": "3 days",
+      "class": "chilled"
+    },
+    {
+      "name": "Blueberries",
+      "temp": "31 - 32",
+      "rh": "90 - 95",
+      "shelf": "2 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "Bread, Baked",
+      "temp": "—",
+      "rh": "—",
+      "shelf": "1 - 3 months",
+      "class": "unspecified"
+    },
+    {
+      "name": "Dough",
+      "temp": "35 - 40",
+      "rh": "85 - 90",
+      "shelf": "3 - 72 hours",
+      "class": "chilled"
+    },
+    {
+      "name": "Broccoli, Sprouting",
+      "temp": "32",
+      "rh": "95",
+      "shelf": "10 - 14 days",
+      "class": "chilled"
+    },
+    {
+      "name": "Brussels Sprouts",
+      "temp": "32",
+      "rh": "95",
+      "shelf": "3 - 5 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "Cabbage",
+      "temp": "32",
+      "rh": "95 - 100",
+      "shelf": "3 - 4 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Carrots, Topped, Mature",
+      "temp": "32",
+      "rh": "98 - 100",
+      "shelf": "5 - 9 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Cauliflower",
+      "temp": "32",
+      "rh": "95",
+      "shelf": "2 - 4 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "Celery",
+      "temp": "32",
+      "rh": "95",
+      "shelf": "1 - 2 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Cherries, Sour",
+      "temp": "31 - 32",
+      "rh": "90 - 95",
+      "shelf": "3 - 7 days",
+      "class": "chilled"
+    },
+    {
+      "name": "Sweet",
+      "temp": "30 - 31",
+      "rh": "90 - 95",
+      "shelf": "2 - 3 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "Chocolate (Coating)",
+      "temp": "50 - 65",
+      "rh": "40 - 50",
+      "shelf": "2 - 3 months",
+      "class": "cool"
+    },
+    {
+      "name": "Cocoa",
+      "temp": "32 - 40",
+      "rh": "50 - 70",
+      "shelf": "1 year, plus",
+      "class": "chilled"
+    },
+    {
+      "name": "Coconut",
+      "temp": "32 - 45",
+      "rh": "80 - 85",
+      "shelf": "1 - 2 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Coffee (Green)",
+      "temp": "35 - 37",
+      "rh": "80 - 85",
+      "shelf": "2 - 4 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Collards",
+      "temp": "32",
+      "rh": "95",
+      "shelf": "10 - 14 days",
+      "class": "chilled"
+    },
+    {
+      "name": "Corn, Sweet (Fresh)",
+      "temp": "32",
+      "rh": "95",
+      "shelf": "4 - 8 days",
+      "class": "chilled"
+    },
+    {
+      "name": "Cranberries",
+      "temp": "36 - 40",
+      "rh": "90 - 95",
+      "shelf": "2 - 4 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Cucumbers",
+      "temp": "50 - 55",
+      "rh": "90 - 95",
+      "shelf": "10 - 14 days",
+      "class": "cool"
+    },
+    {
+      "name": "Currants",
+      "temp": "31 - 32",
+      "rh": "90 - 95",
+      "shelf": "10 - 14 days",
+      "class": "chilled"
+    },
+    {
+      "name": "Daily Products: Cheddar Cheese",
+      "temp": "40",
+      "rh": "65 - 70",
+      "shelf": "6 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Daily Products: Processed Cheese",
+      "temp": "40",
+      "rh": "65 - 70",
+      "shelf": "12 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Daily Products: Butter",
+      "temp": "40",
+      "rh": "75 - 85",
+      "shelf": "1 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Daily Products: Cream",
+      "temp": "35 - 40",
+      "rh": "—",
+      "shelf": "2 - 3 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "Daily Products: Ice Cream",
+      "temp": "-20 to -15",
+      "rh": "—",
+      "shelf": "3 - 12 months",
+      "class": "frozen"
+    },
+    {
+      "name": "Milk, Fluid Whole: Pasteurized, Grade A",
+      "temp": "32 - 34",
+      "rh": "—",
+      "shelf": "2 - 4 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Milk, Fluid Whole: Condensed Sweet",
+      "temp": "40",
+      "rh": "—",
+      "shelf": "15 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Milk, Fluid Whole: Evaporated",
+      "temp": "40",
+      "rh": "—",
+      "shelf": "24 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Dates (Dried)",
+      "temp": "0 or 32",
+      "rh": "75 or less",
+      "shelf": "6 - 12 months",
+      "class": "frozen"
+    },
+    {
+      "name": "Dewberries",
+      "temp": "31 - 32",
+      "rh": "90 - 95",
+      "shelf": "3 days",
+      "class": "chilled"
+    },
+    {
+      "name": "Dried Fruits",
+      "temp": "32",
+      "rh": "50 - 60",
+      "shelf": "9 - 12 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Eggplant",
+      "temp": "45 - 50",
+      "rh": "90 - 95",
+      "shelf": "7 - 10 days",
+      "class": "cool"
+    },
+    {
+      "name": "Egg, Shell",
+      "temp": "29 - 31",
+      "rh": "80 - 85",
+      "shelf": "5 - 6 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Shell, Farm Cooler",
+      "temp": "50 - 55",
+      "rh": "70 - 75",
+      "shelf": "2 - 3 weeks",
+      "class": "cool"
+    },
+    {
+      "name": "Frozen, Whole",
+      "temp": "0 or below",
+      "rh": "—",
+      "shelf": "1 year, plus",
+      "class": "frozen"
+    },
+    {
+      "name": "Endive (Escarole)",
+      "temp": "32",
+      "rh": "95",
+      "shelf": "2 - 3 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "Figs, Dried",
+      "temp": "32 - 40",
+      "rh": "50 - 60",
+      "shelf": "9 - 12 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Fresh",
+      "temp": "31 - 32",
+      "rh": "85 - 90",
+      "shelf": "7 - 10 says",
+      "class": "chilled"
+    },
+    {
+      "name": "Fish, Fresh",
+      "temp": "30 - 35",
+      "rh": "90 - 95",
+      "shelf": "5 - 15 days",
+      "class": "chilled"
+    },
+    {
+      "name": "Haddock, Cod",
+      "temp": "30 - 35",
+      "rh": "90 - 95",
+      "shelf": "15 days",
+      "class": "chilled"
+    },
+    {
+      "name": "Salmon",
+      "temp": "30 - 35",
+      "rh": "90 - 95",
+      "shelf": "15 days",
+      "class": "chilled"
+    },
+    {
+      "name": "Smoked",
+      "temp": "40 - 50",
+      "rh": "50 - 60",
+      "shelf": "6 - 8 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Shellfish, Fresh",
+      "temp": "30 - 33",
+      "rh": "86 - 95",
+      "shelf": "3 - 7 days",
+      "class": "chilled"
+    },
+    {
+      "name": "Tuna",
+      "temp": "30 - 35",
+      "rh": "90 - 95",
+      "shelf": "15 days",
+      "class": "chilled"
+    },
+    {
+      "name": "Furs and Fabric",
+      "temp": "34 - 40",
+      "rh": "45 - 55",
+      "shelf": "several years",
+      "class": "chilled"
+    },
+    {
+      "name": "Garlic, Dry",
+      "temp": "32",
+      "rh": "65 - 70",
+      "shelf": "6 - 7 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Gooseberries",
+      "temp": "31 - 32",
+      "rh": "90 - 95",
+      "shelf": "2 - 4 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "Grapefruit",
+      "temp": "50 - 60",
+      "rh": "85 - 90",
+      "shelf": "4 - 6 weeks",
+      "class": "cool"
+    },
+    {
+      "name": "Grapes, American Type",
+      "temp": "31 - 32",
+      "rh": "85 - 90",
+      "shelf": "2 - 8 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "European Type",
+      "temp": "30 - 31",
+      "rh": "90 - 95",
+      "shelf": "3 - 6 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Greens, Leafy",
+      "temp": "32",
+      "rh": "95",
+      "shelf": "10 - 14 days",
+      "class": "chilled"
+    },
+    {
+      "name": "Guavas",
+      "temp": "45 - 50",
+      "rh": "90",
+      "shelf": "2 - 3 weeks",
+      "class": "cool"
+    },
+    {
+      "name": "Honey",
+      "temp": "38 - 50",
+      "rh": "50 - 60",
+      "shelf": "1 year, plus",
+      "class": "chilled"
+    },
+    {
+      "name": "Horseradish",
+      "temp": "30 - 32",
+      "rh": "95 - 100",
+      "shelf": "10 - 12 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Kale",
+      "temp": "32",
+      "rh": "95",
+      "shelf": "3 - 4 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Kohlrabi",
+      "temp": "32",
+      "rh": "95",
+      "shelf": "2 - 4 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "Leeks, Green",
+      "temp": "32",
+      "rh": "95",
+      "shelf": "1 - 3 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Lemons",
+      "temp": "32 or 50 - 58",
+      "rh": "85 - 90",
+      "shelf": "1 - 6 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Lettuce Head",
+      "temp": "32 - 34",
+      "rh": "95 - 100",
+      "shelf": "2 - 3 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "Limes 48 - 50",
+      "temp": "85 - 90",
+      "rh": "6 - 8 weeks",
+      "shelf": "29.1",
+      "class": "cool"
+    },
+    {
+      "name": "Maple Sugar",
+      "temp": "75 - 80",
+      "rh": "60 - 65",
+      "shelf": "1 year, plus",
+      "class": "cool"
+    },
+    {
+      "name": "Mangoes",
+      "temp": "55",
+      "rh": "85 - 90",
+      "shelf": "2 - 3 weeks",
+      "class": "cool"
+    },
+    {
+      "name": "Meat: Bacon, Cured (Farm Style)",
+      "temp": "60 - 65",
+      "rh": "85",
+      "shelf": "4 - 6 months",
+      "class": "cool"
+    },
+    {
+      "name": "Meat: Game, Fresh",
+      "temp": "32",
+      "rh": "80 - 85",
+      "shelf": "1 - 6 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "Meat: Beef, Fresh",
+      "temp": "32 - 34",
+      "rh": "88 - 92",
+      "shelf": "1 - 6 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "Meat: Hams and Shoulders, Fresh",
+      "temp": "32 - 34",
+      "rh": "85 - 90",
+      "shelf": "7 - 12 days",
+      "class": "chilled"
+    },
+    {
+      "name": "Meat: Cured",
+      "temp": "60 - 65",
+      "rh": "50 - 60",
+      "shelf": "0 - 3 years",
+      "class": "cool"
+    },
+    {
+      "name": "Meat: Lamb Fresh",
+      "temp": "32 - 34",
+      "rh": "85 - 90",
+      "shelf": "5 - 12 days",
+      "class": "chilled"
+    },
+    {
+      "name": "Meat: Livers, Frozen",
+      "temp": "-10 - 0",
+      "rh": "90 - 95",
+      "shelf": "3 - 4 months",
+      "class": "frozen"
+    },
+    {
+      "name": "Meat: Pork, Fresh",
+      "temp": "32 - 34",
+      "rh": "85 - 90",
+      "shelf": "3 - 7 days",
+      "class": "chilled"
+    },
+    {
+      "name": "Meat: Smoked Sausage",
+      "temp": "40 - 45",
+      "rh": "85 - 90",
+      "shelf": "6 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Meat: Fresh",
+      "temp": "32",
+      "rh": "85 - 90",
+      "shelf": "1 - 2 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "Meat: Veal, Fresh",
+      "temp": "32 - 34",
+      "rh": "90 - 95",
+      "shelf": "5 - 10 days",
+      "class": "chilled"
+    },
+    {
+      "name": "Melons, Cantaloupe",
+      "temp": "36 - 40",
+      "rh": "90 - 95",
+      "shelf": "5 - 15 days",
+      "class": "chilled"
+    },
+    {
+      "name": "Honeydew and Honey Ball",
+      "temp": "45 - 50",
+      "rh": "90 - 95",
+      "shelf": "3 - 4 weeks",
+      "class": "cool"
+    },
+    {
+      "name": "Watermelons",
+      "temp": "40 - 50",
+      "rh": "80 - 90",
+      "shelf": "2 - 3 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "Mushrooms",
+      "temp": "32",
+      "rh": "90",
+      "shelf": "3 - 4 days",
+      "class": "chilled"
+    },
+    {
+      "name": "Milk",
+      "temp": "34 - 40",
+      "rh": "—",
+      "shelf": "7 days",
+      "class": "chilled"
+    },
+    {
+      "name": "Nectarines",
+      "temp": "31 - 32",
+      "rh": "90",
+      "shelf": "2 - 4 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "Nuts (dried)",
+      "temp": "32 - 50",
+      "rh": "65 - 75",
+      "shelf": "8 - 12 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Okra",
+      "temp": "45 - 50",
+      "rh": "90 - 95",
+      "shelf": "7 - 10 days",
+      "class": "cool"
+    },
+    {
+      "name": "Oleomargarine",
+      "temp": "35",
+      "rh": "60 - 70",
+      "shelf": "1 year, plus",
+      "class": "chilled"
+    },
+    {
+      "name": "Olives, Fresh",
+      "temp": "45 - 50",
+      "rh": "85 - 90",
+      "shelf": "4 - 6 weeks",
+      "class": "cool"
+    },
+    {
+      "name": "Onions (Dry) and Onion Sets",
+      "temp": "32",
+      "rh": "65 - 70",
+      "shelf": "1 - 8 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Green",
+      "temp": "32",
+      "rh": "95",
+      "shelf": "3 - 4 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "Oranges",
+      "temp": "32 - 48",
+      "rh": "85 - 90",
+      "shelf": "3 -12 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "Orange Juice, Chilled",
+      "temp": "30 - 35",
+      "rh": "—",
+      "shelf": "3 - 6 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "Papayas",
+      "temp": "45",
+      "rh": "85 - 90",
+      "shelf": "1 - 3 weeks",
+      "class": "cool"
+    },
+    {
+      "name": "Parsley",
+      "temp": "32",
+      "rh": "95",
+      "shelf": "1 - 2 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Parsnip",
+      "temp": "32",
+      "rh": "98 - 100",
+      "shelf": "4 - 6 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Peaches and Nectarines",
+      "temp": "31 - 32",
+      "rh": "90",
+      "shelf": "2 - 4 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "Pears",
+      "temp": "29 - 31",
+      "rh": "90 - 95",
+      "shelf": "2 - 7 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Peas, Green",
+      "temp": "32",
+      "rh": "95",
+      "shelf": "1 - 3 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "Peppers, Sweet",
+      "temp": "45 - 50",
+      "rh": "90 - 95",
+      "shelf": "2 - 3 weeks",
+      "class": "cool"
+    },
+    {
+      "name": "Peppers, Chili (Dry)",
+      "temp": "32 - 50",
+      "rh": "60 - 70",
+      "shelf": "6 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Persimmons",
+      "temp": "30",
+      "rh": "90",
+      "shelf": "3 - 4 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Pineapples, Ripe",
+      "temp": "45",
+      "rh": "85 - 90",
+      "shelf": "2 - 4 weeks",
+      "class": "cool"
+    },
+    {
+      "name": "Plums, Including Fresh Prunes",
+      "temp": "31 - 32",
+      "rh": "90 - 95",
+      "shelf": "2 - 4 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "Pomegranates",
+      "temp": "32",
+      "rh": "90",
+      "shelf": "2 - 4 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "Popcorn, Unopened",
+      "temp": "32 - 40",
+      "rh": "85",
+      "shelf": "4 - 6 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Potatoes, Early Crop",
+      "temp": "50 - 55",
+      "rh": "90",
+      "shelf": "0 - 2 months",
+      "class": "cool"
+    },
+    {
+      "name": "Late Crop",
+      "temp": "38 - 50",
+      "rh": "90",
+      "shelf": "5 - 8 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Poultry, Fresh Chicken",
+      "temp": "32",
+      "rh": "85 - 90",
+      "shelf": "1 week",
+      "class": "chilled"
+    },
+    {
+      "name": "Fresh Goose",
+      "temp": "32",
+      "rh": "85 - 90",
+      "shelf": "1 week",
+      "class": "chilled"
+    },
+    {
+      "name": "Fresh Turkey",
+      "temp": "32",
+      "rh": "85 - 90",
+      "shelf": "1 week",
+      "class": "chilled"
+    },
+    {
+      "name": "Pumpkins",
+      "temp": "50 - 55",
+      "rh": "70 - 75",
+      "shelf": "2 - 3 months",
+      "class": "cool"
+    },
+    {
+      "name": "Quinces",
+      "temp": "31 - 32",
+      "rh": "90",
+      "shelf": "2 - 3 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Radishes- Spring, Prepacked",
+      "temp": "32",
+      "rh": "95",
+      "shelf": "3 - 4 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "Raisins (Dried)",
+      "temp": "40",
+      "rh": "60 - 70",
+      "shelf": "9 - 12 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Rabbits, Fresh",
+      "temp": "32 - 34",
+      "rh": "90 - 95",
+      "shelf": "1 - 5 days",
+      "class": "chilled"
+    },
+    {
+      "name": "Raspberries, Black",
+      "temp": "31 - 32",
+      "rh": "90 - 95",
+      "shelf": "2 - 3 days",
+      "class": "chilled"
+    },
+    {
+      "name": "Red",
+      "temp": "31 - 32",
+      "rh": "90 - 95",
+      "shelf": "2 - 3 days",
+      "class": "chilled"
+    },
+    {
+      "name": "Rhubarb",
+      "temp": "32",
+      "rh": "95",
+      "shelf": "2 - 4 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "Rutabagas",
+      "temp": "32",
+      "rh": "98 - 100",
+      "shelf": "4 - 6 moths",
+      "class": "chilled"
+    },
+    {
+      "name": "Salsify",
+      "temp": "32",
+      "rh": "98 - 100",
+      "shelf": "2 - 4 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Spinach",
+      "temp": "32",
+      "rh": "95",
+      "shelf": "10 - 14 days",
+      "class": "chilled"
+    },
+    {
+      "name": "Squash, Summer",
+      "temp": "32 - 50",
+      "rh": "85 - 95",
+      "shelf": "5 - 14 days",
+      "class": "chilled"
+    },
+    {
+      "name": "Winter",
+      "temp": "50 - 55",
+      "rh": "70 - 75",
+      "shelf": "4 - 6 months",
+      "class": "cool"
+    },
+    {
+      "name": "Strawberries, Fresh",
+      "temp": "31 - 32",
+      "rh": "90 - 95",
+      "shelf": "5 - 7 days",
+      "class": "chilled"
+    },
+    {
+      "name": "Sugar, Maple",
+      "temp": "75 - 80",
+      "rh": "60 - 65",
+      "shelf": "1 year, plus",
+      "class": "cool"
+    },
+    {
+      "name": "Sweet Potatoes",
+      "temp": "55 - 60",
+      "rh": "85 - 90",
+      "shelf": "4 - 7 months",
+      "class": "cool"
+    },
+    {
+      "name": "Syrup, Maple",
+      "temp": "31",
+      "rh": "60 - 70",
+      "shelf": "1 year, plus",
+      "class": "chilled"
+    },
+    {
+      "name": "Tangerines",
+      "temp": "32 - 38",
+      "rh": "85 - 90",
+      "shelf": "2 - 4 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "Tobacco, Cigarettes",
+      "temp": "35 - 46",
+      "rh": "50- 56",
+      "shelf": "6 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Cigars",
+      "temp": "35 - 50",
+      "rh": "60 - 65",
+      "shelf": "2 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Tomatoes, Mature Green",
+      "temp": "55 - 70",
+      "rh": "85 - 90",
+      "shelf": "1 - 3 weeks",
+      "class": "cool"
+    },
+    {
+      "name": "Firm Ripe",
+      "temp": "45 - 50",
+      "rh": "85 - 90",
+      "shelf": "4 - 7 days",
+      "class": "cool"
+    },
+    {
+      "name": "Turnips, Roots",
+      "temp": "32",
+      "rh": "95",
+      "shelf": "4 - 5 months",
+      "class": "chilled"
+    },
+    {
+      "name": "Vegetables (Mixed)",
+      "temp": "31 - 40",
+      "rh": "89 - 95",
+      "shelf": "0 - 4 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "Vegetables (Seed)",
+      "temp": "32 - 50",
+      "rh": "90 - 95",
+      "shelf": "0 - 4 weeks",
+      "class": "chilled"
+    },
+    {
+      "name": "Yams",
+      "temp": "60",
+      "rh": "85 - 90",
+      "shelf": "3 - 6 months",
+      "class": "cool"
+    },
+    {
+      "name": "Yeast, Compressed: Baker’s",
+      "temp": "31 - 32",
+      "rh": "—",
+      "shelf": "—",
+      "class": "chilled"
+    }
+  ]
+}

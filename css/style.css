@@ -4293,3 +4293,494 @@ body.lc-open .lc-backdrop {
   .calc-result { border: 1px solid #999; box-shadow: none; }
   a[href^="http"]::after { content: " (" attr(href) ")"; font-size: .7rem; color: #666; }
 }
+
+/* ============================================================
+   DOWNLOADS BLOCK (cold-stores.html, services pages)
+   Two-card grid that lifts on hover with the standard 0.32s ease.
+============================================================ */
+.downloads-grid {
+  max-width: 1320px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px;
+  margin-top: 8px;
+}
+.dl-card {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+  gap: 24px;
+  align-items: start;
+  padding: 28px 32px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  text-decoration: none;
+  color: var(--ink);
+  transition: border-color .15s, box-shadow .32s, transform .32s;
+}
+.dl-card:hover {
+  border-color: var(--ink-2);
+  box-shadow: 0 14px 32px -18px rgba(14,15,17,.18);
+  transform: translateY(-2px);
+}
+.dl-card:focus-visible {
+  outline: 2px solid var(--t-warm);
+  outline-offset: 4px;
+}
+.dl-card-feature {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+.dl-card-feature .dl-eyebrow,
+.dl-card-feature .dl-cta { color: rgba(245,242,236,.7); }
+.dl-card-feature h3 { color: var(--paper); }
+.dl-card-feature p { color: rgba(245,242,236,.78); }
+.dl-card-feature .dl-icon { color: var(--t-warm); }
+.dl-card-feature:hover { border-color: var(--t-warm); }
+
+.dl-icon {
+  width: 56px; height: 56px;
+  display: grid; place-items: center;
+  background: var(--paper-2);
+  color: var(--ink);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.dl-card-feature .dl-icon { background: rgba(245,242,236,.06); }
+.dl-icon svg { width: 26px; height: 26px; }
+
+.dl-body { min-width: 0; }
+.dl-eyebrow {
+  font-size: .68rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 10px;
+}
+.dl-card h3 {
+  font-size: 1.14rem;
+  font-weight: 500;
+  letter-spacing: -.02em;
+  margin: 0 0 8px;
+  line-height: 1.3;
+}
+.dl-card p {
+  font-size: .88rem;
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.55;
+}
+.dl-cta {
+  font-size: .78rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--t-warm);
+  white-space: nowrap;
+  align-self: center;
+}
+.dl-cta span { display: inline-block; transition: transform .2s; }
+.dl-card:hover .dl-cta span { transform: translateY(2px); }
+
+@media (max-width: 900px) {
+  .downloads-grid { grid-template-columns: 1fr; }
+  .dl-card { grid-template-columns: 48px minmax(0, 1fr); gap: 18px; padding: 22px; }
+  .dl-cta { grid-column: 1 / -1; padding-left: 66px; }
+  .dl-icon { width: 48px; height: 48px; }
+  .dl-icon svg { width: 22px; height: 22px; }
+}
+
+/* ============================================================
+   COLD STORAGE GUIDE — interactive commodity table.
+   Search + chip filter + sortable table + per-row deep-link
+   to the load calculator.
+============================================================ */
+.csg {
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+/* --- Controls (search + chips) --- */
+.csg-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+.csg-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  transition: border-color .15s;
+}
+.csg-search:focus-within { border-color: var(--ink); }
+.csg-search-icon {
+  width: 18px; height: 18px;
+  margin: 0 14px;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+.csg-search input {
+  flex: 1;
+  border: 0;
+  background: transparent;
+  padding: 14px 14px 14px 0;
+  font: inherit;
+  font-size: .96rem;
+  color: var(--ink);
+  outline: none;
+}
+.csg-search input::placeholder { color: var(--muted); }
+.csg-clear {
+  flex-shrink: 0;
+  border: 0;
+  background: transparent;
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--muted);
+  padding: 8px 14px;
+  cursor: pointer;
+}
+.csg-clear:hover { color: var(--ink); }
+
+.csg-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.csg-chip {
+  font-family: inherit;
+  font-size: .82rem;
+  font-weight: 500;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink-2);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .15s, border-color .15s, color .15s;
+  border-radius: 0;
+}
+.csg-chip .mono { font-size: .72em; opacity: .65; margin-left: 4px; }
+.csg-chip:hover { border-color: var(--ink-2); }
+.csg-chip.is-active {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+.csg-chip:focus-visible {
+  outline: 2px solid var(--t-warm);
+  outline-offset: 2px;
+}
+
+/* --- Counter --- */
+.csg-counter {
+  font-size: .76rem;
+  color: var(--muted);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.csg-counter span { color: var(--ink); }
+
+/* --- Table --- */
+.csg-table-wrap {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  overflow-x: auto;
+  max-height: 640px;
+  overflow-y: auto;
+}
+.csg-table-wrap:focus-visible { outline: 2px solid var(--t-warm); outline-offset: -2px; }
+.csg-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .92rem;
+}
+.csg-table thead {
+  position: sticky; top: 0;
+  background: var(--paper);
+  z-index: 2;
+}
+.csg-table th {
+  text-align: left;
+  font-weight: 500;
+  font-size: .72rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+.csg-unit {
+  font-size: .72em;
+  margin-left: 4px;
+  opacity: .7;
+}
+.csg-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line-2);
+  vertical-align: middle;
+}
+.csg-row { transition: background .12s; }
+.csg-row:hover { background: var(--paper-2); }
+.csg-row:last-child td { border-bottom: 0; }
+
+.csg-c-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  color: var(--ink);
+  min-width: 220px;
+}
+.csg-class {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 20px;
+  font-size: .65rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.csg-class-lt { background: rgba(10,31,61,.92); color: var(--paper); }
+.csg-class-mt { background: rgba(79,195,217,.18); color: var(--t-cold); }
+.csg-class-ht { background: rgba(227,106,30,.12); color: var(--t-warm); }
+.csg-class-na { background: var(--paper-2); color: var(--muted); }
+.csg-name { line-height: 1.35; }
+
+.csg-c-temp, .csg-c-rh { color: var(--ink); white-space: nowrap; }
+.csg-c-shelf { color: var(--ink-2); }
+.csg-c-action { text-align: right; white-space: nowrap; }
+.csg-size {
+  font-size: .76rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--t-warm);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color .15s;
+}
+.csg-size:hover { border-bottom-color: var(--t-warm); }
+.csg-row:hover .csg-size span { transform: translateX(2px); }
+.csg-size span { display: inline-block; transition: transform .2s; }
+.csg-size:focus-visible { outline: 2px solid var(--t-warm); outline-offset: 4px; }
+
+.csg-loading {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--muted);
+  font-size: .82rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.csg-empty {
+  padding: 32px 24px;
+  text-align: center;
+  background: var(--paper);
+  border: 1px dashed var(--line);
+  margin-top: 14px;
+}
+.csg-empty p { margin: 0; color: var(--muted); }
+.csg-empty strong { color: var(--ink); }
+
+/* --- Methodology / sources --- */
+.csg-method {
+  margin-top: 28px;
+  border-top: 1px solid var(--line);
+  padding-top: 24px;
+}
+.csg-method summary {
+  font-size: .76rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.csg-method summary::-webkit-details-marker { display: none; }
+.csg-method summary::before {
+  content: '+';
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  width: 18px;
+  display: inline-block;
+}
+.csg-method[open] summary::before { content: '−'; }
+.csg-method summary:hover { color: var(--ink); }
+.csg-method-body {
+  padding-top: 18px;
+  font-size: .92rem;
+  line-height: 1.65;
+  color: var(--ink-2);
+  max-width: 78ch;
+}
+.csg-sources {
+  margin-top: 14px;
+  padding: 0;
+  list-style: none;
+  font-size: .78rem;
+  color: var(--muted);
+}
+.csg-sources li {
+  padding: 6px 0;
+  border-top: 1px solid var(--line-2);
+  letter-spacing: .04em;
+}
+.csg-sources li:last-child { border-bottom: 1px solid var(--line-2); }
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+  .csg-controls { grid-template-columns: 1fr; gap: 12px; }
+  .csg-chips { justify-content: flex-start; }
+  .csg-table { font-size: .86rem; }
+  .csg-table th, .csg-table td { padding: 12px 14px; }
+  .csg-c-name { min-width: 0; }
+  .csg-c-action { display: none; } /* row tap navigates instead */
+  .csg-row { cursor: pointer; }
+}
+@media (max-width: 540px) {
+  .csg-c-rh { display: none; } /* drop RH column on phones — temp + shelf are essentials */
+  .csg-table th.csg-col-rh { display: none; }
+}
+
+/* ============================================================
+   COLD STORAGE GUIDE → load-calculator deep-link banner.
+   Sits above the calculator when ?commodity= is in the URL.
+============================================================ */
+.csg-prefill {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 20px;
+  margin: 0 0 24px;
+  background: linear-gradient(90deg, rgba(227,106,30,.08), rgba(227,106,30,.02));
+  border-left: 3px solid var(--t-warm);
+  font-size: .92rem;
+}
+.csg-prefill-eyebrow {
+  font-size: .68rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--t-warm);
+}
+.csg-prefill-name {
+  font-weight: 500;
+  color: var(--ink);
+}
+.csg-prefill-spec {
+  color: var(--ink-2);
+  font-size: .82rem;
+}
+.csg-prefill-close {
+  margin-left: auto;
+  border: 0;
+  background: transparent;
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--muted);
+  padding: 4px 8px;
+  cursor: pointer;
+}
+.csg-prefill-close:hover { color: var(--ink); }
+
+/* Category icon in CSG commodity rows */
+.csg-cat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px; height: 22px;
+  flex-shrink: 0;
+  color: var(--ink-2);
+  opacity: .7;
+  transition: opacity .15s, color .15s;
+}
+.csg-row:hover .csg-cat-icon { opacity: 1; }
+.csg-cat-icon svg { width: 18px; height: 18px; display: block; }
+.csg-cat-fruit     { color: #C75615; }
+.csg-cat-vegetable { color: #2E8A4A; }
+.csg-cat-meat      { color: #8B2A2A; }
+.csg-cat-poultry   { color: #B5651D; }
+.csg-cat-seafood   { color: #2E6B8A; }
+.csg-cat-dairy     { color: #6E6F73; }
+.csg-cat-dry-goods { color: #7B5E3A; }
+.csg-cat-beverage  { color: #173E66; }
+.csg-cat-non-food  { color: #2A2D33; }
+
+/* ============================================================
+   COLD STORAGE GUIDE — additional responsive polish.
+   Targets 720, 540, 380 to keep table usable on phones without
+   forcing horizontal scroll on the smallest devices.
+============================================================ */
+@media (max-width: 720px) {
+  .csg { padding: 0; }
+  .csg-controls { gap: 10px; margin-bottom: 14px; }
+  .csg-search input { font-size: 16px; padding: 12px 12px 12px 0; } /* 16px stops iOS zoom on focus */
+  .csg-chips { gap: 6px; }
+  .csg-chip { padding: 9px 12px; font-size: .8rem; }
+  .csg-table-wrap {
+    /* Allow horizontal scroll for the data row, but make it obvious */
+    -webkit-overflow-scrolling: touch;
+    border-left: 0; border-right: 0;
+  }
+  .csg-table { min-width: 560px; }
+  .csg-counter { font-size: .68rem; }
+
+  /* Downloads stack vertically on phones, full-bleed within gutter */
+  .downloads-grid { gap: 14px; }
+  .dl-card { padding: 18px 18px 20px; min-height: 44px; }
+  .dl-card h3 { font-size: 1.04rem; }
+  .dl-card p { font-size: .84rem; }
+  .dl-cta { font-size: .72rem; padding-left: 0; }
+
+  /* Prefill banner wraps cleanly on phone */
+  .csg-prefill { padding: 12px 14px; gap: 10px; font-size: .86rem; }
+  .csg-prefill-name { width: 100%; order: 2; }
+  .csg-prefill-spec { order: 3; }
+  .csg-prefill-eyebrow { order: 1; flex-basis: 100%; }
+  .csg-prefill-close { order: 4; }
+}
+
+@media (max-width: 540px) {
+  /* RH column already hidden; tighten the rest */
+  .csg-table th, .csg-table td { padding: 10px 12px; }
+  .csg-c-name { gap: 8px; }
+  .csg-class { width: 24px; height: 18px; font-size: .58rem; }
+  .csg-cat-icon { width: 18px; height: 18px; }
+  .csg-cat-icon svg { width: 16px; height: 16px; }
+  .csg-name { font-size: .9rem; }
+  .csg-c-temp, .csg-c-shelf { font-size: .82rem; }
+
+  /* Make the whole row tappable on phone — action column hidden on ≤900 already */
+  .csg-row { cursor: pointer; }
+}
+
+@media (max-width: 380px) {
+  /* Last-resort: hide shelf life column on tiny phones; keep name + temp */
+  .csg-table th.csg-col-shelf, .csg-c-shelf { display: none; }
+}
+
+/* Mobile row tap-through (since the action column is hidden on phones) */
+@media (hover: none) and (pointer: coarse) {
+  .csg-row a.csg-size { display: none; }
+  .csg-row { position: relative; }
+  .csg-c-name::after {
+    content: '›';
+    position: absolute;
+    right: 14px; top: 50%; transform: translateY(-50%);
+    color: var(--t-warm);
+    font-size: 1.4rem;
+    line-height: 1;
+    pointer-events: none;
+  }
+}
