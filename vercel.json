@@ -60,6 +60,45 @@
   ],
   "redirects": [
     { "source": "/index", "destination": "/", "permanent": true },
-    { "source": "/index.html", "destination": "/", "permanent": true }
+    { "source": "/index.html", "destination": "/", "permanent": true },
+
+    { "source": "/pir-panels", "destination": "/services/pir-sandwich-panels", "permanent": true },
+    { "source": "/pir-panels/:rest*", "destination": "/services/pir-sandwich-panels", "permanent": true },
+    { "source": "/eps-panels", "destination": "/services/pir-sandwich-panels", "permanent": true },
+    { "source": "/eps-panels/:rest*", "destination": "/services/pir-sandwich-panels", "permanent": true },
+
+    { "source": "/cold-stores", "destination": "/services/cold-stores", "permanent": true },
+    { "source": "/cold-stores/pharmaceutical-cold-storage-solutions", "destination": "/services/cold-stores", "permanent": true },
+    { "source": "/cold-stores/meat-and-poultry-cold-storage-services", "destination": "/services/cold-stores", "permanent": true },
+    { "source": "/cold-stores/fruits-and-vegetables-cold-storages", "destination": "/services/cold-stores", "permanent": true },
+    { "source": "/cold-stores/potato-and-onion-cold-room", "destination": "/services/cold-stores", "permanent": true },
+    { "source": "/cold-stores/:rest*", "destination": "/services/cold-stores", "permanent": true },
+
+    { "source": "/ca-stores", "destination": "/services/ca-stores", "permanent": true },
+    { "source": "/ca-stores/:rest*", "destination": "/services/ca-stores", "permanent": true },
+
+    { "source": "/prefabmodular-solutions", "destination": "/services/prefabricated-structures", "permanent": true },
+    { "source": "/prefabmodular-solutions/:rest*", "destination": "/services/prefabricated-structures", "permanent": true },
+    { "source": "/prefabricated-structures-pakistan", "destination": "/services/prefabricated-structures", "permanent": true },
+
+    { "source": "/refrigeration", "destination": "/services/refrigeration-systems", "permanent": true },
+    { "source": "/refrigeration-systems", "destination": "/services/refrigeration-systems", "permanent": true },
+    { "source": "/insulated-doors", "destination": "/services/insulated-doors", "permanent": true },
+
+    { "source": "/about-izhar", "destination": "/about", "permanent": true },
+    { "source": "/about-us", "destination": "/about", "permanent": true },
+    { "source": "/contact-us", "destination": "/contact", "permanent": true },
+
+    { "source": "/blogs", "destination": "/blog", "permanent": true },
+    { "source": "/blogs/what-is-cold-storage-advantage-of-cold-storage-in-food-and-pharmaceutical-industry", "destination": "/blog/cold-storage-solutions-pakistan-demand-rising", "permanent": true },
+    { "source": "/blogs/what-is-cold-chain-importance-and-advantages-of-cold-chain-in-food-and-pharma-industry", "destination": "/blog/cold-storage-pakistan-export-growth", "permanent": true },
+    { "source": "/blogs/:rest*", "destination": "/blog", "permanent": true },
+
+    { "source": "/uncategorized/what-is-a-blast-freezer-advantages-of-blast-freezer", "destination": "/blog/refrigeration-systems-cold-chain-pakistan", "permanent": true },
+    { "source": "/uncategorized/cold-storage-cost-in-pakistan", "destination": "/blog/cold-storage-solutions-pakistan-demand-rising", "permanent": true },
+    { "source": "/uncategorized/:rest*", "destination": "/blog", "permanent": true },
+
+    { "source": "/top-5-cold-storage-facilities-in-lahore-features-tips", "destination": "/blog/cold-storage-solutions-pakistan-demand-rising", "permanent": true },
+    { "source": "/blog/top-7-applications-of-pir-sandwich-panels-in-industry", "destination": "/blog/pir-panels-thermal-efficiency-smart-building", "permanent": true }
   ]
 }
