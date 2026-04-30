@@ -127,13 +127,15 @@
         stroke-width="0.5"
         stroke-opacity="0.18"/>
 
-  <!-- ==== WORDMARK ==== -->
-  <text x="40" y="70" class="wm-text">IZHARF</text>
+  <!-- ==== WORDMARK ==== Render as one text element so kerning is perfect.
+       The "O" is then covered by the medallion overlay. -->
+  <text x="40" y="70" class="wm-text">IZHARFOSTER</text>
 
   <!-- ==== GREEN COMPRESSOR MEDALLION (the "O" of FOSTER) ====
-       Detailed twin-cylinder reciprocating refrigeration compressor.
-       Green body matching the reference logo's iconic compressor color. -->
-  <g transform="translate(250, 54)">
+       Centered at the natural O glyph position (x≈243) so spacing reads
+       correctly on every viewport. The medallion's cream ring fully covers
+       the O underneath. Detailed twin-cylinder reciprocating compressor. -->
+  <g transform="translate(243, 54)">
     <!-- Outer cream ring -->
     <circle cx="0" cy="0" r="25" fill="#F5F2EC" stroke="#0A1F3D" stroke-width="1"/>
     <!-- Inner cream backdrop (so the green machine has a clean field) -->
@@ -223,8 +225,6 @@
             fill="none" stroke-width="1"/>
     </g>
   </g>
-
-  <text x="274" y="70" class="wm-text">STER</text>
 
   <!-- ==== TAGLINE BELOW PLAQUE ==== -->
   <g transform="translate(40, 116)">
