@@ -2,6 +2,27 @@
 (function () {
   'use strict';
 
+  // Funnel tracking + Vercel Analytics. Loaded once, before everything else,
+  // so the page_view fires even if a later block throws. Path is depth-aware
+  // because main.js is loaded as `js/main.js` from root and `../js/main.js`
+  // from /services/, /blog/, /tools/.
+  (function loadTracker() {
+    if (window.IzharTrack) return;
+    var scripts = document.getElementsByTagName('script');
+    var prefix = 'js/';
+    for (var i = 0; i < scripts.length; i++) {
+      var src = scripts[i].getAttribute('src') || '';
+      if (/(^|\/)main\.js(\?|$)/.test(src)) {
+        prefix = src.replace(/main\.js.*$/, '');
+        break;
+      }
+    }
+    var s = document.createElement('script');
+    s.src = prefix + 'track.js';
+    s.defer = true;
+    (document.head || document.documentElement).appendChild(s);
+  })();
+
   // --- Live chat widget (single FAB → expanding contact panel)
   (function buildLiveChat() {
     if (document.querySelector('.lc-root')) return;
