@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Izhar Foster — cold-chain division of Izhar Engineering">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#11264A"/>
+      <stop offset="100%" stop-color="#08172E"/>
+    </linearGradient>
+    <linearGradient id="greenBody" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#3FA85F"/>
+      <stop offset="55%"  stop-color="#2E8A4A"/>
+      <stop offset="100%" stop-color="#1F6B36"/>
+    </linearGradient>
+    <linearGradient id="greenHead" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#5BC079"/>
+      <stop offset="100%" stop-color="#2E8A4A"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Brand plaque background, full bleed -->
+  <rect width="512" height="512" rx="64" fill="url(#bg)"/>
+
+  <!-- Cream medallion containing the compressor (matches site logo's "O" treatment) -->
+  <circle cx="256" cy="256" r="170" fill="#F5F2EC" stroke="#0A1F3D" stroke-width="6"/>
+  <circle cx="256" cy="256" r="155" fill="#F5F2EC" stroke="#0A1F3D" stroke-width="2" stroke-opacity="0.25"/>
+
+  <!-- Compressor (scaled from logo-icon.svg at ~5.3× to fill the medallion) -->
+  <g transform="translate(256, 264)" stroke="#0A1F3D" stroke-linejoin="round" stroke-linecap="round">
+    <!-- Baseplate -->
+    <rect x="-112" y="72" width="224" height="20" rx="3" fill="url(#greenBody)" stroke-width="3.5"/>
+    <rect x="-96" y="92" width="16" height="13" fill="#0A1F3D"/>
+    <rect x="-8"  y="92" width="16" height="13" fill="#0A1F3D"/>
+    <rect x="80"  y="92" width="16" height="13" fill="#0A1F3D"/>
+
+    <!-- Crankcase -->
+    <path d="M -104 72 L -104 21 Q -104 8 -91 8 L 91 8 Q 104 8 104 21 L 104 72 Z"
+          fill="url(#greenBody)" stroke-width="4"/>
+    <line x1="-91" y1="42" x2="91" y2="42" stroke-width="2.4" opacity="0.5"/>
+    <circle cx="-75" cy="58" r="4" fill="#0A1F3D"/>
+    <circle cx="-37" cy="58" r="4" fill="#0A1F3D"/>
+    <circle cx="0"   cy="58" r="4" fill="#0A1F3D"/>
+    <circle cx="37"  cy="58" r="4" fill="#0A1F3D"/>
+    <circle cx="75"  cy="58" r="4" fill="#0A1F3D"/>
+
+    <!-- Left cylinder -->
+    <rect x="-77" y="-58" width="59" height="66" rx="7.5" fill="url(#greenHead)" stroke-width="4.5"/>
+    <g stroke-width="2" opacity="0.6">
+      <line x1="-77" y1="-45" x2="-19" y2="-45"/>
+      <line x1="-77" y1="-32" x2="-19" y2="-32"/>
+      <line x1="-77" y1="-19" x2="-19" y2="-19"/>
+      <line x1="-77" y1="-6"  x2="-19" y2="-6"/>
+    </g>
+    <rect x="-83" y="-72" width="69" height="16" rx="3.7" fill="url(#greenHead)" stroke-width="3.7"/>
+    <circle cx="-69" cy="-64" r="3.7" fill="#0A1F3D"/>
+    <circle cx="-21" cy="-64" r="3.7" fill="#0A1F3D"/>
+
+    <!-- Right cylinder -->
+    <rect x="19" y="-58" width="59" height="66" rx="7.5" fill="url(#greenHead)" stroke-width="4.5"/>
+    <g stroke-width="2" opacity="0.6">
+      <line x1="19" y1="-45" x2="77" y2="-45"/>
+      <line x1="19" y1="-32" x2="77" y2="-32"/>
+      <line x1="19" y1="-19" x2="77" y2="-19"/>
+      <line x1="19" y1="-6"  x2="77" y2="-6"/>
+    </g>
+    <rect x="13" y="-72" width="69" height="16" rx="3.7" fill="url(#greenHead)" stroke-width="3.7"/>
+    <circle cx="24" cy="-64" r="3.7" fill="#0A1F3D"/>
+    <circle cx="72" cy="-64" r="3.7" fill="#0A1F3D"/>
+
+    <!-- Manifold + valves -->
+    <rect x="-91" y="-88" width="176" height="13" rx="5.5" fill="url(#greenHead)" stroke-width="3"/>
+    <circle cx="-59" cy="-99" r="9" fill="url(#greenHead)" stroke-width="3"/>
+    <line x1="-59" y1="-108" x2="-59" y2="-88" stroke-width="2.7"/>
+    <circle cx="53" cy="-99" r="9" fill="url(#greenHead)" stroke-width="3"/>
+    <line x1="53" y1="-108" x2="53" y2="-88" stroke-width="2.7"/>
+
+    <!-- Pressure gauge -->
+    <circle cx="-3" cy="-101" r="10.5" fill="#F5F2EC" stroke-width="3"/>
+    <line x1="-3" y1="-101" x2="3" y2="-107" stroke-width="2.7"/>
+
+    <!-- Suction/discharge piping -->
+    <path d="M -91 -82 Q -117 -67 -117 -42 Q -117 -13 -104 8" fill="none" stroke-width="6.5"/>
+    <path d="M 85 -82 Q 117 -67 117 -42 Q 117 -13 104 8" fill="none" stroke-width="6.5"/>
+  </g>
+</svg>
