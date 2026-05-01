@@ -1,8 +1,29 @@
 # Izhar Foster — Claude Code Instructions
 
+## Active growth plan — read before making changes
+
+**The canonical roadmap is [GROWTH-PLAN.md](GROWTH-PLAN.md).** Source-of-truth resolutions for conflicting facts are in [DECISIONS.md](DECISIONS.md). Both files are checked into the repo and referenced by every PR.
+
+**Priority pillars (grow):** Cold Stores · PIR Sandwich Panels (FireSafe PIR) · Refrigeration Systems
+**Secondary:** CA Stores · Insulated Doors · Refrigerated Vehicles · CEA Greenhouses
+**Deprioritize (keep on site, low visibility):** Plant Factories · Smart Cabins · Prefabricated Steel Buildings (PEB)
+
+**Headline diagnosis:** impressions-rich, click-poor (5,490 clicks / 179,453 impressions / pos 21.7 over 16 months). Growth lever is CTR on existing rankings, not new keywords. Pharmaceutical cold storage is the single biggest opportunity (16,740 imp, pos 59).
+
+**Active commitments:**
+- Website remodel to lead with cold-store funnel (see GROWTH-PLAN §13)
+- Cost Calculator (Tool 8) integration on top of existing 7 calculators (see GROWTH-PLAN §14)
+- 14 named case studies queued (5 from Downloads/, 9 from brochure)
+- λ value standardised to 0.022 W/m·K (BS EN 14509 aged) across site, llms.txt, and schema
+- "FireSafe PIR" sub-brand adopted
+
+When picking work, every PR title should reference a GROWTH-PLAN section. Do not drift.
+
+---
+
 ## Project overview
 
-Premium redesign of izharfoster.com — Pakistan's largest sandwich panel manufacturer and cold-chain provider since 1959 (division of Izhar Group). Static HTML + CSS + vanilla JS. **No build step.** Served via `python3 -m http.server 8090` from `~/projects/izharfoster/`. Port 8080 is taken by a separate project — always use 8090. Vercel deploys directly from `main`.
+Premium redesign of izharfoster.com — Pakistan's largest sandwich panel manufacturer and cold-chain provider since 1959 (division of Izhar Engineering). Static HTML + CSS + vanilla JS. **No build step.** Served via `python3 -m http.server 8090` from `~/projects/izharfoster/`. Port 8080 is taken by a separate project — always use 8090. Vercel deploys directly from `main`.
 
 ## Architecture
 
@@ -137,10 +158,20 @@ Run from `_kr_scrape/` directory (Playwright is in `_kr_scrape/node_modules/`).
 
 ## What's not built yet
 
-- Open Spec Sheet Library (downloadable PDFs, no email gate)
-- Cold Map of Pakistan (filterable interactive project map)
-- Additional client testimonials / case studies
-- Visual upgrades V4–V8 from `_kr_scrape/E2E-AUDIT.md` (Pakistan map picker, live-derate slider, panel comparison table, Sankey diagram, etc.)
+Tracked in [GROWTH-PLAN.md](GROWTH-PLAN.md) §10 (phasing). Highlights:
+
+- **Cost Calculator (Tool 8)** — PKR cost estimator on top of the existing 7 calculators (GROWTH-PLAN §14)
+- **14 case studies** — 5 from Downloads/ (TCCEC Coca-Cola, Naubahar Pepsi, Connect Logistics, Haier Lab, USAID Banana Ripening), 9 from brochure (Sharaf 50ft, Iceland Raiwand -28°C, HAC Agri 3000-ton, Gourmet, Emirates Logistics, Metro Ravi, United Snacks, Oye Hoye, Engro/Angro)
+- **Pharmaceutical cold storage page rebuild** — biggest single GSC opportunity (16,740 imp, pos 59)
+- **City landing pages** — `/cold-storage-karachi`, `/cold-storage-lahore`, `/cold-storage-multan`, `/cold-storage-faisalabad`
+- **Industry vertical pages** — beverage, pharma, dairy, agri-export, 3PL logistics
+- **Refrigerated Vehicles service page** — currently no page exists
+- **Open Spec Sheet Library** (downloadable PDFs, no email gate)
+- **HAC Agri 3,000-ton CA store floor plan PDF** (brochure pp.63-64)
+- **Cold Map of Pakistan** (filterable interactive project map)
+- **WhatsApp click-to-chat button** site-wide
+
+Off-strategy capabilities (Plant Factories, Smart Cabins, full Prefab/PEB) stay on site but are visually demoted per GROWTH-PLAN §3.
 
 ## Deploy
 

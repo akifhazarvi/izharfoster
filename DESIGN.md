@@ -1,5 +1,7 @@
 # Izhar Foster — Design System
 
+> **Remodel underway.** This design system remains the visual backbone, but the homepage and priority service pages are being restructured to lead with the cold-store funnel per [GROWTH-PLAN.md](GROWTH-PLAN.md) §13. The temperature rail, palette, and type scale below stay unchanged. What changes: block ordering, hero composition, trust band placement, calculator embeds, and visual demotion of off-strategy products.
+
 ## The big idea: the temperature is the brand
 
 A vertical gradient spectrum (−40°C → +25°C) is a permanent left-edge rail across every page, with a small pin that moves to each section's `data-temp` value as the user scrolls. This is the ownable visual mechanic — competitors (Lineage, Americold, NewCold, Koldkraft) all use generic warehouse photos and corporate blue.

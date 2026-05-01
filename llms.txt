@@ -7,25 +7,33 @@
 ## Company
 
 - Parent group: Izhar Engineering / Izhar Group, founded in 1959 by Engineer Izhar Ahmad Qureshi
-- Group heritage: 65+ years of continuous engineering operation in Pakistan
-- Group structure: 6 subsidiary engineering companies (Izhar Engineering, Izhar Concrete, MEP Solutions, Izhar Housing, Green Revolution, Izhar Energy Services)
+- Group heritage: 65+ years of continuous engineering operation in Pakistan ("7th decade of innovative construction")
 - Izhar Foster role: Cold-chain division of Izhar Engineering
-- Distinction: Pakistan's largest PIR sandwich panel manufacturer — manufactured in-house, not imported or resold
-- Installations: 2,100+ cold-chain projects delivered Pakistan-wide
-- Clients: 100+ brands including Nestlé, Engro, Unilever, PepsiCo, K&N's, Metro Cash & Carry, Sapphire Group, Lucky Cement, Interloop
+- Distinction: Pakistan's largest PIR sandwich panel manufacturer — manufactured in-house, not imported or resold; Pakistan's first and only Controlled Atmosphere (CA) store turnkey builder
+- Brand line: FireSafe PIR (the firm's PIR product family)
+- Installations: 2,100+ cold-chain projects delivered Pakistan-wide; 1,500+ pre-engineered steel buildings supplied separately by parent group
+- Manufacturing facility: 277,460 sqft plant on 36-KM Multan Road, Lahore — Pakistan's largest manufacturing complex of its type
+- Workforce: 100+ engineers and project managers, 1,300 skilled workers
+- Quality system: ISO 9001:2015 (SGS-certified), ISO 14001, OHSAS 18001
+- Memberships and registrations: Pakistan Engineering Council, AISC (American Institute of Steel Construction), AWS (American Welding Society), MBMA (Metal Building Manufacturers Association), AISI (American Iron and Steel Institute), ASME (American Society of Mechanical Engineers)
+- Engineering software: Tekla Structures, STAAD.Pro V8i, Metal Building Software (MBS), Emerson Climet Technologies refrigeration load calculator
+- Equipment partners: Bitzer (compressors, Germany), Zanotti (refrigeration packages and truck units, Italy), Thermo King (truck refrigeration, USA), Heatcraft (rack systems, USA), LU-VE (evaporators, Italy), Fruit Control Italiana (CA store equipment, Italy — GAC 5000, Swingtherm-BS, Intelligem IG, Fighter/Bravo/Swan PSA nitrogen), Hörmann (high-speed insulated doors, Germany), Songz (HVAC, China), Martek (supermarket cooling, Italy)
+- Clients: 100+ brands including Coca-Cola Pakistan (TCCEC Lahore), Pepsi (Naubahar Bottling Gujranwala), Nestlé, Engro, Unilever, PepsiCo, K&N's, Metro Cash & Carry, Sapphire Group, Lucky Cement, Interloop, Pakistan Army, USAID, Hyperstar, Connect Logistics, Haier, Sharaf Logistics, Iceland Cold Chain, Gourmet Foods, Emirates Logistics, Maple Leaf Cement, Hyundai Nishat
 - Manufacturing plant: 36-KM Multan Road, Lahore
 - Head office: Izhar House, 35-Tipu Block, New Garden Town, Lahore
+- Karachi office: 17-J Block 6, PECHS, Karachi
 - Coverage: Pakistan-wide installation and service
 - Site: https://izharfoster.com/
 
 ## Products and the temperature spectrum
 
 - [Cold Stores](https://izharfoster.com/services/cold-stores) — chiller (0–10°C), walk-in freezer (−18 to −25°C), blast chiller (+70°C → +3°C in 90 min), blast freezer (−40°C air, −18°C core), ambient and dry storage. Capacity 50–10,000 m³.
-- [PIR Sandwich Panels](https://izharfoster.com/services/pir-sandwich-panels) — ozone-friendly polyisocyanurate, thermal conductivity λ ≈ 0.020–0.022 W/m·K, density 40–60 kg/m³, fire class B1 (ASTM E84), compressive strength >300 kPa. Core thicknesses 50/75/100/125/150/175/200 mm. Insulating effect ~49× greater than concrete. Lifespan 50+ years. Manufactured in-house.
-- [Refrigeration Systems](https://izharfoster.com/services/refrigeration-systems) — Ammonia (NH₃) for industrial loads; HFC/A2L for commercial. Chillers, blast freezers, plate freezers, modular cold rooms. Zero ODP options available.
-- [Controlled Atmosphere (CA) Stores](https://izharfoster.com/services/ca-stores) — precise O₂ (2–3%), CO₂ (1–5%), N₂, humidity, and temperature control for apples, dates, kinnow, stone fruit. Extends shelf life 4–6× versus conventional cold storage.
-- [Prefabricated Structures](https://izharfoster.com/services/prefabricated-structures) — steel-frame, PIR-clad. Warehouses, offices, classrooms, sports halls, labour housing. Typically 3× faster to install than masonry.
-- [Insulated Doors](https://izharfoster.com/services/insulated-doors) — sliding, hinged, high-speed roll-up. PIR cores, multi-stage gasket seals, heated frames for sub-zero applications.
+- [FireSafe PIR Sandwich Panels](https://izharfoster.com/services/pir-sandwich-panels) — ozone-friendly polyisocyanurate, thermal conductivity λ ≈ 0.022 W/m·K (BS EN 14509 declared aged value), density 40–45 kg/m³, fire class B1 to ASTM E84 (foam B2), compressive strength >100 KPa, water absorbency <1% by volume. Core thicknesses 50 / 60 / 80 / 100 / 150 mm (specials to 250 mm). U-values: 0.36 / 0.31 / 0.25 / 0.19 / 0.13 W/m²K respectively. Maximum panel length 50 ft. Insulating effect ~49× greater than concrete, ~42× greater than brick, delivering ~30% energy savings. Pentane blowing agent — zero ODP, no HCFC-141b. Lifespan 50+ years. Manufactured in-house at 277,460 sqft Lahore plant.
+- [Pharmaceutical Cold Storage](https://izharfoster.com/services/pharmaceutical-cold-storage) — GMP-validated cold rooms and pharma warehouses across +25°C CRT, +2/+8°C refrigerated, −20°C deep-freeze, and −80°C ultra-low. DRAP-compliant, IQ/OQ/PQ documentation, WHO TRS 961 Annex 9 mapping, MKT excursion analysis, N+1 redundant Bitzer-based refrigeration, tamper-evident continuous data logging.
+- [Controlled Atmosphere (CA) Stores](https://izharfoster.com/services/ca-stores) — Pakistan's first and only CA store turnkey builder. Precise O₂ (0.5–5%), CO₂ (0–10%), N₂, humidity, and temperature control extending shelf life of apples, mango, kinnow, dates, and stone fruit up to 12 months vs 1–4 months in conventional cold storage. ULO (Ultra Low Oxygen) and DCA / Swinglos protocols. Equipment by Fruit Control Italiana — GAC 5000 computerised analysis, Swingtherm-BS catalytic ethylene removal, Intelligem IG CO₂ adsorption, Fighter/Bravo/Swan PSA nitrogen generators, oxygen scrubbers.
+- [Refrigeration Systems](https://izharfoster.com/services/refrigeration-systems) — Ammonia (NH₃) DX, ammonia–glycol indirect, and Freon CDU systems. Bitzer compressors, Heatcraft rack systems, LU-VE evaporators, Zanotti packages. Designed for Pakistan's 50°C summer ambient with explicit MT 2.0%/K and LT 2.7%/K condenser ambient derate. Generator + grid power design standard. SCADA / cloud monitoring. R134a, R404A, R507, R407C, R410A, R454C, R449A, NH₃ supported; R22 phased out per Montreal Protocol.
+- [Prefabricated Structures](https://izharfoster.com/services/prefabricated-structures) — steel-frame, PIR-clad. Cold-chain envelopes (warehouses, cold stores), offices, classrooms, telecom shelters. Typically 3× faster to install than masonry.
+- [Insulated Doors](https://izharfoster.com/services/insulated-doors) — sliding, hinged, high-speed roll-up. FireSafe PIR cores, multi-stage gasket seals, heated frames for sub-zero applications. Hörmann high-speed integration available.
 
 ## Engineering calculators (free, client-side, no login)
 
