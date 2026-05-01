@@ -5244,8 +5244,10 @@ body.lc-open .lc-backdrop {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  padding: 0 20px;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 22px;
+  min-height: 72px;
   border-right: 1px solid var(--line);
   text-align: center;
   flex-shrink: 0;
@@ -5253,50 +5255,88 @@ body.lc-open .lc-backdrop {
 }
 .cert-badge:last-child { border-right: none; }
 .cert-badge:hover { transform: translateY(-2px); }
+/* Logo image — variable aspect, fixed height */
+.cert-badge-logo {
+  height: 38px;
+  width: auto;
+  max-width: 110px;
+  object-fit: contain;
+  display: block;
+  filter: grayscale(1) contrast(1.05);
+  opacity: .72;
+  transition: filter .25s ease, opacity .25s ease;
+}
+.cert-badge:hover .cert-badge-logo { filter: grayscale(0) contrast(1); opacity: 1; }
+/* Solid-colour brand logos (IEC blue tile, etc.) — keep colour */
+.cert-badge-logo.no-grayscale { filter: none; opacity: .9; }
+.cert-badge:hover .cert-badge-logo.no-grayscale { opacity: 1; }
+/* Fallback SVG icon (when there's no logo image, e.g. BS EN, GDP) */
 .cert-badge-icon {
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 2px;
   color: var(--t-cold);
-  opacity: .85;
+  opacity: .8;
   transition: color .2s ease, opacity .2s ease;
 }
 .cert-badge-icon svg { width: 100%; height: 100%; display: block; }
 .cert-badge:hover .cert-badge-icon { color: var(--t-warm); opacity: 1; }
+/* Optional below-logo cert code text */
 .cert-badge-code {
   font-family: var(--font-mono);
-  font-size: .78rem;
-  font-weight: 600;
+  font-size: .68rem;
+  font-weight: 500;
   letter-spacing: .04em;
-  color: var(--ink);
+  color: var(--muted);
   white-space: nowrap;
 }
 .cert-badge-label {
-  font-size: .64rem;
+  font-size: .62rem;
   color: var(--muted);
   white-space: nowrap;
-  letter-spacing: .02em;
+  letter-spacing: .03em;
+}
+
+@media (max-width: 1100px) {
+  .cert-badge { padding: 0 16px; min-height: 64px; }
+  .cert-badge-logo { height: 32px; max-width: 90px; }
+  .cert-badge-icon { width: 30px; height: 30px; }
 }
 @media (max-width: 900px) {
   .cert-strip-inner { gap: 16px 0; }
-  .cert-strip-label { border-right: none; margin-right: 0; padding-right: 0; width: 100%; margin-bottom: 8px; }
-  .cert-badge { padding: 0 14px; }
-  .cert-badge-icon { width: 24px; height: 24px; }
+  .cert-strip-label { border-right: none; margin-right: 0; padding-right: 0; width: 100%; margin-bottom: 12px; }
+  .cert-badge { padding: 6px 14px; min-height: 56px; }
 }
 @media (max-width: 480px) {
+  .cert-strip { padding: 24px var(--gutter); }
   .cert-strip-inner { gap: 0; }
-  .cert-badge { padding: 14px 12px; border-right: none; border-bottom: 1px solid var(--line); width: 33.333%; }
+  .cert-badge { padding: 14px 8px; border-right: none; border-bottom: 1px solid var(--line); width: 33.333%; min-height: 70px; }
   .cert-badge:nth-last-child(-n+3) { border-bottom: none; }
+  .cert-badge-logo { height: 26px; max-width: 76px; }
 }
 
-/* Cert-card icon (certifications page) */
+/* Cert-card logo (certifications page) — bigger, visible */
+.cert-card-logo {
+  position: absolute;
+  top: 28px; right: 28px;
+  height: 44px;
+  width: auto;
+  max-width: 100px;
+  object-fit: contain;
+  filter: grayscale(1);
+  opacity: .55;
+  transition: opacity .25s ease, filter .25s ease;
+}
+.cert-card:hover .cert-card-logo { filter: none; opacity: 1; }
+.cert-card-logo.no-grayscale { filter: none; opacity: .8; }
+.cert-card:hover .cert-card-logo.no-grayscale { opacity: 1; }
+/* Cert-card fallback SVG icon */
 .cert-card-icon {
   position: absolute;
   top: 28px; right: 28px;
-  width: 32px; height: 32px;
+  width: 36px; height: 36px;
   color: var(--t-cold);
   opacity: .35;
 }
