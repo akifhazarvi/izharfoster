@@ -44,103 +44,121 @@
     </style>
   </defs>
 
-  <!-- ==== PLAQUE: notched street-sign silhouette ==== -->
+  <!-- ==== PLAQUE: sandwich-panel section silhouette ====
+       The defining brand element. Body runs from x=24 to x=436 (top/bottom
+       edges at y=14 and y=94). Each end has TWO panel-section tongue tabs
+       that step out horizontally — like the tongue-and-groove edge of an
+       actual PIR sandwich panel section. Tabs project to x=4 (left) and
+       x=456 (right), giving 20px of stepped end-cap on each side.
+
+       Geometry: from the body edge (y=14..94, height 80), the upper tab
+       runs y=22..40, the lower tab runs y=68..86. Between the tabs the
+       end-face recesses. This silhouette is clearly readable as a panel
+       section, distinct from a plain rounded plaque. -->
 
   <!-- Outer cream plaque frame -->
-  <path d="M 18 14
-           L 18 22
-           L 10 22
-           L 10 38
-           L 4 38
-           L 4 70
-           L 10 70
-           L 10 86
-           L 18 86
-           L 18 94
-           L 442 94
-           L 442 86
-           L 450 86
-           L 450 70
-           L 456 70
-           L 456 38
-           L 450 38
-           L 450 22
-           L 442 22
-           L 442 14
+  <path d="M 24 14
+           L 24 22
+           L 12 22
+           L 12 40
+           L 4 40
+           L 4 68
+           L 12 68
+           L 12 86
+           L 24 86
+           L 24 94
+           L 436 94
+           L 436 86
+           L 448 86
+           L 448 68
+           L 456 68
+           L 456 40
+           L 448 40
+           L 448 22
+           L 436 22
+           L 436 14
            Z"
         fill="url(#creamFrame)"
         stroke="#0A1F3D"
-        stroke-width="1.2"
+        stroke-width="1.3"
         stroke-linejoin="round"/>
 
-  <!-- Inner ink plaque -->
-  <path d="M 23 19
-           L 23 25
-           L 15 25
-           L 15 41
-           L 9 41
-           L 9 67
-           L 15 67
-           L 15 83
-           L 23 83
-           L 23 89
-           L 437 89
-           L 437 83
-           L 445 83
-           L 445 67
-           L 451 67
-           L 451 41
-           L 445 41
-           L 445 25
-           L 437 25
-           L 437 19
+  <!-- Inner ink plaque (offset ~5px from cream frame) -->
+  <path d="M 29 19
+           L 29 26
+           L 17 26
+           L 17 44
+           L 9 44
+           L 9 64
+           L 17 64
+           L 17 82
+           L 29 82
+           L 29 89
+           L 431 89
+           L 431 82
+           L 443 82
+           L 443 64
+           L 451 64
+           L 451 44
+           L 443 44
+           L 443 26
+           L 431 26
+           L 431 19
            Z"
         fill="url(#plaqueBody)"
         stroke="#F5F2EC"
         stroke-width="0.8"
-        stroke-opacity="0.25"/>
+        stroke-opacity="0.28"/>
 
-  <!-- Faint inner hairline -->
-  <path d="M 27 23
-           L 27 27
-           L 19 27
-           L 19 43
-           L 13 43
-           L 13 65
-           L 19 65
-           L 19 81
-           L 27 81
-           L 27 85
-           L 433 85
-           L 433 81
-           L 441 81
-           L 441 65
-           L 447 65
-           L 447 43
-           L 441 43
-           L 441 27
-           L 433 27
-           L 433 23
+  <!-- Faint inner hairline (decorative inset on ink plaque) -->
+  <path d="M 33 23
+           L 33 30
+           L 21 30
+           L 21 46
+           L 13 46
+           L 13 62
+           L 21 62
+           L 21 78
+           L 33 78
+           L 33 85
+           L 427 85
+           L 427 78
+           L 439 78
+           L 439 62
+           L 447 62
+           L 447 46
+           L 439 46
+           L 439 30
+           L 427 30
+           L 427 23
            Z"
         fill="none"
         stroke="#F5F2EC"
         stroke-width="0.5"
-        stroke-opacity="0.18"/>
+        stroke-opacity="0.22"/>
 
-  <!-- ==== WORDMARK ==== Render as one text element so kerning is perfect.
-       The "O" is then covered by the medallion overlay. -->
-  <text x="40" y="70" class="wm-text">IZHARFOSTER</text>
+  <!-- ==== WORDMARK ==== Split into "IZHARF" + "STER" so we can place the
+       compressor medallion as the "O" with equal whitespace on each side.
+       Both halves are anchored at their inner edge (F's right, S's left)
+       so the medallion sits centred between them at x=246, gap=18 on each
+       side. The medallion itself is r=29 — slightly bigger than the cap
+       height (~36px) so it visually anchors the wordmark. -->
+  <text x="221" y="70" text-anchor="end" class="wm-text">IZHARF</text>
+  <text x="295" y="70" text-anchor="start" class="wm-text">STER</text>
 
   <!-- ==== GREEN COMPRESSOR MEDALLION (the "O" of FOSTER) ====
-       Centered at the natural O glyph position (x≈243) so spacing reads
-       correctly on every viewport. The medallion's cream ring fully covers
-       the O underneath. Detailed twin-cylinder reciprocating compressor. -->
-  <g transform="translate(243, 54)">
+       Sits between F and S with equal 8px whitespace gap on each side
+       (F's right edge → ring left edge = ring right edge → S's left edge).
+       Medallion centre x=258 — chosen so the whole composition
+       (IZHARF + medallion + STER) is visually centred in the plaque body.
+       Outer ring r=29 — slightly larger than caps so the compressor is
+       the clear focal point. -->
+  <g transform="translate(258, 54)">
     <!-- Outer cream ring -->
-    <circle cx="0" cy="0" r="25" fill="#F5F2EC" stroke="#0A1F3D" stroke-width="1"/>
+    <circle cx="0" cy="0" r="29" fill="#F5F2EC" stroke="#0A1F3D" stroke-width="1.1"/>
     <!-- Inner cream backdrop (so the green machine has a clean field) -->
-    <circle cx="0" cy="0" r="22" fill="#F5F2EC"/>
-    <circle cx="0" cy="0" r="22" fill="none" stroke="#0A1F3D" stroke-width="0.5" stroke-opacity="0.25"/>
+    <circle cx="0" cy="0" r="25.5" fill="#F5F2EC"/>
+    <circle cx="0" cy="0" r="25.5" fill="none" stroke="#0A1F3D" stroke-width="0.5" stroke-opacity="0.25"/>
 
     <!-- ==== GREEN COMPRESSOR ASSEMBLY ==== -->
     <g stroke="#0A1F3D" stroke-linejoin="round" stroke-linecap="round">
@@ -227,7 +245,7 @@
   </g>
 
   <!-- ==== TAGLINE BELOW PLAQUE ==== -->
-  <g transform="translate(40, 116)">
+  <g transform="translate(46, 116)">
     <line x1="0" y1="-3.5" x2="14" y2="-3.5" class="tag-rule"/>
     <text x="22" y="0" class="tag-mono">Division of Izhar Engineering · Since 1959</text>
   </g>
