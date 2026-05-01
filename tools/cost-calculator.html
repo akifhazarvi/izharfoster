@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PLY0DZWNEM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PLY0DZWNEM');
+  </script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="canonical" href="https://izharfoster.com/tools/cost-calculator">
+<title>Cold Storage Cost Calculator Pakistan | Izhar Foster</title>
+<meta name="description" content="Free Pakistan cold storage cost calculator — capacity, refrigeration kW, panel area, civil, doors, electrical, PEB vs RCC, diesel vs solar, cost per ton/pallet/m³. Engineering + financial + commercial in one tool.">
+<meta property="og:title" content="Cold Storage Cost Calculator Pakistan | Izhar Foster">
+<meta property="og:description" content="World's first intelligent cold store cost calculator. Capacity, kW, panel m², civil, refrigeration, doors, diesel vs solar, PEB vs RCC, cost per ton/pallet. Free, Pakistan-tuned.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://izharfoster.com/images/og-default.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_PK">
+<meta property="og:site_name" content="Izhar Foster">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+<link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="https://izharfoster.com/images/favicon-mark.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://izharfoster.com/images/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://izharfoster.com/images/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://izharfoster.com/images/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Cold Storage Cost Calculator — Izhar Foster","description":"Free Pakistan-tuned cold storage cost calculator. Combines ASHRAE-grade refrigeration heat-load engineering with civil, panel, refrigeration, electrical, doors, controls, and operating-cost analysis. Outputs PKR cost band, cost per ton/pallet/m³, diesel vs solar OPEX, PEB vs RCC envelope comparison.","applicationCategory":"EngineeringApplication","operatingSystem":"Web","url":"https://izharfoster.com/tools/cost-calculator","offers":{"@type":"Offer","price":"0","priceCurrency":"PKR"},"creator":{"@type":"Organization","name":"Izhar Foster (Pvt) Limited","url":"https://izharfoster.com/"},"featureList":["Heat-load kW estimation per ASHRAE Refrigeration Handbook Ch. 24 method","Pakistan city tariff database (LESCO, K-Electric, IESCO, MEPCO, FESCO, PESCO, QESCO, HESCO, SEPCO, GEPCO)","FireSafe PIR sandwich panel sizing 50–200 mm","Civil cost per site class (greenfield / inside-shed / multi-zone)","Refrigeration architecture choice (CDU / rack / NH3-glycol / NH3-DX)","Diesel vs Solar OPEX comparison","PEB vs RCC envelope economics","Cost per ton, cost per pallet, cost per m³","Inline-editable cost cells with localStorage override","PDF proposal export"]}
+</script>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"How much does a cold storage cost in Pakistan?","acceptedAnswer":{"@type":"Answer","text":"Cold storage capex in Pakistan typically runs PKR 25,000–60,000 per cubic metre of net storage (approximately USD 90–215/m³), depending on temperature, panel thickness, refrigeration architecture, and site class. A 1,000 m³ cold store at +0°C with 100 mm FireSafe PIR and a CDU refrigeration system on a greenfield site costs roughly PKR 3.5–4.5 crore. Larger blast freezers, ammonia plants, multi-zone 3PL warehouses, and CA stores cost more. The Izhar Foster cost calculator on this page gives a free indicative band for your specific scope."}},
+{"@type":"Question","name":"What does the cost include?","acceptedAnswer":{"@type":"Answer","text":"The calculator covers the full turnkey scope: FireSafe PIR sandwich panel envelope (walls + ceiling), civil works (foundation, slab, drainage, dock approach), refrigeration plant (compressors, condensers, evaporators, piping, refrigerant charge), insulated doors, electrical (panels, cabling, distribution), controls and SCADA, plus engineering design, project management, commissioning, contingency, and Izhar Foster overhead and margin. Direct subtotal is uplifted by approximately 29% to capture EPC scope; the final number is presented as a ±20% band."}},
+{"@type":"Question","name":"How accurate is the calculator?","acceptedAnswer":{"@type":"Answer","text":"Each output is presented as an indicative band ±20%, calibrated against Izhar Foster's historical project order book and Pakistan-specific civil and refrigeration benchmarks. For a precise quotation, share your project specifics with our engineering team via the Quote, WhatsApp, or PDF buttons at the bottom of the result. Engineers reply within 24 hours with a sized concept and a firm budget."}},
+{"@type":"Question","name":"Can I edit the underlying cost numbers?","acceptedAnswer":{"@type":"Answer","text":"Yes. Every cost cell on the breakdown table is inline-editable — click the value, enter your own number, and the calculator recomputes immediately. Overrides persist per-session in your browser (localStorage). Use the Reset button to restore Izhar Foster's indicative defaults. This makes the tool useful both for buyers comparing scenarios and for sales engineers walking customers through a quote."}},
+{"@type":"Question","name":"How does the diesel-vs-solar comparison work?","acceptedAnswer":{"@type":"Answer","text":"For each Pakistani city we apply a default load-shedding hours-per-day figure (overrideable). Diesel OPEX is calculated from the refrigeration plant's part-load kWh during outage hours, the diesel rate (PKR per litre, currently approximately 285), and a typical genset efficiency of 3.2 kWh per litre. Solar OPEX saving is calculated from a rooftop PV plant sized to the refrigeration peak, using Pakistan's average annual yield of 1,650 kWh per kW installed and the city's electricity tariff. Payback is solar capex divided by annual saving."}},
+{"@type":"Question","name":"PEB or RCC for cold storage in Pakistan?","acceptedAnswer":{"@type":"Answer","text":"PEB (Pre-Engineered Building, steel-frame) is faster and cheaper at construction; RCC (Reinforced Cement Concrete) is heavier but offers better thermal mass, fire resistance, and longer structural life. The calculator applies a 1.35× capex multiplier and an additional 6 weeks lead time for RCC. Most Pakistani cold-store buyers choose PEB for the speed advantage; RCC is selected for permanent owner-occupied facilities where the 25-year-plus structural argument outweighs the capex premium."}},
+{"@type":"Question","name":"What makes this tool different from other cold storage cost estimators?","acceptedAnswer":{"@type":"Answer","text":"Most global cold-storage tools are either purely technical (Bitzer Software, Danfoss Coolselector, Güntner Configurator — sizing, no cost) or purely marketing (Coldbox Builders, Cold Storage Construction, U.S. Cooler — quote requests, no engineering). The Izhar Foster Cost Calculator is the world's first to combine both: ASHRAE-grade engineering + Pakistan-specific civil, electrical, and refrigeration cost data + diesel/solar OPEX comparison + PEB/RCC envelope economics + cost per ton/pallet/m³ commercial metrics. All in one page, no login required."}}
+]}
+</script>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"HowTo","name":"How to estimate the cost of a cold storage in Pakistan","description":"Use the Izhar Foster cost calculator to size and price a cold storage facility in Pakistan in three steps.","step":[
+{"@type":"HowToStep","name":"Step 1 — Project basics","text":"Pick your city (12 Pakistani cities supported), commodity (24 PK crops + beverage / pharma / meat / dairy / 3PL), capacity (m³ or tons or pallet positions), and target temperature setpoint (chiller / cold store / freezer / blast / CA / pharma)."},
+{"@type":"HowToStep","name":"Step 2 — Building & envelope","text":"Choose FireSafe PIR panel thickness (50–200 mm), site class (greenfield / inside existing shed / multi-zone), and envelope (PEB or RCC). The calculator computes panel area, civil cost, and the envelope-choice capex multiplier."},
+{"@type":"HowToStep","name":"Step 3 — Refrigeration & power","text":"Pick refrigeration architecture (single CDU / multi-CDU rack / ammonia-glycol indirect / ammonia DX), declare CA-store extras, and set load-shedding hours per day. The calculator estimates refrigeration kW, condenser HP, annual energy cost in PKR, diesel OPEX, solar payback, and PEB-vs-RCC envelope economics."},
+{"@type":"HowToStep","name":"Step 4 — Review and engage","text":"Review the cost band, the per-line breakdown, and the commercial metrics (cost per ton, cost per pallet, cost per m³). Edit any cost cell inline if your numbers differ. Click Get a quote, WhatsApp our team, or Download proposal PDF when you are ready to engage Izhar Foster's engineering team."}
+]}
+</script>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"Home","item":"https://izharfoster.com/"},
+{"@type":"ListItem","position":2,"name":"Tools","item":"https://izharfoster.com/tools"},
+{"@type":"ListItem","position":3,"name":"Cost Calculator","item":"https://izharfoster.com/tools/cost-calculator"}
+]}
+</script>
+
+<style>
+  .cost-tabs { display:flex; gap:8px; margin-bottom:24px; }
+  .cost-tabs button { padding:10px 18px; border:1px solid var(--ink-3, #ccc); background:var(--paper, #fff); cursor:pointer; font-weight:600; border-radius:8px; }
+  .cost-tabs button[aria-pressed="true"] { background:var(--brand, #0A1F3D); color:#fff; border-color:var(--brand, #0A1F3D); }
+  .cost-form { display:grid; gap:18px; max-width:880px; }
+  .cost-row { display:grid; grid-template-columns:minmax(0, 200px) minmax(0, 1fr); gap:16px; align-items:center; }
+  @media (max-width:720px) { .cost-row { grid-template-columns:1fr; } }
+  .cost-row label { font-weight:600; }
+  .cost-row .cost-hint { font-size:.84rem; color:var(--ink-2, #666); margin-top:4px; }
+  .seg { display:inline-flex; gap:0; background:var(--paper-2, #f5f2ec); border-radius:10px; padding:4px; flex-wrap:wrap; }
+  .seg button { padding:8px 14px; border:none; background:transparent; cursor:pointer; border-radius:8px; font-size:.92rem; }
+  .seg button[aria-pressed="true"] { background:var(--ink, #1a1a1a); color:#fff; }
+  .cost-form input[type="number"], .cost-form select { padding:10px 14px; border:1px solid var(--ink-3, #ccc); border-radius:8px; font-size:1rem; width:100%; max-width:280px; }
+  .result-band { font-size:2.2rem; font-weight:700; color:var(--brand, #0A1F3D); padding:20px 0; border-top:2px solid var(--ink-3, #ccc); border-bottom:2px solid var(--ink-3, #ccc); margin:24px 0; }
+  .result-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:18px; margin:24px 0; }
+  .result-cell { background:var(--paper-2, #f5f2ec); padding:16px; border-radius:10px; }
+  .result-cell .k { font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-2, #666); margin-bottom:6px; }
+  .result-cell .v { font-size:1.4rem; font-weight:700; color:var(--ink, #1a1a1a); }
+  .breakdown-table { width:100%; border-collapse:collapse; margin:24px 0; font-size:.95rem; }
+  .breakdown-table th, .breakdown-table td { padding:10px 14px; text-align:left; border-bottom:1px solid var(--ink-3, #ddd); }
+  .breakdown-table tfoot td { font-weight:700; }
+  .breakdown-table .editable { cursor:pointer; border-bottom:1px dashed var(--brand, #0A1F3D); }
+  .breakdown-table .editable:hover { background:var(--paper-2, #f5f2ec); }
+  .compare-table { width:100%; border-collapse:collapse; margin:24px 0; font-size:.95rem; }
+  .compare-table th, .compare-table td { padding:10px 14px; text-align:left; border-bottom:1px solid var(--ink-3, #ddd); }
+  .compare-table th { background:var(--paper-2, #f5f2ec); }
+  .lead-cta-row { display:flex; gap:12px; flex-wrap:wrap; margin-top:24px; }
+  .badge-indicative { display:inline-block; background:#FFF3CD; color:#856404; padding:4px 10px; border-radius:6px; font-size:.78rem; margin-left:8px; vertical-align:middle; }
+  body[data-mode="quick"] [data-mode-content="detailed"] { display:none; }
+  body[data-mode="detailed"] [data-mode-content="quick"] { display:none; }
+  @media print { .cost-tabs, .lead-cta-row, .nav-cta, .menu-toggle, .fab-wa, .site-header, .site-footer, .cta-banner { display:none !important; } }
+</style>
+
+</head>
+<body>
+<div class="shell">
+  <aside class="rail" aria-hidden="true">
+    <span class="wm">−40°C → +25°C</span>
+    <div class="marks">
+      <span class="mark">−40°</span><span class="mark">−25°</span><span class="mark">0°</span><span class="mark">+10°</span><span class="mark warm">+25°</span>
+    </div>
+    <span class="pin" style="top:50%;"></span>
+  </aside>
+  <div class="shell-content">
+    <header class="site-header"><div class="nav">
+      <a href="../index" class="brand" aria-label="Izhar Foster home"><img src="../images/logo.svg" alt="Izhar Foster" class="brand-logo"></a>
+      <ul class="nav-center" id="nav">
+        <li><a href="../index">Home</a></li>
+        <li><a href="../services/cold-stores">Products</a></li>
+        <li><a href="../projects">Projects</a></li>
+        <li><a href="../tools" class="active">Tools</a></li>
+        <li><a href="../about">Story</a></li>
+        <li><a href="../clients">Clients</a></li>
+        <li><a href="../blog">Blog</a></li>
+        <li><a href="../contact">Contact</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="tel:+924235383543" class="nav-phone"><span class="live"></span>+92 42 3538 3543</a>
+        <a href="../contact" class="btn btn-primary btn-sm">Request quote <span class="arr">→</span></a>
+        <button class="menu-toggle" aria-label="Open menu"><span></span><span></span><span></span></button>
+      </div>
+    </div></header>
+
+<section class="page-hero" data-temp="0">
+  <div class="container">
+    <div>
+      <div class="breadcrumb"><a href="../index">Home</a><span class="sep">/</span><a href="../tools">Tools</a><span class="sep">/</span><span>Cost Calculator</span></div>
+      <span class="temp-badge" style="--badge-color:#0A1F3D"><span class="dot"></span>Tool 8 · Cost Calculator</span>
+      <h1>World's first intelligent cold store cost calculator <span class="badge-indicative">indicative ±20%</span></h1>
+      <p class="lead">Engineering + Financial + Commercial — all in one tool, Pakistan-tuned. Combines ASHRAE-grade refrigeration heat-load engineering with FireSafe PIR panel sizing, civil cost data, refrigeration architecture comparison, diesel vs solar OPEX, PEB vs RCC envelope economics, and cost per ton, pallet, and m³. By Izhar Foster — Pakistan's largest cold-storage manufacturer since 1959.</p>
+    </div>
+    <aside class="aside">
+      <span class="label">Why this tool exists</span>
+      <div class="fact"><span class="k">Other tools</span><span class="v">Sizing OR cost</span></div>
+      <div class="fact"><span class="k">This tool</span><span class="v">Sizing AND cost</span></div>
+      <div class="fact"><span class="k">Pakistan-tuned</span><span class="v">12 cities, 24 crops</span></div>
+      <div class="fact"><span class="k">Login required</span><span class="v">No</span></div>
+      <div class="fact"><span class="k">Editable</span><span class="v">Every cost cell</span></div>
+      <div class="fact"><span class="k">Output</span><span class="v">±20% band</span></div>
+    </aside>
+  </div>
+</section>
+
+<section class="section" data-temp="0">
+  <div class="container" style="max-width:1100px">
+
+    <div class="cost-tabs" role="tablist">
+      <button data-mode-tab="quick" aria-pressed="true">Quick estimate (10 sec)</button>
+      <button data-mode-tab="detailed" aria-pressed="false">Detailed engineering</button>
+    </div>
+
+    <form class="cost-form" onsubmit="return false;">
+
+      <!-- ========== STEP 1 — Project basics (visible in both modes) ========== -->
+      <h2>Step 1 — Project basics</h2>
+
+      <div class="cost-row">
+        <label for="city">City</label>
+        <div>
+          <select id="city">
+            <option value="Karachi">Karachi</option>
+            <option value="Lahore" selected>Lahore</option>
+            <option value="Islamabad">Islamabad</option>
+            <option value="Rawalpindi">Rawalpindi</option>
+            <option value="Multan">Multan</option>
+            <option value="Faisalabad">Faisalabad</option>
+            <option value="Peshawar">Peshawar</option>
+            <option value="Quetta">Quetta</option>
+            <option value="Hyderabad">Hyderabad</option>
+            <option value="Sukkur">Sukkur</option>
+            <option value="Gujranwala">Gujranwala</option>
+            <option value="Sialkot">Sialkot</option>
+          </select>
+          <div class="cost-hint">Each city has its own electricity tariff and load-shedding default.</div>
+        </div>
+      </div>
+
+      <div class="cost-row">
+        <label for="commodity">Commodity / sector</label>
+        <div>
+          <select id="commodity">
+            <optgroup label="Fresh produce">
+              <option value="potato">Potato</option>
+              <option value="onion">Onion</option>
+              <option value="apple">Apple</option>
+              <option value="mango" selected>Mango</option>
+              <option value="kinnow">Kinnow / Citrus</option>
+              <option value="dates">Dates</option>
+              <option value="banana">Banana (ripening)</option>
+              <option value="tomato">Tomato</option>
+            </optgroup>
+            <optgroup label="Animal protein">
+              <option value="meat_carcass">Meat — carcass</option>
+              <option value="poultry_packed">Poultry — packed</option>
+              <option value="frozen_meat_packed">Frozen meat — packed</option>
+              <option value="frozen_seafood">Frozen seafood</option>
+              <option value="dairy_packed">Dairy</option>
+            </optgroup>
+            <optgroup label="Industrial">
+              <option value="ice_cream">Ice cream</option>
+              <option value="ice_block">Ice block</option>
+              <option value="pharma_packed_cartons">Pharmaceutical</option>
+              <option value="beverage_pet">Beverage — PET</option>
+              <option value="beverage_glass">Beverage — glass</option>
+              <option value="general_3pl">3PL — general</option>
+            </optgroup>
+          </select>
+          <div class="cost-hint">Affects storage density (kg/m³) and recommended setpoint.</div>
+        </div>
+      </div>
+
+      <div class="cost-row">
+        <label for="capacityM3">Capacity</label>
+        <div>
+          <input type="number" id="capacityM3" value="1000" min="20" step="10">
+          <div class="seg" id="capacityUnit-seg" style="margin-top:8px" role="tablist">
+            <button data-val="m3" aria-pressed="true">m³</button>
+            <button data-val="tons" aria-pressed="false">tons</button>
+            <button data-val="pallets" aria-pressed="false">pallet positions</button>
+          </div>
+          <div class="cost-hint">Net storage volume. Tons converted using commodity density × 0.55 utilisation.</div>
+        </div>
+      </div>
+
+      <div class="cost-row">
+        <label for="setpointPreset">Temperature setpoint</label>
+        <div>
+          <select id="setpointPreset">
+            <option value="chiller">Chiller (+4°C)</option>
+            <option value="cold_store" selected>Cold store (0°C)</option>
+            <option value="freezer">Freezer (−20°C)</option>
+            <option value="blast_freezer">Blast freezer (−35°C)</option>
+            <option value="ca_store_apple">CA store — apple (+1°C)</option>
+            <option value="ca_store_kinnow">CA store — kinnow (+4°C)</option>
+            <option value="banana_ripening">Banana ripening (+15°C)</option>
+            <option value="mango_pre_cool">Mango pre-cool (+10°C)</option>
+            <option value="ambient_pharma_CRT">Pharma CRT (+22°C)</option>
+            <option value="vaccine_cold_chain">Vaccine cold chain (+5°C)</option>
+            <option value="ice_cream">Ice cream (−25°C)</option>
+            <option value="deep_freeze">Deep freeze (−28°C)</option>
+            <option value="ultra_low">Ultra-low (−75°C)</option>
+          </select>
+          <div class="cost-hint">Affects refrigeration kW, panel thickness recommendation, and door selection.</div>
+        </div>
+      </div>
+
+      <!-- ========== STEP 2 — Building & envelope (DETAILED ONLY) ========== -->
+      <div data-mode-content="detailed">
+        <h2>Step 2 — Building &amp; envelope</h2>
+
+        <div class="cost-row">
+          <label>FireSafe PIR panel thickness</label>
+          <div>
+            <div class="seg" id="panelMm-seg" role="tablist">
+              <button data-val="50" aria-pressed="false">50 mm</button>
+              <button data-val="60" aria-pressed="false">60 mm</button>
+              <button data-val="80" aria-pressed="false">80 mm</button>
+              <button data-val="100" aria-pressed="true">100 mm</button>
+              <button data-val="125" aria-pressed="false">125 mm</button>
+              <button data-val="150" aria-pressed="false">150 mm</button>
+              <button data-val="200" aria-pressed="false">200 mm</button>
+            </div>
+            <div class="cost-hint">100 mm typical for chillers and cold stores; 150 mm for freezers; 200 mm for ultra-low.</div>
+          </div>
+        </div>
+
+        <div class="cost-row">
+          <label>Site class</label>
+          <div>
+            <div class="seg" id="siteClass-seg" role="tablist">
+              <button data-val="greenfield" aria-pressed="true">Greenfield</button>
+              <button data-val="inside_existing_shed" aria-pressed="false">Inside existing shed</button>
+              <button data-val="multi_zone" aria-pressed="false">Multi-zone</button>
+              <button data-val="brownfield_demolition" aria-pressed="false">Brownfield (demolish)</button>
+            </div>
+            <div class="cost-hint">Greenfield = open land. Inside-shed = retrofit into a steel structure. Multi-zone = 3PL with multiple temperature zones.</div>
+          </div>
+        </div>
+
+        <div class="cost-row">
+          <label>Envelope</label>
+          <div>
+            <div class="seg" id="envelopeChoice-seg" role="tablist">
+              <button data-val="PEB" aria-pressed="true">PEB (steel-frame)</button>
+              <button data-val="RCC" aria-pressed="false">RCC (concrete)</button>
+            </div>
+            <div class="cost-hint">RCC: +35% capex, +6 weeks lead time, longer life. PEB: faster, cheaper.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== STEP 3 — Refrigeration & power (DETAILED ONLY) ========== -->
+      <div data-mode-content="detailed">
+        <h2>Step 3 — Refrigeration &amp; power</h2>
+
+        <div class="cost-row">
+          <label>Refrigeration architecture</label>
+          <div>
+            <div class="seg" id="refrigArchitecture-seg" role="tablist">
+              <button data-val="cdu" aria-pressed="true">CDU (single)</button>
+              <button data-val="rack" aria-pressed="false">Rack (multi-DX)</button>
+              <button data-val="nh3_glycol" aria-pressed="false">NH₃ + glycol</button>
+              <button data-val="nh3_dx" aria-pressed="false">NH₃ DX</button>
+            </div>
+            <div class="cost-hint">CDU for single-room. Rack for retail / 3PL. NH₃-glycol for multi-zone safety. NH₃-DX for largest plants.</div>
+          </div>
+        </div>
+
+        <div class="cost-row">
+          <label>CA store extras</label>
+          <div>
+            <label><input type="checkbox" id="isCAStore"> Add CA-store equipment (nitrogen, CO₂ scrub, ethylene removal, GAC analysis)</label>
+            <div class="cost-hint">For apple, mango, kinnow, dates ULO storage. Adds ~PKR 180,000 per HP of refrigeration.</div>
+          </div>
+        </div>
+
+        <div class="cost-row">
+          <label>Power backup</label>
+          <div>
+            <div class="seg" id="powerBackup-seg" role="tablist">
+              <button data-val="diesel" aria-pressed="true">Diesel genset</button>
+              <button data-val="solar" aria-pressed="false">Solar PV</button>
+              <button data-val="none" aria-pressed="false">Grid only</button>
+            </div>
+            <div class="cost-hint">We compare both diesel and solar OPEX in the result, regardless of choice.</div>
+          </div>
+        </div>
+
+        <div class="cost-row">
+          <label for="loadShedHoursPerDay">Load-shedding hours/day</label>
+          <div>
+            <input type="number" id="loadShedHoursPerDay" value="4" min="0" max="20" step="1">
+            <div class="cost-hint">Default per-city load-shed estimate. Override with your actual.</div>
+          </div>
+        </div>
+      </div>
+
+    </form>
+
+    <!-- ============================================================
+         RESULTS
+         ============================================================ -->
+    <h2 id="result-summary-heading" style="margin-top:48px">Result <span class="badge-indicative">±20% indicative band</span></h2>
+    <p id="result-summary" style="font-size:1rem; color:var(--ink-2, #666); max-width:80ch"></p>
+
+    <div class="result-band">
+      <div style="font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2, #666);margin-bottom:6px">Total project cost</div>
+      <div id="result-band">PKR — – PKR —</div>
+      <div style="font-size:.86rem;color:var(--ink-2, #666);margin-top:6px">Mid: <span id="result-mid">PKR —</span> · Low: <span id="result-low">PKR —</span> · High: <span id="result-high">PKR —</span></div>
+    </div>
+
+    <h3>Engineering output</h3>
+    <div class="result-grid">
+      <div class="result-cell"><div class="k">Volume</div><div class="v" id="out-volume">— m³</div></div>
+      <div class="result-cell"><div class="k">Tons (net stored)</div><div class="v" id="out-tons">— t</div></div>
+      <div class="result-cell"><div class="k">Pallet positions</div><div class="v" id="out-pallets">— pallets</div></div>
+      <div class="result-cell"><div class="k">Refrigeration kW</div><div class="v" id="out-refrig-kw">— kW</div></div>
+      <div class="result-cell"><div class="k">Refrigeration HP</div><div class="v" id="out-refrig-hp">— HP</div></div>
+      <div class="result-cell"><div class="k">Panel area</div><div class="v" id="out-panel-m2">— m²</div></div>
+      <div class="result-cell"><div class="k">Doors</div><div class="v" id="out-doors">—</div></div>
+      <div class="result-cell"><div class="k">Footprint</div><div class="v" id="out-footprint">— m²</div></div>
+    </div>
+
+    <h3>Commercial metrics</h3>
+    <div class="result-grid">
+      <div class="result-cell"><div class="k">Cost per ton</div><div class="v" id="out-cost-ton">PKR —</div></div>
+      <div class="result-cell"><div class="k">Cost per pallet position</div><div class="v" id="out-cost-pallet">PKR —</div></div>
+      <div class="result-cell"><div class="k">Cost per m³</div><div class="v" id="out-cost-m3">PKR —</div></div>
+    </div>
+
+    <h3>Operating cost</h3>
+    <div class="result-grid">
+      <div class="result-cell"><div class="k">Annual energy (grid)</div><div class="v" id="out-energy-annual">PKR —/yr</div></div>
+      <div class="result-cell"><div class="k">Tariff</div><div class="v" id="out-tariff">— /kWh</div></div>
+      <div class="result-cell"><div class="k">Diesel backup OPEX</div><div class="v" id="out-diesel-annual">PKR —/yr</div></div>
+      <div class="result-cell"><div class="k">Genset capex</div><div class="v" id="out-genset-capex">PKR —</div></div>
+      <div class="result-cell"><div class="k">Load-shedding</div><div class="v" id="out-loadshed">— hrs/day</div></div>
+    </div>
+
+    <div data-mode-content="detailed">
+      <h3>Solar option</h3>
+      <div class="result-grid">
+        <div class="result-cell"><div class="k">Solar PV size</div><div class="v" id="out-solar-kw">— kW</div></div>
+        <div class="result-cell"><div class="k">Solar capex</div><div class="v" id="out-solar-capex">PKR —</div></div>
+        <div class="result-cell"><div class="k">Annual saving</div><div class="v" id="out-solar-saving">PKR —/yr</div></div>
+        <div class="result-cell"><div class="k">Payback</div><div class="v" id="out-solar-payback">— yrs</div></div>
+      </div>
+
+      <h3>Cost breakdown <a href="#" id="reset-overrides" style="font-size:.86rem;font-weight:400;margin-left:12px">Reset to defaults</a></h3>
+      <p style="font-size:.86rem; color:var(--ink-2, #666)">Click any value to edit. Overrides save in your browser only.</p>
+      <table class="breakdown-table">
+        <thead><tr><th>Line item</th><th>Estimate</th></tr></thead>
+        <tbody>
+          <tr><td>FireSafe PIR panels (envelope)</td><td id="cb-panel" data-edit-path="panel_pkr_per_m2.100mm">PKR —</td></tr>
+          <tr><td>Civil works (foundation, slab, drainage)</td><td id="cb-civil" data-edit-path="civil_pkr_per_m2.greenfield">PKR —</td></tr>
+          <tr><td>Refrigeration plant</td><td id="cb-refrig" data-edit-path="refrigeration_pkr_per_HP.cdu">PKR —</td></tr>
+          <tr><td>Insulated doors</td><td id="cb-doors">PKR —</td></tr>
+          <tr><td>Electrical (panels, cabling, distribution)</td><td id="cb-electrical" data-edit-path="electrical_pkr_per_kw_load.baseline_per_kw">PKR —</td></tr>
+          <tr><td>Controls / SCADA</td><td id="cb-controls">PKR —</td></tr>
+          <tr><td>Direct subtotal</td><td id="cb-direct">PKR —</td></tr>
+          <tr><td>EPC uplift (engineering, PM, commissioning, contingency, margin)</td><td id="cb-epc-pct">—%</td></tr>
+        </tbody>
+        <tfoot>
+          <tr><td>Total (mid)</td><td id="cb-total">PKR —</td></tr>
+          <tr><td>Low estimate (−20%)</td><td id="cb-low">PKR —</td></tr>
+          <tr><td>High estimate (+20%)</td><td id="cb-high">PKR —</td></tr>
+        </tfoot>
+      </table>
+
+      <h3>PEB vs RCC envelope — pick one</h3>
+      <table class="compare-table">
+        <thead><tr><th></th><th>PEB (steel-frame)</th><th>RCC (concrete)</th></tr></thead>
+        <tbody>
+          <tr><td>Capex</td><td>1.00× (baseline)</td><td>1.35× (+35%)</td></tr>
+          <tr><td>Lead time</td><td>baseline</td><td>+6 weeks</td></tr>
+          <tr><td>Structural life</td><td>25–35 years</td><td>40+ years</td></tr>
+          <tr><td>Thermal mass</td><td>Low</td><td>High</td></tr>
+          <tr><td>Fire resistance</td><td>Standard</td><td>Higher (concrete shell)</td></tr>
+          <tr><td>Best for</td><td>Most cold-chain projects</td><td>Permanent owner-occupied flagships</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Diesel vs Solar — Pakistan economics</h3>
+      <table class="compare-table">
+        <thead><tr><th></th><th>Diesel genset (current default)</th><th>Solar PV (long-run)</th></tr></thead>
+        <tbody>
+          <tr><td>Capex</td><td><span id="out-genset-capex-2">—</span></td><td><span id="out-solar-capex-2">—</span></td></tr>
+          <tr><td>Annual operating cost / saving</td><td><span id="out-diesel-annual-2">—</span> spent</td><td><span id="out-solar-saving-2">—</span> saved</td></tr>
+          <tr><td>Payback</td><td>n/a (recurring fuel)</td><td><span id="out-solar-payback-2">—</span></td></tr>
+          <tr><td>Resilience to load-shed</td><td>High (instant)</td><td>Medium (needs battery for night)</td></tr>
+          <tr><td>Fuel-price risk</td><td>High (PKR/litre fluctuating)</td><td>None (sunlight is free)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- LEAD CAPTURE: 3 CTAs at the result step -->
+    <h3 style="margin-top:48px">Ready to engage?</h3>
+    <p style="max-width:80ch; color:var(--ink-2, #666)">Indicative numbers above are calibrated against Izhar Foster's project order book and Pakistan-specific civil and refrigeration benchmarks. For a precise quotation tailored to your scope, share your project specifics with our engineering team — engineers reply within 24 hours.</p>
+    <div class="lead-cta-row">
+      <a id="cta-quote" href="../contact" class="btn btn-primary btn-lg">Request a detailed quote <span class="arr">→</span></a>
+      <a id="cta-wa" href="https://wa.me/923215383544" target="_blank" rel="noopener" class="btn btn-outline btn-lg">WhatsApp consultation</a>
+      <button id="cta-pdf" type="button" class="btn btn-outline btn-lg" onclick="window.print()">Download proposal PDF</button>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" style="background:var(--paper-2);" data-temp="0">
+  <div class="section-head">
+    <div><span class="eyebrow">How it works</span><h2>What's inside this calculator.</h2></div>
+    <p>Engineering + financial + commercial — combined for the first time in any cold-chain tool.</p>
+  </div>
+  <div class="industries-grid">
+    <div class="ind-cell" style="--dot:#0A1F3D">
+      <span class="num">01</span><span class="temp-tag mono"><span class="dot"></span>Sizing</span>
+      <h4>ASHRAE-grade refrigeration</h4>
+      <p>Heat-load estimation per ASHRAE Refrigeration Handbook Ch. 24 method, with Pakistan-specific MT 2.0%/K and LT 2.7%/K condenser ambient derate baked in.</p>
+    </div>
+    <div class="ind-cell" style="--dot:#173E66">
+      <span class="num">02</span><span class="temp-tag mono"><span class="dot"></span>Envelope</span>
+      <h4>FireSafe PIR + civil</h4>
+      <p>Panel area sized from cold-room geometry, costed against current Izhar Foster pricing for 50–200 mm cores. Civil per site class (greenfield / inside-shed / multi-zone).</p>
+    </div>
+    <div class="ind-cell" style="--dot:#22C55E">
+      <span class="num">03</span><span class="temp-tag mono"><span class="dot"></span>Refrigeration</span>
+      <h4>Architecture choice</h4>
+      <p>CDU / multi-DX rack / NH₃-glycol indirect / NH₃-DX. Each architecture has a different PKR-per-HP rate. We integrate Bitzer compressors, Heatcraft racks, LU-VE evaporators.</p>
+    </div>
+    <div class="ind-cell" style="--dot:#E36A1E">
+      <span class="num">04</span><span class="temp-tag mono"><span class="dot"></span>Doors</span>
+      <h4>Sized to room</h4>
+      <p>Sliding insulated doors for chillers and cold stores; high-speed Hörmann-class doors for high-traffic 3PL docks; heated-frame blast freezer doors for sub-zero.</p>
+    </div>
+    <div class="ind-cell" style="--dot:#F59E0B">
+      <span class="num">05</span><span class="temp-tag mono"><span class="dot"></span>Power</span>
+      <h4>Diesel vs Solar</h4>
+      <p>Per-city load-shed defaults, OGRA diesel rate, NEPRA-approved rooftop solar capex. We show OPEX both ways and compute solar payback in years.</p>
+    </div>
+    <div class="ind-cell" style="--dot:#7DD3FC">
+      <span class="num">06</span><span class="temp-tag mono"><span class="dot"></span>Commerce</span>
+      <h4>Cost per ton/pallet/m³</h4>
+      <p>The metrics buyers actually want for board approval. PEB vs RCC envelope economics on the same page.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" data-temp="0">
+  <div class="section-head">
+    <div><span class="eyebrow">Why this exists</span><h2>No global tool combines all of this — until now.</h2></div>
+    <p>How Izhar Foster's calculator differs from the global cold-chain tool landscape.</p>
+  </div>
+  <table class="compare-table" style="max-width:1100px">
+    <thead><tr><th>Tool</th><th>Engineering sizing</th><th>Cost output</th><th>Pakistan-tuned</th><th>Solar / load-shed economics</th></tr></thead>
+    <tbody>
+      <tr><td>BITZER Software (Germany)</td><td>✓</td><td>✗</td><td>✗</td><td>✗</td></tr>
+      <tr><td>Danfoss Coolselector®2</td><td>✓</td><td>✗</td><td>✗</td><td>✗</td></tr>
+      <tr><td>Güntner Configurator</td><td>✓ (equipment)</td><td>✗</td><td>✗</td><td>✗</td></tr>
+      <tr><td>Coldbox Builders (USA)</td><td>✗</td><td>quote-on-request</td><td>✗</td><td>✗</td></tr>
+      <tr><td>Cold Storage Construction (USA)</td><td>✗</td><td>$/cu ft only</td><td>✗</td><td>✗</td></tr>
+      <tr><td>U.S. Cooler configurator</td><td>✗</td><td>walk-in only</td><td>✗</td><td>✗</td></tr>
+      <tr><td><strong>Izhar Foster Cost Calculator</strong></td><td><strong>✓</strong></td><td><strong>✓ full breakdown</strong></td><td><strong>✓ 12 cities</strong></td><td><strong>✓ diesel + solar</strong></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="section" data-temp="0">
+  <div class="section-head">
+    <div><span class="eyebrow">Frequently asked</span><h2>Questions buyers ask before scoping a cold storage in Pakistan.</h2></div>
+  </div>
+  <div class="faq-list">
+    <details class="faq-item" open><summary><span class="num">01</span><span>How much does a cold storage cost in Pakistan?</span></summary><div class="answer">Cold storage capex in Pakistan typically runs PKR 25,000–60,000 per cubic metre of net storage (approximately USD 90–215/m³), depending on temperature, panel thickness, refrigeration architecture, and site class. A 1,000 m³ cold store at +0°C with 100 mm FireSafe PIR and a CDU refrigeration system on a greenfield site costs roughly PKR 3.5–4.5 crore. Larger blast freezers, ammonia plants, multi-zone 3PL warehouses, and CA stores cost more. The calculator above gives you a free indicative band for your specific scope.</div></details>
+    <details class="faq-item"><summary><span class="num">02</span><span>What does the cost include?</span></summary><div class="answer">Full turnkey scope: FireSafe PIR sandwich panel envelope (walls + ceiling), civil works (foundation, slab, drainage, dock approach), refrigeration plant (compressors, condensers, evaporators, piping, refrigerant charge), insulated doors, electrical (panels, cabling, distribution), controls and SCADA, plus engineering design, project management, commissioning, contingency, and Izhar Foster overhead and margin. Direct subtotal is uplifted by ~29% to capture EPC scope; the final number is presented as a ±20% band.</div></details>
+    <details class="faq-item"><summary><span class="num">03</span><span>How accurate is the calculator?</span></summary><div class="answer">Each output is presented as an indicative band ±20%, calibrated against Izhar Foster's historical project order book and Pakistan-specific civil and refrigeration benchmarks. For a precise quotation, share your project specifics with our engineering team via the Quote, WhatsApp, or PDF buttons at the bottom of the result. Engineers reply within 24 hours with a sized concept and a firm budget.</div></details>
+    <details class="faq-item"><summary><span class="num">04</span><span>Can I edit the underlying cost numbers?</span></summary><div class="answer">Yes. Every cost cell on the breakdown table is inline-editable — click the value, enter your own number, and the calculator recomputes immediately. Overrides persist per-session in your browser (localStorage). Use the Reset button to restore Izhar Foster's indicative defaults.</div></details>
+    <details class="faq-item"><summary><span class="num">05</span><span>How does the diesel-vs-solar comparison work?</span></summary><div class="answer">For each Pakistani city we apply a default load-shedding hours-per-day figure (overrideable). Diesel OPEX is calculated from the refrigeration plant's part-load kWh during outage hours, the diesel rate (PKR per litre, currently approximately 285), and a typical genset efficiency of 3.2 kWh per litre. Solar OPEX saving is calculated from a rooftop PV plant sized to the refrigeration peak, using Pakistan's average annual yield of 1,650 kWh per kW installed and the city's electricity tariff. Payback is solar capex divided by annual saving.</div></details>
+    <details class="faq-item"><summary><span class="num">06</span><span>PEB or RCC for cold storage in Pakistan?</span></summary><div class="answer">PEB (Pre-Engineered Building, steel-frame) is faster and cheaper at construction; RCC (Reinforced Cement Concrete) is heavier but offers better thermal mass, fire resistance, and longer structural life. The calculator applies a 1.35× capex multiplier and an additional 6 weeks lead time for RCC. Most Pakistani cold-store buyers choose PEB for the speed advantage; RCC is selected for permanent owner-occupied facilities where the 25-year-plus structural argument outweighs the capex premium.</div></details>
+    <details class="faq-item"><summary><span class="num">07</span><span>What makes this tool different?</span></summary><div class="answer">Most global cold-storage tools are either purely technical (Bitzer Software, Danfoss Coolselector, Güntner — sizing, no cost) or purely marketing (Coldbox Builders, Cold Storage Construction, U.S. Cooler — quote requests, no engineering). The Izhar Foster Cost Calculator is the world's first to combine both: ASHRAE-grade engineering + Pakistan-specific civil, electrical, and refrigeration cost data + diesel/solar OPEX comparison + PEB/RCC envelope economics + cost per ton/pallet/m³ commercial metrics. All in one page, no login required.</div></details>
+  </div>
+</section>
+
+<section class="cta-banner">
+  <div class="grid">
+    <div>
+      <span class="eyebrow" style="color:rgba(245,242,236,.6)">Beyond the calculator</span>
+      <h2>Need a precise quote for a real project? <em>24-hour</em> turnaround.</h2>
+      <p>Coca-Cola, Pepsi, Nestlé, Engro, K&amp;N's, Pakistan Army, USAID and 2,100+ other Pakistani cold-chain installations trust Izhar Foster. Share your project, get a sized concept and indicative budget within one working day.</p>
+    </div>
+    <div class="btns">
+      <a href="../contact" class="btn btn-primary btn-lg">Request a quote <span class="arr">→</span></a>
+      <a href="https://wa.me/923215383544" target="_blank" rel="noopener" class="btn btn-outline btn-lg">WhatsApp our team</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand-name">Izhar&nbsp;Foster</div>
+      <p>Cold-chain division of Izhar Group. Engineered cold across the temperature spectrum — for Pakistan's food, medicine, and harvests.</p>
+      <p class="mono" style="font-size:.78rem;color:rgba(245,242,236,.4);letter-spacing:.06em">A division of <a href="../about">Izhar Group</a> · 12 engineering companies</p>
+    </div>
+    <div>
+      <h4>Products</h4>
+      <ul>
+        <li><a href="../services/cold-stores">Cold Stores</a></li>
+        <li><a href="../services/pir-sandwich-panels">PIR Panels</a></li>
+        <li><a href="../services/refrigeration-systems">Refrigeration</a></li>
+        <li><a href="../services/ca-stores">CA Stores</a></li>
+        <li><a href="../services/insulated-doors">Insulated Doors</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Tools</h4>
+      <ul>
+        <li><a href="../tools">All tools</a></li>
+        <li><a href="../tools/load-calculator">Load calculator</a></li>
+        <li><a href="../tools/capacity-planner">Capacity planner</a></li>
+        <li><a href="../tools/condenser-sizing">Condenser sizing</a></li>
+        <li><a href="../tools/energy-cost">Energy cost</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Get in touch</h4>
+      <ul>
+        <li class="mono"><a href="tel:+924235383543">+92 42 3538 3543</a></li>
+        <li class="mono"><a href="https://wa.me/923215383544">+92 321 5383544 · WhatsApp</a></li>
+        <li class="mono"><a href="mailto:info@izharfoster.com">info@izharfoster.com</a></li>
+        <li style="margin-top:14px;color:rgba(245,242,236,.5);font-size:.86rem">Izhar House, 35-Tipu Block,<br>New Garden Town, Lahore — Pakistan</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© <span id="y">2026</span> Izhar Foster (Pvt) Limited · A division of Izhar Group</span>
+    <span><a href="../privacy">Privacy</a> · <a href="../terms">Terms</a> · <a href="../sitemap.xml">Sitemap</a></span>
+  </div>
+</footer>
+
+  </div></div>
+<a href="https://wa.me/923215383544" class="fab-wa" target="_blank" rel="noopener" aria-label="WhatsApp">WA</a>
+<script src="../js/tools/_shared.js" defer></script>
+<script src="../js/tools/cost-calculator.js" defer></script>
+<script src="../js/main.js" defer></script>
+<script>
+  document.getElementById('y').textContent = new Date().getFullYear();
+  // Mirror compare-table cells from main result cells (so we don't duplicate JS)
+  document.addEventListener('DOMContentLoaded', () => {
+    const obs = new MutationObserver(() => {
+      const map = [
+        ['out-genset-capex', 'out-genset-capex-2'],
+        ['out-solar-capex', 'out-solar-capex-2'],
+        ['out-diesel-annual', 'out-diesel-annual-2'],
+        ['out-solar-saving', 'out-solar-saving-2'],
+        ['out-solar-payback', 'out-solar-payback-2'],
+      ];
+      map.forEach(([from, to]) => {
+        const f = document.getElementById(from);
+        const t = document.getElementById(to);
+        if (f && t) t.textContent = f.textContent;
+      });
+    });
+    document.querySelectorAll('#out-genset-capex, #out-solar-capex, #out-diesel-annual, #out-solar-saving, #out-solar-payback').forEach(el => obs.observe(el, { childList:true, characterData:true, subtree:true }));
+  });
+</script>
+</body></html>

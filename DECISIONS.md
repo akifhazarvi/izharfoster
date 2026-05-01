@@ -81,3 +81,126 @@ These replace the unsupported "2,100+" headline and become the trust-signal band
 GROW: Cold Stores · PIR Sandwich Panels (FireSafe PIR) · Refrigeration Systems
 SECONDARY: CA Stores · Insulated Doors · Refrigerated Vehicles · CEA Greenhouses
 DEPRIORITIZE (keep on site, low visibility): Plant Factories · Smart Cabins · Prefabricated Steel Buildings (PEB)
+
+## Cost Calculator (Tool 8) — CEO direction 2026-05-01
+
+The CEO has researched the global landscape and concluded **no competitor offers a fully-integrated turnkey cold-store cost calculator**. Bitzer / Danfoss Coolselector / Güntner are technical-only (engineering, no cost). Coldbox Builders / Cold Storage Construction / KPS Global / U.S. Cooler are marketing-only (lead capture, no engineering depth). Izhar Foster's tool will combine both — and is therefore positioned as **"World's First Intelligent Cold Store Cost Calculator."**
+
+### Differentiation directives (CEO 2026-05-01)
+
+1. **Dual-mode output** — Quick estimate (10 seconds) AND detailed engineering estimate (full form). Same backend, two UX paths.
+2. **Pakistan-specific intelligence layer** — load-shedding impact on operating cost · diesel vs solar comparison · PEB vs RCC building economics. None of these exist in any global tool today.
+3. **Commercial metrics that buyers actually want**:
+   - **Cost per ton** (storage capacity)
+   - **Cost per pallet position**
+   - **Cost per cubic foot / cubic metre**
+   - **Payback period** (optional upgrade)
+4. **Lead-capture handoff** — at the result step, NOT as a gate before showing the cost band. Three CTAs: "Download Detailed Proposal (PDF)", "Request Site Visit", "WhatsApp Consultation". This pattern matches global best-practice (lead capture > exact-quote disclosure).
+5. **Backend logic borrows from**:
+   - Bitzer Software (compressor selection + power)
+   - Danfoss Coolselector®2 (load calculation)
+   - Güntner (evaporator/condenser sizing)
+   - FAO cold-storage planning guidelines (commodity density, RH, temperature)
+   - RSMeans-style civil cost data (Pakistan-localised: Rs/sqft, Rs/m³)
+6. **Engineering + Financial + Commercial + UX** all in one tool — that is the moat.
+
+### Inputs (CEO-derived spec)
+
+**Quick mode (10 seconds):**
+- Capacity (tons OR pallets OR m³)
+- Temperature setpoint preset (chiller / cold store / freezer / blast / CA)
+- City (12 Pakistan cities — already in our calculator dataset)
+- → Output: PKR cost band (low / mid / high), kW refrigeration, m² panel area
+
+**Detailed mode (3 steps):**
+- Step 1: Project basics — city, commodity preset (24 PK crops + beverage / pharma / meat / dairy / 3PL), capacity, temperature, lead time horizon
+- Step 2: Building & envelope — panel thickness preset (80 / 100 / 125 / 150 mm), site class (greenfield / inside existing shed / multi-zone), PEB vs RCC envelope choice
+- Step 3: Refrigeration & power — architecture (CDU / multi-CDU rack / glycol-ammonia / NH3 DX), refrigerant choice, generator backup yes/no, solar option yes/no, load-shedding hours/day
+
+### Outputs (full set)
+
+- **PKR cost band** with low / mid / high (±20%)
+- **Heat load (kW)** — from existing `load-calculator.js` engine
+- **Refrigerant charge (kg)** — from `refrigerant-charge.js`
+- **Recommended condenser kW** — from `condenser-sizing.js` with Pakistan ambient derate
+- **Annual energy cost (PKR/year)** — per-city tariff (LESCO / K-Electric / IESCO / GEPCO / FESCO / MEPCO / PESCO / HESCO / QESCO / SEPCO)
+- **Cost per ton / pallet / cubic metre** — three commercial metrics
+- **Recommended Izhar Foster scope** — PIR thickness, panel m², door count, refrigeration HP
+- **Diesel vs Solar comparison** — annual operating cost under each
+- **PEB vs RCC envelope comparison** — capex + lead-time delta
+- **Payback period** — optional advanced output
+- **3 named comparable projects** from our case-study library
+
+### Lead-capture (CEO directive)
+
+After the result is shown:
+
+```
+[Download Detailed Proposal PDF]   [Request Site Visit]   [WhatsApp Consultation]
+```
+
+NOT a gate before the result. The buyer sees the cost band first, then chooses to engage.
+
+### Build sequence (revised per CEO)
+
+1. **Backend formulas** — TR/kW/cost logic, Pakistan tariff data, civil-cost database (Rs/sqft localised), PEB-vs-RCC delta, load-shedding penalty
+2. **Quick-mode UI** (homepage embed candidate)
+3. **Detailed-mode UI** (full 3-step form at `/tools/cost-calculator`)
+4. **PDF generation** — leverage existing `_shared.js` Print PDF capability, extend with a branded proposal template
+5. **Lead-capture form** with JSON snapshot of the calculator state
+6. **Schema markup** — `Action` schema for the calculator, FAQ, "show your math" passage-citable explainer
+
+The CEO's final positioning line goes on the page hero:
+
+> **"World's First Intelligent Cold Store Cost Calculator"**
+
+Sub-headline:
+
+> *Engineering + Financial + Commercial — all in one tool. Pakistan-tuned. By Izhar Foster, since 1959.*
+
+### Linking the CEO's spec to existing site assets (2026-05-01)
+
+We do NOT build a new engineering engine. The 7 existing calculators in `js/tools/` already cover ASHRAE Ch.24 heat load, NIST REFPROP charge, ASHRAE Ch.35 condenser sizing with Pakistan derate, IEC 60335 A2L safety, capacity planning across 24 PK crops, energy cost A vs B, and CA-atmosphere recipes. Tool 8 is a **cost layer on top** that calls them.
+
+**Plumbing map (existing → new):**
+
+| CEO requirement | Existing asset | New work |
+|---|---|---|
+| Heat load kW | `load-calculator.js` (ASHRAE Ch.24) | Call as dependency |
+| Capacity m³/tons/pallets | `capacity-planner.js` (24 PK crops) | Call as dependency |
+| Refrigerant charge kg | `refrigerant-charge.js` (NIST) | Call as dependency |
+| Condenser kW + Pakistan derate | `condenser-sizing.js` (MT 2.0%/K, LT 2.7%/K) | Call as dependency |
+| A2L safety | `a2l-room-area.js` | Conditional call for A2L refrigerants |
+| CA atmosphere extra equipment | `ca-atmosphere.js` | Conditional call when commodity is CA |
+| Annual energy cost | `energy-cost.js` | Extend with PK city tariff table |
+| Project session save / PDF export | `_shared.js` (Izhar global) | Already wired; extend with proposal template |
+| PIR panel cost / m² | NEW `data-pricing.json` | New file |
+| Civil cost / m² | NEW `data-pricing.json` | Per site class (greenfield / shed / multi-zone) |
+| PEB vs RCC delta | NEW `data-pricing.json` | Capex + lead-time |
+| Refrigeration cost / HP | NEW `data-pricing.json` | Per architecture (CDU / rack / NH3-glycol) |
+| Door cost | NEW `data-pricing.json` | Per size + thickness |
+| Solar vs diesel OPEX | NEW logic + JSON | City tariff + diesel rate + load-shed hours |
+| Cost per ton / pallet / m³ | DERIVED | Division on totals |
+
+**Touchpoints across existing site (where calculator gets surfaced):**
+- `/` homepage — Quick-mode widget on the second fold (GROWTH-PLAN §13.2 block 3)
+- `/services/cold-stores` — embedded with cold-store preset
+- `/services/pir-sandwich-panels` — Energy A-vs-B widget links to full Cost Calc
+- `/services/refrigeration-systems` — embedded with refrigeration-architecture preset
+- `/services/ca-stores` — embedded with CA preset
+- `/services/pharmaceutical-cold-storage` — embedded with pharma preset
+- All 5 case studies (TCCEC / Naubahar / Connect / Haier / USAID) — "How much would your version cost?" deep-link with the case-study preset pre-loaded
+- `/tools` — index entry as Tool 8
+- Quote form on `/contact` — "I started with the calculator" checkbox attaches the JSON snapshot
+
+**Build order (CEO advice integrated):**
+1. Backend formulas + `data-pricing.json` (placeholder values, clearly flagged)
+2. Quick-mode UI (homepage embed candidate)
+3. Detailed-mode UI (full form at `/tools/cost-calculator`)
+4. PDF proposal template via existing `_shared.js` print pipeline
+5. Lead-capture: 3 CTAs at the result step (PDF / Site Visit / WhatsApp Consultation)
+6. Schema (`SoftwareApplication` + `FAQPage` + `HowTo`)
+7. GSC + GA4 dataLayer events for funnel measurement
+8. Pre-loaded preset URLs (`?preset=mango-multan-2000ton` etc.) so case studies and city pages deep-link with state
+
+**Pricing data status:** Calculator ships with **Pakistan-realistic indicative bands ±20%** estimated from public benchmarks (LESCO / K-Electric tariffs, OGRA diesel rates, regional cold-store buildouts adjusted for Pakistan). Each cost cell is **inline-editable in the UI** — user (sales engineer or buyer) can override any number on the spot, with a "reset to default" link. Saved per session in `localStorage`. PR3 build adds editable-bands directive as core UX (CEO 2026-05-01).

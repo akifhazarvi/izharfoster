@@ -1,0 +1,187 @@
+{
+  "$comment_status": "INDICATIVE bands — Pakistan-realistic 2026 estimates from public benchmarks. Replace with current Izhar Foster pricing before public launch. ±20% band applied to every output. Users can edit any value inline; values persist via localStorage.izhar_cost_overrides.",
+  "$last_updated": "2026-05-01",
+  "$source_notes": [
+    "Tariffs: LESCO + K-Electric + IESCO + MEPCO commercial rates 2025-26 published schedules, weighted-average for B-3 industrial connection",
+    "Diesel: OGRA HSD ex-depot 2026 average, adjusted for retail markup",
+    "Civil: regional cold-store benchmarks (Pakistan EPC quotes 2024-25), Punjab and Sindh",
+    "PIR panel: Izhar Foster historic order book 2023-25 (sales team reference) ±20%",
+    "Refrigeration HP: weighted CDU vs ammonia plant capex from Bitzer + Heatcraft + Zanotti packages installed in PK 2023-25",
+    "Solar capex: NEPRA-approved IPP rates 2025 for industrial rooftop",
+    "Door cost: insulated cold-store door supplier quotations 2024-25, Pakistan delivered",
+    "All values in PKR unless otherwise noted. ±20% band applied at output."
+  ],
+  "currency": "PKR",
+  "uncertainty_band_pct": 20,
+
+  "panel_pkr_per_m2": {
+    "$comment": "FireSafe PIR sandwich panel + installation. Includes both faces (steel + steel) and PIR core. Excludes structural support. m² = wall + ceiling area combined.",
+    "50mm": 7800,
+    "60mm": 8400,
+    "80mm": 9100,
+    "100mm": 10200,
+    "125mm": 11600,
+    "150mm": 13100,
+    "200mm": 16400
+  },
+
+  "civil_pkr_per_m2": {
+    "$comment": "Pakistan civil works for cold-store envelope: foundation, floor slab + insulation + sealing, drainage, dock approach. m² = footprint area.",
+    "greenfield": 18500,
+    "inside_existing_shed": 9800,
+    "multi_zone": 23000,
+    "elevated_dock_per_door": 320000
+  },
+
+  "envelope_choice_uplift": {
+    "$comment": "Capex delta if customer chooses RCC envelope vs PEB (steel-frame pre-engineered building). RCC is heavier in capex but longer life and better thermal mass. PEB is cheaper and faster.",
+    "PEB_baseline": 1.00,
+    "RCC_multiplier": 1.35,
+    "RCC_lead_time_weeks_extra": 6
+  },
+
+  "refrigeration_pkr_per_HP": {
+    "$comment": "Refrigeration plant supply + installation cost per nominal HP. CDU = single condensing unit (small/medium). Rack = multi-compressor parallel for retail/3PL. NH3-glycol = ammonia primary with glycol indirect for safety. NH3-DX = direct expansion ammonia (largest plants).",
+    "cdu": 295000,
+    "rack": 365000,
+    "nh3_glycol": 510000,
+    "nh3_dx": 460000,
+    "ca_store_extra": 180000
+  },
+
+  "door_pkr": {
+    "$comment": "Insulated cold-store doors, supply + install. Sliding for cold rooms, hinged for small rooms, high-speed for high-traffic dock. Sized for typical openings.",
+    "sliding_2x2_100mm": 380000,
+    "sliding_3x3_125mm": 720000,
+    "sliding_4x4_150mm": 1180000,
+    "hinged_1x2_80mm": 195000,
+    "high_speed_3x3_pir_pir": 1450000,
+    "blast_freezer_2x2_150mm_heated": 980000
+  },
+
+  "controls_pkr": {
+    "$comment": "Refrigeration controls, monitoring, BMS / SCADA per zone or per single-room job.",
+    "single_room_basic": 280000,
+    "multi_zone_scada": 1200000,
+    "remote_monitoring_uplift": 350000
+  },
+
+  "electrical_pkr_per_kw_load": {
+    "$comment": "Electrical scope: panels, cabling, distribution. Indicative per kW of refrigeration plant load (rule of thumb 1.4× for total connected load incl. fans, lights).",
+    "baseline_per_kw": 38000
+  },
+
+  "city_tariff_pkr_per_kwh": {
+    "$comment": "Industrial commercial tariff (B-3) for off-peak weighted with peak. 2025-26 schedules. Includes fuel adjustment surcharge running average.",
+    "Karachi": 47.5,
+    "Lahore": 41.2,
+    "Islamabad": 39.8,
+    "Rawalpindi": 39.8,
+    "Multan": 40.5,
+    "Faisalabad": 40.5,
+    "Peshawar": 38.4,
+    "Quetta": 35.6,
+    "Hyderabad": 47.5,
+    "Sukkur": 41.0,
+    "Gujranwala": 40.2,
+    "Sialkot": 40.2,
+    "_default": 41.0
+  },
+
+  "diesel": {
+    "$comment": "Diesel for backup generator running through load-shed hours. Generator efficiency assumes a modern 3-phase Cummins/Perkins genset.",
+    "pkr_per_litre": 285,
+    "kwh_per_litre": 3.2,
+    "genset_capex_per_kw": 65000
+  },
+
+  "solar": {
+    "$comment": "Industrial rooftop solar PV (gridtie + battery option) capex per kW installed. NEPRA-approved 2025 IPP rates for net-metered industrial. Battery uplift if going off-grid.",
+    "capex_pkr_per_kw_pv_only": 110000,
+    "capex_pkr_per_kw_pv_with_battery": 195000,
+    "annual_yield_kwh_per_kw_pakistan_avg": 1650,
+    "useful_life_years": 25,
+    "annual_o_and_m_pkr_per_kw": 1800
+  },
+
+  "load_shedding": {
+    "$comment": "Default load-shed hours per day for industrial connections in Pakistan 2025-26. Used to estimate diesel-vs-solar economics. User can override per-city.",
+    "default_hours_per_day": 4,
+    "by_city_hours_per_day": {
+      "Karachi": 3,
+      "Lahore": 4,
+      "Islamabad": 2,
+      "Multan": 5,
+      "Faisalabad": 5,
+      "Peshawar": 6,
+      "Quetta": 5,
+      "Hyderabad": 5,
+      "Sukkur": 6,
+      "Gujranwala": 4,
+      "Sialkot": 4
+    }
+  },
+
+  "engineering_install_pct": {
+    "$comment": "Project execution multipliers applied to (envelope + refrigeration + doors + civil + electrical + controls).",
+    "engineering_design_pct": 4.5,
+    "project_management_pct": 3.0,
+    "commissioning_pct": 2.5,
+    "contingency_pct": 7.0,
+    "izhar_overhead_margin_pct": 12.0
+  },
+
+  "site_class_civil_factor": {
+    "$comment": "Multiplier on civil cost depending on site readiness and complexity.",
+    "greenfield": 1.00,
+    "inside_existing_shed": 0.55,
+    "multi_zone": 1.25,
+    "brownfield_demolition": 1.45
+  },
+
+  "commodity_density_kg_per_m3": {
+    "$comment": "Useful storage density (excludes air gaps, racking, aisles). Multiplied by ~0.55 utilisation factor to convert m³ to net stored tons.",
+    "potato": 650,
+    "onion": 600,
+    "apple": 540,
+    "mango": 580,
+    "kinnow": 600,
+    "dates": 800,
+    "banana": 580,
+    "tomato": 580,
+    "meat_carcass": 340,
+    "poultry_packed": 550,
+    "ice_cream": 800,
+    "frozen_meat_packed": 700,
+    "pharma_packed_cartons": 350,
+    "beverage_pet": 700,
+    "beverage_glass": 950,
+    "frozen_seafood": 720,
+    "dairy_packed": 700,
+    "ice_block": 920,
+    "general_3pl": 500,
+    "default": 500
+  },
+
+  "pallet_position_factor": {
+    "$comment": "Convert m³ to pallet positions (Euro pallet 1.2x0.8m × 1.6m typical stack height = ~1.5 m³/pallet × 0.6 utilisation in cold store).",
+    "m3_per_pallet_position": 2.5
+  },
+
+  "preset_temperature_setpoints_C": {
+    "chiller": 4,
+    "cold_store": 0,
+    "freezer": -20,
+    "blast_freezer": -35,
+    "blast_chiller_avg": 5,
+    "ambient_pharma_CRT": 22,
+    "vaccine_cold_chain": 5,
+    "ca_store_apple": 1,
+    "ca_store_kinnow": 4,
+    "banana_ripening": 15,
+    "mango_pre_cool": 10,
+    "ice_cream": -25,
+    "deep_freeze": -28,
+    "ultra_low": -75
+  }
+}
