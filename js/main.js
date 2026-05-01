@@ -339,4 +339,22 @@
     }, { threshold: 0.4 });
     sections.forEach(s => obs.observe(s));
   }
+
+  // ─────────────────────────────────────────────────────────────────
+  // Cinematic facility-video click-to-play (homepage §⑤)
+  // ─────────────────────────────────────────────────────────────────
+  document.querySelectorAll('.hp-video-frame[data-yt]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.yt;
+      if (!id || btn.dataset.playing === '1') return;
+      const iframe = document.createElement('iframe');
+      iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
+      iframe.title = btn.getAttribute('aria-label') || 'Facility tour';
+      iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+      iframe.setAttribute('allowfullscreen', '');
+      iframe.loading = 'lazy';
+      btn.appendChild(iframe);
+      btn.dataset.playing = '1';
+    }, { once: true });
+  });
 })();
