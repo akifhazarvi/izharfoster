@@ -37,7 +37,7 @@
 <link rel="stylesheet" href="../css/style.css">
 
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Cold Storage Cost Calculator — Izhar Foster","description":"Free Pakistan-tuned cold storage cost calculator. Combines ASHRAE-grade refrigeration heat-load engineering with civil, panel, refrigeration, electrical, doors, controls, and operating-cost analysis. Outputs PKR cost band, cost per ton/pallet/m³, diesel vs solar OPEX, PEB vs RCC envelope comparison.","applicationCategory":"EngineeringApplication","operatingSystem":"Web","url":"https://izharfoster.com/tools/cost-calculator","offers":{"@type":"Offer","price":"0","priceCurrency":"PKR"},"creator":{"@type":"Organization","name":"Izhar Foster (Pvt) Limited","url":"https://izharfoster.com/"},"featureList":["Heat-load kW estimation per ASHRAE Refrigeration Handbook Ch. 24 method","Pakistan city tariff database (LESCO, K-Electric, IESCO, MEPCO, FESCO, PESCO, QESCO, HESCO, SEPCO, GEPCO)","FireSafe PIR sandwich panel sizing 50–200 mm","Civil cost per site class (greenfield / inside-shed / multi-zone)","Refrigeration architecture choice (CDU / rack / NH3-glycol / NH3-DX)","Diesel vs Solar OPEX comparison","PEB vs RCC envelope economics","Cost per ton, cost per pallet, cost per m³","Inline-editable cost cells with localStorage override","PDF proposal export"]}
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Cold Store Cost Estimator — Izhar Foster","description":"Pakistan-tuned cold-store cost estimator for sales engineers and buyers. Produces rough cost estimates (±20% indicative band) — exact pricing varies by site survey, day-of component pricing, and customer-specific scope. Engineer validation required before any quote is issued. Combines refrigeration heat-load sizing with civil, panel, refrigeration, electrical, doors, controls, EPC uplift, and editable Izhar margin.","applicationCategory":"EngineeringApplication","operatingSystem":"Web","url":"https://izharfoster.com/tools/cost-calculator","offers":{"@type":"Offer","price":"0","priceCurrency":"PKR"},"creator":{"@type":"Organization","name":"Izhar Foster (Pvt) Limited","url":"https://izharfoster.com/"},"featureList":["Heat-load kW estimation","Pakistan city tariff database (LESCO, K-Electric, IESCO, MEPCO, FESCO, PESCO, QESCO, HESCO, SEPCO, GEPCO)","FireSafe PIR sandwich panel sizing 50–200 mm","Civil cost per site class (greenfield / inside-shed / multi-zone)","Refrigeration architecture choice (CDU / rack / NH3-glycol / NH3-DX)","Diesel vs Solar OPEX comparison","PEB vs RCC envelope economics","Cost per ton, cost per pallet, cost per m³","Inline-editable cost cells","Editable Izhar margin slider","Rough estimate output — engineer validation required"]}
 </script>
 
 <script type="application/ld+json">
@@ -136,18 +136,19 @@
   <div class="container">
     <div>
       <div class="breadcrumb"><a href="../index">Home</a><span class="sep">/</span><a href="../tools">Tools</a><span class="sep">/</span><span>Cost Calculator</span></div>
-      <span class="temp-badge" style="--badge-color:#0A1F3D"><span class="dot"></span>Tool 8 · Cost Calculator</span>
-      <h1>World's first intelligent cold store cost calculator <span class="badge-indicative">indicative ±20%</span></h1>
-      <p class="lead">Engineering + Financial + Commercial — all in one tool, Pakistan-tuned. Combines ASHRAE-grade refrigeration heat-load engineering with FireSafe PIR panel sizing, civil cost data, refrigeration architecture comparison, diesel vs solar OPEX, PEB vs RCC envelope economics, and cost per ton, pallet, and m³. By Izhar Foster — Pakistan's largest cold-storage manufacturer since 1959.</p>
+      <span class="temp-badge" style="--badge-color:#0A1F3D"><span class="dot"></span>Tool 8 · Internal cost estimator</span>
+      <h1>Cold store cost estimator <span class="badge-indicative">rough estimate · exact cost will differ</span></h1>
+      <p class="lead">Sales-engineer tool for sizing and pricing cold-chain projects in Pakistan. Combines refrigeration heat-load engineering with FireSafe PIR panel sizing, civil cost data, refrigeration architecture, diesel vs solar OPEX, PEB vs RCC envelope economics, and cost per ton, pallet, and m³. <strong>Engineer validation required before any quote is issued to a customer.</strong> Inputs and pricing assumptions are editable inline; margin is shown as a separate, configurable line.</p>
+      <p style="background:#FFF3CD; border-left:4px solid #F0A800; padding:12px 16px; margin-top:12px; font-size:.92rem; color:#664500; max-width:75ch"><strong>Important:</strong> This is a rough estimate. Pakistan-realistic indicative cost bands ±20%. Final pricing depends on site survey, refrigerant choice, refrigeration partner pricing on the day, current panel coil rates, and customer-specific scope. Treat the output as a starting point for engineer review — never as a customer-facing quote.</p>
     </div>
     <aside class="aside">
-      <span class="label">Why this tool exists</span>
-      <div class="fact"><span class="k">Other tools</span><span class="v">Sizing OR cost</span></div>
-      <div class="fact"><span class="k">This tool</span><span class="v">Sizing AND cost</span></div>
+      <span class="label">For internal use</span>
+      <div class="fact"><span class="k">Audience</span><span class="v">Sales + engineering</span></div>
+      <div class="fact"><span class="k">Output</span><span class="v">Rough ±20%</span></div>
+      <div class="fact"><span class="k">Margin</span><span class="v">Editable line</span></div>
       <div class="fact"><span class="k">Pakistan-tuned</span><span class="v">12 cities, 24 crops</span></div>
-      <div class="fact"><span class="k">Login required</span><span class="v">No</span></div>
       <div class="fact"><span class="k">Editable</span><span class="v">Every cost cell</span></div>
-      <div class="fact"><span class="k">Output</span><span class="v">±20% band</span></div>
+      <div class="fact"><span class="k">Final pricing</span><span class="v">Engineer review</span></div>
     </aside>
   </div>
 </section>
@@ -351,13 +352,14 @@
     <!-- ============================================================
          RESULTS
          ============================================================ -->
-    <h2 id="result-summary-heading" style="margin-top:48px">Result <span class="badge-indicative">±20% indicative band</span></h2>
+    <h2 id="result-summary-heading" style="margin-top:48px">Rough estimate <span class="badge-indicative">±20% — exact cost will differ</span></h2>
     <p id="result-summary" style="font-size:1rem; color:var(--ink-2, #666); max-width:80ch"></p>
 
     <div class="result-band">
-      <div style="font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2, #666);margin-bottom:6px">Total project cost</div>
+      <div style="font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2, #666);margin-bottom:6px">Total project cost — rough estimate</div>
       <div id="result-band">PKR — – PKR —</div>
       <div style="font-size:.86rem;color:var(--ink-2, #666);margin-top:6px">Mid: <span id="result-mid">PKR —</span> · Low: <span id="result-low">PKR —</span> · High: <span id="result-high">PKR —</span></div>
+      <div style="font-size:.78rem;color:#664500;margin-top:8px;font-style:italic">Exact cost will differ. Engineer validation required before quoting a customer.</div>
     </div>
 
     <h3>Engineering output</h3>
@@ -398,7 +400,7 @@
       </div>
 
       <h3>Cost breakdown <a href="#" id="reset-overrides" style="font-size:.86rem;font-weight:400;margin-left:12px">Reset to defaults</a></h3>
-      <p style="font-size:.86rem; color:var(--ink-2, #666)">Click any value to edit. Overrides save in your browser only.</p>
+      <p style="font-size:.86rem; color:var(--ink-2, #666)">Click any value to edit. Overrides save in your browser only. <strong>Margin is the editable line below — it stacks on top of direct cost + EPC uplift.</strong></p>
       <table class="breakdown-table">
         <thead><tr><th>Line item</th><th>Estimate</th></tr></thead>
         <tbody>
@@ -408,15 +410,27 @@
           <tr><td>Insulated doors</td><td id="cb-doors">PKR —</td></tr>
           <tr><td>Electrical (panels, cabling, distribution)</td><td id="cb-electrical" data-edit-path="electrical_pkr_per_kw_load.baseline_per_kw">PKR —</td></tr>
           <tr><td>Controls / SCADA</td><td id="cb-controls">PKR —</td></tr>
-          <tr><td>Direct subtotal</td><td id="cb-direct">PKR —</td></tr>
-          <tr><td>EPC uplift (engineering, PM, commissioning, contingency, margin)</td><td id="cb-epc-pct">—%</td></tr>
+          <tr style="font-weight:600; background:rgba(10,31,61,.04);"><td>Direct subtotal</td><td id="cb-direct">PKR —</td></tr>
+          <tr><td>EPC uplift (engineering 4.5% + PM 3% + commissioning 2.5% + contingency 7%)</td><td id="cb-epc-pct">—</td></tr>
+          <tr style="background:#FFF8E1;">
+            <td>
+              <strong>Izhar margin</strong>
+              <div style="display:flex; align-items:center; gap:8px; margin-top:6px">
+                <input type="number" id="cb-margin-input" min="0" max="50" step="1" value="18" style="width:70px; padding:6px 8px; border:1px solid var(--ink-3, #ccc); border-radius:6px;"> %
+                <a href="#" id="cb-margin-reset" style="font-size:.78rem; color:var(--ink-2, #666);">reset</a>
+              </div>
+              <div style="font-size:.78rem; color:var(--ink-2, #666); margin-top:4px">Editable. Default 18%. Sales engineer can override per quote.</div>
+            </td>
+            <td id="cb-margin-pct">—</td>
+          </tr>
         </tbody>
         <tfoot>
-          <tr><td>Total (mid)</td><td id="cb-total">PKR —</td></tr>
+          <tr><td><strong>Total (mid)</strong></td><td id="cb-total">PKR —</td></tr>
           <tr><td>Low estimate (−20%)</td><td id="cb-low">PKR —</td></tr>
           <tr><td>High estimate (+20%)</td><td id="cb-high">PKR —</td></tr>
         </tfoot>
       </table>
+      <p style="font-size:.86rem; color:#664500; background:#FFF3CD; padding:12px 16px; border-radius:8px; margin-top:16px"><strong>This is a rough estimate.</strong> Final pricing on a real customer quote depends on day-of refrigeration component pricing, current panel coil rates, civil scope refinement after a site survey, and customer-specific commercial terms. Always validate with engineering before issuing.</p>
 
       <h3>PEB vs RCC envelope — pick one</h3>
       <table class="compare-table">

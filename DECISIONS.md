@@ -204,3 +204,23 @@ We do NOT build a new engineering engine. The 7 existing calculators in `js/tool
 8. Pre-loaded preset URLs (`?preset=mango-multan-2000ton` etc.) so case studies and city pages deep-link with state
 
 **Pricing data status:** Calculator ships with **Pakistan-realistic indicative bands ±20%** estimated from public benchmarks (LESCO / K-Electric tariffs, OGRA diesel rates, regional cold-store buildouts adjusted for Pakistan). Each cost cell is **inline-editable in the UI** — user (sales engineer or buyer) can override any number on the spot, with a "reset to default" link. Saved per session in `localStorage`. PR3 build adds editable-bands directive as core UX (CEO 2026-05-01).
+
+### Internal-tool reframing + margin handling (CEO 2026-05-01, PR3 follow-up)
+
+User direction: **"build it for OUR use", "rough estimate, exact cost might differ", "make sure we add margin on top".**
+
+Implications baked into PR3 follow-up commit:
+
+1. **Reframed as an internal sales-engineer / buyer tool**, not a public marketing page. Hero badge changed from "World's First Intelligent Cold Store Cost Calculator" to "Tool 8 · Internal cost estimator". H1 changed from same to "Cold store cost estimator — rough estimate · exact cost will differ".
+2. **"Rough estimate" disclaimer is prominent** — yellow banded callout in the hero, in the result band, under the breakdown table, and in every WhatsApp/PDF lead-capture summary. The phrasing is consistent: *"Rough estimate — exact cost will differ. Engineer validation required before quoting a customer."*
+3. **Margin is its own line, not buried in EPC uplift.** Previously `data-pricing.json` blended margin into a 29% EPC uplift bundle. Now:
+   - `engineering_install_pct` only contains engineering (4.5%) + PM (3%) + commissioning (2.5%) + contingency (7%) — **margin is removed**.
+   - `margin_pct` is a separate top-level object: `default_pct: 18.0`, `min_pct: 8.0`, `max_pct: 35.0`, `step_pct: 1.0`.
+   - Engine computes `total = directSubtotal × (1 + epcUplift) × (1 + marginPct)`. Margin row stacks on top.
+4. **Editable margin slider in the breakdown table** — sales engineer drags or types 0–50% per quote. Persists in URL state (`#mp=22`) so deep-link presets can include it. "Reset" link returns to default 18%.
+5. **Result band, WhatsApp summary, PDF, and breakdown table** all show margin as a discrete line: `"Izhar margin (18%): PKR X cr"`. Users can see the margin contribution at any time.
+6. **All 11 page CTAs** (homepage promo + 5 service pages + 5 case studies) reframed from "Get a cost band in 10 seconds" / "World's first" → "Want a rough cost estimate? Sales-engineer tool, ±20% band". All buttons changed from "Open the cost calculator" → "Open the rough estimator". Disclaimer "Engineer validation required before quoting a customer" added to every CTA paragraph.
+7. **`SoftwareApplication` schema description** updated from public-facing "free Pakistan-tuned cold-storage cost calculator" to internal-tool-honest "Pakistan-tuned cold-store cost estimator for sales engineers and buyers. Produces rough cost estimates (±20% indicative band) — exact pricing varies by site survey, day-of component pricing, and customer-specific scope. Engineer validation required before any quote is issued."
+8. **tools.html grid card** title changed from "Cold Store Cost Calculator" → "Cold Store Cost Estimator". Tags changed from "Pakistan-tuned / PKR cost band / Editable" → "Internal use / Rough estimate / Editable margin".
+
+The tool is still indexable (good for AI / Google citation that Izhar Foster has the methodology), but the framing makes it unambiguous that the output is a starting point for engineer review, not a customer-facing quote. Margin is visible, defensible, and editable.

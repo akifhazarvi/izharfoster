@@ -123,12 +123,19 @@
   },
 
   "engineering_install_pct": {
-    "$comment": "Project execution multipliers applied to (envelope + refrigeration + doors + civil + electrical + controls).",
+    "$comment": "Project execution multipliers applied to direct cost (envelope + refrigeration + doors + civil + electrical + controls). Margin is broken OUT separately below.",
     "engineering_design_pct": 4.5,
     "project_management_pct": 3.0,
     "commissioning_pct": 2.5,
-    "contingency_pct": 7.0,
-    "izhar_overhead_margin_pct": 12.0
+    "contingency_pct": 7.0
+  },
+
+  "margin_pct": {
+    "$comment": "Izhar Foster margin applied AFTER direct cost + EPC uplift. Editable per quote in the UI. Internal tool: sales engineer can shift this slider to compare scenarios. Default 18% (typical mid-band for industrial cold-chain projects in Pakistan).",
+    "default_pct": 18.0,
+    "min_pct": 8.0,
+    "max_pct": 35.0,
+    "step_pct": 1.0
   },
 
   "site_class_civil_factor": {

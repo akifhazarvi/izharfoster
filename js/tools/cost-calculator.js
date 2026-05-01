@@ -66,6 +66,9 @@
     loadShedHoursPerDay: 4,
     operatingHoursPerDay: 24,
 
+    // Step 4 — margin (sales engineer override)
+    marginPct: null,            // null = use default from JSON
+
     // metadata
     mode: 'quick',              // 'quick' | 'detailed'
   };
@@ -199,18 +202,25 @@
       : pricingValue('envelope_choice_uplift.PEB_baseline');
     directSubtotal *= envelopeMul;
 
-    // 9) Engineering, PM, commissioning, contingency, margin
+    // 9) EPC uplift — engineering, PM, commissioning, contingency (margin is separate below)
     const epcUplift = (
       pricingValue('engineering_install_pct.engineering_design_pct') +
       pricingValue('engineering_install_pct.project_management_pct') +
       pricingValue('engineering_install_pct.commissioning_pct') +
-      pricingValue('engineering_install_pct.contingency_pct') +
-      pricingValue('engineering_install_pct.izhar_overhead_margin_pct')
+      pricingValue('engineering_install_pct.contingency_pct')
     ) / 100;
 
-    const total = directSubtotal * (1 + epcUplift);
+    const subtotalAfterEpc = directSubtotal * (1 + epcUplift);
+    const epcAmount = subtotalAfterEpc - directSubtotal;
 
-    // ±20% band
+    // 9b) MARGIN — broken out as its own configurable line
+    const marginPct = (state.marginPct != null
+      ? state.marginPct
+      : pricingValue('margin_pct.default_pct')) / 100;
+    const marginAmount = subtotalAfterEpc * marginPct;
+    const total = subtotalAfterEpc + marginAmount;
+
+    // ±20% band — applied to the FINAL total (post-margin)
     const band = pricingDefault.uncertainty_band_pct / 100;
     const totalLow = total * (1 - band);
     const totalHigh = total * (1 + band);
@@ -262,7 +272,8 @@
       panelMm: state.panelMm, panelPkrPerM2,
       city: state.city, commodity: state.commodity,
       envelopeChoice: state.envelopeChoice, envelopeMul,
-      epcUplift,
+      epcUplift, epcAmount,
+      marginPct, marginAmount, subtotalAfterEpc,
     };
   }
 
@@ -337,6 +348,7 @@
       ca: state.isCAStore ? 1 : 0,
       pwr: state.powerBackup,
       ls: state.loadShedHoursPerDay,
+      mp: state.marginPct,
       mode: state.mode,
     });
   }
@@ -355,6 +367,7 @@
     if (s.ca) state.isCAStore = s.ca === '1';
     if (s.pwr) state.powerBackup = s.pwr;
     if (s.ls) state.loadShedHoursPerDay = parseFloat(s.ls);
+    if (s.mp != null && s.mp !== '') state.marginPct = parseFloat(s.mp);
     if (s.mode) state.mode = s.mode;
     applyPresetFromSetpoint();
   }
@@ -396,7 +409,12 @@
     if ($('cb-electrical'))$('cb-electrical').textContent = pkr(r.electricalCost);
     if ($('cb-controls'))  $('cb-controls').textContent  = pkr(r.controlsCost);
     if ($('cb-direct'))    $('cb-direct').textContent    = pkr(r.directSubtotal);
-    if ($('cb-epc-pct'))   $('cb-epc-pct').textContent   = `${(r.epcUplift * 100).toFixed(1)}%`;
+    if ($('cb-epc-pct'))   $('cb-epc-pct').textContent   = `${(r.epcUplift * 100).toFixed(1)}%  (${pkr(r.epcAmount)})`;
+    if ($('cb-margin-pct')) $('cb-margin-pct').textContent = `${(r.marginPct * 100).toFixed(1)}%  (${pkr(r.marginAmount)})`;
+    if ($('cb-margin-input')) {
+      const mi = $('cb-margin-input');
+      if (mi !== document.activeElement) mi.value = (r.marginPct * 100).toFixed(0);
+    }
     if ($('cb-total'))     $('cb-total').textContent     = pkr(r.total);
     if ($('cb-low'))       $('cb-low').textContent       = pkr(r.totalLow);
     if ($('cb-high'))      $('cb-high').textContent      = pkr(r.totalHigh);
@@ -404,7 +422,7 @@
     // Build lead-capture summary
     const summary = `${r.commodity} cold store · ${state.city} · ${fmt(r.volM3,0)} m³ · ${fmt(r.tons,0)} t · ${state.setpointC}°C · cost ${pkr(r.totalLow)} – ${pkr(r.totalHigh)} · ${fmt(r.refrigKw,1)} kW refrig · ${fmt(r.panelArea,0)} m² panel`;
     const longSummary = summary
-      + `\n\n— Quote Snapshot —\nPanel ${r.panelMm} mm: ${pkr(r.panelCost)}\nCivil (${state.siteClass}): ${pkr(r.civilCost)}\nRefrigeration (${state.refrigArchitecture}): ${pkr(r.refrigCost)}\nDoors: ${pkr(r.doorCost)}\nElectrical: ${pkr(r.electricalCost)}\nControls: ${pkr(r.controlsCost)}\nEPC + margin: ${(r.epcUplift*100).toFixed(1)}%\nTOTAL (mid): ${pkr(r.total)}\nBand ±20%: ${pkr(r.totalLow)} – ${pkr(r.totalHigh)}\n\nAnnual energy: ${pkrAnnual(r.annualEnergyPkr)} (${state.city} tariff PKR ${fmt(r.tariff,2)}/kWh)\nDiesel backup OPEX: ${pkrAnnual(r.dieselAnnualPkr)} (${r.loadShedHrs} h/day load-shed)\nSolar option: ${fmt(r.solarPvKw,1)} kW PV → ${pkrAnnual(r.solarOpexSaving)} saved · payback ${fmt(r.solarPaybackYears,1)} years\n\nCost per ton: ${pkr(r.costPerTon)}\nCost per pallet: ${pkr(r.costPerPallet)}\nCost per m³: ${pkr(r.costPerM3)}`;
+      + `\n\nROUGH ESTIMATE — exact cost may differ. Engineer validation required before quoting.\n\n— Snapshot —\nPanel ${r.panelMm} mm: ${pkr(r.panelCost)}\nCivil (${state.siteClass}): ${pkr(r.civilCost)}\nRefrigeration (${state.refrigArchitecture}): ${pkr(r.refrigCost)}\nDoors: ${pkr(r.doorCost)}\nElectrical: ${pkr(r.electricalCost)}\nControls: ${pkr(r.controlsCost)}\nDirect subtotal: ${pkr(r.directSubtotal)}\nEPC uplift (${(r.epcUplift*100).toFixed(1)}%): ${pkr(r.epcAmount)}\nMargin (${(r.marginPct*100).toFixed(1)}%): ${pkr(r.marginAmount)}\nTOTAL (mid): ${pkr(r.total)}\nBand ±20%: ${pkr(r.totalLow)} – ${pkr(r.totalHigh)}\n\nAnnual energy: ${pkrAnnual(r.annualEnergyPkr)} (${state.city} tariff PKR ${fmt(r.tariff,2)}/kWh)\nDiesel backup OPEX: ${pkrAnnual(r.dieselAnnualPkr)} (${r.loadShedHrs} h/day load-shed)\nSolar option: ${fmt(r.solarPvKw,1)} kW PV → ${pkrAnnual(r.solarOpexSaving)} saved · payback ${fmt(r.solarPaybackYears,1)} years\n\nCost per ton: ${pkr(r.costPerTon)}\nCost per pallet: ${pkr(r.costPerPallet)}\nCost per m³: ${pkr(r.costPerM3)}`;
 
     if ($('cta-quote')) $('cta-quote').href = quoteUrl('cost-calculator', summary);
     if ($('cta-wa'))    $('cta-wa').href    = whatsappUrl(longSummary);
@@ -485,6 +503,22 @@
     if ($('isCAStore')) {
       $('isCAStore').addEventListener('change', () => {
         state.isCAStore = $('isCAStore').checked;
+        recompute();
+      });
+    }
+
+    // Margin slider (sales engineer override)
+    if ($('cb-margin-input')) {
+      $('cb-margin-input').addEventListener('input', () => {
+        const v = parseFloat($('cb-margin-input').value);
+        state.marginPct = isNaN(v) ? null : v;
+        recompute();
+      });
+    }
+    if ($('cb-margin-reset')) {
+      $('cb-margin-reset').addEventListener('click', (e) => {
+        e.preventDefault();
+        state.marginPct = null;
         recompute();
       });
     }
