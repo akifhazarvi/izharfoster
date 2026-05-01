@@ -3160,6 +3160,7 @@ body.lc-open .lc-backdrop {
 }
 .post-content {
   max-width: 720px;
+  margin-inline: auto;
   font-size: 1.08rem;
   line-height: 1.75;
   color: var(--ink-2);
@@ -5117,13 +5118,28 @@ body.lc-open .lc-backdrop {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   padding: 0 20px;
   border-right: 1px solid var(--line);
   text-align: center;
   flex-shrink: 0;
+  transition: transform .2s ease;
 }
 .cert-badge:last-child { border-right: none; }
+.cert-badge:hover { transform: translateY(-2px); }
+.cert-badge-icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2px;
+  color: var(--t-cold);
+  opacity: .85;
+  transition: color .2s ease, opacity .2s ease;
+}
+.cert-badge-icon svg { width: 100%; height: 100%; display: block; }
+.cert-badge:hover .cert-badge-icon { color: var(--t-warm); opacity: 1; }
 .cert-badge-code {
   font-family: var(--font-mono);
   font-size: .78rem;
@@ -5139,15 +5155,26 @@ body.lc-open .lc-backdrop {
   letter-spacing: .02em;
 }
 @media (max-width: 900px) {
-  .cert-strip-inner { gap: 16px; }
+  .cert-strip-inner { gap: 16px 0; }
   .cert-strip-label { border-right: none; margin-right: 0; padding-right: 0; width: 100%; margin-bottom: 8px; }
-  .cert-badge { padding: 0 12px; }
+  .cert-badge { padding: 0 14px; }
+  .cert-badge-icon { width: 24px; height: 24px; }
 }
 @media (max-width: 480px) {
-  .cert-strip-inner { gap: 12px 0; }
-  .cert-badge { padding: 8px 12px; border-right: none; border-bottom: 1px solid var(--line); width: 50%; }
-  .cert-badge:nth-last-child(-n+2) { border-bottom: none; }
+  .cert-strip-inner { gap: 0; }
+  .cert-badge { padding: 14px 12px; border-right: none; border-bottom: 1px solid var(--line); width: 33.333%; }
+  .cert-badge:nth-last-child(-n+3) { border-bottom: none; }
 }
+
+/* Cert-card icon (certifications page) */
+.cert-card-icon {
+  position: absolute;
+  top: 28px; right: 28px;
+  width: 32px; height: 32px;
+  color: var(--t-cold);
+  opacity: .35;
+}
+.cert-card-icon svg { width: 100%; height: 100%; display: block; }
 
 /* ============= Certifications page — cert grid ============= */
 .cert-grid {
