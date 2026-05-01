@@ -70,36 +70,534 @@
 </script>
 
 <style>
-  .cost-tabs { display:flex; gap:8px; margin-bottom:24px; }
-  .cost-tabs button { padding:10px 18px; border:1px solid var(--ink-3, #ccc); background:var(--paper, #fff); cursor:pointer; font-weight:600; border-radius:8px; }
-  .cost-tabs button[aria-pressed="true"] { background:var(--brand, #0A1F3D); color:#fff; border-color:var(--brand, #0A1F3D); }
-  .cost-form { display:grid; gap:18px; max-width:880px; }
-  .cost-row { display:grid; grid-template-columns:minmax(0, 200px) minmax(0, 1fr); gap:16px; align-items:center; }
-  @media (max-width:720px) { .cost-row { grid-template-columns:1fr; } }
-  .cost-row label { font-weight:600; }
-  .cost-row .cost-hint { font-size:.84rem; color:var(--ink-2, #666); margin-top:4px; }
-  .seg { display:inline-flex; gap:0; background:var(--paper-2, #f5f2ec); border-radius:10px; padding:4px; flex-wrap:wrap; }
-  .seg button { padding:8px 14px; border:none; background:transparent; cursor:pointer; border-radius:8px; font-size:.92rem; }
-  .seg button[aria-pressed="true"] { background:var(--ink, #1a1a1a); color:#fff; }
-  .cost-form input[type="number"], .cost-form select { padding:10px 14px; border:1px solid var(--ink-3, #ccc); border-radius:8px; font-size:1rem; width:100%; max-width:280px; }
-  .result-band { font-size:2.2rem; font-weight:700; color:var(--brand, #0A1F3D); padding:20px 0; border-top:2px solid var(--ink-3, #ccc); border-bottom:2px solid var(--ink-3, #ccc); margin:24px 0; }
-  .result-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:18px; margin:24px 0; }
-  .result-cell { background:var(--paper-2, #f5f2ec); padding:16px; border-radius:10px; }
-  .result-cell .k { font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-2, #666); margin-bottom:6px; }
-  .result-cell .v { font-size:1.4rem; font-weight:700; color:var(--ink, #1a1a1a); }
-  .breakdown-table { width:100%; border-collapse:collapse; margin:24px 0; font-size:.95rem; }
-  .breakdown-table th, .breakdown-table td { padding:10px 14px; text-align:left; border-bottom:1px solid var(--ink-3, #ddd); }
-  .breakdown-table tfoot td { font-weight:700; }
-  .breakdown-table .editable { cursor:pointer; border-bottom:1px dashed var(--brand, #0A1F3D); }
-  .breakdown-table .editable:hover { background:var(--paper-2, #f5f2ec); }
-  .compare-table { width:100%; border-collapse:collapse; margin:24px 0; font-size:.95rem; }
-  .compare-table th, .compare-table td { padding:10px 14px; text-align:left; border-bottom:1px solid var(--ink-3, #ddd); }
-  .compare-table th { background:var(--paper-2, #f5f2ec); }
-  .lead-cta-row { display:flex; gap:12px; flex-wrap:wrap; margin-top:24px; }
-  .badge-indicative { display:inline-block; background:#FFF3CD; color:#856404; padding:4px 10px; border-radius:6px; font-size:.78rem; margin-left:8px; vertical-align:middle; }
-  body[data-mode="quick"] [data-mode-content="detailed"] { display:none; }
-  body[data-mode="detailed"] [data-mode-content="quick"] { display:none; }
-  @media print { .cost-tabs, .lead-cta-row, .nav-cta, .menu-toggle, .fab-wa, .site-header, .site-footer, .cta-banner { display:none !important; } }
+/* ================================================================
+   COST CALCULATOR — Step Wizard Design
+   ================================================================ */
+
+.wizard-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 380px);
+  gap: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--gutter) 80px;
+  align-items: start;
+}
+@media (max-width: 960px) { .wizard-layout { grid-template-columns: 1fr; } }
+
+/* Step indicator */
+.step-indicator {
+  display: flex;
+  gap: 0;
+  margin-bottom: 36px;
+  background: var(--paper-2);
+  border-radius: var(--r-lg);
+  padding: 6px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.step-indicator-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 12px 8px;
+  border-radius: var(--r-md);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+.step-indicator-btn.is-active {
+  background: var(--paper);
+  box-shadow: 0 2px 12px rgba(14,15,17,.08);
+}
+.step-num {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono);
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--muted);
+  background: var(--paper);
+  transition: all .2s;
+  position: relative;
+}
+.step-indicator-btn.is-active .step-num {
+  border-color: var(--t-cold);
+  color: var(--t-cold);
+  background: rgba(10,31,61,.07);
+}
+.step-indicator-btn.is-done .step-num {
+  background: #22C55E;
+  color: #fff;
+  border-color: #22C55E;
+}
+.step-indicator-btn.is-done .step-num-inner { display: none; }
+.step-indicator-btn.is-done .step-num::after { content: '✓'; font-size: .9rem; }
+.step-label {
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.step-indicator-btn.is-active .step-label { color: var(--ink); }
+@media (max-width: 560px) {
+  .step-label { font-size: .6rem; letter-spacing: .02em; }
+  .step-num { width: 26px; height: 26px; font-size: .7rem; }
+  .step-indicator-btn { padding: 8px 4px; }
+}
+
+/* Step panels */
+.step-panel { display: none; }
+.step-panel.is-active {
+  display: block;
+  animation: step-in .22s ease;
+}
+@keyframes step-in {
+  from { opacity: 0; transform: translateY(7px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Step card */
+.step-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  padding: 36px 40px;
+}
+@media (max-width: 720px) { .step-card { padding: 22px 18px; border-radius: var(--r-lg); } }
+
+.step-card-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 30px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line-2);
+}
+.step-icon {
+  width: 48px; height: 48px;
+  border-radius: var(--r-md);
+  background: var(--paper-2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+.step-card-head h2 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: -.025em;
+  margin-bottom: 4px;
+}
+.step-card-head p { font-size: .9rem; color: var(--muted); max-width: 48ch; }
+
+/* Wizard fields */
+.wiz-field { margin-bottom: 24px; }
+.wiz-field:last-child { margin-bottom: 0; }
+.wiz-label {
+  display: block;
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  margin-bottom: 8px;
+}
+.wiz-hint { font-size: .82rem; color: var(--muted); margin-top: 6px; line-height: 1.45; }
+
+.wiz-select {
+  font-family: var(--font-body);
+  font-size: .95rem;
+  padding: 12px 40px 12px 16px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--paper-2);
+  color: var(--ink);
+  width: 100%;
+  min-height: 46px;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%230E0F11' fill='none' stroke-width='1.5'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  cursor: pointer;
+  transition: border-color .15s, box-shadow .15s;
+}
+.wiz-select:focus {
+  outline: none;
+  border-color: var(--t-cold);
+  box-shadow: 0 0 0 3px rgba(10,31,61,.10);
+  background-color: var(--paper);
+}
+.wiz-num {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 12px 16px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--paper-2);
+  color: var(--ink);
+  min-height: 46px;
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+.wiz-num:focus {
+  border-color: var(--t-cold);
+  box-shadow: 0 0 0 3px rgba(10,31,61,.10);
+  background-color: var(--paper);
+}
+.wiz-num::-webkit-outer-spin-button,
+.wiz-num::-webkit-inner-spin-button { -webkit-appearance: none; }
+.wiz-num[type=number] { -moz-appearance: textfield; }
+
+.wiz-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+@media (max-width: 560px) { .wiz-2col { grid-template-columns: 1fr; } }
+
+.wiz-seg {
+  display: flex;
+  gap: 4px;
+  background: var(--paper-2);
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: 4px;
+  flex-wrap: wrap;
+}
+.wiz-seg button {
+  flex: 1;
+  padding: 9px 12px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: .86rem;
+  font-weight: 500;
+  color: var(--muted);
+  border-radius: var(--r-xs);
+  transition: all .15s;
+  white-space: nowrap;
+  min-width: 56px;
+}
+.wiz-seg button[aria-pressed="true"] {
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 1px 6px rgba(14,15,17,.10);
+}
+
+.wiz-capacity-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Step nav */
+.step-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line-2);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.step-nav-back {
+  font-size: .88rem;
+  font-weight: 500;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px 0;
+  display: flex; align-items: center; gap: 6px;
+}
+.step-nav-back:hover { color: var(--ink); }
+.step-nav-back::before { content: '←'; margin-right: 4px; }
+.btn-next {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 13px 26px;
+  background: var(--t-cold);
+  color: var(--paper);
+  border: none;
+  border-radius: var(--r-sm);
+  font-size: .92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+}
+.btn-next:hover { background: var(--t-warm); }
+.btn-next::after { content: '→'; }
+
+/* Live cost sidebar */
+.cost-sidebar {
+  position: sticky;
+  top: 96px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+@media (max-width: 960px) { .cost-sidebar { position: static; } }
+
+.cost-band-card {
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: var(--r-xl);
+  padding: 28px 28px 22px;
+  position: relative;
+  overflow: hidden;
+}
+.cost-band-card::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--t-cold) 0%, var(--t-mid) 55%, var(--t-warm) 100%);
+}
+.cost-band-eyebrow {
+  font-family: var(--font-mono);
+  font-size: .66rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(245,242,236,.45);
+  margin-bottom: 10px;
+}
+.cost-band-value {
+  font-family: var(--font-mono);
+  font-size: clamp(1.25rem, 2.5vw, 1.7rem);
+  font-weight: 600;
+  letter-spacing: -.03em;
+  color: var(--paper);
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+.cost-band-range {
+  font-family: var(--font-mono);
+  font-size: .78rem;
+  color: rgba(245,242,236,.5);
+}
+.cost-band-disclaimer {
+  font-size: .75rem;
+  color: rgba(245,242,236,.38);
+  font-style: italic;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(245,242,236,.1);
+  line-height: 1.4;
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.metric-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 13px 15px;
+  transition: border-color .15s;
+}
+.metric-card .k {
+  font-family: var(--font-mono);
+  font-size: .66rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.metric-card .v {
+  font-family: var(--font-mono);
+  font-size: .98rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.commercial-card {
+  background: var(--paper-2);
+  border-radius: var(--r-lg);
+  padding: 18px 20px;
+}
+.commercial-card .c-title,
+.opex-sidebar-card .c-title {
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.commercial-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line-2);
+  font-size: .88rem;
+}
+.commercial-row:last-child { border-bottom: none; }
+.commercial-row .ck { color: var(--muted); }
+.commercial-row .cv { font-family: var(--font-mono); font-weight: 600; color: var(--ink); }
+
+.opex-sidebar-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 18px 20px;
+}
+
+/* Results (step 4) */
+.result-section { margin-bottom: 36px; }
+.result-section h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -.02em;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.result-section h3 a {
+  font-size: .8rem;
+  font-weight: 400;
+  color: var(--muted);
+  margin-left: auto;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.out-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+@media (max-width: 760px) { .out-grid-4 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 400px) { .out-grid-4 { grid-template-columns: 1fr 1fr; } }
+
+.opex-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+@media (max-width: 600px) { .opex-grid { grid-template-columns: 1fr 1fr; } }
+
+.breakdown-card {
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-xl);
+  padding: 32px 36px;
+}
+@media (max-width: 720px) { .breakdown-card { padding: 20px 16px; border-radius: var(--r-lg); } }
+
+.breakdown-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.breakdown-table th,
+.breakdown-table td { padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--line-2); }
+.breakdown-table th {
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: var(--paper-2);
+}
+.breakdown-table tfoot td { font-weight: 700; background: var(--paper-2); }
+.breakdown-table .editable { cursor: pointer; border-bottom: 1px dashed var(--t-cold); }
+.breakdown-table .editable:hover { background: rgba(10,31,61,.04); }
+
+.compare-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.compare-table th,
+.compare-table td { padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--line-2); }
+.compare-table th {
+  background: var(--paper-2);
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.margin-editor {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+.margin-editor input[type="number"] {
+  width: 68px;
+  padding: 6px 10px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-xs);
+  font-family: var(--font-mono);
+  font-size: .9rem;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.badge-indicative {
+  display: inline-block;
+  background: #FFF3CD;
+  color: #856404;
+  padding: 3px 10px;
+  border-radius: var(--r-xs);
+  font-size: .74rem;
+  font-weight: 500;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.lead-cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+
+.mode-toggle-bar {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 28px;
+  background: var(--paper-2);
+  border-radius: var(--r-md);
+  padding: 5px;
+  width: fit-content;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.mode-toggle-bar button {
+  padding: 9px 20px;
+  border: none;
+  background: transparent;
+  border-radius: var(--r-sm);
+  font-size: .88rem;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all .15s;
+}
+.mode-toggle-bar button[aria-pressed="true"] {
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 1px 6px rgba(14,15,17,.09);
+}
+
+body[data-mode="quick"] [data-mode-content="detailed"] { display: none; }
+body[data-mode="detailed"] [data-mode-content="quick"] { display: none; }
+
+@media print {
+  .step-indicator, .step-nav, .mode-toggle-bar,
+  .nav-cta, .menu-toggle, .fab-wa, .site-header, .site-footer, .cta-banner { display: none !important; }
+  .wizard-layout { grid-template-columns: 1fr; }
+  .step-panel { display: block !important; }
+  .cost-sidebar { position: static; }
+}
 </style>
 
 </head>
@@ -117,7 +615,7 @@
       <a href="../index" class="brand" aria-label="Izhar Foster home"><img src="../images/logo.svg" alt="Izhar Foster" class="brand-logo"></a>
       <ul class="nav-center" id="nav">
         <li><a href="../index">Home</a></li>
-        <li><a href="../solutions">Solutions</a></li>
+        <li><a href="../services/cold-stores">Solutions</a></li>
         <li><a href="../projects">Projects</a></li>
         <li><a href="../tools" class="active">Tools</a></li>
         <li><a href="../about">Story</a></li>
@@ -138,8 +636,8 @@
       <div class="breadcrumb"><a href="../index">Home</a><span class="sep">/</span><a href="../tools">Tools</a><span class="sep">/</span><span>Cost Calculator</span></div>
       <span class="temp-badge" style="--badge-color:#0A1F3D"><span class="dot"></span>Tool 8 · Internal cost estimator</span>
       <h1>Cold store cost estimator <span class="badge-indicative">rough estimate · exact cost will differ</span></h1>
-      <p class="lead">Sales-engineer tool for sizing and pricing cold-chain projects in Pakistan. Combines refrigeration heat-load engineering with FireSafe PIR panel sizing, civil cost data, refrigeration architecture, diesel vs solar OPEX, PEB vs RCC envelope economics, and cost per ton, pallet, and m³. <strong>Engineer validation required before any quote is issued to a customer.</strong> Inputs and pricing assumptions are editable inline; margin is shown as a separate, configurable line.</p>
-      <p style="background:#FFF3CD; border-left:4px solid #F0A800; padding:12px 16px; margin-top:12px; font-size:.92rem; color:#664500; max-width:75ch"><strong>Important:</strong> This is a rough estimate. Pakistan-realistic indicative cost bands ±20%. Final pricing depends on site survey, refrigerant choice, refrigeration partner pricing on the day, current panel coil rates, and customer-specific scope. Treat the output as a starting point for engineer review — never as a customer-facing quote.</p>
+      <p class="lead">Sales-engineer tool for sizing and pricing cold-chain projects in Pakistan. Walk through four steps — project basics, envelope, refrigeration, results. <strong>Engineer validation required before any quote is issued to a customer.</strong></p>
+      <p style="background:rgba(240,168,0,.12); border-left:3px solid #F0A800; border-radius:0 var(--r-xs) var(--r-xs) 0; padding:12px 16px; margin-top:12px; font-size:.9rem; color:#664500; max-width:75ch"><strong>Rough estimate ±20%.</strong> Final pricing depends on site survey, refrigerant choice, component pricing on the day, and customer scope.</p>
     </div>
     <aside class="aside">
       <span class="label">For internal use</span>
@@ -154,320 +652,417 @@
 </section>
 
 <section class="section" data-temp="0">
-  <div class="container" style="max-width:1100px">
 
-    <div class="cost-tabs" role="tablist">
+  <!-- Mode toggle -->
+  <div style="max-width:1200px; margin:0 auto; padding:0 var(--gutter)">
+    <div class="mode-toggle-bar" role="tablist" style="margin-left:0; margin-bottom:24px">
       <button data-mode-tab="quick" aria-pressed="true">Quick estimate (10 sec)</button>
       <button data-mode-tab="detailed" aria-pressed="false">Detailed engineering</button>
     </div>
 
-    <form class="cost-form" onsubmit="return false;">
+    <!-- Step indicator -->
+    <nav class="step-indicator" id="step-indicator" aria-label="Calculator steps" style="margin-left:0; margin-right:0">
+      <button class="step-indicator-btn is-active" data-go-step="1">
+        <div class="step-num"><span class="step-num-inner">1</span></div>
+        <div class="step-label">Project</div>
+      </button>
+      <button class="step-indicator-btn" data-go-step="2" data-mode-content="detailed">
+        <div class="step-num"><span class="step-num-inner">2</span></div>
+        <div class="step-label">Envelope</div>
+      </button>
+      <button class="step-indicator-btn" data-go-step="3" data-mode-content="detailed">
+        <div class="step-num"><span class="step-num-inner">3</span></div>
+        <div class="step-label">Refrigeration</div>
+      </button>
+      <button class="step-indicator-btn" data-go-step="4">
+        <div class="step-num"><span class="step-num-inner">4</span></div>
+        <div class="step-label">Results</div>
+      </button>
+    </nav>
+  </div>
 
-      <!-- ========== STEP 1 — Project basics (visible in both modes) ========== -->
-      <h2>Step 1 — Project basics</h2>
+  <!-- Wizard layout: steps + sidebar -->
+  <div class="wizard-layout">
 
-      <div class="cost-row">
-        <label for="city">City</label>
-        <div>
-          <select id="city">
-            <option value="Karachi">Karachi</option>
-            <option value="Lahore" selected>Lahore</option>
-            <option value="Islamabad">Islamabad</option>
-            <option value="Rawalpindi">Rawalpindi</option>
-            <option value="Multan">Multan</option>
-            <option value="Faisalabad">Faisalabad</option>
-            <option value="Peshawar">Peshawar</option>
-            <option value="Quetta">Quetta</option>
-            <option value="Hyderabad">Hyderabad</option>
-            <option value="Sukkur">Sukkur</option>
-            <option value="Gujranwala">Gujranwala</option>
-            <option value="Sialkot">Sialkot</option>
-          </select>
-          <div class="cost-hint">Each city has its own electricity tariff and load-shedding default.</div>
-        </div>
-      </div>
+    <!-- LEFT: step panels -->
+    <div class="wizard-steps">
 
-      <div class="cost-row">
-        <label for="commodity">Commodity / sector</label>
-        <div>
-          <select id="commodity">
-            <optgroup label="Fresh produce">
-              <option value="potato">Potato</option>
-              <option value="onion">Onion</option>
-              <option value="apple">Apple</option>
-              <option value="mango" selected>Mango</option>
-              <option value="kinnow">Kinnow / Citrus</option>
-              <option value="dates">Dates</option>
-              <option value="banana">Banana (ripening)</option>
-              <option value="tomato">Tomato</option>
-            </optgroup>
-            <optgroup label="Animal protein">
-              <option value="meat_carcass">Meat — carcass</option>
-              <option value="poultry_packed">Poultry — packed</option>
-              <option value="frozen_meat_packed">Frozen meat — packed</option>
-              <option value="frozen_seafood">Frozen seafood</option>
-              <option value="dairy_packed">Dairy</option>
-            </optgroup>
-            <optgroup label="Industrial">
-              <option value="ice_cream">Ice cream</option>
-              <option value="ice_block">Ice block</option>
-              <option value="pharma_packed_cartons">Pharmaceutical</option>
-              <option value="beverage_pet">Beverage — PET</option>
-              <option value="beverage_glass">Beverage — glass</option>
-              <option value="general_3pl">3PL — general</option>
-            </optgroup>
-          </select>
-          <div class="cost-hint">Affects storage density (kg/m³) and recommended setpoint.</div>
-        </div>
-      </div>
-
-      <div class="cost-row">
-        <label for="capacityM3">Capacity</label>
-        <div>
-          <input type="number" id="capacityM3" value="1000" min="20" step="10">
-          <div class="seg" id="capacityUnit-seg" style="margin-top:8px" role="tablist">
-            <button data-val="m3" aria-pressed="true">m³</button>
-            <button data-val="tons" aria-pressed="false">tons</button>
-            <button data-val="pallets" aria-pressed="false">pallet positions</button>
-          </div>
-          <div class="cost-hint">Net storage volume. Tons converted using commodity density × 0.55 utilisation.</div>
-        </div>
-      </div>
-
-      <div class="cost-row">
-        <label for="setpointPreset">Temperature setpoint</label>
-        <div>
-          <select id="setpointPreset">
-            <option value="chiller">Chiller (+4°C)</option>
-            <option value="cold_store" selected>Cold store (0°C)</option>
-            <option value="freezer">Freezer (−20°C)</option>
-            <option value="blast_freezer">Blast freezer (−35°C)</option>
-            <option value="ca_store_apple">CA store — apple (+1°C)</option>
-            <option value="ca_store_kinnow">CA store — kinnow (+4°C)</option>
-            <option value="banana_ripening">Banana ripening (+15°C)</option>
-            <option value="mango_pre_cool">Mango pre-cool (+10°C)</option>
-            <option value="ambient_pharma_CRT">Pharma CRT (+22°C)</option>
-            <option value="vaccine_cold_chain">Vaccine cold chain (+5°C)</option>
-            <option value="ice_cream">Ice cream (−25°C)</option>
-            <option value="deep_freeze">Deep freeze (−28°C)</option>
-            <option value="ultra_low">Ultra-low (−75°C)</option>
-          </select>
-          <div class="cost-hint">Affects refrigeration kW, panel thickness recommendation, and door selection.</div>
-        </div>
-      </div>
-
-      <!-- ========== STEP 2 — Building & envelope (DETAILED ONLY) ========== -->
-      <div data-mode-content="detailed">
-        <h2>Step 2 — Building &amp; envelope</h2>
-
-        <div class="cost-row">
-          <label>FireSafe PIR panel thickness</label>
-          <div>
-            <div class="seg" id="panelMm-seg" role="tablist">
-              <button data-val="50" aria-pressed="false">50 mm</button>
-              <button data-val="60" aria-pressed="false">60 mm</button>
-              <button data-val="80" aria-pressed="false">80 mm</button>
-              <button data-val="100" aria-pressed="true">100 mm</button>
-              <button data-val="125" aria-pressed="false">125 mm</button>
-              <button data-val="150" aria-pressed="false">150 mm</button>
-              <button data-val="200" aria-pressed="false">200 mm</button>
+      <!-- ===== STEP 1 ===== -->
+      <div class="step-panel is-active" id="step-panel-1">
+        <div class="step-card">
+          <div class="step-card-head">
+            <div class="step-icon">📍</div>
+            <div>
+              <h2>Project basics</h2>
+              <p>Where is the project, what are you storing, how big, and at what temperature?</p>
             </div>
-            <div class="cost-hint">100 mm typical for chillers and cold stores; 150 mm for freezers; 200 mm for ultra-low.</div>
           </div>
-        </div>
 
-        <div class="cost-row">
-          <label>Site class</label>
-          <div>
-            <div class="seg" id="siteClass-seg" role="tablist">
-              <button data-val="greenfield" aria-pressed="true">Greenfield</button>
-              <button data-val="inside_existing_shed" aria-pressed="false">Inside existing shed</button>
-              <button data-val="multi_zone" aria-pressed="false">Multi-zone</button>
-              <button data-val="brownfield_demolition" aria-pressed="false">Brownfield (demolish)</button>
-            </div>
-            <div class="cost-hint">Greenfield = open land. Inside-shed = retrofit into a steel structure. Multi-zone = 3PL with multiple temperature zones.</div>
-          </div>
-        </div>
-
-        <div class="cost-row">
-          <label>Envelope</label>
-          <div>
-            <div class="seg" id="envelopeChoice-seg" role="tablist">
-              <button data-val="PEB" aria-pressed="true">PEB (steel-frame)</button>
-              <button data-val="RCC" aria-pressed="false">RCC (concrete)</button>
-            </div>
-            <div class="cost-hint">RCC: +35% capex, +6 weeks lead time, longer life. PEB: faster, cheaper.</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ========== STEP 3 — Refrigeration & power (DETAILED ONLY) ========== -->
-      <div data-mode-content="detailed">
-        <h2>Step 3 — Refrigeration &amp; power</h2>
-
-        <div class="cost-row">
-          <label>Refrigeration architecture</label>
-          <div>
-            <div class="seg" id="refrigArchitecture-seg" role="tablist">
-              <button data-val="cdu" aria-pressed="true">CDU (single)</button>
-              <button data-val="rack" aria-pressed="false">Rack (multi-DX)</button>
-              <button data-val="nh3_glycol" aria-pressed="false">NH₃ + glycol</button>
-              <button data-val="nh3_dx" aria-pressed="false">NH₃ DX</button>
-            </div>
-            <div class="cost-hint">CDU for single-room. Rack for retail / 3PL. NH₃-glycol for multi-zone safety. NH₃-DX for largest plants.</div>
-          </div>
-        </div>
-
-        <div class="cost-row">
-          <label>CA store extras</label>
-          <div>
-            <label><input type="checkbox" id="isCAStore"> Add CA-store equipment (nitrogen, CO₂ scrub, ethylene removal, GAC analysis)</label>
-            <div class="cost-hint">For apple, mango, kinnow, dates ULO storage. Adds ~PKR 180,000 per HP of refrigeration.</div>
-          </div>
-        </div>
-
-        <div class="cost-row">
-          <label>Power backup</label>
-          <div>
-            <div class="seg" id="powerBackup-seg" role="tablist">
-              <button data-val="diesel" aria-pressed="true">Diesel genset</button>
-              <button data-val="solar" aria-pressed="false">Solar PV</button>
-              <button data-val="none" aria-pressed="false">Grid only</button>
-            </div>
-            <div class="cost-hint">We compare both diesel and solar OPEX in the result, regardless of choice.</div>
-          </div>
-        </div>
-
-        <div class="cost-row">
-          <label for="loadShedHoursPerDay">Load-shedding hours/day</label>
-          <div>
-            <input type="number" id="loadShedHoursPerDay" value="4" min="0" max="20" step="1">
-            <div class="cost-hint">Default per-city load-shed estimate. Override with your actual.</div>
-          </div>
-        </div>
-      </div>
-
-    </form>
-
-    <!-- ============================================================
-         RESULTS
-         ============================================================ -->
-    <h2 id="result-summary-heading" style="margin-top:48px">Rough estimate <span class="badge-indicative">±20% — exact cost will differ</span></h2>
-    <p id="result-summary" style="font-size:1rem; color:var(--ink-2, #666); max-width:80ch"></p>
-
-    <div class="result-band">
-      <div style="font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2, #666);margin-bottom:6px">Total project cost — rough estimate</div>
-      <div id="result-band">PKR — – PKR —</div>
-      <div style="font-size:.86rem;color:var(--ink-2, #666);margin-top:6px">Mid: <span id="result-mid">PKR —</span> · Low: <span id="result-low">PKR —</span> · High: <span id="result-high">PKR —</span></div>
-      <div style="font-size:.78rem;color:#664500;margin-top:8px;font-style:italic">Exact cost will differ. Engineer validation required before quoting a customer.</div>
-    </div>
-
-    <h3>Engineering output</h3>
-    <div class="result-grid">
-      <div class="result-cell"><div class="k">Volume</div><div class="v" id="out-volume">— m³</div></div>
-      <div class="result-cell"><div class="k">Tons (net stored)</div><div class="v" id="out-tons">— t</div></div>
-      <div class="result-cell"><div class="k">Pallet positions</div><div class="v" id="out-pallets">— pallets</div></div>
-      <div class="result-cell"><div class="k">Refrigeration kW</div><div class="v" id="out-refrig-kw">— kW</div></div>
-      <div class="result-cell"><div class="k">Refrigeration HP</div><div class="v" id="out-refrig-hp">— HP</div></div>
-      <div class="result-cell"><div class="k">Panel area</div><div class="v" id="out-panel-m2">— m²</div></div>
-      <div class="result-cell"><div class="k">Doors</div><div class="v" id="out-doors">—</div></div>
-      <div class="result-cell"><div class="k">Footprint</div><div class="v" id="out-footprint">— m²</div></div>
-    </div>
-
-    <h3>Commercial metrics</h3>
-    <div class="result-grid">
-      <div class="result-cell"><div class="k">Cost per ton</div><div class="v" id="out-cost-ton">PKR —</div></div>
-      <div class="result-cell"><div class="k">Cost per pallet position</div><div class="v" id="out-cost-pallet">PKR —</div></div>
-      <div class="result-cell"><div class="k">Cost per m³</div><div class="v" id="out-cost-m3">PKR —</div></div>
-    </div>
-
-    <h3>Operating cost</h3>
-    <div class="result-grid">
-      <div class="result-cell"><div class="k">Annual energy (grid)</div><div class="v" id="out-energy-annual">PKR —/yr</div></div>
-      <div class="result-cell"><div class="k">Tariff</div><div class="v" id="out-tariff">— /kWh</div></div>
-      <div class="result-cell"><div class="k">Diesel backup OPEX</div><div class="v" id="out-diesel-annual">PKR —/yr</div></div>
-      <div class="result-cell"><div class="k">Genset capex</div><div class="v" id="out-genset-capex">PKR —</div></div>
-      <div class="result-cell"><div class="k">Load-shedding</div><div class="v" id="out-loadshed">— hrs/day</div></div>
-    </div>
-
-    <div data-mode-content="detailed">
-      <h3>Solar option</h3>
-      <div class="result-grid">
-        <div class="result-cell"><div class="k">Solar PV size</div><div class="v" id="out-solar-kw">— kW</div></div>
-        <div class="result-cell"><div class="k">Solar capex</div><div class="v" id="out-solar-capex">PKR —</div></div>
-        <div class="result-cell"><div class="k">Annual saving</div><div class="v" id="out-solar-saving">PKR —/yr</div></div>
-        <div class="result-cell"><div class="k">Payback</div><div class="v" id="out-solar-payback">— yrs</div></div>
-      </div>
-
-      <h3>Cost breakdown <a href="#" id="reset-overrides" style="font-size:.86rem;font-weight:400;margin-left:12px">Reset to defaults</a></h3>
-      <p style="font-size:.86rem; color:var(--ink-2, #666)">Click any value to edit. Overrides save in your browser only. <strong>Margin is the editable line below — it stacks on top of direct cost + EPC uplift.</strong></p>
-      <table class="breakdown-table">
-        <thead><tr><th>Line item</th><th>Estimate</th></tr></thead>
-        <tbody>
-          <tr><td>FireSafe PIR panels (envelope)</td><td id="cb-panel" data-edit-path="panel_pkr_per_m2.100mm">PKR —</td></tr>
-          <tr><td>Civil works (foundation, slab, drainage)</td><td id="cb-civil" data-edit-path="civil_pkr_per_m2.greenfield">PKR —</td></tr>
-          <tr><td>Refrigeration plant</td><td id="cb-refrig" data-edit-path="refrigeration_pkr_per_HP.cdu">PKR —</td></tr>
-          <tr><td>Insulated doors</td><td id="cb-doors">PKR —</td></tr>
-          <tr><td>Electrical (panels, cabling, distribution)</td><td id="cb-electrical" data-edit-path="electrical_pkr_per_kw_load.baseline_per_kw">PKR —</td></tr>
-          <tr><td>Controls / SCADA</td><td id="cb-controls">PKR —</td></tr>
-          <tr style="font-weight:600; background:rgba(10,31,61,.04);"><td>Direct subtotal</td><td id="cb-direct">PKR —</td></tr>
-          <tr><td>EPC uplift (engineering 4.5% + PM 3% + commissioning 2.5% + contingency 7%)</td><td id="cb-epc-pct">—</td></tr>
-          <tr style="background:#FFF8E1;">
-            <td>
-              <strong>Izhar margin</strong>
-              <div style="display:flex; align-items:center; gap:8px; margin-top:6px">
-                <input type="number" id="cb-margin-input" min="0" max="50" step="1" value="18" style="width:70px; padding:6px 8px; border:1px solid var(--ink-3, #ccc); border-radius:6px;"> %
-                <a href="#" id="cb-margin-reset" style="font-size:.78rem; color:var(--ink-2, #666);">reset</a>
+          <form onsubmit="return false;">
+            <div class="wiz-2col">
+              <div class="wiz-field">
+                <label class="wiz-label" for="city">City</label>
+                <select class="wiz-select" id="city">
+                  <option value="Karachi">Karachi</option>
+                  <option value="Lahore" selected>Lahore</option>
+                  <option value="Islamabad">Islamabad</option>
+                  <option value="Rawalpindi">Rawalpindi</option>
+                  <option value="Multan">Multan</option>
+                  <option value="Faisalabad">Faisalabad</option>
+                  <option value="Peshawar">Peshawar</option>
+                  <option value="Quetta">Quetta</option>
+                  <option value="Hyderabad">Hyderabad</option>
+                  <option value="Sukkur">Sukkur</option>
+                  <option value="Gujranwala">Gujranwala</option>
+                  <option value="Sialkot">Sialkot</option>
+                </select>
+                <div class="wiz-hint">Sets electricity tariff &amp; load-shedding defaults.</div>
               </div>
-              <div style="font-size:.78rem; color:var(--ink-2, #666); margin-top:4px">Editable. Default 18%. Sales engineer can override per quote.</div>
-            </td>
-            <td id="cb-margin-pct">—</td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr><td><strong>Total (mid)</strong></td><td id="cb-total">PKR —</td></tr>
-          <tr><td>Low estimate (−20%)</td><td id="cb-low">PKR —</td></tr>
-          <tr><td>High estimate (+20%)</td><td id="cb-high">PKR —</td></tr>
-        </tfoot>
-      </table>
-      <p style="font-size:.86rem; color:#664500; background:#FFF3CD; padding:12px 16px; border-radius:8px; margin-top:16px"><strong>This is a rough estimate.</strong> Final pricing on a real customer quote depends on day-of refrigeration component pricing, current panel coil rates, civil scope refinement after a site survey, and customer-specific commercial terms. Always validate with engineering before issuing.</p>
+              <div class="wiz-field">
+                <label class="wiz-label" for="commodity">Commodity / sector</label>
+                <select class="wiz-select" id="commodity">
+                  <optgroup label="Fresh produce">
+                    <option value="potato">Potato</option>
+                    <option value="onion">Onion</option>
+                    <option value="apple">Apple</option>
+                    <option value="mango" selected>Mango</option>
+                    <option value="kinnow">Kinnow / Citrus</option>
+                    <option value="dates">Dates</option>
+                    <option value="banana">Banana (ripening)</option>
+                    <option value="tomato">Tomato</option>
+                  </optgroup>
+                  <optgroup label="Animal protein">
+                    <option value="meat_carcass">Meat — carcass</option>
+                    <option value="poultry_packed">Poultry — packed</option>
+                    <option value="frozen_meat_packed">Frozen meat — packed</option>
+                    <option value="frozen_seafood">Frozen seafood</option>
+                    <option value="dairy_packed">Dairy</option>
+                  </optgroup>
+                  <optgroup label="Industrial">
+                    <option value="ice_cream">Ice cream</option>
+                    <option value="ice_block">Ice block</option>
+                    <option value="pharma_packed_cartons">Pharmaceutical</option>
+                    <option value="beverage_pet">Beverage — PET</option>
+                    <option value="beverage_glass">Beverage — glass</option>
+                    <option value="general_3pl">3PL — general</option>
+                  </optgroup>
+                </select>
+                <div class="wiz-hint">Affects storage density and recommended setpoint.</div>
+              </div>
+            </div>
 
-      <h3>PEB vs RCC envelope — pick one</h3>
-      <table class="compare-table">
-        <thead><tr><th></th><th>PEB (steel-frame)</th><th>RCC (concrete)</th></tr></thead>
-        <tbody>
-          <tr><td>Capex</td><td>1.00× (baseline)</td><td>1.35× (+35%)</td></tr>
-          <tr><td>Lead time</td><td>baseline</td><td>+6 weeks</td></tr>
-          <tr><td>Structural life</td><td>25–35 years</td><td>40+ years</td></tr>
-          <tr><td>Thermal mass</td><td>Low</td><td>High</td></tr>
-          <tr><td>Fire resistance</td><td>Standard</td><td>Higher (concrete shell)</td></tr>
-          <tr><td>Best for</td><td>Most cold-chain projects</td><td>Permanent owner-occupied flagships</td></tr>
-        </tbody>
-      </table>
+            <div class="wiz-field">
+              <label class="wiz-label">Capacity</label>
+              <div class="wiz-capacity-row">
+                <input class="wiz-num" type="number" id="capacityM3" value="1000" min="20" step="10" style="width:130px; flex-shrink:0">
+                <div class="wiz-seg" id="capacityUnit-seg" style="flex:1; min-width:180px">
+                  <button data-val="m3" aria-pressed="true">m³</button>
+                  <button data-val="tons" aria-pressed="false">tons</button>
+                  <button data-val="pallets" aria-pressed="false">pallets</button>
+                </div>
+              </div>
+              <div class="wiz-hint">Net storage volume. Tons converted using commodity density × 0.55 utilisation.</div>
+            </div>
 
-      <h3>Diesel vs Solar — Pakistan economics</h3>
-      <table class="compare-table">
-        <thead><tr><th></th><th>Diesel genset (current default)</th><th>Solar PV (long-run)</th></tr></thead>
-        <tbody>
-          <tr><td>Capex</td><td><span id="out-genset-capex-2">—</span></td><td><span id="out-solar-capex-2">—</span></td></tr>
-          <tr><td>Annual operating cost / saving</td><td><span id="out-diesel-annual-2">—</span> spent</td><td><span id="out-solar-saving-2">—</span> saved</td></tr>
-          <tr><td>Payback</td><td>n/a (recurring fuel)</td><td><span id="out-solar-payback-2">—</span></td></tr>
-          <tr><td>Resilience to load-shed</td><td>High (instant)</td><td>Medium (needs battery for night)</td></tr>
-          <tr><td>Fuel-price risk</td><td>High (PKR/litre fluctuating)</td><td>None (sunlight is free)</td></tr>
-        </tbody>
-      </table>
+            <div class="wiz-field">
+              <label class="wiz-label" for="setpointPreset">Temperature setpoint</label>
+              <select class="wiz-select" id="setpointPreset">
+                <option value="chiller">Chiller (+4°C)</option>
+                <option value="cold_store" selected>Cold store (0°C)</option>
+                <option value="freezer">Freezer (−20°C)</option>
+                <option value="blast_freezer">Blast freezer (−35°C)</option>
+                <option value="ca_store_apple">CA store — apple (+1°C)</option>
+                <option value="ca_store_kinnow">CA store — kinnow (+4°C)</option>
+                <option value="banana_ripening">Banana ripening (+15°C)</option>
+                <option value="mango_pre_cool">Mango pre-cool (+10°C)</option>
+                <option value="ambient_pharma_CRT">Pharma CRT (+22°C)</option>
+                <option value="vaccine_cold_chain">Vaccine cold chain (+5°C)</option>
+                <option value="ice_cream">Ice cream (−25°C)</option>
+                <option value="deep_freeze">Deep freeze (−28°C)</option>
+                <option value="ultra_low">Ultra-low (−75°C)</option>
+              </select>
+              <div class="wiz-hint">Affects refrigeration kW, panel thickness recommendation, and door selection.</div>
+            </div>
+          </form>
+
+          <div class="step-nav">
+            <span></span>
+            <div style="display:flex; gap:10px; flex-wrap:wrap">
+              <button class="btn-next" data-next-step="2" data-mode-content="detailed">Continue to Envelope</button>
+              <button class="btn-next" data-next-step="4" data-mode-content="quick" style="background:var(--t-warm)">See estimate</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== STEP 2 ===== -->
+      <div class="step-panel" id="step-panel-2" data-mode-content="detailed">
+        <div class="step-card">
+          <div class="step-card-head">
+            <div class="step-icon">🏗</div>
+            <div>
+              <h2>Building &amp; envelope</h2>
+              <p>Choose your FireSafe PIR panel thickness, site class, and structural envelope type.</p>
+            </div>
+          </div>
+
+          <form onsubmit="return false;">
+            <div class="wiz-field">
+              <label class="wiz-label">FireSafe PIR panel thickness</label>
+              <div class="wiz-seg" id="panelMm-seg">
+                <button data-val="50" aria-pressed="false">50 mm</button>
+                <button data-val="60" aria-pressed="false">60 mm</button>
+                <button data-val="80" aria-pressed="false">80 mm</button>
+                <button data-val="100" aria-pressed="true">100 mm</button>
+                <button data-val="125" aria-pressed="false">125 mm</button>
+                <button data-val="150" aria-pressed="false">150 mm</button>
+                <button data-val="200" aria-pressed="false">200 mm</button>
+              </div>
+              <div class="wiz-hint">100 mm typical for chillers and cold stores · 150 mm for freezers · 200 mm for ultra-low.</div>
+            </div>
+
+            <div class="wiz-field">
+              <label class="wiz-label">Site class</label>
+              <div class="wiz-seg" id="siteClass-seg">
+                <button data-val="greenfield" aria-pressed="true">Greenfield</button>
+                <button data-val="inside_existing_shed" aria-pressed="false">Inside shed</button>
+                <button data-val="multi_zone" aria-pressed="false">Multi-zone</button>
+                <button data-val="brownfield_demolition" aria-pressed="false">Brownfield</button>
+              </div>
+              <div class="wiz-hint">Greenfield = open land · Inside-shed = retrofit into steel structure · Multi-zone = 3PL with multiple temp zones.</div>
+            </div>
+
+            <div class="wiz-field">
+              <label class="wiz-label">Structural envelope</label>
+              <div class="wiz-seg" id="envelopeChoice-seg">
+                <button data-val="PEB" aria-pressed="true">PEB — steel frame</button>
+                <button data-val="RCC" aria-pressed="false">RCC — concrete</button>
+              </div>
+              <div class="wiz-hint">RCC: +35% capex, +6 weeks lead time, longer life. PEB: faster and lower cost — chosen for most Pakistan projects.</div>
+            </div>
+          </form>
+
+          <div class="step-nav">
+            <button class="step-nav-back" data-prev-step="1">Back</button>
+            <button class="btn-next" data-next-step="3">Continue to Refrigeration</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== STEP 3 ===== -->
+      <div class="step-panel" id="step-panel-3" data-mode-content="detailed">
+        <div class="step-card">
+          <div class="step-card-head">
+            <div class="step-icon">❄️</div>
+            <div>
+              <h2>Refrigeration &amp; power</h2>
+              <p>Select refrigeration architecture, CA store extras, and power backup scenario.</p>
+            </div>
+          </div>
+
+          <form onsubmit="return false;">
+            <div class="wiz-field">
+              <label class="wiz-label">Refrigeration architecture</label>
+              <div class="wiz-seg" id="refrigArchitecture-seg">
+                <button data-val="cdu" aria-pressed="true">CDU — single</button>
+                <button data-val="rack" aria-pressed="false">Rack — multi-DX</button>
+                <button data-val="nh3_glycol" aria-pressed="false">NH₃ + glycol</button>
+                <button data-val="nh3_dx" aria-pressed="false">NH₃ DX</button>
+              </div>
+              <div class="wiz-hint">CDU for single-room · Rack for retail/3PL · NH₃-glycol for multi-zone safety · NH₃-DX for largest plants.</div>
+            </div>
+
+            <div class="wiz-field">
+              <label class="wiz-label">CA store extras</label>
+              <label style="display:flex; align-items:center; gap:10px; font-size:.95rem; cursor:pointer; padding:12px 0">
+                <input type="checkbox" id="isCAStore" style="width:18px;height:18px;accent-color:var(--t-cold);flex-shrink:0">
+                Add CA-store equipment (nitrogen, CO₂ scrub, ethylene removal, GAC analysis)
+              </label>
+              <div class="wiz-hint">For apple, mango, kinnow, dates ULO storage. Adds ~PKR 180,000 per HP of refrigeration.</div>
+            </div>
+
+            <div class="wiz-field">
+              <label class="wiz-label">Power backup</label>
+              <div class="wiz-seg" id="powerBackup-seg">
+                <button data-val="diesel" aria-pressed="true">Diesel genset</button>
+                <button data-val="solar" aria-pressed="false">Solar PV</button>
+                <button data-val="none" aria-pressed="false">Grid only</button>
+              </div>
+              <div class="wiz-hint">We compare both diesel and solar OPEX in the results regardless of your selection.</div>
+            </div>
+
+            <div class="wiz-field">
+              <label class="wiz-label" for="loadShedHoursPerDay">Load-shedding hours per day</label>
+              <input class="wiz-num" type="number" id="loadShedHoursPerDay" value="4" min="0" max="20" step="1" style="width:120px">
+              <div class="wiz-hint">Default is set per city. Override with your actual expected load-shedding.</div>
+            </div>
+          </form>
+
+          <div class="step-nav">
+            <button class="step-nav-back" data-prev-step="2">Back</button>
+            <button class="btn-next" data-next-step="4" style="background:var(--t-warm)">See full estimate</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== STEP 4: Results ===== -->
+      <div class="step-panel" id="step-panel-4">
+
+        <div class="result-section">
+          <h3>Engineering output</h3>
+          <div class="out-grid-4">
+            <div class="metric-card"><div class="k">Volume</div><div class="v" id="out-volume">—</div></div>
+            <div class="metric-card"><div class="k">Tons stored</div><div class="v" id="out-tons">—</div></div>
+            <div class="metric-card"><div class="k">Pallet positions</div><div class="v" id="out-pallets">—</div></div>
+            <div class="metric-card"><div class="k">Refrigeration</div><div class="v" id="out-refrig-kw">—</div></div>
+            <div class="metric-card"><div class="k">HP (installed)</div><div class="v" id="out-refrig-hp">—</div></div>
+            <div class="metric-card"><div class="k">Panel area</div><div class="v" id="out-panel-m2">—</div></div>
+            <div class="metric-card"><div class="k">Doors</div><div class="v" id="out-doors">—</div></div>
+            <div class="metric-card"><div class="k">Footprint</div><div class="v" id="out-footprint">—</div></div>
+          </div>
+        </div>
+
+        <div class="result-section" data-mode-content="detailed">
+          <h3>Operating cost</h3>
+          <div class="opex-grid">
+            <div class="metric-card"><div class="k">Annual energy (grid)</div><div class="v" id="out-energy-annual">PKR —/yr</div></div>
+            <div class="metric-card"><div class="k">Tariff</div><div class="v" id="out-tariff">—/kWh</div></div>
+            <div class="metric-card"><div class="k">Load-shedding</div><div class="v" id="out-loadshed">—</div></div>
+            <div class="metric-card"><div class="k">Diesel backup OPEX</div><div class="v" id="out-diesel-annual">PKR —/yr</div></div>
+            <div class="metric-card"><div class="k">Genset capex</div><div class="v" id="out-genset-capex">PKR —</div></div>
+          </div>
+        </div>
+
+        <div class="result-section" data-mode-content="detailed">
+          <h3>Solar option</h3>
+          <div class="opex-grid">
+            <div class="metric-card"><div class="k">Solar PV size</div><div class="v" id="out-solar-kw">—</div></div>
+            <div class="metric-card"><div class="k">Solar capex</div><div class="v" id="out-solar-capex">PKR —</div></div>
+            <div class="metric-card"><div class="k">Annual saving</div><div class="v" id="out-solar-saving">PKR —/yr</div></div>
+            <div class="metric-card"><div class="k">Payback</div><div class="v" id="out-solar-payback">—</div></div>
+          </div>
+        </div>
+
+        <div class="breakdown-card result-section" data-mode-content="detailed">
+          <h3 style="margin-bottom:6px">Cost breakdown <a href="#" id="reset-overrides">Reset to defaults</a></h3>
+          <p style="font-size:.84rem; color:var(--muted); margin-bottom:18px">Click any cost value to edit inline. Overrides save in your browser only.</p>
+          <table class="breakdown-table">
+            <thead><tr><th>Line item</th><th>Estimate</th></tr></thead>
+            <tbody>
+              <tr><td>FireSafe PIR panels (envelope)</td><td id="cb-panel" data-edit-path="panel_pkr_per_m2.100mm">PKR —</td></tr>
+              <tr><td>Civil works (foundation, slab, drainage)</td><td id="cb-civil" data-edit-path="civil_pkr_per_m2.greenfield">PKR —</td></tr>
+              <tr><td>Refrigeration plant</td><td id="cb-refrig" data-edit-path="refrigeration_pkr_per_HP.cdu">PKR —</td></tr>
+              <tr><td>Insulated doors</td><td id="cb-doors">PKR —</td></tr>
+              <tr><td>Electrical (panels, cabling, distribution)</td><td id="cb-electrical" data-edit-path="electrical_pkr_per_kw_load.baseline_per_kw">PKR —</td></tr>
+              <tr><td>Controls / SCADA</td><td id="cb-controls">PKR —</td></tr>
+              <tr style="font-weight:600; background:rgba(10,31,61,.04)"><td>Direct subtotal</td><td id="cb-direct">PKR —</td></tr>
+              <tr><td>EPC uplift (engineering 4.5% + PM 3% + commissioning 2.5% + contingency 7%)</td><td id="cb-epc-pct">—</td></tr>
+              <tr style="background:#FFF8E1">
+                <td>
+                  <strong>Izhar margin</strong>
+                  <div class="margin-editor">
+                    <input type="number" id="cb-margin-input" min="0" max="50" step="1" value="18"> %
+                    <a href="#" id="cb-margin-reset" style="font-size:.78rem; color:var(--muted)">reset</a>
+                  </div>
+                  <div style="font-size:.76rem; color:var(--muted); margin-top:2px">Editable. Default 18%. Sales engineer can override per quote.</div>
+                </td>
+                <td id="cb-margin-pct">—</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr><td><strong>Total (mid)</strong></td><td id="cb-total">PKR —</td></tr>
+              <tr><td>Low estimate (−20%)</td><td id="cb-low">PKR —</td></tr>
+              <tr><td>High estimate (+20%)</td><td id="cb-high">PKR —</td></tr>
+            </tfoot>
+          </table>
+          <p style="font-size:.83rem; color:#664500; background:#FFF3CD; padding:12px 16px; border-radius:var(--r-md); margin-top:16px"><strong>Rough estimate.</strong> Final pricing depends on day-of refrigeration component pricing, current panel coil rates, civil scope refinement after a site survey, and customer-specific commercial terms.</p>
+        </div>
+
+        <div class="result-section" data-mode-content="detailed">
+          <h3>PEB vs RCC envelope</h3>
+          <table class="compare-table">
+            <thead><tr><th></th><th>PEB (steel-frame)</th><th>RCC (concrete)</th></tr></thead>
+            <tbody>
+              <tr><td>Capex</td><td>1.00× (baseline)</td><td>1.35× (+35%)</td></tr>
+              <tr><td>Lead time</td><td>baseline</td><td>+6 weeks</td></tr>
+              <tr><td>Structural life</td><td>25–35 years</td><td>40+ years</td></tr>
+              <tr><td>Thermal mass</td><td>Low</td><td>High</td></tr>
+              <tr><td>Fire resistance</td><td>Standard</td><td>Higher (concrete shell)</td></tr>
+              <tr><td>Best for</td><td>Most cold-chain projects</td><td>Permanent owner-occupied flagships</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="result-section" data-mode-content="detailed">
+          <h3>Diesel vs Solar — Pakistan economics</h3>
+          <table class="compare-table">
+            <thead><tr><th></th><th>Diesel genset</th><th>Solar PV</th></tr></thead>
+            <tbody>
+              <tr><td>Capex</td><td><span id="out-genset-capex-2">—</span></td><td><span id="out-solar-capex-2">—</span></td></tr>
+              <tr><td>Annual cost / saving</td><td><span id="out-diesel-annual-2">—</span> spent</td><td><span id="out-solar-saving-2">—</span> saved</td></tr>
+              <tr><td>Payback</td><td>n/a (recurring fuel)</td><td><span id="out-solar-payback-2">—</span></td></tr>
+              <tr><td>Resilience to load-shed</td><td>High (instant)</td><td>Medium (needs battery for night)</td></tr>
+              <tr><td>Fuel-price risk</td><td>High (PKR/litre fluctuating)</td><td>None (sunlight is free)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="result-section">
+          <h3>Ready to engage?</h3>
+          <p style="color:var(--muted); max-width:70ch; font-size:.95rem; margin-bottom:4px">Indicative numbers above are calibrated against Izhar Foster's project order book and Pakistan-specific benchmarks. Engineers reply within 24 hours.</p>
+          <div class="lead-cta-row">
+            <a id="cta-quote" href="../contact" class="btn btn-primary btn-lg">Request a detailed quote <span class="arr">→</span></a>
+            <a id="cta-wa" href="https://wa.me/923215383544" target="_blank" rel="noopener" class="btn btn-outline btn-lg">WhatsApp consultation</a>
+            <button id="cta-pdf" type="button" class="btn btn-outline btn-lg" onclick="window.print()">Download PDF</button>
+          </div>
+        </div>
+
+        <div class="step-nav" style="justify-content:flex-start">
+          <button class="step-nav-back" data-prev-step="3" data-mode-content="detailed">Back to Refrigeration</button>
+          <button class="step-nav-back" data-prev-step="1" data-mode-content="quick">Back to Project basics</button>
+        </div>
+
+      </div>
+      <!-- end step 4 -->
+
     </div>
+    <!-- end .wizard-steps -->
 
-    <!-- LEAD CAPTURE: 3 CTAs at the result step -->
-    <h3 style="margin-top:48px">Ready to engage?</h3>
-    <p style="max-width:80ch; color:var(--ink-2, #666)">Indicative numbers above are calibrated against Izhar Foster's project order book and Pakistan-specific civil and refrigeration benchmarks. For a precise quotation tailored to your scope, share your project specifics with our engineering team — engineers reply within 24 hours.</p>
-    <div class="lead-cta-row">
-      <a id="cta-quote" href="../contact" class="btn btn-primary btn-lg">Request a detailed quote <span class="arr">→</span></a>
-      <a id="cta-wa" href="https://wa.me/923215383544" target="_blank" rel="noopener" class="btn btn-outline btn-lg">WhatsApp consultation</a>
-      <button id="cta-pdf" type="button" class="btn btn-outline btn-lg" onclick="window.print()">Download proposal PDF</button>
-    </div>
+    <!-- RIGHT: live cost sidebar -->
+    <aside class="cost-sidebar">
+      <div class="cost-band-card">
+        <div class="cost-band-eyebrow">Total project cost — rough estimate</div>
+        <div class="cost-band-value" id="result-band">PKR — – PKR —</div>
+        <div class="cost-band-range">Mid: <span id="result-mid">PKR —</span></div>
+        <div class="cost-band-range" style="margin-top:2px">Low: <span id="result-low">PKR —</span> · High: <span id="result-high">PKR —</span></div>
+        <div class="cost-band-disclaimer" id="result-summary">Fill in the steps on the left to generate your estimate.</div>
+      </div>
+
+      <div class="commercial-card">
+        <div class="c-title">Commercial metrics</div>
+        <div class="commercial-row"><span class="ck">Cost per ton</span><span class="cv" id="out-cost-ton">PKR —</span></div>
+        <div class="commercial-row"><span class="ck">Cost per pallet</span><span class="cv" id="out-cost-pallet">PKR —</span></div>
+        <div class="commercial-row"><span class="ck">Cost per m³</span><span class="cv" id="out-cost-m3">PKR —</span></div>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-card"><div class="k">Refrigeration</div><div class="v" id="sb-refrig-kw">—</div></div>
+        <div class="metric-card"><div class="k">Panel area</div><div class="v" id="sb-panel-m2">—</div></div>
+        <div class="metric-card"><div class="k">Footprint</div><div class="v" id="sb-footprint">—</div></div>
+        <div class="metric-card"><div class="k">Doors</div><div class="v" id="sb-doors">—</div></div>
+      </div>
+
+      <div class="opex-sidebar-card">
+        <div class="c-title">Annual operating cost</div>
+        <div class="commercial-row"><span class="ck">Grid energy</span><span class="cv" id="sb-energy-annual">PKR —/yr</span></div>
+        <div class="commercial-row"><span class="ck">Diesel backup</span><span class="cv" id="sb-diesel-annual">PKR —/yr</span></div>
+        <div class="commercial-row"><span class="ck">Solar payback</span><span class="cv" id="sb-solar-payback">—</span></div>
+      </div>
+    </aside>
 
   </div>
+  <!-- end .wizard-layout -->
+
 </section>
 
 <section class="section" style="background:var(--paper-2);" data-temp="0">
@@ -514,7 +1109,7 @@
     <div><span class="eyebrow">Why this exists</span><h2>No global tool combines all of this — until now.</h2></div>
     <p>How Izhar Foster's calculator differs from the global cold-chain tool landscape.</p>
   </div>
-  <table class="compare-table" style="max-width:1100px">
+  <table class="compare-table" style="max-width:1100px; margin:0 auto">
     <thead><tr><th>Tool</th><th>Engineering sizing</th><th>Cost output</th><th>Pakistan-tuned</th><th>Solar / load-shed economics</th></tr></thead>
     <tbody>
       <tr><td>BITZER Software (Germany)</td><td>✓</td><td>✗</td><td>✗</td><td>✗</td></tr>
@@ -535,9 +1130,9 @@
   <div class="faq-list">
     <details class="faq-item" open><summary><span class="num">01</span><span>How much does a cold storage cost in Pakistan?</span></summary><div class="answer">Cold storage capex in Pakistan typically runs PKR 25,000–60,000 per cubic metre of net storage (approximately USD 90–215/m³), depending on temperature, panel thickness, refrigeration architecture, and site class. A 1,000 m³ cold store at +0°C with 100 mm FireSafe PIR and a CDU refrigeration system on a greenfield site costs roughly PKR 3.5–4.5 crore. Larger blast freezers, ammonia plants, multi-zone 3PL warehouses, and CA stores cost more. The calculator above gives you a free indicative band for your specific scope.</div></details>
     <details class="faq-item"><summary><span class="num">02</span><span>What does the cost include?</span></summary><div class="answer">Full turnkey scope: FireSafe PIR sandwich panel envelope (walls + ceiling), civil works (foundation, slab, drainage, dock approach), refrigeration plant (compressors, condensers, evaporators, piping, refrigerant charge), insulated doors, electrical (panels, cabling, distribution), controls and SCADA, plus engineering design, project management, commissioning, contingency, and Izhar Foster overhead and margin. Direct subtotal is uplifted by ~29% to capture EPC scope; the final number is presented as a ±20% band.</div></details>
-    <details class="faq-item"><summary><span class="num">03</span><span>How accurate is the calculator?</span></summary><div class="answer">Each output is presented as an indicative band ±20%, calibrated against Izhar Foster's historical project order book and Pakistan-specific civil and refrigeration benchmarks. For a precise quotation, share your project specifics with our engineering team via the Quote, WhatsApp, or PDF buttons at the bottom of the result. Engineers reply within 24 hours with a sized concept and a firm budget.</div></details>
+    <details class="faq-item"><summary><span class="num">03</span><span>How accurate is the calculator?</span></summary><div class="answer">Each output is presented as an indicative band ±20%, calibrated against Izhar Foster's historical project order book and Pakistan-specific civil and refrigeration benchmarks. For a precise quotation, share your project specifics with our engineering team. Engineers reply within 24 hours with a sized concept and a firm budget.</div></details>
     <details class="faq-item"><summary><span class="num">04</span><span>Can I edit the underlying cost numbers?</span></summary><div class="answer">Yes. Every cost cell on the breakdown table is inline-editable — click the value, enter your own number, and the calculator recomputes immediately. Overrides persist per-session in your browser (localStorage). Use the Reset button to restore Izhar Foster's indicative defaults.</div></details>
-    <details class="faq-item"><summary><span class="num">05</span><span>How does the diesel-vs-solar comparison work?</span></summary><div class="answer">For each Pakistani city we apply a default load-shedding hours-per-day figure (overrideable). Diesel OPEX is calculated from the refrigeration plant's part-load kWh during outage hours, the diesel rate (PKR per litre, currently approximately 285), and a typical genset efficiency of 3.2 kWh per litre. Solar OPEX saving is calculated from a rooftop PV plant sized to the refrigeration peak, using Pakistan's average annual yield of 1,650 kWh per kW installed and the city's electricity tariff. Payback is solar capex divided by annual saving.</div></details>
+    <details class="faq-item"><summary><span class="num">05</span><span>How does the diesel-vs-solar comparison work?</span></summary><div class="answer">For each Pakistani city we apply a default load-shedding hours-per-day figure (overrideable). Diesel OPEX is calculated from the refrigeration plant's part-load kWh during outage hours, the diesel rate (PKR per litre, ~285), and a typical genset efficiency of 3.2 kWh per litre. Solar OPEX saving is calculated from a rooftop PV plant sized to the refrigeration peak, using Pakistan's average annual yield of 1,650 kWh per kW installed and the city's electricity tariff. Payback is solar capex divided by annual saving.</div></details>
     <details class="faq-item"><summary><span class="num">06</span><span>PEB or RCC for cold storage in Pakistan?</span></summary><div class="answer">PEB (Pre-Engineered Building, steel-frame) is faster and cheaper at construction; RCC (Reinforced Cement Concrete) is heavier but offers better thermal mass, fire resistance, and longer structural life. The calculator applies a 1.35× capex multiplier and an additional 6 weeks lead time for RCC. Most Pakistani cold-store buyers choose PEB for the speed advantage; RCC is selected for permanent owner-occupied facilities where the 25-year-plus structural argument outweighs the capex premium.</div></details>
     <details class="faq-item"><summary><span class="num">07</span><span>What makes this tool different?</span></summary><div class="answer">Most global cold-storage tools are either purely technical (Bitzer Software, Danfoss Coolselector, Güntner — sizing, no cost) or purely marketing (Coldbox Builders, Cold Storage Construction, U.S. Cooler — quote requests, no engineering). The Izhar Foster Cost Calculator is the world's first to combine both: ASHRAE-grade engineering + Pakistan-specific civil, electrical, and refrigeration cost data + diesel/solar OPEX comparison + PEB/RCC envelope economics + cost per ton/pallet/m³ commercial metrics. All in one page, no login required.</div></details>
   </div>
@@ -607,23 +1202,68 @@
 <script src="../js/main.js" defer></script>
 <script>
   document.getElementById('y').textContent = new Date().getFullYear();
-  // Mirror compare-table cells from main result cells (so we don't duplicate JS)
+
+  // ---- Step wizard navigation ----
+  function goToStep(n) {
+    const mode = document.body.dataset.mode || 'quick';
+    if (mode === 'quick' && (n === 2 || n === 3)) n = 4;
+
+    document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('is-active'));
+    const target = document.getElementById('step-panel-' + n);
+    if (target) target.classList.add('is-active');
+
+    document.querySelectorAll('.step-indicator-btn').forEach(btn => {
+      const s = parseInt(btn.dataset.goStep);
+      btn.classList.remove('is-active', 'is-done');
+      if (s === n) btn.classList.add('is-active');
+      else if (s < n) btn.classList.add('is-done');
+    });
+
+    const indicator = document.getElementById('step-indicator');
+    if (indicator) indicator.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  document.addEventListener('click', e => {
+    const next = e.target.closest('[data-next-step]');
+    const prev = e.target.closest('[data-prev-step]');
+    const go   = e.target.closest('[data-go-step]');
+    if (next) goToStep(parseInt(next.dataset.nextStep));
+    else if (prev) goToStep(parseInt(prev.dataset.prevStep));
+    else if (go)   goToStep(parseInt(go.dataset.goStep));
+  });
+
+  document.querySelectorAll('[data-mode-tab]').forEach(b => {
+    b.addEventListener('click', () => setTimeout(() => goToStep(1), 10));
+  });
+
+  // Mirror compare-table and sidebar cells
   document.addEventListener('DOMContentLoaded', () => {
+    const mirrorMap = [
+      ['out-genset-capex', 'out-genset-capex-2'],
+      ['out-solar-capex',  'out-solar-capex-2'],
+      ['out-diesel-annual','out-diesel-annual-2'],
+      ['out-solar-saving', 'out-solar-saving-2'],
+      ['out-solar-payback','out-solar-payback-2'],
+      ['out-refrig-kw',    'sb-refrig-kw'],
+      ['out-panel-m2',     'sb-panel-m2'],
+      ['out-footprint',    'sb-footprint'],
+      ['out-doors',        'sb-doors'],
+      ['out-energy-annual','sb-energy-annual'],
+      ['out-diesel-annual','sb-diesel-annual'],
+      ['out-solar-payback','sb-solar-payback'],
+    ];
     const obs = new MutationObserver(() => {
-      const map = [
-        ['out-genset-capex', 'out-genset-capex-2'],
-        ['out-solar-capex', 'out-solar-capex-2'],
-        ['out-diesel-annual', 'out-diesel-annual-2'],
-        ['out-solar-saving', 'out-solar-saving-2'],
-        ['out-solar-payback', 'out-solar-payback-2'],
-      ];
-      map.forEach(([from, to]) => {
+      mirrorMap.forEach(([from, to]) => {
         const f = document.getElementById(from);
         const t = document.getElementById(to);
         if (f && t) t.textContent = f.textContent;
       });
     });
-    document.querySelectorAll('#out-genset-capex, #out-solar-capex, #out-diesel-annual, #out-solar-saving, #out-solar-payback').forEach(el => obs.observe(el, { childList:true, characterData:true, subtree:true }));
+    const watchIds = ['out-genset-capex','out-solar-capex','out-diesel-annual','out-solar-saving','out-solar-payback','out-refrig-kw','out-panel-m2','out-footprint','out-doors','out-energy-annual'];
+    watchIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) obs.observe(el, { childList:true, characterData:true, subtree:true });
+    });
   });
 </script>
 </body></html>
