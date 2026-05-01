@@ -1,61 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://izharfoster.com/</loc><lastmod>2026-04-30</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://izharfoster.com/about</loc><lastmod>2026-04-30</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://izharfoster.com/contact</loc><lastmod>2026-04-30</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://izharfoster.com/clients</loc><lastmod>2026-04-30</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://izharfoster.com/solutions</loc><lastmod>2026-05-01</lastmod><changefreq>monthly</changefreq><priority>0.95</priority></url>
-  <url><loc>https://izharfoster.com/cold-storage-lahore</loc><lastmod>2026-05-01</lastmod><changefreq>monthly</changefreq><priority>0.90</priority></url>
-  <url><loc>https://izharfoster.com/cold-storage-karachi</loc><lastmod>2026-05-01</lastmod><changefreq>monthly</changefreq><priority>0.90</priority></url>
-  <url><loc>https://izharfoster.com/industries</loc><lastmod>2026-05-01</lastmod><changefreq>monthly</changefreq><priority>0.90</priority></url>
-  <url><loc>https://izharfoster.com/projects</loc><lastmod>2026-05-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://izharfoster.com/projects/tccec-coca-cola-lahore</loc><lastmod>2026-05-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://izharfoster.com/projects/naubahar-bottling-gujranwala</loc><lastmod>2026-05-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://izharfoster.com/projects/connect-logistics-karachi</loc><lastmod>2026-05-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://izharfoster.com/projects/haier-lab-lahore</loc><lastmod>2026-05-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://izharfoster.com/projects/usaid-banana-ripening-sindh</loc><lastmod>2026-05-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://izharfoster.com/projects/sharaf-logistics-lahore</loc><lastmod>2026-05-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://izharfoster.com/projects/iceland-cold-chain-lahore</loc><lastmod>2026-05-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://izharfoster.com/projects/hac-agri-ca-store-phool-nagar</loc><lastmod>2026-05-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://izharfoster.com/projects/gourmet-ice-cream-lahore</loc><lastmod>2026-05-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://izharfoster.com/projects/emirates-logistics-lahore</loc><lastmod>2026-05-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://izharfoster.com/projects/metro-ravi-lahore</loc><lastmod>2026-05-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://izharfoster.com/projects/united-snacks-lahore</loc><lastmod>2026-05-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://izharfoster.com/projects/oye-hoye-chips-lahore</loc><lastmod>2026-05-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://izharfoster.com/projects/engro-milk-collection-centre</loc><lastmod>2026-05-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://izharfoster.com/tools/cost-calculator</loc><lastmod>2026-05-01</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://izharfoster.com/faqs</loc><lastmod>2026-04-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://izharfoster.com/blog</loc><lastmod>2026-04-24</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://izharfoster.com/services/cold-stores</loc><lastmod>2026-04-30</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://izharfoster.com/services/pir-sandwich-panels</loc><lastmod>2026-04-30</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://izharfoster.com/services/refrigeration-systems</loc><lastmod>2026-04-24</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://izharfoster.com/services/ca-stores</loc><lastmod>2026-04-30</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://izharfoster.com/services/insulated-doors</loc><lastmod>2026-04-30</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://izharfoster.com/services/prefabricated-structures</loc><lastmod>2026-04-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://izharfoster.com/services/refrigerated-vehicles</loc><lastmod>2026-05-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://izharfoster.com/tools</loc><lastmod>2026-04-27</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://izharfoster.com/tools/load-calculator</loc><lastmod>2026-04-27</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://izharfoster.com/tools/energy-cost</loc><lastmod>2026-04-27</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://izharfoster.com/tools/a2l-room-area</loc><lastmod>2026-04-27</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://izharfoster.com/tools/refrigerant-charge</loc><lastmod>2026-04-27</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://izharfoster.com/tools/condenser-sizing</loc><lastmod>2026-04-30</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://izharfoster.com/tools/capacity-planner</loc><lastmod>2026-04-27</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://izharfoster.com/tools/ca-atmosphere</loc><lastmod>2026-04-27</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://izharfoster.com/blog/ca-stores-game-changer-pakistan-agriculture</loc><lastmod>2026-04-24</lastmod><changefreq>yearly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://izharfoster.com/blog/insulated-doors-energy-efficiency-cold-storage</loc><lastmod>2026-04-24</lastmod><changefreq>yearly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://izharfoster.com/blog/pir-panels-thermal-efficiency-smart-building</loc><lastmod>2026-04-24</lastmod><changefreq>yearly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://izharfoster.com/blog/cold-storage-solutions-pakistan-demand-rising</loc><lastmod>2026-04-24</lastmod><changefreq>yearly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://izharfoster.com/blog/refrigeration-systems-cold-chain-pakistan</loc><lastmod>2026-04-24</lastmod><changefreq>yearly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://izharfoster.com/blog/prefabricated-structures-smart-construction-pakistan</loc><lastmod>2026-04-30</lastmod><changefreq>yearly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://izharfoster.com/blog/green-refrigeration-energy-carbon-footprint</loc><lastmod>2026-04-30</lastmod><changefreq>yearly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://izharfoster.com/blog/cold-storage-pakistan-export-growth</loc><lastmod>2026-04-30</lastmod><changefreq>yearly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://izharfoster.com/blog/insulated-industrial-doors-types-benefits-guide</loc><lastmod>2026-04-30</lastmod><changefreq>yearly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://izharfoster.com/services/pharmaceutical-cold-storage</loc><lastmod>2026-04-30</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://izharfoster.com/services/cold-storage-meat-poultry</loc><lastmod>2026-04-30</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://izharfoster.com/services/cold-storage-fruit-vegetables</loc><lastmod>2026-04-30</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://izharfoster.com/services/cold-storage-dairy</loc><lastmod>2026-04-30</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://izharfoster.com/services/banana-ripening-rooms</loc><lastmod>2026-04-30</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://izharfoster.com/services/potato-onion-cold-storage</loc><lastmod>2026-04-30</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://izharfoster.com/blog/cold-storage-cost-pakistan-2026-buyers-guide</loc><lastmod>2026-04-30</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://izharfoster.com/blog/blast-freezer-vs-blast-chiller-pakistan-guide</loc><lastmod>2026-04-30</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+
+  <!-- ===== Core pages ===== -->
+  <url><loc>https://izharfoster.com/</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/about</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/contact</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/clients</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/projects</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/faqs</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/solutions</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/industries</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/blog</loc><lastmod>2026-05-01</lastmod></url>
+
+  <!-- ===== City landing pages ===== -->
+  <url><loc>https://izharfoster.com/cold-storage-lahore</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/cold-storage-karachi</loc><lastmod>2026-05-01</lastmod></url>
+
+  <!-- ===== Services ===== -->
+  <url><loc>https://izharfoster.com/services/cold-stores</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/services/pir-sandwich-panels</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/services/refrigeration-systems</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/services/ca-stores</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/services/insulated-doors</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/services/prefabricated-structures</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/services/refrigerated-vehicles</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/services/pharmaceutical-cold-storage</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/services/cold-storage-meat-poultry</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/services/cold-storage-fruit-vegetables</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/services/cold-storage-dairy</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/services/banana-ripening-rooms</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/services/potato-onion-cold-storage</loc><lastmod>2026-05-01</lastmod></url>
+
+  <!-- ===== Tools ===== -->
+  <url><loc>https://izharfoster.com/tools</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/tools/cost-calculator</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/tools/load-calculator</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/tools/energy-cost</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/tools/capacity-planner</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/tools/condenser-sizing</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/tools/refrigerant-charge</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/tools/a2l-room-area</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/tools/ca-atmosphere</loc><lastmod>2026-05-01</lastmod></url>
+
+  <!-- ===== Case studies / projects ===== -->
+  <url><loc>https://izharfoster.com/projects/tccec-coca-cola-lahore</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/projects/naubahar-bottling-gujranwala</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/projects/connect-logistics-karachi</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/projects/haier-lab-lahore</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/projects/usaid-banana-ripening-sindh</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/projects/sharaf-logistics-lahore</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/projects/iceland-cold-chain-lahore</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/projects/hac-agri-ca-store-phool-nagar</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/projects/gourmet-ice-cream-lahore</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/projects/emirates-logistics-lahore</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/projects/metro-ravi-lahore</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/projects/united-snacks-lahore</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/projects/oye-hoye-chips-lahore</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/projects/engro-milk-collection-centre</loc><lastmod>2026-05-01</lastmod></url>
+
+  <!-- ===== Blog posts ===== -->
+  <url><loc>https://izharfoster.com/blog/cold-storage-cost-pakistan-2026-buyers-guide</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/blog/blast-freezer-vs-blast-chiller-pakistan-guide</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/blog/cold-storage-solutions-pakistan-demand-rising</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/blog/refrigeration-systems-cold-chain-pakistan</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/blog/ca-stores-game-changer-pakistan-agriculture</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/blog/pir-panels-thermal-efficiency-smart-building</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/blog/insulated-doors-energy-efficiency-cold-storage</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/blog/cold-storage-pakistan-export-growth</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/blog/green-refrigeration-energy-carbon-footprint</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/blog/prefabricated-structures-smart-construction-pakistan</loc><lastmod>2026-05-01</lastmod></url>
+  <url><loc>https://izharfoster.com/blog/insulated-industrial-doors-types-benefits-guide</loc><lastmod>2026-05-01</lastmod></url>
+
 </urlset>
