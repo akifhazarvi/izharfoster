@@ -447,8 +447,16 @@ This footer alone, repeated 23 times across the site, is a meaningful AI-citatio
 **Week 4 — 9 brochure case studies (PR #4)**
 - Sharaf 50-ft, Iceland Raiwand, HAC Agri 3000-ton (with floor plan PDF), Gourmet Ice Cream, Emirates Logistics, Metro Ravi, United Snacks, Oye Hoye, Engro/Angro
 
-**Week 5 — Refrigerated Vehicles + Insulated Doors enrichment (PR #5)**
-- Build `/services/refrigerated-vehicles.html` from brochure pp.65–72
+**✅ SHIPPED — GROWTH-PLAN §13 (commit 6a5eac0, 2026-05-01)**
+- `industries.html` hub (CollectionPage schema, 8 verticals)
+- `services/refrigerated-vehicles.html` (Zanotti + Thermo King, brochure-sourced)
+- 6 industry sub-pages: pharma, dairy, meat/poultry, fruit/veg, potato/onion, banana ripening
+- Industries nav link + footer link injected into all 44 pages
+- Related Industries cross-link blocks on all industry service pages
+- Cost-calculator deep-link CTAs on all 6 industry pages
+- `/industries` + `/services/refrigerated-vehicles` added to sitemap.xml
+
+**Week 5 — Insulated Doors enrichment (PR #5)**
 - Add door-thickness selector + Hörmann partner mention to insulated-doors page
 
 **Week 6 — Calculator promotion + funnel improvements (PR #6)**
@@ -461,12 +469,8 @@ This footer alone, repeated 23 times across the site, is a meaningful AI-citatio
 - `/cold-storage-karachi`, `/cold-storage-lahore`, `/cold-storage-multan`, `/cold-storage-faisalabad`
 - Each 800–1200 words with named local projects
 
-**Month 2 — Industry vertical landing pages**
-- `/industries/beverage-cold-chain` (Coca-Cola + Pepsi case studies)
-- `/industries/pharmaceutical-cold-chain` (link to existing pharma page)
-- `/industries/dairy-cold-chain` (Engro/Angro)
-- `/industries/agriculture-export-cold-chain` (HAC Agri + USAID)
-- `/industries/3pl-logistics-cold-chain` (Connect, Sharaf, Emirates)
+**Month 2 — 9 brochure case studies (PR #4)**
+- Sharaf 50-ft, Iceland Raiwand, HAC Agri 3000-ton (with floor plan PDF), Gourmet Ice Cream, Emirates Logistics, Metro Ravi, United Snacks, Oye Hoye, Engro/Angro
 
 **Month 3 — Open Spec Sheet Library**
 - Downloadable PDFs for: PIR panel data sheet, cold store typical scope, refrigeration plant typical scope, insulated door range, CA store equipment scope
