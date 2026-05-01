@@ -1,38 +1,22 @@
-// Izhar Foster — funnel tracking via Vercel Analytics + Speed Insights.
-// Loads the official Vercel snippets, then wires custom lead-intent events
-// (WhatsApp / phone / email / form / tool save / quote requests).
-// Pure-vanilla, no build step. Safe to load on every page (subdir or root).
+// Izhar Foster — custom lead-funnel events on top of Vercel Web Analytics.
+// Vercel auto-injects its own pageview script via the dashboard integration;
+// this file only adds custom events: lead intent (WhatsApp / phone / email),
+// form submission, and the tool funnel. Mirrors every event to dataLayer
+// for GA4 (G-PLY0DZWNEM) too. Pure-vanilla, no build step.
 (function () {
   'use strict';
 
-  // -------------------------------------------------- Vercel Analytics loader
-  // Mirrors @vercel/analytics/script and @vercel/speed-insights/script.
-  // window.va: queue function that the Vercel script flushes once loaded.
+  // Vercel Analytics + Speed Insights are auto-injected by the Vercel build
+  // (Web Analytics integration is enabled in the dashboard). We only need the
+  // window.va queue stub so custom events queued before the CDN script loads
+  // are flushed once it arrives. Do NOT inject the CDN scripts here — that
+  // would double-count pageviews.
   if (!window.va) {
     window.va = function () { (window.vaq = window.vaq || []).push(arguments); };
   }
   if (!window.si) {
     window.si = function () { (window.siq = window.siq || []).push(arguments); };
   }
-
-  function injectScript(src, attrs) {
-    if (document.querySelector('script[src="' + src + '"]')) return;
-    var s = document.createElement('script');
-    s.src = src;
-    s.defer = true;
-    if (attrs) Object.keys(attrs).forEach(function (k) { s.setAttribute(k, attrs[k]); });
-    (document.head || document.documentElement).appendChild(s);
-  }
-
-  // Public Vercel CDN — works on production (izharfoster.com) and on Vercel
-  // preview deployments. On localhost the script is a no-op (Vercel skips
-  // collection automatically), so dev pages stay clean.
-  var IS_LOCAL = location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.protocol === 'file:';
-  var ANALYTICS_SRC = IS_LOCAL
-    ? 'https://va.vercel-scripts.com/v1/script.debug.js'
-    : 'https://va.vercel-scripts.com/v1/script.js';
-  injectScript(ANALYTICS_SRC);
-  injectScript('https://va.vercel-scripts.com/v1/speed-insights/script.js');
 
   // ------------------------------------------------------------- track() API
   // Single funnel of named events. Sends to Vercel Analytics (window.va) AND
@@ -85,10 +69,10 @@
     var href = a.getAttribute('href') || '';
     var label = (a.textContent || '').trim().slice(0, 80);
     var location_id = a.closest('[data-track-section]') ? a.closest('[data-track-section]').dataset.trackSection
-      : a.closest('header') ? 'header'
-      : a.closest('footer') ? 'footer'
       : a.closest('.lc-root') ? 'live-chat-fab'
       : a.closest('.fab-wa') ? 'fab'
+      : a.closest('header') ? 'header'
+      : a.closest('footer') ? 'footer'
       : a.closest('form') ? 'form'
       : 'body';
 
@@ -107,21 +91,9 @@
       track('lead_intent', { channel: 'email', location: location_id });
       return;
     }
-    // "Get a quote" / contact CTA
+    // "Get a quote" / contact CTA — top-of-funnel intent (not a lead yet).
     if (/contact(\.html)?($|[?#])/.test(href) || /(quote|contact|get in touch|talk to|consult)/i.test(label)) {
       track('cta_quote_click', { href: href, label: label, location: location_id });
-    }
-    // Service-page entry from another page.
-    if (/\/services\//.test(href)) {
-      track('service_link_click', { href: href, label: label, location: location_id });
-    }
-    // Blog entry.
-    if (/\/blog\//.test(href)) {
-      track('blog_link_click', { href: href, label: label, location: location_id });
-    }
-    // Tool entry.
-    if (/\/tools\//.test(href)) {
-      track('tool_link_click', { href: href, label: label, location: location_id });
     }
   }, { capture: true });
 
@@ -199,8 +171,9 @@
   }
 
   // ----------------------------------------------- Page load + visibility
+  // Note: pageviews are auto-tracked by Vercel Web Analytics — no custom
+  // page_view event here, otherwise the dashboard double-counts.
   function onReady() {
-    track('page_view', { referrer: document.referrer || '(direct)' });
     wireToolFunnel();
   }
   if (document.readyState === 'loading') {
