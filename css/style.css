@@ -5317,6 +5317,52 @@ body.lc-open .lc-backdrop {
   .cert-badge-logo { height: 26px; max-width: 76px; }
 }
 
+/* "View all" cert badge — CTA pill style */
+.cert-badge-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 100px;
+  background: var(--t-warm);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+.cert-badge-cta:hover {
+  background: var(--ink);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(14,15,17,.18);
+}
+.cert-badge-cta .arr {
+  font-size: .9rem;
+  transition: transform .2s ease;
+}
+.cert-badge-cta:hover .arr { transform: translateX(3px); }
+.cert-badge.cert-badge-view-all {
+  padding: 0 0 0 28px;
+  border-right: none;
+  margin-left: auto;
+  min-height: 72px;
+  justify-content: center;
+}
+@media (max-width: 1100px) {
+  .cert-badge.cert-badge-view-all { padding-left: 16px; min-height: 64px; }
+  .cert-badge-cta { padding: 8px 14px; font-size: .68rem; }
+}
+@media (max-width: 900px) {
+  .cert-badge.cert-badge-view-all { margin-left: 0; padding: 12px 14px; width: 100%; }
+}
+@media (max-width: 480px) {
+  .cert-badge.cert-badge-view-all { width: 100%; padding: 16px 12px; border-bottom: none; }
+}
+
 /* Cert-card logo (certifications page) — bigger, visible */
 .cert-card-logo {
   position: absolute;
