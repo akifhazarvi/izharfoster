@@ -177,10 +177,205 @@
     }
   }
 
+  // ----------------------------------------------- Referrer attribution
+  // Captures the *original* referrer + UTM block on the very first pageview
+  // of the session and stashes it in sessionStorage so every subsequent event
+  // can attach it. This fixes three real-world tracking gaps:
+  //
+  //   1. Legacy WP URLs (e.g. /pir-panels/ -> /services/pir-sandwich-panels)
+  //      go through 308 redirects. Some browsers (Safari iOS, FB/IG in-app)
+  //      strip the Referer header on the final hop, so Google search clicks
+  //      land as "direct". We capture document.referrer BEFORE the page
+  //      JS-redirects, on the first hit that does have it.
+  //
+  //   2. AI assistants (ChatGPT, Perplexity, Claude, Copilot, Gemini) ship
+  //      links with referrerpolicy="no-referrer" so document.referrer is
+  //      empty. We infer the source via a heuristic on referrer + UA + URL
+  //      patterns and tag the session as `ai_<engine>`.
+  //
+  //   3. Direct-traffic over-counting. Without UTMs and without a referer,
+  //      everything looks "direct". We classify as one of:
+  //        google_organic | bing_organic | duckduckgo_organic |
+  //        ai_chatgpt | ai_perplexity | ai_claude | ai_copilot | ai_gemini |
+  //        social_<network> | utm:<source> | direct
+  function detectSource() {
+    var url = new URL(location.href);
+    var ref = document.referrer || '';
+    var refHost = '';
+    try { refHost = ref ? new URL(ref).hostname.toLowerCase() : ''; } catch (e) {}
+    var ua = (navigator.userAgent || '').toLowerCase();
+
+    // Detect "I came in via a 308 from a legacy WP URL" using PerformanceNavigation
+    // redirect count. Vercel redirects show up as redirectCount >= 1.
+    var redirectedFromLegacy = false;
+    try {
+      var nav = (performance.getEntriesByType('navigation') || [])[0];
+      if (nav && nav.redirectCount > 0) redirectedFromLegacy = true;
+    } catch (e) {}
+
+    // 1. UTM wins — explicit beats inferred.
+    var utmSource = url.searchParams.get('utm_source');
+    var utmMedium = url.searchParams.get('utm_medium');
+    var utmCampaign = url.searchParams.get('utm_campaign');
+    if (utmSource) {
+      return {
+        source: 'utm:' + utmSource.toLowerCase(),
+        medium: utmMedium || '',
+        campaign: utmCampaign || '',
+        referrer: ref
+      };
+    }
+
+    // 2. AI assistant detection — ordered by specificity.
+    // Some AI engines DO leak referrer; others leave document.referrer empty
+    // but the click came from an in-app browser whose UA is identifiable.
+    var aiHosts = {
+      'chat.openai.com': 'chatgpt',
+      'chatgpt.com': 'chatgpt',
+      'openai.com': 'chatgpt',
+      'perplexity.ai': 'perplexity',
+      'www.perplexity.ai': 'perplexity',
+      'claude.ai': 'claude',
+      'anthropic.com': 'claude',
+      'copilot.microsoft.com': 'copilot',
+      'bing.com/chat': 'copilot',
+      'gemini.google.com': 'gemini',
+      'bard.google.com': 'gemini',
+      'you.com': 'you',
+      'phind.com': 'phind',
+      'kagi.com': 'kagi'
+    };
+    for (var host in aiHosts) {
+      if (refHost.indexOf(host) !== -1 || ref.indexOf(host) !== -1) {
+        return { source: 'ai_' + aiHosts[host], medium: 'ai-search', campaign: '', referrer: ref };
+      }
+    }
+    // UA-based AI in-app browsers (rare but exists for OpenAI's Atlas / etc.)
+    if (/openai\/|chatgpt|gptbot/.test(ua)) {
+      return { source: 'ai_chatgpt', medium: 'ai-search', campaign: '', referrer: ref };
+    }
+    if (/perplexity/.test(ua)) {
+      return { source: 'ai_perplexity', medium: 'ai-search', campaign: '', referrer: ref };
+    }
+
+    // 3. Search engines.
+    if (/google\./.test(refHost)) return { source: 'google_organic', medium: 'organic', campaign: '', referrer: ref };
+    if (/bing\.com$/.test(refHost) || refHost === 'bing.com') return { source: 'bing_organic', medium: 'organic', campaign: '', referrer: ref };
+    if (/duckduckgo\.com$/.test(refHost)) return { source: 'duckduckgo_organic', medium: 'organic', campaign: '', referrer: ref };
+    if (/yandex\./.test(refHost)) return { source: 'yandex_organic', medium: 'organic', campaign: '', referrer: ref };
+    if (/yahoo\./.test(refHost)) return { source: 'yahoo_organic', medium: 'organic', campaign: '', referrer: ref };
+
+    // 4. Social — common in Pakistan: WhatsApp, FB, IG, LinkedIn, X, TikTok.
+    var socialHosts = {
+      'l.facebook.com': 'facebook', 'm.facebook.com': 'facebook', 'facebook.com': 'facebook', 'www.facebook.com': 'facebook',
+      'l.instagram.com': 'instagram', 'instagram.com': 'instagram', 'www.instagram.com': 'instagram',
+      'lm.facebook.com': 'facebook',
+      'wa.me': 'whatsapp', 'web.whatsapp.com': 'whatsapp', 'api.whatsapp.com': 'whatsapp', 'whatsapp.com': 'whatsapp',
+      'linkedin.com': 'linkedin', 'www.linkedin.com': 'linkedin', 'lnkd.in': 'linkedin',
+      't.co': 'twitter', 'twitter.com': 'twitter', 'x.com': 'twitter',
+      'youtube.com': 'youtube', 'm.youtube.com': 'youtube', 'youtu.be': 'youtube',
+      'tiktok.com': 'tiktok', 'www.tiktok.com': 'tiktok',
+      'reddit.com': 'reddit', 'old.reddit.com': 'reddit',
+      'pinterest.com': 'pinterest'
+    };
+    for (var sh in socialHosts) {
+      if (refHost === sh || refHost.endsWith('.' + sh)) {
+        return { source: 'social_' + socialHosts[sh], medium: 'social', campaign: '', referrer: ref };
+      }
+    }
+
+    // 5. WhatsApp / FB in-app browser detection (UA-based — these often have empty referrer).
+    if (/fban|fbav|fb_iab|fbios|fb4a/i.test(ua)) {
+      return { source: 'social_facebook', medium: 'social-iab', campaign: '', referrer: ref };
+    }
+    if (/instagram/i.test(ua)) {
+      return { source: 'social_instagram', medium: 'social-iab', campaign: '', referrer: ref };
+    }
+    if (/whatsapp/i.test(ua)) {
+      return { source: 'social_whatsapp', medium: 'social-iab', campaign: '', referrer: ref };
+    }
+    if (/linkedinapp/i.test(ua)) {
+      return { source: 'social_linkedin', medium: 'social-iab', campaign: '', referrer: ref };
+    }
+
+    // 6. Generic referrer (someone linking from a blog, etc.)
+    if (refHost && refHost !== location.hostname) {
+      return { source: 'referral:' + refHost, medium: 'referral', campaign: '', referrer: ref };
+    }
+
+    // 7. Direct (or unknown). If we came via a 308 from a legacy URL but the
+    // referrer was stripped, mark it explicitly so we can audit the gap.
+    if (redirectedFromLegacy) {
+      return { source: 'direct_via_legacy_redirect', medium: 'none', campaign: '', referrer: ref };
+    }
+    return { source: 'direct', medium: 'none', campaign: '', referrer: ref };
+  }
+
+  function getOrSetSession() {
+    var KEY = 'izhar_session_attribution';
+    try {
+      var existing = sessionStorage.getItem(KEY);
+      if (existing) return JSON.parse(existing);
+    } catch (e) {}
+    var fresh = detectSource();
+    fresh.first_landing = location.pathname;
+    fresh.first_seen = Date.now();
+    try {
+      var nav = (performance.getEntriesByType('navigation') || [])[0];
+      fresh.redirect_count = nav ? (nav.redirectCount || 0) : 0;
+    } catch (e) { fresh.redirect_count = 0; }
+    try { sessionStorage.setItem(KEY, JSON.stringify(fresh)); } catch (e) {}
+
+    // Fire a one-shot session_start event with the attribution. This is THE
+    // event we look at to count "real" sessions per source.
+    track('session_start', {
+      source: fresh.source,
+      medium: fresh.medium,
+      campaign: fresh.campaign,
+      referrer_host: (function () {
+        try { return new URL(fresh.referrer || '').hostname; } catch (e) { return ''; }
+      })(),
+      first_landing: fresh.first_landing,
+      redirect_count: fresh.redirect_count,
+      via_legacy_redirect: fresh.redirect_count > 0
+    });
+
+    // Mirror to GA4 traffic_source dimensions.
+    try {
+      if (typeof window.gtag === 'function') {
+        window.gtag('set', 'user_properties', {
+          attribution_source: fresh.source,
+          attribution_medium: fresh.medium,
+          attribution_campaign: fresh.campaign
+        });
+      }
+    } catch (e) {}
+
+    return fresh;
+  }
+  // Run attribution detection on first call to track() — done lazily so it
+  // only fires once per session.
+  var _attribution = null;
+  var _origTrack = track;
+  track = function (event, props) {
+    if (!_attribution) _attribution = getOrSetSession();
+    var enriched = Object.assign({
+      attribution_source: _attribution.source,
+      attribution_medium: _attribution.medium,
+      attribution_campaign: _attribution.campaign
+    }, props || {});
+    return _origTrack(event, enriched);
+  };
+  window.IzharTrack.track = track;
+
   // ----------------------------------------------- Page load + visibility
   // Note: pageviews are auto-tracked by Vercel Web Analytics — no custom
   // page_view event here, otherwise the dashboard double-counts.
   function onReady() {
+    // Force attribution detection on every page (idempotent thanks to
+    // sessionStorage). This guarantees session_start fires even if no other
+    // track() call happens before the user bounces.
+    if (!_attribution) _attribution = getOrSetSession();
     wireToolFunnel();
   }
   if (document.readyState === 'loading') {
