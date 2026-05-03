@@ -7,7 +7,9 @@
   "scripts": {
     "dev": "python3 -m http.server 8090",
     "start": "python3 -m http.server 8090",
-    "preview": "python3 -m http.server 8090"
+    "preview": "python3 -m http.server 8090",
+    "build:sitemap": "bash scripts/build-sitemap.sh",
+    "vercel-build": "bash scripts/build-sitemap.sh"
   },
   "engines": {
     "node": ">=18"
