@@ -40,7 +40,8 @@
   <link rel="manifest" href="/site.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"></noscript>
 <link rel="stylesheet" href="css/style.css">
 <link rel="preload" as="image" type="image/webp" href="images/hero-facility-1280.webp" imagesrcset="images/hero-facility-800.webp 800w, images/hero-facility-1280.webp 1280w, images/hero-facility-1920.webp 1920w" imagesizes="100vw" fetchpriority="high">
 <script type="application/ld+json">
@@ -54,9 +55,28 @@
   "logo": "https://izharfoster.com/images/logo-square.svg",
   "image": "https://izharfoster.com/images/hero-facility.jpg",
   "description": "Pakistan's largest PIR sandwich panel manufacturer. The cold-chain division of Izhar Engineering, drawing on 65+ years of Izhar Group engineering heritage. PIR panels, cold stores, refrigeration systems, CA stores, insulated doors, prefabricated structures.",
+  "foundingDate": "1959",
   "telephone": "+92-42-35383543",
   "email": "info@izharfoster.com",
   "priceRange": "$$$",
+  "contactPoint": [
+    {
+      "@type": "ContactPoint",
+      "contactType": "sales",
+      "telephone": "+92-42-35383543",
+      "email": "info@izharfoster.com",
+      "areaServed": "PK",
+      "availableLanguage": ["English", "Urdu"]
+    },
+    {
+      "@type": "ContactPoint",
+      "contactType": "customer support",
+      "telephone": "+92-42-35383543",
+      "email": "support@izharfoster.com",
+      "areaServed": "PK",
+      "availableLanguage": ["English", "Urdu"]
+    }
+  ],
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "Izhar House, 35-Tipu Block, New Garden Town",
@@ -103,6 +123,7 @@
   "description": "A look inside Izhar Foster's manufacturing plant at 36-KM Multan Road, Lahore — where every PIR sandwich panel, cold room, and refrigeration system is built for Pakistan's cold chain.",
   "thumbnailUrl": "https://i.ytimg.com/vi/o9kuFWVYY5w/maxresdefault.jpg",
   "uploadDate": "2025-09-01T10:00:00+05:00",
+  "duration": "PT2M30S",
   "contentUrl": "https://www.youtube.com/watch?v=o9kuFWVYY5w",
   "embedUrl": "https://www.youtube.com/embed/o9kuFWVYY5w",
   "publisher": {"@id": "https://izharfoster.com#organization"}
