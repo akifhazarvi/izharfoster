@@ -921,6 +921,7 @@ h1, h2, h3, h4 {
   gap: 96px;
   width: max-content;
   animation: logo-scroll 40s linear infinite;
+  will-change: transform;
 }
 .logo-carousel:hover .logo-track {
   animation-play-state: paused;
