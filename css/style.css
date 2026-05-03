@@ -2345,6 +2345,8 @@ body.lc-open .lc-backdrop {
   .nav-cta { gap: 10px; }
   /* Drop the redundant arrow CTA on mobile — hamburger covers nav already */
   .nav-cta .btn-primary { display: none; }
+  /* Slightly taller nav on mobile so the larger logo + tagline breathes */
+  .nav { height: 78px; }
   /* Mobile drawer footer: phone + WhatsApp inside the menu */
   .nav-center.open .nav-mobile-actions {
     display: flex; flex-direction: column; gap: 10px;
@@ -2369,7 +2371,7 @@ body.lc-open .lc-backdrop {
   .nav-center.open .nav-mobile-actions a.call {
     background: var(--ink); color: var(--paper); border-color: var(--ink);
   }
-  .brand-logo { max-height: 36px; width: auto; max-width: 180px; }
+  .brand-logo { height: 46px; max-height: 46px; width: auto; max-width: 220px; }
   .section { padding: 80px var(--gutter); }
   .hero { padding: 56px var(--gutter) 64px; }
   .hero h1 { font-size: clamp(2.4rem, 11vw, 3.6rem); }
@@ -2386,8 +2388,10 @@ body.lc-open .lc-backdrop {
 
 @media (max-width: 480px) {
   /* Tighten header further at very small phones (iPhone SE etc.) */
-  .nav { padding: 0 16px; gap: 8px; }
+  .nav { padding: 0 14px; gap: 8px; height: 72px; }
   .menu-toggle { width: 42px; height: 42px; }
+  /* Keep the logo + tagline legible on iPhone SE class viewports */
+  .brand-logo { height: 42px; max-height: 42px; max-width: 200px; }
 }
 
 /* ==========================================================================
@@ -5228,6 +5232,9 @@ body.lc-open .lc-backdrop {
   gap: 0;
   flex-wrap: wrap;
 }
+.cert-strip-rail {
+  display: contents;
+}
 .cert-strip-label {
   font-family: var(--font-mono);
   font-size: .68rem;
@@ -5457,4 +5464,157 @@ body.lc-open .lc-backdrop {
 @media (max-width: 600px) {
   .cert-grid { grid-template-columns: 1fr; }
   .cert-card { padding: 28px; }
+}
+
+/* ==========================================================================
+   COST-ESTIMATOR PROMO (homepage)
+   Two-up on desktop; single column with a tight stat grid on mobile
+   ========================================================================== */
+.ce-promo { padding: 48px var(--gutter); }
+.ce-promo-grid {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+  gap: 40px;
+  align-items: center;
+  max-width: 1320px;
+}
+.ce-promo-copy h2 { margin-top: 8px; }
+.ce-promo-copy p { color: var(--ink-2); margin-top: 16px; max-width: 60ch; }
+.ce-promo-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+.ce-promo-card {
+  background: var(--paper-2);
+  border-radius: 16px;
+  padding: 32px;
+  border: 1px solid var(--line);
+}
+.ce-promo-card-eyebrow {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--ink-2);
+  margin-bottom: 8px;
+}
+.ce-promo-card-title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  margin-bottom: 20px;
+  color: var(--ink);
+}
+.ce-promo-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 0;
+}
+.ce-promo-stat dt {
+  font-size: .74rem;
+  color: var(--ink-2);
+  letter-spacing: .01em;
+  margin-bottom: 2px;
+}
+.ce-promo-stat dd {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -.01em;
+}
+.ce-promo-disclaimer {
+  font-size: .78rem;
+  color: #664500;
+  background: #FFF3CD;
+  padding: 10px 12px;
+  border-radius: 6px;
+  margin: 18px 0 0;
+  line-height: 1.45;
+}
+
+@media (max-width: 900px) {
+  .ce-promo { padding: 36px var(--gutter); }
+  .ce-promo-grid { grid-template-columns: 1fr; gap: 24px; }
+  .ce-promo-copy h2 { font-size: clamp(1.7rem, 6vw, 2.2rem); }
+  .ce-promo-card { padding: 24px; border-radius: 14px; }
+  .ce-promo-card-title { font-size: 1.15rem; margin-bottom: 16px; }
+  .ce-promo-stats { gap: 12px 14px; }
+  .ce-promo-stat dd { font-size: 1rem; }
+  .ce-promo-ctas .btn { flex: 1 1 auto; min-width: 0; justify-content: center; }
+}
+@media (max-width: 480px) {
+  .ce-promo-card { padding: 20px; }
+  .ce-promo-stats { grid-template-columns: 1fr 1fr; gap: 14px 12px; }
+  .ce-promo-stat dt { font-size: .7rem; }
+  .ce-promo-stat dd { font-size: .98rem; }
+  .ce-promo-ctas { gap: 10px; }
+  .ce-promo-ctas .btn { width: 100%; flex: 1 1 100%; }
+}
+
+/* ==========================================================================
+   CERT STRIP — horizontal-scroll snap on mobile (iOS app pattern)
+   Replaces the cramped 3-column grid with a swipeable peek-row
+   ========================================================================== */
+@media (max-width: 720px) {
+  .cert-strip { padding: 24px 0 18px; }
+  .cert-strip-inner { gap: 0; padding: 0; align-items: stretch; }
+  .cert-strip-label {
+    flex: 0 0 100%;
+    width: 100%;
+    border-right: none;
+    padding: 0 var(--gutter);
+    margin: 0 0 12px;
+    text-align: left;
+  }
+  /* Switch the rail from `display: contents` into a real horizontal scroller */
+  .cert-strip-rail {
+    display: flex;
+    flex: 0 0 100%;
+    width: 100%;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 10px;
+    padding: 2px var(--gutter) 10px;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: var(--gutter);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .cert-strip-rail::-webkit-scrollbar { display: none; }
+  .cert-strip-rail > .cert-badge {
+    flex: 0 0 auto;
+    width: 132px;
+    min-height: 100px;
+    padding: 14px 12px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-right: 1px solid var(--line);
+    border-radius: 12px;
+    scroll-snap-align: start;
+    box-shadow: 0 1px 2px rgba(14,15,17,.04);
+  }
+  .cert-badge-logo { height: 30px; max-width: 88px; opacity: .9; filter: grayscale(.4) contrast(1); }
+  .cert-badge-icon { width: 30px; height: 30px; }
+  .cert-badge-code { font-size: .64rem; }
+  .cert-badge-label { font-size: .64rem; line-height: 1.25; white-space: normal; }
+  /* "View all" sits below the rail as a full-width CTA */
+  .cert-badge.cert-badge-view-all {
+    flex: 0 0 100%;
+    width: 100%;
+    min-height: 0;
+    padding: 0;
+    margin: 8px var(--gutter) 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+  .cert-badge.cert-badge-view-all .cert-badge-cta {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    padding: 12px 18px;
+    font-size: .72rem;
+  }
 }
