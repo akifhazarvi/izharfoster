@@ -325,6 +325,14 @@
 
     </div>
 
+    <section class="section section-soft" aria-label="Methodology">
+      <div class="container" style="max-width:860px;margin:0 auto;padding:2.5rem 1.5rem;">
+        <h2 style="font-size:1.25rem;font-weight:700;margin-bottom:1rem;">How this calculator works</h2>
+        <p>The air-cooled condenser designer calculates required condenser capacity (kW) and selects an appropriate unit from Izhar's equipment library using the Total Heat of Rejection (THR) method from <strong>ASHRAE Refrigeration Handbook 2022, Chapter 35</strong>. THR = refrigerating capacity × (1 + 1/COP), adjusted for compressor heat of compression at the specified saturated discharge temperature (SDT). Pakistan-specific ambient derate is applied: medium-temperature systems lose 2.0 %/K above the ASHRAE reference ambient of 35 °C; low-temperature systems lose 2.7 %/K. A hard floor of 60 % rated capacity is applied regardless of ambient (below 60 % the unit is undersized even with all oversizing headroom consumed). The tool warns when saturated condensing temperature (SCT) ≥ 55 °C — above this threshold Bitzer compressor warranty may be voided and oil carryover risk increases. Validated against Bitzer Software 6.x and Heatcraft NROES unit selection for Pakistan summer conditions.</p>
+        <p style="margin-top:.75rem;font-size:.875rem;color:var(--muted);">References: ASHRAE Refrigeration Handbook 2022 Ch. 35; Bitzer Refrigerants Report 25 (2022); Heatcraft Refrigeration Product Selection Guide.</p>
+      </div>
+    </section>
+
     <footer class="site-footer">
       <div class="footer-grid">
         <div>
