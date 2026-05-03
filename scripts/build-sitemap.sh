@@ -84,6 +84,9 @@ MANIFEST=(
   "blog/green-refrigeration-energy-carbon-footprint.html|/blog/green-refrigeration-energy-carbon-footprint"
   "blog/prefabricated-structures-smart-construction-pakistan.html|/blog/prefabricated-structures-smart-construction-pakistan"
   "blog/insulated-industrial-doors-types-benefits-guide.html|/blog/insulated-industrial-doors-types-benefits-guide"
+
+  "team/muhammad-anwar.html|/team/muhammad-anwar"
+  "team/muhammad-musa.html|/team/muhammad-musa"
 )
 
 OUT=sitemap.xml
