@@ -51,7 +51,7 @@
   "@id": "https://izharfoster.com#organization",
   "name": "Izhar Foster (Pvt) Limited",
   "url": "https://izharfoster.com/",
-  "telephone": "+92-42-35383543",
+  "telephone": "+924235383543",
   "email": "info@izharfoster.com",
   "address": {
     "@type": "PostalAddress",
@@ -66,7 +66,36 @@
     {"@type": "Country", "name": "Pakistan"}
   ],
   "description": "Pakistan's largest PIR sandwich panel manufacturer and cold storage builder. Cold stores, blast freezers, CA stores, refrigeration systems, insulated doors — engineered for Karachi's coastal climate.",
-  "knowsAbout": ["Cold storage Karachi", "Cold store construction Karachi", "3PL cold chain Karachi", "Pharmaceutical cold storage Karachi", "Banana ripening Karachi", "Port cold chain Pakistan"]
+  "knowsAbout": ["Cold storage Karachi", "Cold store construction Karachi", "3PL cold chain Karachi", "Pharmaceutical cold storage Karachi", "Banana ripening Karachi", "Port cold chain Pakistan"],
+  "openingHoursSpecification": [
+    {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "09:00", "closes": "18:00"},
+    {"@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "09:00", "closes": "13:00"}
+  ],
+  "branchOf": {"@id": "https://izharfoster.com#organization"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": "https://izharfoster.com#karachi-office",
+  "name": "Izhar Foster — Karachi Office",
+  "branchOf": {"@id": "https://izharfoster.com#organization"},
+  "url": "https://izharfoster.com/cold-storage-karachi",
+  "telephone": "+92-321-5383544",
+  "email": "info@izharfoster.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "17-J Block 6, PECHS",
+    "addressLocality": "Karachi",
+    "addressRegion": "Sindh",
+    "addressCountry": "PK"
+  },
+  "geo": {"@type": "GeoCoordinates", "latitude": 24.87660, "longitude": 67.06370},
+  "openingHoursSpecification": [
+    {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "09:00", "closes": "18:00"},
+    {"@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "09:00", "closes": "13:00"}
+  ]
 }
 </script>
 <script type="application/ld+json">

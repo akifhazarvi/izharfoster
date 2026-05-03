@@ -45,3 +45,4 @@ User-agent: Diffbot
 Allow: /
 
 Sitemap: https://izharfoster.com/sitemap.xml
+IndexNow: https://izharfoster.com/36864c9bc2a84d3ab82c3601af63361e.txt
