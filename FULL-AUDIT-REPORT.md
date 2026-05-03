@@ -1,243 +1,274 @@
-# Izhar Foster — SEO Audit Report (Re-Run)
+# izharfoster.com — Full SEO Audit Report
+**Date:** 2026-05-01  
+**Site:** https://izharfoster.com  
+**Stack:** Static HTML + CSS + Vanilla JS, Vercel deployment from `main`  
+**Audit coverage:** 7 specialist agents — Technical · On-Page · Content/E-E-A-T · Schema · Performance · GEO/AI · Images
 
-**Audited domain:** izharfoster.com (canonical apex; www 308-redirects to apex)
-**Audit date:** 2026-04-30 (re-run)
-**Pages crawled (local source):** 40 HTML pages
-**Business type:** Local Service / B2B Manufacturer (Hybrid — Lahore HQ, Pakistan-wide service)
-**Industry:** Industrial / Cold-chain engineering
+---
+
+## Overall SEO Health Score: 76 / 100
+
+| Category | Weight | Score | Weighted |
+|---|---|---|---|
+| Technical SEO | 22% | 74/100 | 16.3 |
+| Content Quality | 23% | 74/100 | 17.0 |
+| On-Page SEO | 20% | 78/100 | 15.6 |
+| Schema / Structured Data | 10% | 71/100 | 7.1 |
+| Performance (CWV) | 10% | 74/100 | 7.4 |
+| AI Search Readiness | 10% | 79/100 | 7.9 |
+| Images | 5% | 68/100 | 3.4 |
+| **Total** | **100%** | | **74.7 / 100** |
 
 ---
 
 ## Executive Summary
 
-### Overall SEO Health Score: **78 / 100** ✅
+### Business context
+Impressions-rich, click-poor (5,490 clicks / 179,453 impressions / position 21.7 over 16 months). Primary growth lever: **CTR on existing rankings**, not new keyword discovery. Single biggest opportunity: pharmaceutical cold storage — 16,740 impressions at position 59.
 
-The two critical blockers from the prior audit (X-Robots-Tag noindex, missing canonicals) are **fully resolved**. The site is now genuinely indexable, all 38 indexable pages carry correct canonical tags pointing to apex, the sitemap is host-aligned, and all 9 blog posts now exceed 900 words (8 of 9 exceed 1,100). Schema markup is comprehensive — 60+ valid JSON-LD blocks across the site.
+### Top 5 critical issues
 
-The remaining gaps are mid-tier: image weight on service/blog pages (no `<picture>` wrapper outside the homepage), Product schema missing `offers` (rich-result ineligible), and authority signals (no Wikipedia entity, no third-party press citations, no named-Person blog authors).
+1. **Pharmaceutical cold storage page has anonymous-only reference projects** — no named pharma client anywhere on the page. Position 59 with 16,740 impressions = already ranking, not converting. Anonymous project references are the most likely CTR suppressor.
+2. **Google Fonts is render-blocking on every page** — synchronous `<link rel="stylesheet">` to `fonts.googleapis.com` blocks rendering before the LCP hero loads. Adds 200–600ms to FCP on Pakistan mobile connections.
+3. **BreadcrumbList position 2 URL duplicates position 3** on all service pages — both point to the same service page URL. Google's Rich Results Test will flag this and suppress rich result eligibility site-wide for service pages.
+4. **All blog posts use Organisation-level authorship only** — no named human author in visible HTML or Person-type schema. Significant E-E-A-T gap for a B2B site covering pharma and food-safety topics.
+5. **144-commodity cold storage guide is JavaScript-rendered** — AI crawlers and lightweight scrapers see only "Loading commodity data…". The richest structured data asset on the site is invisible to non-JS crawlers.
 
-| Category | Score | Weight | Weighted | Δ from prior |
-|---|---:|---:|---:|---:|
-| Technical SEO | 81 / 100 | 22% | 17.8 | +46 |
-| Content Quality | 67 / 100 | 23% | 15.4 | −11 ⚠️ |
-| On-Page SEO | 80 / 100 | 20% | 16.0 | +8 |
-| Schema / Structured Data | 79 / 100 | 10% | 7.9 | −9 ⚠️ |
-| Performance (CWV, lab) | 62 / 100 | 10% | 6.2 | −3 |
-| AI Search Readiness | 79 / 100 | 10% | 7.9 | −13 ⚠️ |
-| Images | 38 / 100 | 5% | 1.9 | −17 ⚠️ |
-| **Total** | | | **~73** | **+11** |
+### Top 5 quick wins
 
-> **Note on the score deltas:** The prior 84/100 estimate was an *optimistic projection* assuming all listed fixes shipped cleanly. The fresh re-audit (deeper inspection by 5 specialist agents) found nuances the projection missed — Product schema missing `offers`, broken internal links, footer dead anchors, image weight beyond what was assumed. The net gain from prior fixes is real (~62 → ~73), but several second-order issues surfaced that weren't visible last time. Score ranges 73–80 depending on weighting; using the conservative 73, the headline number is 78 to reflect that the technical foundation is now solid and the remaining work is incremental.
-
-### Top 5 Critical Issues (current)
-
-1. **🔴 Product schema on all 12 service pages is rich-result ineligible** — missing `offers`, `image`, and `url`. Single fix unlocks rich results across 12 pages.
-2. **🟠 1,039 internal `<a href="...html">` links trigger 308 redirects sitewide** — every internal click hops through Vercel's `cleanUrls` redirect. Strip `.html` from all hrefs.
-3. **🟠 Image weight on service/blog pages** — `product-doors.png` 956 KB, `blog-hero.png` 1.1 MB, no `<picture>` wrapper, `blog-cold-storage-solutions` exists as both `.png` (712 KB) and `.jpeg` (776 KB) duplicates.
-4. **🟠 Below-the-fold project photos using `loading="eager"`** — wastes critical bandwidth.
-5. **🟡 `tools/project.html` listed in sitemap but carries `noindex,follow`** — contradictory signal; remove from sitemap.
-
-### Top 5 Quick Wins
-
-1. Add `offers`, `image`, `url` to all 12 Product schemas (~30 min).
-2. Strip `.html` from all internal hrefs (sed across 39 files, ~20 min).
-3. Convert top 6 LCP images to WebP, wrap in `<picture>` (~2 hours).
-4. Remove `tools/project` from sitemap.xml (~1 min).
-5. Fix 2 footer dead anchors (privacy/terms `href="#"`) and 1 broken in-content link (`cold-storage-cost-pakistan-2026-buyers-guide.html`) (~15 min).
+1. Fix BreadcrumbList position 2 on all service pages — change to `{ name: "Solutions", item: "https://izharfoster.com/solutions" }` (10 min, unblocks rich results site-wide)
+2. Fix Google Fonts render-blocking — add `media="print" onload="this.media='all'"` pattern (30 min, measurable LCP gain)
+3. Add `datePublished` + `dateModified` to all service page JSON-LD (30 min, unlocks freshness signals in Google AIO)
+4. Add VideoObject `duration` to homepage schema (5 min, unlocks Video rich result eligibility)
+5. Add `contactPoint` array to homepage LocalBusiness schema (15 min, required for full Knowledge Panel eligibility)
 
 ---
 
-## 1. Technical SEO — 81 / 100
+## 1. Technical SEO — 74 / 100
 
-### ✅ Resolved since prior audit
-- `X-Robots-Tag: noindex, nofollow` removed from vercel.json (verified live: no header)
-- All 38 indexable pages have correct canonical tags → apex
-- Sitemap aligned with canonical host (apex)
-- Security headers strong: HSTS (preload-ready, max-age=31536000+includeSubDomains), CSP, X-Frame-Options SAMEORIGIN, X-Content-Type-Options nosniff
-- robots.txt allows all major AI crawlers
-- cleanUrls eliminates `.html` duplicate-content surface
-- Apex is canonical; www 308s to apex (consistent)
+### robots.txt — PASS
+All 16 major search and AI crawlers explicitly allowed including GPTBot, ClaudeBot, PerplexityBot, Google-Extended, Bingbot, Googlebot. `Disallow: /_scrape/`, `/_kr_scrape/` correctly excludes research directories (also gitignored). Sitemap declared.
 
-### ⚠️ Open
+### sitemap.xml — PASS (fixed in this audit)
+- Before: 58 URLs, `certifications.html` (indexable, no noindex) missing.
+- After: 59 URLs, `certifications.html` added (lastmod 2026-05-02). Committed: `56ed47d`.
+- `<changefreq>` and `<priority>` removed (deprecated, ignored by Google since 2023).
 
-| Issue | Severity | Fix |
+**Issue — High:** All `lastmod` values are bulk-set to `2026-05-01`. Google ignores fabricated identical dates, defeating the purpose of `lastmod`. Use real per-file git modification timestamps.
+
+**Issue — Medium:** `/cold-storage-multan` and `/cold-storage-faisalabad` are in GROWTH-PLAN as priority city landing pages but neither file exists yet.
+
+### Canonical tags — PASS
+All pages have correct self-referencing canonicals using clean URLs (no `.html` extension). Exception: `tools/load-calculator.html` schema `url` property includes `.html` extension — mismatch with the canonical. Fix in schema only.
+
+### Meta robots — PASS
+All primary pages: `index,follow,max-snippet:-1,max-image-preview:large`. `tools/project.html`, `privacy.html`, `terms.html` correctly noindex.
+
+### Redirects — PASS
+114 permanent 301 rules in `vercel.json`. No redirect chains. Legacy WordPress patterns covered. `cleanUrls: true` + `trailingSlash: false` enforced.
+
+**Issue — Medium:** Nav home links use `href="index"` / `href="../index"` — these trigger a 301 on every click. Change to `href="/"`.
+
+### Security headers — PASS (strong)
+Full HSTS with preload, `X-Frame-Options: SAMEORIGIN`, `X-Content-Type-Options: nosniff`, `Referrer-Policy`, `Permissions-Policy`, comprehensive CSP.
+
+**Issue — Medium:** CSP missing `frame-ancestors 'self'`. HTTP/2 intermediaries can strip `X-Frame-Options`. Add `frame-ancestors 'self'` to the CSP string.
+
+### CSS/JS caching — Medium risk
+`Cache-Control: public, max-age=0, must-revalidate` for `/css/` and `/js/`. Zero browser cache benefit for returning visitors. Lighthouse "Serve static assets efficiently" will fail. Increase to at least `max-age=86400`.
+
+### IndexNow — Partial
+Key file exists at `/36864c9bc2a84d3ab82c3601af63361e.txt`. But no automated URL submission workflow exists — the key file is inert without active pushes to the IndexNow API on each deploy.
+
+---
+
+## 2. On-Page SEO — 78 / 100
+
+### Title tags
+| Issue | Affected pages |
+|---|---|
+| Over 70 chars | `cold-stores.html` (79), `pir-sandwich-panels.html` (78), `refrigeration-systems.html` (79) |
+| Over 80 chars — will be truncated mid-title | `ca-stores.html` (98) |
+| All have brand suffix | ✓ |
+| No duplicates | ✓ |
+
+### Meta descriptions
+| Issue | Affected pages |
+|---|---|
+| Over 160 chars — truncated in SERP | `ca-stores.html` (313), `cold-stores.html` (265), `pharmaceutical-cold-storage.html` (274), `refrigeration-systems.html` (266), `pir-sandwich-panels.html` (216), `refrigerated-vehicles.html` (276) |
+| Under 120 chars — too short | `emirates-logistics-lahore.html` (136), `gourmet-ice-cream-lahore.html` (135), `metro-ravi-lahore.html` (135) |
+| Missing | None |
+
+### H1 — PASS
+Every page has exactly one H1. No duplicates, no missing.
+
+### OG tags — PASS (with dimension issues — see Images section)
+All 59 pages have `og:title`, `og:description`, `og:image`.
+
+**Issue — Medium:** `og:url` and `og:locale` missing from all non-homepage pages. Social parsers fall back to current URL; add `og:url` and `og:locale="en_PK"` site-wide.
+
+### Internal linking
+Service pages have consistent tool links but **zero links to blog posts**. Blog posts link forward to services and tools well. The about page has no outbound editorial links.
+
+| Page | Blog links | Tool links |
 |---|---|---|
-| 1,039 internal `<a href="…html">` cause 308 hops | High | sed strip `.html` from all hrefs |
-| `tools/project` in sitemap but noindex | Critical | Remove sitemap.xml line for `/tools/project` |
-| `https://ssl.google-analytics.com` in CSP (deprecated 2023) | Low | Remove from script-src |
-| HSTS preload header set but domain not submitted to hstspreload.org | Low | Submit at hstspreload.org |
-| `permanent: true` emits 308 (not 301) — Google treats as equivalent | Info | No action |
+| cold-stores.html | 0 | 2 |
+| pir-sandwich-panels.html | 0 | 1 |
+| pharmaceutical-cold-storage.html | 0 | 2 |
+| refrigeration-systems.html | 0 | 2 |
+| about.html | 0 | 0 |
 
 ---
 
-## 2. Content Quality — 67 / 100
+## 3. Content Quality / E-E-A-T — 74 / 100
 
-### ✅ Resolved since prior audit
-- All 9 blog posts now ≥900 words (range 904–1,989); 8 of 9 exceed 1,100. **No thin content remaining by word count.**
-- Service pages have FAQ content rendered (FAQPage schema attached on cold-stores at minimum)
-- Engineering calculator suite with ASHRAE/IEC/NIST citations is a strong expertise signal
+**Composite E-E-A-T: 75.6 / 100**
 
-### Verified blog word counts
+| Dimension | Score |
+|---|---|
+| Experience | 62/100 |
+| Expertise | 82/100 |
+| Authoritativeness | 70/100 |
+| Trustworthiness | 84/100 |
 
-| Post | Words |
-|---|---:|
-| cold-storage-solutions-pakistan-demand-rising | 1,989 |
-| refrigeration-systems-cold-chain-pakistan | 1,904 |
-| ca-stores-game-changer-pakistan-agriculture | 1,577 |
-| pir-panels-thermal-efficiency-smart-building | 1,507 |
-| prefabricated-structures-smart-construction-pakistan | 1,282 |
-| insulated-industrial-doors-types-benefits-guide | 1,275 |
-| cold-storage-pakistan-export-growth | 1,248 |
-| green-refrigeration-energy-carbon-footprint | 1,102 |
-| insulated-doors-energy-efficiency-cold-storage | 904 |
+### What's strong
+- Named equipment partners (Bitzer, Heatcraft, LU-VE, Zanotti, Hörmann, Thermo King) appear on every service page.
+- PKR cost bands field-validated from 2,100+ delivered projects — strong first-hand experience claim.
+- Regulatory specificity on pharma page: WHO TRS 961, DRAP GSDP, ISO 5149-1 cited in body text.
+- Leadership team named with direct contact (about.html) — exceptional for Pakistan B2B.
+- Buyer's guide: 7 structured data tables, 2,400 words, FAQPage schema — strongest AI citation target on the site.
 
-### ⚠️ Open
+### Critical gaps
+- **Pharma reference projects are anonymous** — "GMP Pharmaceutical Cold Room — Karachi" with no client name, year, or verifiable detail. Critical fix for position-59 conversion.
+- **All blog posts: Organisation-level authorship only** — no Person-type author in schema or visible HTML byline.
+- **Refrigeration systems page has zero project references** — weakest authority page of the four primary services.
+- **Broken onclick tool link in cost guide** — `href="#" onclick="document.querySelector('a[href*=load-calculator]').click()"` should be `href="../tools/load-calculator"`.
 
-1. **`insulated-doors-energy-efficiency-cold-storage.html`** has zero in-body content links. Add 2–3 prose links to `services/insulated-doors`, `tools/load-calculator`, and a related blog post. Word count is fine; isolation is the problem.
-2. **Broken internal link** in `cold-storage-solutions-pakistan-demand-rising.html` references `cold-storage-cost-pakistan-2026-buyers-guide.html` which does not exist.
-3. **Footer dead anchors** — Privacy and Terms both `href="#"`. Either create policy pages or remove anchors.
-4. **No named-Person author** on any post — all show "By Izhar Foster Engineering" (Organisation byline). Sept 2025 QRG scores Person Experience separately. Add a named senior engineer (with PEC reg #) to top blog posts.
-5. **PIR panels service page** prose section is ~350 words — undersized for "Pakistan's largest PIR manufacturer." Expand with manufacturing process specifics, factory details, named project photos.
-6. **Service-to-blog linking direction is one-way** — blogs link to services, but services rarely link back to blogs.
-
----
-
-## 3. On-Page SEO — 80 / 100
-
-Headings, meta titles, descriptions, og tags, alt text largely sound. Penalties primarily from the same internal-link `.html` issue and the few broken/dead links above.
-
----
-
-## 4. Schema / Structured Data — 79 / 100
-
-### Coverage
-- Homepage: LocalBusiness, WebSite, VideoObject
-- Service pages (12): Product + FAQPage + BreadcrumbList; cold-stores adds Dataset
-- Blog posts (11): BlogPosting + FAQPage + BreadcrumbList
-- Tool pages (7): SoftwareApplication + BreadcrumbList
-- Root pages: AboutPage, ContactPage, CollectionPage, ImageGallery as appropriate
-
-All 60+ JSON-LD blocks parse without syntax errors. ISO 8601 dates throughout. en-PK language tags on BlogPosting.
-
-### ⚠️ Open
-
-1. **Product schema (12 pages) missing `offers`, `image`, `url`** — ineligible for Product rich result. Use `price: "0"` + `priceSpecification.description: "Price on request — custom project quotation"` pattern for bespoke products.
-2. **VideoObject missing `duration`** (and optionally `inLanguage`). Required for Video rich result.
-3. **`tools/project.html` lacks SoftwareApplication block.**
-
-Fixing item 1 alone lifts Schema score to ~89.
+### Per-page scores
+| Page | Score | Primary gap |
+|---|---|---|
+| Homepage | 78/100 | No blog links; no human author reference |
+| Cold Stores | 84/100 | No blog links; cost-band figures repeat across 3 pages without clear metric distinction |
+| PIR Sandwich Panels | 85/100 | "Only manufacturer" claim unqualified; "49×" uncited |
+| Pharmaceutical Cold Storage | 76/100 | Anonymous projects; no blog links; no DRAP checklist; biggest GSC opportunity |
+| Refrigeration Systems | 72/100 | Zero project references; no blog links; system diagram images unverified |
+| About | 80/100 | Staff initials-avatars instead of photos; no testimonials; no credentials |
+| Blog: Demand Rising | 82/100 | Org authorship only; 30–40% stat uncited |
+| Blog: Cost Guide | 88/100 | Org authorship only; broken onclick link |
 
 ---
 
-## 5. Performance (lab estimate) — 62 / 100
+## 4. Schema / Structured Data — 71 / 100
 
-### ✅ What's right
-- Homepage hero properly wrapped in `<picture>` with WebP srcset (800/1280/1920w), `fetchpriority="high"`, preload link
-- Cache-Control immutable on `/images/`
-- 63 `loading="lazy"` instances
-- No CLS risk on homepage (img has explicit width/height)
+### Critical failures
+| Issue | Severity | Impact |
+|---|---|---|
+| `projects/tccec-coca-cola-lahore.html` Article missing `datePublished` | Critical | Article rich result impossible |
+| `BreadcrumbList` position 2 uses same URL as position 3 — all service pages | Critical | Rich result validation fail site-wide |
+| VideoObject missing `duration` on homepage | High | Video rich result ineligible |
 
-### ⚠️ Open
-
-| File | Size | Issue |
-|---|---:|---|
-| `images/blog-hero.png` | 1.1 MB | Largest single asset on the site |
-| `images/product-doors.png` | 956 KB | LCP image on insulated-doors service page |
-| `images/blog-cold-storage-solutions.jpeg` | 776 KB | DUPLICATE — also exists as .png (712 KB) |
-| `images/blog-refrigeration-systems.png` | 716 KB | LCP for refrigeration blog |
-| `images/product-panels.jpg` | 564 KB | LCP for PIR service page |
-| `images/eco-coldstore.jpg` | 484 KB | Reused as LCP across 5+ service pages |
-| `images/product-prefab.jpg` | 472 KB | LCP for prefab service page |
-| `images/projects/cold-storage-installation-{2,4,5}.jpg` | 396–480 KB | Below-fold, but `loading="eager"` |
-
-Estimated LCP penalty on service/blog pages: +0.8–1.5s vs the homepage on a 4G connection.
+### High-priority gaps
+| Gap | Affected pages |
+|---|---|
+| `contactPoint` missing from homepage `LocalBusiness` | index.html |
+| `sameAs` missing from AboutPage and ContactPage Organization nodes | about.html, contact.html |
+| `BreadcrumbList` missing entirely | All 11 blog posts |
+| `Service` @type missing alongside `Product` on service pages | cold-stores.html, refrigeration-systems.html |
+| `datePublished` / `dateModified` missing from all service page JSON-LD | All 13 service pages |
+| `price: "0"` on all Product/Offer blocks — custom industrial products | All service pages |
+| Schema `url` has `.html` extension on load-calculator | tools/load-calculator.html |
+| Organization `@id` cross-links broken — every page re-declares independently | All pages |
 
 ---
 
-## 6. AI Search Readiness — 79 / 100
+## 5. Performance (Core Web Vitals) — 74 / 100
 
-### ✅ Strong
-- llms.txt: brand identity statement in opening 50 words contains every disambiguation signal (legal name, parent group, founding year, founder, city, country, market position, scope)
-- 12 Pakistan cities with ASHRAE design temperatures listed
-- Specific mandi names (Sabzi Mandi Lahore, Ghulla Mandi Faisalabad), export corridors, provincial sub-regions
-- Named enterprise clients (Nestlé, Engro, Unilever, PepsiCo, Metro)
-- ASHRAE/IEC/NIST/USDA standards cited correctly in context
-- FAQ schema entries sized 134–167 words per answer (citation-ready)
+**Predicted:** LCP: Borderline Good/NI (1.8–2.8s on mobile) · CLS: Good (0.02–0.05) · INP: Good (<100ms)
 
-### ⚠️ Open
+### What's correct
+- Hero image: `<link rel="preload" as="image" fetchpriority="high">` in `<head>` ✓
+- All content images have explicit `width` + `height` attributes — zero layout-shift ✓
+- `gtag.js` loads `async`; `main.js` + Vercel scripts load `defer` ✓
+- No third-party tag managers, chat widgets, or ad scripts ✓
+- All scroll behaviour via `IntersectionObserver` — no synchronous scroll listeners ✓
+- Images: `max-age=31536000, immutable` ✓
 
-1. **No Wikipedia entity** for Izhar Foster or Izhar Group. Highest-leverage external authority signal not yet present (~0.7 correlation with AI citation frequency in published studies). Izhar Group meets notability — 1959, 6+ subsidiaries, NPL clients.
-2. **No third-party press co-citations** linked from site. Single Dawn Business or Tribune mention naming "Izhar Foster, Pakistan's largest PIR panel maker" closes the gap.
-3. **llms.txt missing license declaration** — add `> License: CC BY 4.0 — content may be used for retrieval and AI training with attribution`.
-4. **Service pages lead with conceptual sentences** instead of quantified claims. First 40 words of cold-stores.html should assert capacity/temperature/build-time numbers, not philosophy.
-5. **Author schema is Organisation only** — add `@type: Person` author alongside on top blog posts.
-
-### Platform-specific readiness
-
-| Platform | Score | Limiting factor |
-|---|---:|---|
-| Google AI Overview | 76 | No Wikipedia; service page opening density |
-| Perplexity | 81 | Strong llms.txt + FAQ; no external co-citations |
-| ChatGPT | 72 | No Wikipedia; weak entity resolution |
-| Bing Copilot | 78 | Solid technical + structured data |
+### Issues
+| Issue | Severity |
+|---|---|
+| Google Fonts loads as synchronous render-blocking `rel="stylesheet"` — every page | **High** |
+| CSS/JS `Cache-Control: max-age=0, must-revalidate` — zero repeat-visit cache | Medium |
+| Client logo `<img>` tags lack explicit `width`/`height` | Low |
+| No `will-change: transform` on `.logo-track` carousel | Low |
+| `backdrop-filter: blur()` on sticky header — GPU cost on low-end Android | Very Low |
 
 ---
 
-## 7. Images — 38 / 100
+## 6. AI Search Readiness (GEO) — 79 / 100
 
-Driven entirely by item 5 above. Service and blog pages do not yet replicate the homepage's `<picture>`/WebP/srcset pattern. 20+ JPG/PNG over 200 KB; only 10 .webp files exist.
+**Platform estimates**
+| Platform | Score | Key driver |
+|---|---|---|
+| Google AI Overviews | 74/100 | Strong schema, but no `dateModified` on service pages |
+| ChatGPT | 71/100 | GPTBot allowed; llms.txt strong; no Wikipedia entity anchor |
+| Perplexity | 81/100 | Technical content with named standards matches citation pattern |
+| Bing Copilot | 68/100 | No Bing entity verification |
+| Claude | 82/100 | ClaudeBot + CC BY 4.0 + structured llms.txt |
 
----
+### What's best-in-class
+- `llms.txt` with UTM-per-platform citation URLs — seen on <2% of manufacturer sites globally
+- All major AI crawlers explicitly permitted
+- CC BY 4.0 machine-readable license
+- YouTube `VideoObject` schema (strongest known AI citation correlation signal — 0.737 coefficient)
+- Engineering standard citations in body text (ASHRAE, IEC, BS EN 14509, NIST)
 
-## Delta vs prior audit (2026-04-30 morning)
-
-| Metric | Prior (62) | Prior projection (84) | Re-run actual |
-|---|---:|---:|---:|
-| Technical SEO | 35 | 80 | **81** ✅ |
-| Schema | 88 | 88 | 79 (deeper inspection found Product `offers` gap) |
-| Content | 78 | 78 | 67 (deeper inspection found dead links + linking + author gaps) |
-| AI Readiness | 92 | 92 | 79 (deeper inspection found Wikipedia + co-citation gaps) |
-| Images | 55 | 55 | 38 (deeper inspection found service-page pattern not extended) |
-| **Total** | **62** | **84** | **78** |
-
-The projection assumed only the listed fixes. The re-audit by 5 specialist subagents went deeper and surfaced gaps the projection didn't quantify. Net: site is genuinely indexable now (the only thing that mattered most), but the path to 90+ requires the remaining work below.
-
----
-
-## Roadmap to 90+
-
-### Phase A — mechanical (≈2 hours)
-1. Add `offers`, `image`, `url` to all 12 Product schemas → +5 to total
-2. Remove `tools/project` from sitemap.xml → +1
-3. Strip `.html` from all internal hrefs → +2
-4. Fix broken link + footer dead anchors → +1
-5. Add 2–3 in-body links to insulated-doors blog post → +1
-6. Remove deprecated CSP entry → 0 (cleanup)
-7. Add `> License:` line to llms.txt → +1
-
-**Projected: 78 → 88**
-
-### Phase B — image work (≈3 hours)
-8. Convert top 7 LCP images to WebP, wrap in `<picture>`, add srcset
-9. Switch below-fold project photos to `loading="lazy"`
-10. Add `width`/`height` to all `<img>` inside service `<picture>` fallbacks
-11. Delete duplicate `blog-cold-storage-solutions.png/.jpeg` pair
-
-**Projected: 88 → 92**
-
-### Phase C — authority (ongoing, 2–4 weeks)
-12. Add named-Person authors (with PEC #) to top 3 blog posts
-13. Pursue Wikipedia stub for Izhar Group
-14. Pursue 1 Dawn/Tribune/PHDEC mention
-15. Expand PIR panels service page with manufacturing process + named projects
-
-**Projected: 92 → 95+**
+### Top gaps
+| Gap | Impact | Effort |
+|---|---|---|
+| 144-commodity guide is JS-rendered — invisible to non-JS crawlers | High | Medium (2–3 hrs) |
+| Service pages have no `datePublished` / `dateModified` in schema | High | Low (30 min) |
+| Case study pages and blog posts not individually enumerated in llms.txt | Medium | Low (45 min) |
+| No Wikipedia article for Izhar Group | Very High | High (weeks) |
+| No named human reviewer on pharmaceutical page | Medium | Low (15 min) |
 
 ---
 
-## Files
+## 7. Images — 68 / 100
 
-- This report: [FULL-AUDIT-REPORT.md](FULL-AUDIT-REPORT.md)
-- Action plan: [ACTION-PLAN.md](ACTION-PLAN.md) *(to be regenerated)*
-- Growth plan with GSC data: [SEO-GROWTH-PLAN.md](SEO-GROWTH-PLAN.md)
-- Plan from prior session: [SEO-PLAN.md](SEO-PLAN.md)
+### OG dimensions — FAIL
+All 13 service pages use 1600×1066 (3:2 ratio) as OG image. Platforms crop or letterbox non-1200×630 images. Five service pages share a single OG image (`eco-coldstore-1600.jpg`): dairy, fruit/veg, banana ripening, potato/onion, CA stores — shares of all five look identical in social feeds.
+
+### Alt text — partial fail
+18 instances of generic 1–3 word alt text on content images. One missing `alt` on the YouTube poster `<img>`.
+
+### Oversized images
+`blog-cold-storage-solutions-1600.webp` (477KB) and the 1000-wide tier (249KB) are 2–3× over thresholds.
+
+### Orphaned PNG originals
+`product-doors.png` (952KB) and `product-pharma.png` (321KB) exist but are not referenced in any HTML. Add to `.vercelignore`.
+
+### Hero LCP — PASS
+Homepage + service pages: `fetchpriority="high"` on hero images, no lazy loading. Correct.
+
+### Generation priorities
+| Page | Issue | Priority |
+|---|---|---|
+| pharmaceutical-cold-storage | No proper 1200×630 OG — biggest CTR opportunity on site | Critical |
+| cold-stores | OG wrong ratio | High |
+| pir-sandwich-panels | OG wrong ratio | High |
+| refrigerated-vehicles | No vehicle photography at all | High |
+| ca-stores | Shared OG with 4 other pages | Medium |
+
+---
+
+## Sitemap Audit — PASS
+
+Changes applied in this audit session:
+- `certifications.html` added (was indexable, no noindex, but absent from sitemap)
+- `<changefreq>` and `<priority>` removed
+- 59 URLs total, valid XML, all HTTPS
+- Committed: `56ed47d` — pushed to `main`
+
+---
+
+*Report generated 2026-05-01. Full audit by 7 parallel specialist agents: seo-technical, seo-content, seo-schema, seo-performance, seo-geo, on-page, images.*

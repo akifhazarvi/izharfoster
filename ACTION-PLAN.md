@@ -1,267 +1,257 @@
-# Izhar Foster — SEO Action Plan
-
-Generated 2026-04-30 from `FULL-AUDIT-REPORT.md`. Fix items in order — each tier is a hard prerequisite for the next.
-
-## 🔴 Critical — Fix this week (blocking indexing)
-
-### 1. Remove `noindex` HTTP header from production
-**File:** [vercel.json:13](vercel.json#L13)
-**Effort:** 2 minutes + deploy
-**Impact:** Unlocks indexing. Without this, nothing else matters.
-
-```diff
-  {
-    "source": "/(.*)",
-    "headers": [
-      { "key": "X-Content-Type-Options", "value": "nosniff" },
-      { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
-      { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-      { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
--     { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
-      { "key": "Strict-Transport-Security", "value": "max-age=31536000; includeSubDomains; preload" },
-      ...
-    ]
-  }
-```
-
-If you intentionally want to noindex a staging environment, add it on the Vercel preview-domain catch-all only, not the production catch-all.
-
-**Verify with:**
-```bash
-curl -sI https://www.izharfoster.com/ | grep -i x-robots
-# (should return no x-robots-tag header — or only on preview branches)
-```
-
-### 2. Pick one canonical host (www) and align everything to it
-**Files:** [sitemap.xml](sitemap.xml), [vercel.json](vercel.json), all 30 indexable HTML pages
-**Effort:** ~45 min
-**Impact:** Consolidates link equity; eliminates 307-hop on every sitemap fetch.
-
-**2a.** Change apex → www redirect from 307 to 301 (Vercel does this at the project-domain level — set `www` as the primary domain in the Vercel dashboard; apex will then 308 to www, which is fine).
-
-**2b.** Rewrite all 31 sitemap URLs from `https://izharfoster.com/...` → `https://www.izharfoster.com/...`.
-
-**2c.** Add canonical tag to every indexable page:
-```html
-<link rel="canonical" href="https://www.izharfoster.com/services/cold-stores">
-```
-There are 30 indexable pages; this is a bulk find-replace once you template the path.
-
-### 3. Submit sitemap to Google Search Console + Bing Webmaster
-**Effort:** 15 min
-**Impact:** Once the noindex header is gone, push for fast re-crawl.
-
-Properties to verify:
-- `https://www.izharfoster.com/` (URL prefix property)
-- Submit `/sitemap.xml`
-- Use **URL Inspection → Request Indexing** for: `/`, `/services/cold-stores`, `/services/pir-sandwich-panels`, `/tools/load-calculator`.
-
-The site has a verification file [google95a5502f4d29f0e5.html](google95a5502f4d29f0e5.html) — confirm it still validates.
+# izharfoster.com — SEO Action Plan
+**Generated:** 2026-05-01 | **Overall score: 74.7 / 100**  
+Reference: `FULL-AUDIT-REPORT.md` for full findings per category.
 
 ---
 
-## 🟠 High — Fix within 2 weeks
+## Critical — Fix Immediately
 
-### 4. Compress and lazy-load images
-**Files:** all `*.html`, `images/*.png|jpg`
-**Effort:** 3–4 hours
-**Impact:** LCP / INP improvement on mobile (Pakistan 4G); page-weight halved.
-
-**4a.** Add `loading="lazy"` to **76 below-the-fold `<img>` tags** (every `<img>` not in the first viewport). Run:
-```bash
-# Audit
-grep -L 'loading="lazy"' images-using-files...
-# Or use the script in `_kr_scrape/` if you want to automate
-```
-Keep the LCP image (hero on each page) **without** `loading="lazy"` — that's the one image you want to load immediately.
-
-**4b.** Convert these 11 files to WebP (keep PNG/JPG fallback):
-| File | Current | After WebP target |
-|---|---:|---:|
-| `images/blog-hero.png` | 1.1 MB | <250 KB |
-| `images/product-doors.png` | 952 KB | <200 KB |
-| `images/blog-refrigeration-systems.png` | 715 KB | <150 KB |
-| `images/blog-cold-storage-solutions.png` | 710 KB | <150 KB |
-| `images/product-panels.jpg` | 561 KB | <120 KB |
-| `images/eco-coldstore.jpg` | 482 KB | <100 KB |
-| `images/blog-pir-panels.png` | 471 KB | <100 KB |
-| `images/product-prefab.jpg` | 470 KB | <100 KB |
-| `images/product-panels-2.jpg` | 440 KB | <100 KB |
-| `images/hero-facility.jpg` | 401 KB | <80 KB |
-| `images/blog-prefab-structures.png` | 353 KB | <80 KB |
-
-```bash
-cwebp -q 80 images/blog-hero.png -o images/blog-hero.webp
-# ...etc, then update references to use <picture>:
-```
-```html
-<picture>
-  <source srcset="../images/blog-hero.webp" type="image/webp">
-  <img src="../images/blog-hero.png" alt="..." loading="lazy">
-</picture>
-```
-
-### 5. Generate per-page Open Graph images
-**Effort:** 2 hours (or use the `seo-image-gen` skill for AI-generated)
-**Impact:** Massively improves social-share CTR on LinkedIn / X.
-
-Currently every page shares `/images/hero-facility.jpg`. Generate one 1200×630 OG image per:
-- 6 service pages (each shows the actual product)
-- 9 blog posts (each shows the topic)
-- 7 calculator pages (could share one branded "Engineering Calculators" OG)
-- about, contact, projects, clients, faqs (5 distinct OGs)
-
-= ~25 OG images. ≤200 KB each, JPG.
-
-### 6. Beef up the 4 thin blog posts
-**Effort:** 4–6 hours
-**Impact:** Higher rankings for under-served queries; AI citation eligibility.
-
-| Post | Current | Target | Add |
-|---|---:|---:|---|
-| `cold-storage-pakistan-export-growth` | 250 | 1200+ | SBP/USDA export data, mango/citrus case studies, halal meat export logistics, Karachi port cold-chain capacity |
-| `green-refrigeration-energy-carbon-footprint` | 275 | 1000+ | R-290/R-717/R-454C comparison table, Kigali HFC phasedown timeline, Pakistan NEEP context, GWP/ODP reference table |
-| `insulated-industrial-doors-types-benefits-guide` | 294 | 1200+ | Door-type comparison matrix (sliding/hinged/high-speed/strip), U-value targets, application-by-temperature, gasket maintenance schedule |
-| `prefabricated-structures-smart-construction-pakistan` | 308 | 1000+ | Timeline comparison vs masonry, total-cost-of-ownership analysis, seismic + wind-load notes, Punjab building code touchpoints |
-
-Each rewrite should include an FAQ block (3–5 Q&A) so the FAQPage schema can be added.
-
-### 7. Trim long meta descriptions
-**Files:** index.html (301 chars), 3 service pages (>200 chars)
-**Effort:** 30 minutes
-**Impact:** No truncated SERP snippets.
-
-Target: 140–160 characters. Lead with the value proposition, end with a CTA verb.
-
-Example for index.html:
-```html
-<meta name="description" content="Pakistan's largest PIR sandwich panel manufacturer. Cold stores, blast freezers, refrigeration, CA stores — engineered since 1959. 2,100+ installations.">
-```
-(155 chars)
-
-### 8. Expand under-utilized titles
-**Files:** [services/cold-stores.html](services/cold-stores.html), [tools/condenser-sizing.html](tools/condenser-sizing.html), [services/insulated-doors.html](services/insulated-doors.html)
-**Effort:** 15 minutes
-**Impact:** More keyword surface area in titles.
-
-Recommended titles:
-- `services/cold-stores.html` → `Cold Stores Pakistan — Walk-in Chillers, Blast Freezers | Izhar Foster`
-- `tools/condenser-sizing.html` → `Air-Cooled Condenser Sizer — ASHRAE Ch. 35 + Pakistan Ambient Derate | Izhar Foster`
-- `services/insulated-doors.html` → `Insulated Doors Pakistan — Sliding, Hinged, High-Speed | Izhar Foster`
-
----
-
-## 🟡 Medium — Fix within 1 month
-
-### 9. Add Person + AboutPage schema to about.html
-**Effort:** 30 minutes
-**Impact:** E-E-A-T uplift; Knowledge Graph eligibility for the founder.
-
+### C1. BreadcrumbList position 2 URL duplicates position 3 — all service pages
+**Impact:** Rich result validation fail site-wide. All service pages ineligible for Breadcrumb rich results.  
+**Fix:** In every `services/*.html` BreadcrumbList JSON-LD, change ListItem position 2 to:
 ```json
-{
-  "@context": "https://schema.org",
-  "@type": "AboutPage",
-  "mainEntity": {
-    "@type": "Organization",
-    "name": "Izhar Foster (Pvt) Limited",
-    "founder": {
-      "@type": "Person",
-      "name": "Engineer Izhar Ahmad Qureshi",
-      "birthDate": "...",
-      "deathDate": "...",
-      "jobTitle": "Founder, Izhar Group"
-    }
-  }
-}
+{ "@type": "ListItem", "position": 2, "name": "Solutions", "item": "https://izharfoster.com/solutions" }
 ```
-
-### 10. Add ContactPage + multiple ContactPoint schema
-**File:** [contact.html](contact.html)
-**Effort:** 20 minutes
-
-Multiple contact points (sales, support, WhatsApp) each with `availableLanguage: ["en", "ur"]` and `areaServed: "PK"`.
-
-### 11. Surface dateModified on blog posts visibly
-**Effort:** 1 hour (template touch-up)
-**Impact:** Recency signal for AI Overviews / Perplexity.
-
-Add a small "Last updated 2026-03-15" line above each blog post body. Keep the BlogPosting schema's `dateModified` in sync.
-
-### 12. Add named-engineer authorship to blog posts
-**Effort:** 1 hour (find someone willing to be the named author)
-**Impact:** E-E-A-T; AI engines weight named experts.
-
-Replace `"author": {"@type": "Organization"}` with `Person`, and surface the byline in the rendered page.
-
-### 13. Internal linking cleanup on tool pages
-**Effort:** 1 hour
-**Impact:** Equity flows to service pages from high-engagement tools.
-
-Each calculator page should explicitly link out to:
-- The relevant service (load-calculator → cold-stores; condenser-sizing → refrigeration-systems; a2l → refrigeration-systems; capacity-planner → cold-stores; ca-atmosphere → ca-stores).
-- 1–2 related calculators.
-- The project shell (`tools/project`).
-- A relevant blog post.
-
-Currently inconsistent — some tools link out, others don't.
-
-### 14. City landing pages (programmatic SEO)
-**Effort:** 1–2 days
-**Impact:** Local rankings for "cold storage Karachi", "cold storage Lahore", "cold storage Multan" etc.
-
-12 cities with pre-existing ASHRAE design temperatures already in the calculator dataset. Build a templated page per city:
-- `/cold-storage/lahore`, `/cold-storage/karachi`, etc.
-- City-specific design temperature, climate notes
-- Real local installations (pull from `/projects` filtered by city)
-- Map embed
-- LocalBusiness schema with `areaServed: City`
-
-Watch the thin-content threshold — each page needs 600+ unique words, not just templated boilerplate.
+Affects: cold-stores, pir-sandwich-panels, refrigeration-systems, ca-stores, insulated-doors, pharmaceutical-cold-storage, refrigerated-vehicles, banana-ripening-rooms, cold-storage-dairy, cold-storage-fruit-vegetables, cold-storage-meat-poultry, potato-onion-cold-storage, prefabricated-structures.  
+**Effort:** 30 min  
+**References:** GROWTH-PLAN §13, Schema audit findings
 
 ---
 
-## 🟢 Low — Backlog
-
-### 15. Generate AVIF in addition to WebP for hero images
-~30% smaller than WebP, full browser support since late 2024. `<picture>` with AVIF → WebP → JPG.
-
-### 16. Add HowTo schema to calculator pages
-Calculators are inherently "how to" content. HowTo schema with steps (inputs → calculation → outputs) can earn rich results.
-
-### 17. Add aggregateRating once reviews are collected
-Service pages have Product schema but no `aggregateRating`. Once you have 10+ verified reviews on Google Business Profile or Trustpilot, surface the aggregate rating in schema for SERP star eligibility.
-
-### 18. CSS scoping audit for unused selectors
-The single `style.css` is ~3,900 lines per CLAUDE.md. Run PurgeCSS or similar — likely 30–50% can be eliminated. Mostly affects Performance not SEO directly, but cleaner CSS = faster INP.
-
-### 19. Add Breadcrumb to about/contact/clients/projects
-Currently only blog and service pages have BreadcrumbList. Add to the 4 missing pages for consistency.
-
-### 20. RSS feed for /blog
-A `/blog/feed.xml` (RSS 2.0 or Atom) helps AI engines and feed readers track new content. Auto-generate from sitemap blog entries.
+### C2. Add `datePublished` to tccec-coca-cola-lahore.html Article schema
+**Impact:** Article rich result is impossible without `datePublished`. Critical for a named case study.  
+**Fix:** Add `"datePublished": "2024-06-01"` (replace with actual delivery date) and `"dateModified": "2026-05-01"` to the Article JSON-LD block.  
+**Effort:** 5 min  
 
 ---
 
-## Verification checklist
+## High — Fix Within 1 Week
 
-After Tier 1 (critical) ships:
-
-- [ ] `curl -sI https://www.izharfoster.com/ | grep x-robots` — should return nothing
-- [ ] `curl -sI https://izharfoster.com/` — should return 301 (not 307)
-- [ ] Open homepage source, search for `<link rel="canonical"` — should be present
-- [ ] Open `https://www.izharfoster.com/sitemap.xml` — all `<loc>` should be `https://www.izharfoster.com/...`
-- [ ] [search.google.com/test/rich-results](https://search.google.com/test/rich-results) on `/`, `/services/cold-stores`, `/blog/cold-storage-solutions-pakistan-demand-rising` — all schema should validate
-- [ ] [pagespeed.web.dev](https://pagespeed.web.dev) on `/` — note baseline, re-check after Tier 2
-- [ ] GSC URL Inspection on `/` — should show "URL is on Google" within 3–7 days
-
-After Tier 2 (image optimization):
-
-- [ ] PageSpeed mobile LCP under 2.5s
-- [ ] Total page weight under 1.5 MB on every page
-- [ ] All below-fold `<img>` have `loading="lazy"`
+### H1. Pharmaceutical cold storage — add named reference projects
+**Impact:** Biggest single GSC opportunity (16,740 impressions, position 59). Anonymous projects = no social proof for pharma QA buyers.  
+**Fix:** Replace "GMP Pharmaceutical Cold Room — Karachi" and "Vaccine Distribution Cold Chain — Multan" with real client names, project scale, temperature class, and year. Check Downloads/ folder for pharma project data. At minimum link to a named case study.  
+**Also add:** A "What a DRAP auditor checks in your cold room" numbered list section, and a brief pharma cost table (linking to the buyer's guide for detail).  
+**Effort:** 2–3 hrs
 
 ---
 
-## Re-audit cadence
+### H2. Fix Google Fonts render-blocking — every page
+**Impact:** 200–600ms LCP reduction on Pakistan mobile connections.  
+**Fix:** In all `*.html` `<head>` sections, replace:
+```html
+<link href="https://fonts.googleapis.com/..." rel="stylesheet">
+```
+with:
+```html
+<link rel="preload" as="style" href="https://fonts.googleapis.com/..." onload="this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/..."></noscript>
+```
+Keep existing `preconnect` hints.  
+**Effort:** 45 min (scripted find-and-replace across all HTML files)
 
-After Tier 1 ships, re-run `/seo-audit izharfoster.com` to verify the technical score climbed from 35 → 80+ and overall from 62 → 85+. The on-page work in Tier 2/3 will compound from there.
+---
+
+### H3. Add `datePublished` + `dateModified` to all service page JSON-LD
+**Impact:** Unlocks Google AIO freshness signals; Perplexity recency filter.  
+**Fix:** Add to every service page schema block:
+```json
+"datePublished": "2025-XX-XX",
+"dateModified": "2026-05-01"
+```
+Also add visible `<time datetime="2026-05">Updated May 2026</time>` near each page H1.  
+**Effort:** 1 hr
+
+---
+
+### H4. Add VideoObject `duration` to homepage schema
+**Impact:** Site is currently ineligible for Google Video rich results. One missing property.  
+**Fix:** Add `"duration": "PT3M42S"` (replace with actual YouTube video duration) to the VideoObject JSON-LD on index.html.  
+**Effort:** 10 min
+
+---
+
+### H5. Add `contactPoint` array to homepage LocalBusiness schema
+**Impact:** Required for full Local Knowledge Panel eligibility.  
+**Fix:** Add `contactPoint` array to the `LocalBusiness` block in index.html (see schema audit report for ready-to-use snippet).  
+**Effort:** 15 min
+
+---
+
+### H6. Add named human author bylines to all blog posts
+**Impact:** E-E-A-T improvement for YMYL-adjacent content; September 2025 QRG compliance.  
+**Fix:** Add visible HTML byline to all 11 blog posts:
+```html
+<p class="post-author">Written by the <a href="/about">Izhar Foster Engineering Team</a></p>
+```
+Also update BlogPosting schema `author` from `{"@type": "Organization"}` to a Person node.  
+**Effort:** 1 hr
+
+---
+
+### H7. Add blog links from the 4 primary service pages
+**Impact:** Strengthens topical clusters; passes authority to blog content.  
+**Fix:**
+- cold-stores.html → link to buyer's guide + demand-rising post
+- pir-sandwich-panels.html → link to PIR thermal efficiency post
+- pharmaceutical-cold-storage.html → link to demand-rising pharma section
+- refrigeration-systems.html → link to refrigeration systems blog post  
+**Effort:** 30 min
+
+---
+
+### H8. Fix broken onclick tool link in cost guide
+**Fix:** In `blog/cold-storage-cost-pakistan-2026-buyers-guide.html`, replace:
+```html
+href="#" onclick="document.querySelector('a[href*=load-calculator]').click()"
+```
+with:
+```html
+href="../tools/load-calculator"
+```
+**Effort:** 5 min
+
+---
+
+### H9. Add `BreadcrumbList` schema to all blog posts
+**Impact:** Missing entirely on all 11 blog posts.  
+**Fix:** Add standard BreadcrumbList JSON-LD with 3 items: Home → Blog → Post title.  
+**Effort:** 1 hr (scripted)
+
+---
+
+### H10. Add pharmaceutical cold storage OG image (1200×630)
+**Impact:** Biggest CTR lever on the site. Wrong-ratio OG = cropped/letterboxed social cards for the #1 opportunity page.  
+**Fix:** Crop or commission a dedicated 1200×630 pharma cold room image. Clinical, white, GMP-signalling style. Update `og:image` content and `og:image:width`/`og:image:height` tags.  
+**Effort:** 30 min (if cropping existing) or commission via visual-designer agent
+
+---
+
+## Medium — Fix Within 1 Month
+
+### M1. Fix overlong meta descriptions (6 service pages)
+Trim all to 150–155 chars with the primary USP in the first 140 chars.  
+Worst: `ca-stores.html` (313 chars), `cold-stores.html` (265 chars).
+
+### M2. Fix overlong title tags (3–4 service pages)
+Trim to ≤65 chars. `ca-stores.html` at 98 chars is the priority.
+
+### M3. Fix OG dimensions on all 13 service pages
+Change from 1600×1066 to 1200×630. Either crop existing images or generate new ones via visual-designer agent.
+
+### M4. Pre-render 144-commodity cold storage guide as static HTML
+`data-cold-storage-guide.json` already exists. Render the table server-side (or at build time); let JS progressively enhance. This makes the richest data asset on the site visible to AI crawlers.
+
+### M5. Add `sameAs` to AboutPage and ContactPage Organization nodes
+Copy the 4 sameAs social profile URLs from the homepage LocalBusiness block to the About and Contact page Organization schema nodes.
+
+### M6. Enumerate case study pages and blog posts individually in llms.txt
+Add a `## Case studies` section with one-line descriptions per named project. Add `## Blog posts` section. Pages not listed in llms.txt are less likely to be AI-cited.
+
+### M7. Increase CSS/JS Cache-Control from `max-age=0` to `max-age=86400`
+In `vercel.json`, update the cache rules for `/css/` and `/js/`. Eliminates forced revalidation on every return visit.
+
+### M8. Fix nav home links (`href="index"` → `href="/"`)
+Every click on the logo/home nav currently triggers a 301 redirect before resolving.
+
+### M9. Add `og:url` and `og:locale` to all non-homepage pages
+Currently missing from all service, blog, and tool pages. Add `<meta property="og:url">` and `<meta property="og:locale" content="en_PK">`.
+
+### M10. Add `frame-ancestors 'self'` to CSP in vercel.json
+One-line addition to the existing Content-Security-Policy header string.
+
+### M11. Qualify "Pakistan's only PIR manufacturer" claim on pir-sandwich-panels.html
+Change to "Pakistan's largest dedicated PIR manufacturer" or add `(as of 2026)` qualifier to avoid a dated inaccuracy becoming a trustworthiness risk.
+
+### M12. Cite the "49× more insulating than concrete" claim
+Add a footnote or inline citation near the H1 on pir-sandwich-panels.html: `(concrete λ ≈ 1.08 W/m·K ÷ PIR λ 0.022 = 49×, BS EN 14509 aged value)`.
+
+### M13. Add architecture comparison table to refrigeration-systems.html
+One table: rows = DX / Pumped Circulation / Ammonia-Glycol / Freon-CDU; columns = Capacity range, Typical use, Safety class, Indicative PKR/kW.
+
+### M14. Add at least one named project reference to refrigeration-systems.html
+Even one line: "100 kW ammonia-glycol system, Karachi meat processor, 2023."
+
+### M15. Add `Service` @type alongside `Product` on cold-stores and refrigeration-systems pages
+Cold storage and refrigeration are design-build-install services, not box products. Adding a Service block alongside Product covers broader rich result pathways.
+
+### M16. Fix `price: "0"` on all Product/Offer blocks
+Remove `price: "0"` from all service page Product schema. Use only `priceSpecification` with a description, or set availability to `PreOrder` without a numeric price.
+
+### M17. Verify and fix image paths on refrigeration-systems.html
+Confirm `freon-system-diagram.jpg` and `ammonia-glycol-system-diagram.jpg` exist at `../images/projects/`. If not, either create the images or remove the broken `<figure>` elements.
+
+### M18. Add staff photographs to about.html
+Replace initials-block avatars with real photos of Muhammad Anwar Inayat, Kamran Anwar, and Umair Meo. Named people with photos is the single highest-impact E-E-A-T improvement for the about page.
+
+### M19. Fix lowercase H2 on pir-sandwich-panels.html
+Change "Where pir sandwich panels are used" → "Where PIR Sandwich Panels Are Used".
+
+### M20. Cite the 30–40% post-harvest loss statistic in demand-rising blog
+Add source: report name + year (e.g., "PHDEC Annual Report 2022" or "Ministry of National Food Security & Research").
+
+### M21. Add Organization cross-linking via `@id`
+Every Organization node across all pages should either use `{"@id": "https://izharfoster.com#organization"}` as a reference or add `"@id": "https://izharfoster.com#organization"` to be consistent with the homepage entity. Currently each page re-declares the full object independently, fragmenting the entity graph.
+
+### M22. Add `fetchpriority="high"` to blog post hero images
+Blog post heroes are above the fold but likely load lazily. Add `fetchpriority="high"` and remove any `loading="lazy"` on the hero `<img>` in each blog post.
+
+### M23. Delete orphaned PNG originals
+`/images/product-doors.png` (952KB) and `/images/product-pharma.png` (321KB) are unreferenced by any HTML. Add to `.vercelignore` or delete from repo.
+
+### M24. Improve generic alt text on 18 content images
+Priority: homepage service grid, then blog index thumbnails.  
+Target format: `[what it shows] — Izhar Foster, [location], [context]`.  
+Example: `Walk-in cold store interior with FireSafe PIR panels — Izhar Foster, Pakistan` rather than `Walk-in Cold Storage`.
+
+---
+
+## Low — Backlog
+
+### L1. Pursue Wikipedia article for Izhar Group
+The single largest missing entity signal. A 65-year-old Pakistani engineering group with ISO certs, 2,100+ installations, and named clients (Coca-Cola, Pepsi, Nestlé, Pakistan Army) qualifies under WP:CORP. Without Wikipedia, AI models lack a neutral third-party entity anchor. This is the highest-ceiling single action available but requires significant effort.
+
+### L2. Set accurate per-file `lastmod` in sitemap.xml
+Use `git log --format="%ad" --date=short -- <file>` to get real modification dates. Currently all are bulk-set to `2026-05-01` which Google ignores.
+
+### L3. Automate IndexNow URL submissions on deploy
+Create a post-deploy script (or Vercel deploy hook) that pushes changed URLs to `https://api.indexnow.org/indexnow`. The key file exists; active submission is step two.
+
+### L4. Add `will-change: transform` to `.logo-track` in style.css
+One-line CSS addition, promotes carousel to its own compositor layer.
+
+### L5. Add `Permissions-Policy: payment=(), usb=()` to vercel.json
+Minor security header completeness improvement.
+
+### L6. Add `<link rel="preconnect">` for Google Fonts (already present — verify)
+Two preconnect hints to `fonts.googleapis.com` and `fonts.gstatic.com` should be in `<head>` before the font preload. Confirm they are in the correct order.
+
+### L7. Fix standardise nav links to root-relative paths (`href="/path"`)
+Currently using bare relative slugs (`href="solutions"`) which can behave unexpectedly in edge cases. Change to `href="/solutions"` site-wide.
+
+### L8. Add `wordCount` and `timeRequired` to HowTo schema on cost calculator
+HowTo rich results are retired by Google (Sept 2023) but the schema retains GEO value. If keeping it, enrich with `totalTime` and `supply` properties.
+
+### L9. Re-compress oversized blog images
+`blog-cold-storage-solutions-1600.webp` at 477KB and 1000-wide tier at 249KB are 2–3× over threshold. Target: 150–200KB for 1600-wide WebP, 80–120KB for 1000-wide WebP. Use `cwebp -q 80`.
+
+### L10. Add `og:image:width` and `og:image:height` to all pages
+Once OG images are fixed to 1200×630, add explicit dimension meta tags to help social parsers.
+
+---
+
+## Priority Matrix
+
+| Priority | Count | Estimated total effort |
+|---|---|---|
+| Critical | 2 | 35 min |
+| High | 10 | ~8 hours |
+| Medium | 24 | ~20 hours |
+| Low | 10 | ~10 hours |
+
+**Recommended sprint 1 (this week):** C1 + C2 + H1 + H2 + H4 + H5 + H8 = unblocks rich results, fixes LCP, fixes the #1 conversion opportunity. ~5 hours.
+
+**Recommended sprint 2 (next week):** H3 + H6 + H7 + H9 + H10 + M1 + M2 = topical authority, authorship, OG fix on pharma page. ~6 hours.
+
+---
+
+*Action plan generated 2026-05-01 from full 7-agent SEO audit. Reference GROWTH-PLAN.md for strategic prioritisation context.*
