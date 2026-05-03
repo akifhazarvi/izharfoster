@@ -49,8 +49,15 @@
     // Vercel Analytics custom event.
     try { window.va('event', { name: event, data: payload }); } catch (e) { /* noop */ }
 
-    // GTM / GA4 dataLayer (active if a tag manager is ever added).
+    // GTM dataLayer push (active if a tag manager is ever added).
     try { window.dataLayer.push(Object.assign({ event: event }, payload)); } catch (e) { /* noop */ }
+
+    // GA4 direct event (gtag.js is loaded on every page as G-PLY0DZWNEM).
+    try {
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', event, payload);
+      }
+    } catch (e) { /* noop */ }
 
     if (DEBUG) {
       // eslint-disable-next-line no-console
