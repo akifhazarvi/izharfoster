@@ -223,6 +223,95 @@ No CSS preprocessor. No utility framework. Vanilla CSS only.
 - **PDF reports** are A4, Inter 11pt, ember accent line under the brand wordmark, JetBrains Mono in the data tables, sources at the bottom, disclaimer in italic muted.
 - **Project session banner** is a horizontal warm-gradient strip below the titlebar — orange to indicate "you're in flow", with two clear buttons: Cancel / Attach & return.
 
+## Visual work — token-efficient algorithms
+
+Design changes are where token budgets bleed fastest: re-reading 3,900 lines of CSS, opening 23 HTML pages "to compare", or asking a subagent to redo work the variables already define. The rules below pair with the [CLAUDE.md token discipline](CLAUDE.md#token-discipline--read-before-any-non-trivial-task) section.
+
+### V1. Trust the design tokens — don't re-derive them
+
+Every colour, font, spacing, breakpoint, and motion timing is in the tables above. When the user asks for "the brand orange" or "section padding", reach for the token name (`--t-warm`, `clamp(56px, 8vw, 120px)`), not the value. Re-deriving values from screenshots or other pages wastes tokens and risks drift.
+
+| Need | Source of truth | Don't |
+|---|---|---|
+| Brand orange | `--t-warm: #E36A1E` | Read style.css to find it |
+| Mono numerals | `font-family: var(--font-mono)` | Re-declare JetBrains Mono per component |
+| Rail width | `var(--rail)` (responsive) | Hard-code 72 px |
+| Section padding | `clamp(56px, 8vw, 120px)` | Pick a new clamp |
+| Tap target floor | 44×44 px (WCAG 2.5.5) | Use a smaller "looks fine on my screen" |
+| Body text floor (mobile) | 14 px | Decide per component |
+
+### V2. Pattern reuse over invention
+
+Before adding a new visual pattern, check the inventory:
+
+```
+Hero block            → index.html (.hp-hero), services/cold-stores.html
+Spec table            → services/pir-sandwich-panels.html  
+Project case study    → projects/<any>.html
+Calculator titlebar   → tools/<any>.html (Izhar.wireToolChrome injects)
+Trust band            → index.html (1959 / 277,460 sqft / ISO 9001 / 2,100+)
+Dark CTA banner       → index.html (.hp-cta), services/cold-stores.html
+Methodology details   → tools/<any>.html (auto-injected by _shared.js)
+Project session strip → tools/<any>.html when ?project= is present
+```
+
+If a similar pattern exists, **read that one file** and clone the structure. Don't read three "for comparison" — pick the closest sibling and ship.
+
+### V3. Image work — inspect cheap, generate dear
+
+| Task | Cheap path | Token cost |
+|---|---|---|
+| Confirm an image exists | `Bash ls images/` | ~100 tok |
+| Check dimensions | `Bash file images/foo.jpg` or `sips -g pixelWidth` | ~150 tok |
+| Compare two images visually | `Read images/foo.jpg` (multimodal) | 1-3k tok per image |
+| Find an image to reuse | `Bash ls _scrape/images/ \| grep -i pir` | ~200 tok |
+| Generate a new OG image | `seo-image-gen` subagent | 15-25k tok |
+
+**Generating an image is the most expensive design action in the toolkit.** Always check `_scrape/images/` (the legacy site has 200+ real production photos) before spawning a generator. Real photography beats generated, both for trust and for tokens.
+
+### V4. Scrape mining — read by keyword, not by file
+
+`_scrape/` (39 MB) and `_kr_scrape/` (research) are gitignored — they exist to be searched. The brochure facts, partner names, and project specs live there. Always:
+
+```bash
+# Find the right file first
+grep -rln "HAC Agri" _scrape/ _kr_scrape/
+
+# Then read the matched window only
+# Read with offset/limit on the specific match
+```
+
+Never `Read` a 2,000-line scrape file in full — you'll burn 20k tokens to find one fact that `grep` finds in 50.
+
+### V5. When to use a visual subagent
+
+| Situation | Agent | Why |
+|---|---|---|
+| New OG / hero / case-study image | `seo-image-gen` or `visual-designer` | Generation is their job |
+| Cross-page visual consistency check (5+ pages) | `seo-content` or `general-purpose` | Reading 5+ pages in main thread blows budget |
+| "Does this comp match brand?" (single screenshot vs DESIGN.md) | **No agent.** Read the screenshot + the relevant DESIGN.md section. | Single-step compare |
+| CLS / LCP audit | Background `Bash node _kr_scrape/cls-lcp-audit.mjs` | Existing script; not a subagent task |
+
+**Always pass the brand tokens explicitly in the prompt** — never expect the agent to re-read DESIGN.md. Quote the hex codes, the type stack, the spacing tokens directly.
+
+### V6. The "is this on-brand?" decision tree
+
+Before adding any new visual element, run the check in this order. Stop at the first failure.
+
+```
+1. Is the colour in the palette?     → no: stop, use a token
+2. Is the font Inter or JetBrains Mono? → no: stop
+3. Is the number set in mono?         → no: fix
+4. Is there a hover + focus state?    → no: add (.15s state, .32s layout)
+5. Is the tap target ≥44×44 on mobile? → no: pad it
+6. Does it use a stock photo or icon-as-illustration? → yes: replace
+7. Are all 4 hero questions answered (right people / real engineers / what I need / where next)? → no: hero fails
+```
+
+If 1-6 pass, ship. If 7 fails on a priority page, the page fails — it's the funnel rule from GROWTH-PLAN §2.2.
+
+---
+
 ## Performance targets (Core Web Vitals)
 
 | Metric | Target | Current (local server) |

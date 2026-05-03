@@ -4,6 +4,8 @@
 
 **The canonical roadmap is [GROWTH-PLAN.md](GROWTH-PLAN.md).** Source-of-truth resolutions for conflicting facts are in [DECISIONS.md](DECISIONS.md). Both files are checked into the repo and referenced by every PR.
 
+**Day-to-day work queue: [DAILY-TASKS.md](DAILY-TASKS.md)** — sequenced by impact÷effort, with done/not-done markers. Always update it when you ship a task.
+
 **Priority pillars (grow):** Cold Stores · PIR Sandwich Panels (FireSafe PIR) · Refrigeration Systems
 **Secondary:** CA Stores · Insulated Doors · Refrigerated Vehicles · CEA Greenhouses
 **Deprioritize (keep on site, low visibility):** Plant Factories · Smart Cabins · Prefabricated Steel Buildings (PEB)
@@ -145,6 +147,201 @@ The site uses a 4-breakpoint scheme:
 ## Brand system
 
 See [DESIGN.md](DESIGN.md) for the full visual specification. Locked palette / type / spacing — do not change without explicit instruction.
+
+---
+
+## Token discipline — read before any non-trivial task
+
+This repo has 23+ static HTML pages, ~3,900 lines of CSS, ~30 JS files, and a `_scrape/` directory of 39 MB. Reading "everything" once will burn 100k+ tokens and leave nothing for the actual work. The rules below are not optional.
+
+### The 5 token rules
+
+1. **Read what you'll edit, not what you might edit.** Use `Read` on the specific file(s) the task names. Use `Grep` to confirm a pattern exists before opening a second file. Never `Read` a file >800 lines without an `offset/limit` window unless the task is a full-file rewrite.
+
+2. **`_scrape/`, `_kr_scrape/`, `_audit/`, `_scrape_coldstore/` are gitignored research dumps — never read them in full.** If you need a fact from them, `Grep` for the keyword and read only the matched window. These directories exist to be searched, not loaded.
+
+3. **Reuse the architecture diagram in this file as the file-finder.** The directory tree above already names every page, tool, JS module, and CSS file. When the user says "the cold stores page" or "Tool 6", resolve to the path from the tree — do NOT `Glob` or `find` to discover it.
+
+4. **One pass per concern.** Edit, verify, ship. Don't re-read the file you just edited unless a tool error suggests the diff failed. The Edit tool returns enough confirmation.
+
+5. **Stop reading when the answer is in DECISIONS.md, GROWTH-PLAN.md, ACTION-PLAN.md, or DAILY-TASKS.md.** Those four files are the source of truth for facts (λ value, partner names, priority pillars, work queue). Reading the actual HTML pages to "double-check" a fact those files already canonicalise is duplicate work.
+
+### Cheap vs expensive operations (rough token cost)
+
+| Operation | Cost | When to use |
+|---|---|---|
+| `Grep` with `-l` (filenames only) | ~50 tok | Finding which files contain a string |
+| `Grep` with `-c` (count) | ~50 tok | "Is this pattern used widely?" |
+| `Grep` with `-n` + small `head_limit` | ~200-500 tok | Locating exact lines before editing |
+| `Read` with `offset` + `limit` | ~200-1500 tok | Reading the specific section you need |
+| `Read` whole file (<300 lines) | 1-3k tok | Editing across the whole file |
+| `Read` whole file (300-1500 lines) | 3-15k tok | Justified only for full rewrites |
+| `Read` whole file (>1500 lines) | 15k+ tok | **Stop. Use `offset/limit`.** |
+| Spawning a subagent | 10-30k tok minimum | Only when listed below |
+| Reading a directory listing via `Bash ls` | ~100 tok | Confirming a path exists |
+| `Glob` with broad pattern (`**/*.html`) | ~500 tok | Finding all pages of a type |
+| `find` from `/` or huge tree | 5k+ tok | **Don't.** Search from `.` or the specific subtree. |
+
+### Standard task algorithms (follow these literally)
+
+These are the recipes for the recurring task types in this repo. Each is the lowest-token correct approach.
+
+#### A. "Edit one HTML page" (e.g. ACTION-PLAN items)
+
+```
+1. Resolve the path from the architecture diagram (no Glob).
+2. Grep -n for the unique anchor string near the edit site (~50 tok).
+3. Read that file with offset = match - 5, limit = 30-60 lines (~500 tok).
+4. Edit with old_string = the exact matched window.
+5. If the same change applies to N pages, write a single Bash sed/awk one-liner
+   instead of N Edit calls. Always preview with grep -l first to confirm the
+   target set, then run the sed in place.
+```
+
+#### B. "Site-wide pattern fix" (e.g. async Google Fonts on every page)
+
+```
+1. Grep -lr 'fonts.googleapis.com' . --include='*.html'  → list of N files.
+2. Read ONE representative file (limit 80 lines around the <head>) to confirm
+   the exact pattern.
+3. Run a single Bash sed -i over the whole list. Verify with a second
+   grep that the count of old pattern is 0 and new pattern is N.
+4. Spot-check 1 file with Read offset/limit. Do not re-read all N.
+```
+
+#### C. "New service or projects/case-study page"
+
+```
+1. Read the closest existing sibling (e.g. for projects/foo.html, read
+   projects/bar.html) — limit 200 lines if needed.
+2. Read DECISIONS.md only for the specific fact you need (offset/limit).
+3. Write the new file with the same structure, schema block, and footer.
+4. Add the URL to sitemap.xml (Edit, single line append before </urlset>).
+5. Update DAILY-TASKS.md to mark [x] with the commit hash.
+```
+
+#### D. "GSC-driven content rewrite" (striking-distance fix)
+
+```
+1. The query, page, and target are already in GROWTH-PLAN §6 — re-read
+   only that section (offset).
+2. Grep -n for the H1 / title / meta description on the target page.
+3. Read 40-line windows for each. Edit each with one call.
+4. No need to read the page in full.
+```
+
+#### E. "Schema / JSON-LD edit"
+
+```
+1. Grep -n 'application/ld+json' on the target page.
+2. Read the matched <script> block with offset/limit.
+3. Edit just the property being changed. Do not rewrite the whole block.
+4. If the change applies to many pages, use Bash sed for the literal value
+   (e.g. telephone E.164) — sed handles JSON strings fine when you anchor
+   on the unique key.
+```
+
+#### F. "Audit / research / unknown question"
+
+```
+1. Try Grep first. Most factual questions resolve in one Grep.
+2. If you need to scan multiple files, use a subagent (see playbook below)
+   — not 10 sequential Reads.
+3. Always state the question to yourself in one sentence before searching.
+   Vague searches return vague results and waste tokens.
+```
+
+### Subagent playbook — when to spawn, who to spawn, and what to ask
+
+Subagents are expensive (10-30k tok floor) but they're the right tool when the alternative is reading 5+ files into the main context. The rule: **a subagent should reduce, not duplicate, the main thread's token spend.**
+
+Each entry below = role · trigger · prompt template · expected return.
+
+---
+
+**🔍 Explore-agent (subagent_type: `Explore`)**
+- **Role:** read-only locator for files, symbols, references.
+- **Trigger:** "where does X live?", "which pages use Y?", "which case studies mention Z?"
+- **Don't use for:** code review, design audits, anything requiring synthesis.
+- **Prompt shape:**  
+  *"Find all HTML files under `services/` and `projects/` that reference the partner brand 'Bitzer' or 'Heatcraft'. Return file paths + the exact line, quick search."*
+- **Returns:** a punch list of paths + line numbers. Main thread does the edits.
+
+---
+
+**🧭 Plan-agent (subagent_type: `Plan`)**
+- **Role:** architect — produces a step-by-step plan before code.
+- **Trigger:** any task touching ≥3 files OR any new feature OR any change crossing CSS/JS/HTML boundaries (e.g. Cost Calculator integration).
+- **Prompt shape:**  
+  *"Plan the implementation for adding a quick-mode Cost Calculator embed to the homepage second-fold. Constraints: no build step; reuse existing `js/tools/_shared.js`; brand tokens from DESIGN.md. Output: file list with diffs described, step order, and rollback plan."*
+- **Returns:** plan markdown. Main thread executes.
+
+---
+
+**🌐 SEO-content / SEO-technical / SEO-schema (subagent_type: `seo-content`, `seo-technical`, `seo-schema`)**
+- **Role:** specialist auditors. Use exactly one at a time, against exactly one page or pattern.
+- **Trigger:** "audit X", "check schema on Y", "is page Z citable by AI?"
+- **Don't use for:** edits. They report; we ship.
+- **Prompt shape:**  
+  *"Run an E-E-A-T + AI citation readiness audit on `services/pharmaceutical-cold-storage.html`. Compare against ACTION-PLAN #13. Return: a bulleted gap list + the smallest passage that needs to be added/changed for citation. Under 400 words."*
+- **Returns:** bullet list. Main thread edits.
+
+---
+
+**📊 SEO-google / SEO-dataforseo (subagent_type: `seo-google`, `seo-dataforseo`)**
+- **Role:** live-data agents. They call Composio/DataForSEO MCP, return numbers.
+- **Trigger:** "what's the current GSC position for X?", "which striking-distance queries moved this week?"
+- **Prompt shape:**  
+  *"Pull last-7-day GSC data via Composio for the queries listed in GROWTH-PLAN §6. Return a delta table: query · pos before · pos now · clicks delta. Under 300 words."*
+- **Returns:** numbers table. Main thread decides what to ship.
+
+---
+
+**📝 SEO-image-gen / Visual-designer (subagent_type: `seo-image-gen`, `visual-designer`)**
+- **Role:** generate OG / social / case-study images.
+- **Trigger:** "make hero / OG image for X page" — only after copy is final.
+- **Prompt shape:**  
+  *"Generate a 1200×630 OG image for `services/refrigerated-vehicles.html`. Brand tokens: `--t-cold` `#0A1F3D`, `--t-warm` `#E36A1E`, JetBrains Mono for numbers. Subject: a refrigerated truck with the JetBrains-mono `−18°C` chip and the line 'Engineered cold. Since 1959.' No stock imagery feel."*
+- **Returns:** path to image + alt-text suggestion.
+
+---
+
+**🎯 General-purpose agent (subagent_type: `general-purpose`)**
+- **Role:** the catch-all. Use only when none of the specialists fit AND the task is open-ended enough that 3+ tool calls in the main thread would exceed a subagent's floor.
+- **Trigger:** "compare brochure pp.31-39 to refrigeration page", "which 14 case studies are missing schema fields?"
+- **Prompt shape:** must be **self-contained** — explain the goal, the constraints, the deliverable shape, and the word cap. The agent has no memory of this conversation.
+
+---
+
+### When NOT to spawn a subagent
+
+- Single-file edit. Just do it.
+- Reading a file under 300 lines. Just read it.
+- A question DECISIONS.md / GROWTH-PLAN.md / ACTION-PLAN.md already answers.
+- "Confirm X works" — that's a Bash test, not a subagent.
+- Anything urgent (the user is watching). Subagents have latency.
+
+### Parallel work
+
+When two or more independent searches/reads are needed, **batch them into a single message with multiple tool calls**. Same applies to subagents that don't depend on each other. Sequential calls double wall-clock and don't save tokens.
+
+### Background work
+
+Use `run_in_background: true` for:
+- Long Playwright runs in `_kr_scrape/` (CLS/LCP audits, mobile audits)
+- `vercel deploy --prod` waits
+- Any subagent whose result is not blocking the next step
+
+Don't poll. The runtime notifies on completion.
+
+### Self-check before each task
+
+Before any non-trivial task, write down (in 1-2 sentences in your reply):
+1. Which file(s) you'll edit (resolved path, not "the cold-stores page").
+2. Which doc(s) you'll consult (specific section, e.g. "GROWTH-PLAN §6 only").
+3. Whether a subagent is justified (default: no).
+
+If you can't answer those three in two sentences, the task is underspecified — ask the user one targeted clarifying question instead of guessing.
 
 ## Audit + verification scripts
 
