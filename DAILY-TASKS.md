@@ -90,10 +90,10 @@ Work top-to-bottom. Mark done with `[x]`. Each PR title must reference the GROWT
 
 - [ ] Add named partners table to `services/refrigeration-systems.html`: Zanotti · Heatcraft · LU-VE · Bitzer  
   **Source:** DECISIONS.md confirmed partners
-- [ ] Add PIR vs PU vs EPS comparison table with λ values to `services/pir-sandwich-panels.html`  
-  **Source:** brochure p.18; λ = 0.022 W/m·K (BS EN 14509 aged)
-- [ ] Add WHO-banned PU foam differentiation callout to PIR page hero
-- [ ] Add pentane blowing-agent callout (eco-friendly; 141B replacement)
+- [x] Add PIR vs PU vs EPS comparison table with λ values to `services/pir-sandwich-panels.html` — already on page (line 138 spec table)
+- [x] Add WHO-banned PU foam differentiation callout to PIR page hero — already on page (hero + body)
+- [x] Add pentane blowing-agent callout (eco-friendly; 141B replacement) — already on page (hero + spec table)
+- [x] Add industrial-construction depth section to `services/pir-sandwich-panels.html` (targets GSC orphan "construction using pir panels", 475 imp pos 19.1) — d78e440
 
 ### Day 6 — CA Stores depth (GP§4.4)
 
