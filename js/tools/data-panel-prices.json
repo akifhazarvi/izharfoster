@@ -1,0 +1,112 @@
+{
+  "$comment": "FireSafe PIR sandwich panel indicative price bands — Pakistan, Q2 2026. Panel-only, ex-works Lahore plant. Excludes structural support, freight, installation. Bands derived from market research (OLX Pakistan reverse-conversion, Silver Steel + Golden Steel published PU price tables, PPGI steel-coil cost build, IndiaMART India floor reference). Izhar premium positioning at market median +15-18%, justified by FireSafe PIR (B1 fire class, lambda 0.022 W/m·K aged, eco-pentane).",
+  "$last_updated": "2026-05-04",
+  "$source_methodology": "research-subagent-2026-05-04",
+  "currency": "PKR",
+  "unit": "per_m2",
+  "uncertainty_band_pct": 15,
+
+  "panels": [
+    {
+      "thicknessMm": 50,
+      "uValueSI": 0.36,
+      "label": "Ambient warehouse / prefab — most common 4×8 ft wall panel",
+      "priceMin": 6500,
+      "priceMid": 7500,
+      "priceMax": 8500,
+      "confidence": "medium",
+      "publishable": true,
+      "useCase": "Ambient warehouse, prefab buildings, light-duty rooms"
+    },
+    {
+      "thicknessMm": 60,
+      "uValueSI": 0.31,
+      "label": "Light-duty cold rooms",
+      "priceMin": 7500,
+      "priceMid": 8500,
+      "priceMax": 9500,
+      "confidence": "low",
+      "publishable": false,
+      "useCase": "Light-duty cold rooms +5 to +15°C"
+    },
+    {
+      "thicknessMm": 80,
+      "uValueSI": 0.25,
+      "label": "Chillers (0 to +5°C), food processing",
+      "priceMin": 9000,
+      "priceMid": 10000,
+      "priceMax": 11000,
+      "confidence": "medium",
+      "publishable": true,
+      "useCase": "Chillers (0 to +5°C), food processing"
+    },
+    {
+      "thicknessMm": 100,
+      "uValueSI": 0.19,
+      "label": "Cold stores, pharma 2–8°C",
+      "priceMin": 10500,
+      "priceMid": 11500,
+      "priceMax": 12500,
+      "confidence": "medium",
+      "publishable": true,
+      "useCase": "Cold stores (−5 to 0°C), pharma 2–8°C envelopes"
+    },
+    {
+      "thicknessMm": 125,
+      "uValueSI": 0.156,
+      "label": "Freezers",
+      "priceMin": 12500,
+      "priceMid": 14000,
+      "priceMax": 15500,
+      "confidence": "low",
+      "publishable": false,
+      "useCase": "Walk-in freezers −18 to −25°C"
+    },
+    {
+      "thicknessMm": 150,
+      "uValueSI": 0.13,
+      "label": "Freezers and blast freezers",
+      "priceMin": 14000,
+      "priceMid": 15750,
+      "priceMax": 17500,
+      "confidence": "low",
+      "publishable": false,
+      "useCase": "Freezers and blast freezers (−25 to −40°C)"
+    }
+  ],
+
+  "facing_multipliers": {
+    "$comment": "Multiplier on base PKR/m² for facing gauge. Base assumes 0.5 mm pre-painted galvanised both faces.",
+    "light": { "label": "Light: 0.4 mm pre-painted GI both faces", "multiplier": 0.92 },
+    "standard": { "label": "Standard: 0.5 mm pre-painted GI both faces (default)", "multiplier": 1.00 },
+    "heavy": { "label": "Heavy: 0.6 mm pre-painted GI both faces", "multiplier": 1.10 },
+    "galvalume": { "label": "Galvalume: 0.5 mm Galvalume corrosion-resistant", "multiplier": 1.12 },
+    "food_grade": { "label": "Food-grade: 0.5 mm food-contact certified", "multiplier": 1.18 }
+  },
+
+  "length_uplifts": {
+    "$comment": "Uplift on PKR/m² for non-standard panel lengths (longer = fewer site joints, but more wastage above 40 ft).",
+    "standard": { "label": "Up to 12 ft (3.66 m) — standard", "multiplier": 1.00 },
+    "long": { "label": "12–25 ft (3.66–7.62 m)", "multiplier": 1.04 },
+    "extra_long": { "label": "25–40 ft (7.62–12.19 m)", "multiplier": 1.08 },
+    "max": { "label": "40–50 ft (12.19–15.24 m) — eliminates site joints", "multiplier": 1.15 }
+  },
+
+  "volume_discounts": {
+    "$comment": "Discount tiers based on total order volume (m²). Indicative — actual discount confirmed at quote.",
+    "tiers": [
+      { "minM2": 0,    "maxM2": 200,   "label": "Under 200 m² — small project", "discount": 0.00 },
+      { "minM2": 200,  "maxM2": 1000,  "label": "200–1,000 m² — mid project",   "discount": 0.03 },
+      { "minM2": 1000, "maxM2": 5000,  "label": "1,000–5,000 m² — large project","discount": 0.06 },
+      { "minM2": 5000, "maxM2": 999999,"label": "Over 5,000 m² — bulk",          "discount": 0.10 }
+    ]
+  },
+
+  "freight_pkr_per_m2": {
+    "$comment": "Indicative freight from Lahore plant per m² of panel. Linear approximation. Real freight depends on truck count, route, and palletisation.",
+    "lahore_local": 0,
+    "punjab_intercity": 150,
+    "karachi_islamabad": 350,
+    "kpk_balochistan": 450
+  }
+}
