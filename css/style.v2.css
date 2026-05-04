@@ -5619,3 +5619,243 @@ body.lc-open .lc-backdrop {
     font-size: .72rem;
   }
 }
+}
+
+/* ==========================================================================
+   MOBILE HYBRID — PR 1
+   30/60/10 design system: Apple-register hero → Bitzer-register Spec Card
+   → Decisive WhatsApp pill in chrome. Mobile-only; desktop untouched.
+   See CLAUDE.md "Mobile hybrid system" + DESIGN.md.
+   ========================================================================== */
+
+/* ----- Spec Card component (works on every viewport — used as the seam between Apple-register heroes and Bitzer-register body sections). Background paper, hairline rules, mono numbers with tabular-nums. */
+.spec-card {
+  background: var(--paper);
+  padding: 32px var(--gutter);
+  border-bottom: 1px solid var(--line);
+}
+.spec-card-inner {
+  max-width: var(--container);
+  margin: 0 auto;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+}
+.spec-card-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px 22px;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  min-width: 0;
+}
+.spec-card-row:nth-child(2n) { border-right: none; }
+.spec-card-row:nth-last-child(-n+2) { border-bottom: none; }
+.spec-card-k {
+  font-size: .68rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+}
+.spec-card-v {
+  font-size: 1.05rem;
+  letter-spacing: -.005em;
+  color: var(--ink);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.spec-card-row-lead .spec-card-v { color: var(--t-cold); }
+
+/* ----- Since-1959 strip (the long-form paragraph that used to live in the hero). Visible on every viewport. */
+.hp-since-strip {
+  background: var(--paper-2);
+  padding: 80px var(--gutter);
+  border-bottom: 1px solid var(--line);
+}
+.hp-since-strip-inner {
+  max-width: 880px;
+  margin: 0 auto;
+}
+.hp-since-strip-h {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+  letter-spacing: -.025em;
+  line-height: 1.18;
+  margin: 14px 0 22px;
+  color: var(--ink);
+}
+.hp-since-strip p {
+  font-size: clamp(1rem, 1.4vw, 1.1rem);
+  line-height: 1.7;
+  color: var(--ink-2);
+  max-width: 64ch;
+  margin-bottom: 28px;
+}
+.hp-since-strip-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: .76rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 4px;
+  transition: color .2s, border-color .2s, gap .2s;
+}
+.hp-since-strip-more:hover { color: var(--t-warm); border-color: var(--t-warm); gap: 14px; }
+
+/* ----- Header WhatsApp pill (visible on mobile only; hidden on desktop where the Cold Consultant FAB carries the same job).
+   Specificity bumped via .nav-cta ancestor so this beats sibling button rules. */
+.nav-cta .nav-wa { display: none; }
+
+/* ----- Hide the hero body paragraph on every viewport now that it lives in the Since strip.
+   Specificity bumped via .hp-hero ancestor so this beats `.hp-hero p` (0,1,1). */
+.hp-hero p.hp-hero-body { display: none; }
+
+/* ----- Hide the Spec Card on desktop — it's the mobile seam. */
+@media (min-width: 721px) {
+  .spec-card.spec-card-hero { display: none; }
+}
+
+@media (max-width: 720px) {
+  /* === Mobile design tokens — only inside this breakpoint to keep the desktop layout pristine. */
+  :root {
+    --mb-y-section: 56px;
+    --mb-y-tight:   28px;
+    --mb-x:         20px;
+    --mb-rule:      rgba(20,28,40,.08);
+  }
+
+  /* === Header trim: 78 → 56px, smaller logo, visible WA pill, hide redundant nav-phone, kill the "Request quote" duplicate-CTA. */
+  .nav { height: 56px !important; padding: 0 var(--mb-x); gap: 8px; }
+  .brand-logo { height: 36px !important; max-height: 36px !important; max-width: 170px !important; }
+  .nav-phone { display: none; }
+  .nav-cta { gap: 8px; }
+  .nav-cta .btn-primary { display: none; }
+
+  .nav-cta .nav-wa {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #25d366;
+    color: #fff;
+    box-shadow: 0 6px 14px rgba(37,211,102,.32);
+    transition: transform .18s ease, box-shadow .18s ease;
+    flex-shrink: 0;
+  }
+  .nav-cta .nav-wa:hover { transform: translateY(-1px); box-shadow: 0 10px 20px rgba(37,211,102,.4); }
+  .nav-cta .nav-wa svg { width: 22px; height: 22px; fill: #fff; display: block; }
+  .menu-toggle { width: 44px; height: 44px; }
+  /* The drawer (`.nav-center.open`) is positioned `top: 64px` from the legacy header height. Re-anchor to the new 56px header. */
+  .nav-center.open { top: 56px; }
+
+  /* === HERO PLATE — Apple register, ~30% of the viewport story.
+     Edge-to-edge full-bleed, lighter overlay (linear gradient bottom-only),
+     mono eyebrow replaces the bordered chip, single primary CTA. */
+  .hp-hero {
+    min-height: auto;
+    padding: 0;
+  }
+  .hp-hero-overlay {
+    background: linear-gradient(180deg,
+      rgba(10,15,25,.20) 0%,
+      rgba(10,15,25,.35) 50%,
+      rgba(10,15,25,.78) 100%);
+  }
+  .hp-hero-content {
+    padding: 96px var(--mb-x) 56px;
+    min-height: 92vh;
+    align-items: flex-end;
+  }
+  .hp-hero-inner { max-width: 100%; }
+
+  /* Replace the bordered pill with a mono eyebrow + hairline */
+  .hp-hero-tag {
+    display: inline-block;
+    padding: 0 0 8px;
+    margin-bottom: 18px;
+    border: none;
+    border-bottom: 1px solid rgba(245,242,236,.32);
+    border-radius: 0;
+    font-size: .64rem;
+    letter-spacing: .26em;
+    text-transform: uppercase;
+    color: rgba(245,242,236,.78);
+    max-width: 90%;
+    line-height: 1.5;
+  }
+
+  .hp-hero h1 {
+    font-size: clamp(2.4rem, 10vw, 3.2rem);
+    line-height: .98;
+    letter-spacing: -.04em;
+    margin-bottom: 18px;
+  }
+
+  /* Tight, single sub-promise. Keep the existing prose at top, hide the long body — it now lives in `.hp-since-strip` below. */
+  .hp-hero p.hp-hero-sub {
+    font-size: 1rem;
+    line-height: 1.55;
+    color: rgba(245,242,236,.86);
+    margin-bottom: 28px;
+    max-width: 32ch;
+  }
+  /* Keep the long body hidden on mobile — Since strip below is its real home now */
+  .hp-hero p.hp-hero-body { display: none; }
+
+  /* Single decisive CTA on mobile — drop the secondary "See our products" outline button */
+  .hp-hero-ctas { gap: 10px; margin-bottom: 18px; }
+  .hp-hero-ctas .hp-hero-cta-secondary { display: none; }
+  .hp-hero-ctas .btn-primary {
+    width: auto;
+    padding: 16px 24px;
+    font-size: 1rem;
+  }
+
+  .hp-hero-note {
+    font-size: .68rem;
+    letter-spacing: .16em;
+    color: rgba(245,242,236,.6);
+  }
+
+  /* === SPEC CARD on mobile — the seam between Apple register and Bitzer register. Tighter padding, single column on very narrow phones (<380px) handled by min-width:0 + ellipsis. */
+  .spec-card { padding: 28px var(--mb-x); }
+  .spec-card-row { padding: 14px 14px; gap: 4px; }
+  .spec-card-k { font-size: .58rem; letter-spacing: .16em; }
+  .spec-card-v { font-size: .92rem; }
+
+  /* === SINCE strip — comfortable mobile rhythm */
+  .hp-since-strip { padding: var(--mb-y-section) var(--mb-x); }
+  .hp-since-strip-h { font-size: 1.55rem; line-height: 1.2; }
+  .hp-since-strip p { font-size: .98rem; line-height: 1.65; }
+
+  /* === Floating live-chat trigger: nudge up so it doesn't compete with the hero CTA on the first paint */
+  .lc-root { bottom: 16px; right: 16px; }
+  .lc-trigger { width: 54px; height: 54px; }
+}
+
+/* === Very narrow phones: Spec Card collapses to a single readable column */
+@media (max-width: 420px) {
+  .spec-card-inner { grid-template-columns: 1fr; }
+  .spec-card-row { border-right: none; }
+  .spec-card-row:nth-last-child(-n+2) { border-bottom: 1px solid var(--line); }
+  .spec-card-row:last-child { border-bottom: none; }
+}
+
+/* === Very narrow phones (≤380): extra header tightening — but tap targets stay at the WCAG 44×44 floor. */
+@media (max-width: 380px) {
+  .nav { padding: 0 14px; gap: 6px; }
+  .brand-logo { height: 32px !important; max-height: 32px !important; max-width: 150px !important; }
+}
