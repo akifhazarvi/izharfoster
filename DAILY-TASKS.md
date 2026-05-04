@@ -35,6 +35,7 @@ Work top-to-bottom. Mark done with `[x]`. Each PR title must reference the GROWT
 - [x] `AP#14` Expand 2 thin blog posts above 1,500 words — commit `c4d614a`
 - [x] `AP#15` Move GA4 `gtag` block below `<meta charset>` + `<meta viewport>` — commit `a9ca809`
 - [x] `AP#18` Add Karachi geo coordinates + `branchOf` schema to karachi page — commit `7a81618`
+- [x] **GA4 attribution fix** — rename `js/track.js` user_properties + per-event params from reserved keys (`source`/`medium`/`campaign`/`attribution_*`) to `izhar_*` so they enrich GA4 native channel grouping instead of overwriting it (was producing `direct_via_legacy_redirect`, `google_organic`, `utm:chatgpt.com` as Unassigned sessions; root cause of "why so many Unassigned" diagnosis on 2026-05-04) — commit `<pending>`
 
 ### Day 2 — Content + schema (3-4 hr)
 

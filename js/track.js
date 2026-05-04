@@ -326,12 +326,13 @@
     } catch (e) { fresh.redirect_count = 0; }
     try { sessionStorage.setItem(KEY, JSON.stringify(fresh)); } catch (e) {}
 
-    // Fire a one-shot session_start event with the attribution. This is THE
-    // event we look at to count "real" sessions per source.
+    // Fire a one-shot session_start event with our enriched attribution.
+    // Param names are prefixed so they never overwrite GA4 reserved
+    // attribution params (source/medium/campaign) on this event.
     track('session_start', {
-      source: fresh.source,
-      medium: fresh.medium,
-      campaign: fresh.campaign,
+      izhar_source: fresh.source,
+      izhar_medium: fresh.medium,
+      izhar_campaign: fresh.campaign,
       referrer_host: (function () {
         try { return new URL(fresh.referrer || '').hostname; } catch (e) { return ''; }
       })(),
@@ -340,13 +341,17 @@
       via_legacy_redirect: fresh.redirect_count > 0
     });
 
-    // Mirror to GA4 traffic_source dimensions.
+    // Mirror to GA4 as CUSTOM user properties (prefixed `izhar_*` so they
+    // never collide with GA4 reserved attribution keys like source/medium/
+    // campaign). GA4's native channel grouping is the source of truth for the
+    // Acquisition reports; this block only adds our extra detection (AI
+    // assistants, legacy-redirect flag, in-app browsers) as additional dims.
     try {
       if (typeof window.gtag === 'function') {
         window.gtag('set', 'user_properties', {
-          attribution_source: fresh.source,
-          attribution_medium: fresh.medium,
-          attribution_campaign: fresh.campaign
+          izhar_source: fresh.source,
+          izhar_medium: fresh.medium,
+          izhar_campaign: fresh.campaign
         });
       }
     } catch (e) {}
@@ -359,10 +364,12 @@
   var _origTrack = track;
   track = function (event, props) {
     if (!_attribution) _attribution = getOrSetSession();
+    // Prefixed keys so per-event params never overwrite GA4 reserved
+    // dimensions (source, medium, campaign) on the auto-detected channel.
     var enriched = Object.assign({
-      attribution_source: _attribution.source,
-      attribution_medium: _attribution.medium,
-      attribution_campaign: _attribution.campaign
+      izhar_source: _attribution.source,
+      izhar_medium: _attribution.medium,
+      izhar_campaign: _attribution.campaign
     }, props || {});
     return _origTrack(event, enriched);
   };
