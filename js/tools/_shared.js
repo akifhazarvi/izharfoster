@@ -85,7 +85,8 @@ const Izhar = (() => {
   }
   function whatsappUrl(message) {
     const phone = '923215383544';
-    return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+    const tagged = `${message}\n\n— Sent via izharfoster.com (${location.href})`;
+    return `https://wa.me/${phone}?text=${encodeURIComponent(tagged)}`;
   }
   function mailtoUrl(toolName, summary, body) {
     const subject = `[Izhar Tool · ${toolName}] ${summary.slice(0, 80)}`;

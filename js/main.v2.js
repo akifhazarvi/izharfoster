@@ -2,9 +2,9 @@
 (function () {
   'use strict';
 
-  // Tracking is loaded directly via <script src="js/track.v2.js" defer> on every
+  // Tracking is loaded directly via <script src="js/track.js" defer> on every
   // page (see vercel.json + page templates). Do not inject here — the prior
-  // fallback double-loaded track.js + track.v2.js (~12 KB wasted per visit).
+  // fallback double-loaded the script (~12 KB wasted per visit).
 
   // --- Live chat widget (single FAB → expanding contact panel)
   (function buildLiveChat() {
@@ -27,7 +27,7 @@
           <p>Engineering reply within 24 hours. Pick the channel that suits you.</p>
         </div>
         <div class="lc-options">
-          <a href="https://wa.me/923215383544?text=${encodeURIComponent("Hi Izhar Foster — I'd like to discuss a cold-chain project.")}" target="_blank" rel="noopener" class="lc-opt lc-opt-wa" data-track-section="live-chat-wa">
+          <a href="https://wa.me/923215383544?text=${encodeURIComponent("Hi Izhar Foster — I'd like to discuss a cold-chain project.\n\n— Sent via izharfoster.com")}" target="_blank" rel="noopener" class="lc-opt lc-opt-wa" data-track-section="live-chat-wa">
             <span class="lc-opt-ico"><svg viewBox="0 0 32 32"><path d="M19.11 17.205c-.372 0-1.088 1.39-1.518 1.39a.63.63 0 0 1-.315-.1c-.802-.402-1.504-.817-2.163-1.4-.545-.489-1.09-1.07-1.52-1.652-.043-.067-.087-.124-.13-.198l-.13-.198a.602.602 0 0 1-.13-.272c0-.196.39-.35.532-.45a3.038 3.038 0 0 0 .7-.778c.097-.187.13-.418.066-.62-.064-.207-.49-1.235-.665-1.673-.176-.422-.422-.844-.99-.844-.27 0-.539-.063-.81-.063-.43 0-.879.095-1.219.41-.39.358-.81 1.057-.81 2.275 0 1.183.85 2.32 1.55 3.14 1.286 1.7 2.74 3.022 4.55 3.96.628.336 1.301.616 2.014.812.547.142 1.115.236 1.679.247.547 0 1.135-.246 1.5-.66.224-.272.32-.598.32-.953 0-.157-.063-.305-.13-.46-.16-.295-.694-.495-.69-.495z"/><path d="M16.005 2.07C8.351 2.07 2.137 8.276 2.137 15.93c0 2.45.624 4.853 1.808 6.969L2 30l7.272-1.91a13.96 13.96 0 0 0 6.733 1.722c7.654 0 13.868-6.215 13.868-13.882C29.873 8.275 23.659 2.07 16.005 2.07zm0 25.392a11.534 11.534 0 0 1-5.85-1.598l-.42-.252-4.366 1.146 1.166-4.27-.273-.443A11.477 11.477 0 0 1 4.512 15.93c0-6.34 5.156-11.49 11.493-11.49 6.337 0 11.493 5.15 11.493 11.49 0 6.34-5.156 11.532-11.493 11.532z"/></svg></span>
             <div class="lc-opt-body">
               <div class="lc-opt-title">Chat on WhatsApp</div>
@@ -139,7 +139,7 @@
       actions.className = 'nav-mobile-actions';
       actions.innerHTML =
         '<a href="tel:+924235383543" class="call">Call · +92 42 3538 3543</a>' +
-        '<a href="https://wa.me/923215383544" target="_blank" rel="noopener" class="wa">WhatsApp our team</a>';
+        '<a href="https://wa.me/923215383544?text=Hi%20Izhar%20Foster%20%E2%80%94%20sent%20via%20izharfoster.com" target="_blank" rel="noopener" class="wa">WhatsApp our team</a>';
       menu.appendChild(actions);
     }
     // Teleport the drawer to <body> on mobile so it escapes the header's stacking context.

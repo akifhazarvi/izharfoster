@@ -126,7 +126,7 @@ Primary category: "Refrigeration Contractor" or "Cold Storage Facility" (whichev
 ### 11. Long-cache CSS / JS with versioned filenames
 **Impact:** 50-200 ms saving on repeat visits site-wide.
 **Effort:** 30 min
-**Files:** `vercel.json`, `style.css → style.v2.css`, `main.js → main.v2.js`, `track.js → track.v2.js`, plus every `<link>` and `<script>` reference
+**Files:** `vercel.json`, `style.css → style.v2.css`, `main.js → main.v2.js`, plus every `<link>` and `<script>` reference
 
 Add to `vercel.json` headers:
 ```json

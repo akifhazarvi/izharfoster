@@ -494,7 +494,7 @@
     window.IzharTrack.track('cost_lead', payload);
   }
   // Also fire lead_intent when the user clicks the Quote / WhatsApp CTAs —
-  // the global delegated listener in track.v2.js fires lead_intent based on
+  // the global delegated listener in track.js fires lead_intent based on
   // href patterns, but it doesn't carry the calculator state. We add a
   // calculator-aware event so deal size + tier travel with the conversion.
   document.addEventListener('click', (e) => {
