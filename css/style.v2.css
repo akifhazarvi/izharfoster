@@ -5713,10 +5713,6 @@ body.lc-open .lc-backdrop {
 }
 .hp-since-strip-more:hover { color: var(--t-warm); border-color: var(--t-warm); gap: 14px; }
 
-/* ----- Header WhatsApp pill (visible on mobile only; hidden on desktop where the Cold Consultant FAB carries the same job).
-   Specificity bumped via .nav-cta ancestor so this beats sibling button rules. */
-.nav-cta .nav-wa { display: none; }
-
 /* ----- Hide the hero body paragraph on every viewport now that it lives in the Since strip.
    Specificity bumped via .hp-hero ancestor so this beats `.hp-hero p` (0,1,1). */
 .hp-hero p.hp-hero-body { display: none; }
@@ -5735,31 +5731,45 @@ body.lc-open .lc-backdrop {
     --mb-rule:      rgba(20,28,40,.08);
   }
 
-  /* === Header trim: 78 → 56px, smaller logo, visible WA pill, hide redundant nav-phone, kill the "Request quote" duplicate-CTA. */
+  /* === Header trim: 78 → 56px, smaller logo (clean wordmark from logo-mark.svg via <picture> source), hide redundant nav-phone, kill the duplicate "Request quote" CTA — the floating live-chat FAB carries WhatsApp + Call + Quote. */
   .nav { height: 56px !important; padding: 0 var(--mb-x); gap: 8px; }
-  .brand-logo { height: 36px !important; max-height: 36px !important; max-width: 170px !important; }
+  .brand-logo { height: 28px !important; max-height: 28px !important; max-width: 180px !important; width: auto !important; }
   .nav-phone { display: none; }
   .nav-cta { gap: 8px; }
   .nav-cta .btn-primary { display: none; }
-
-  .nav-cta .nav-wa {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: #25d366;
-    color: #fff;
-    box-shadow: 0 6px 14px rgba(37,211,102,.32);
-    transition: transform .18s ease, box-shadow .18s ease;
-    flex-shrink: 0;
-  }
-  .nav-cta .nav-wa:hover { transform: translateY(-1px); box-shadow: 0 10px 20px rgba(37,211,102,.4); }
-  .nav-cta .nav-wa svg { width: 22px; height: 22px; fill: #fff; display: block; }
   .menu-toggle { width: 44px; height: 44px; }
   /* The drawer (`.nav-center.open`) is positioned `top: 64px` from the legacy header height. Re-anchor to the new 56px header. */
   .nav-center.open { top: 56px; }
+
+  /* === Transparent-on-hero header.
+     Default: header is transparent so the hero photo bleeds under it.
+     Once the user scrolls past the hero (60px), JS adds `.is-scrolled` to .site-header
+     and the paper background + blur reasserts. This is the Linear / Vercel pattern. */
+  body.has-translucent-header .site-header {
+    background: transparent;
+    border-bottom-color: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    transition: background .25s ease, border-color .25s ease, backdrop-filter .25s ease;
+  }
+  body.has-translucent-header .site-header.is-scrolled {
+    background: rgba(245,242,236,.86);
+    border-bottom-color: var(--line-2);
+    backdrop-filter: saturate(160%) blur(14px);
+    -webkit-backdrop-filter: saturate(160%) blur(14px);
+  }
+  /* While transparent over the hero, the wordmark needs to read on the dark photo: invert it to paper colour. */
+  body.has-translucent-header .site-header:not(.is-scrolled) .brand-logo {
+    filter: brightness(0) invert(1);
+  }
+  /* The hamburger lines also need to flip to paper while header is transparent. */
+  body.has-translucent-header .site-header:not(.is-scrolled) .menu-toggle {
+    border-color: rgba(245,242,236,.4);
+    background: transparent;
+  }
+  body.has-translucent-header .site-header:not(.is-scrolled) .menu-toggle span {
+    background: var(--paper);
+  }
 
   /* === HERO PLATE — Apple register, ~30% of the viewport story.
      Edge-to-edge full-bleed, lighter overlay (linear gradient bottom-only),
@@ -5767,6 +5777,15 @@ body.lc-open .lc-backdrop {
   .hp-hero {
     min-height: auto;
     padding: 0;
+  }
+  /* When the page opts into a translucent header, pull the hero photo up so it
+     bleeds behind the (transparent) header chrome — no more paper band at the top. */
+  body.has-translucent-header .hp-hero {
+    margin-top: -56px;
+  }
+  /* Push the inner hero content down by the header height so text doesn't sit under chrome. */
+  body.has-translucent-header .hp-hero-content {
+    padding-top: 132px;
   }
   .hp-hero-overlay {
     background: linear-gradient(180deg,

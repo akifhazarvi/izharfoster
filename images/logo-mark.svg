@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 0 340 56" role="img" aria-label="Izhar Foster">
+  <style>
+    .mark-word {
+      fill: #0A1F3D;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      font-weight: 700;
+      font-size: 38px;
+      letter-spacing: -0.8px;
+    }
+    .mark-em { fill: #E36A1E; }
+  </style>
+  <text x="0" y="40" class="mark-word">IZHAR FOSTER<tspan class="mark-em" dx="-1">.</tspan></text>
+</svg>

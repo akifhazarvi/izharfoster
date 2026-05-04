@@ -340,4 +340,25 @@
       btn.dataset.playing = '1';
     }, { once: true });
   });
+
+  // --- Translucent header over hero (mobile-only).
+  // Pages with a hero photo opt in by adding `data-translucent-header` to <body>.
+  // Header starts transparent over the hero, paper-with-blur after 60px scroll.
+  (function wireTranslucentHeader() {
+    if (!document.body.hasAttribute('data-translucent-header')) return;
+    document.body.classList.add('has-translucent-header');
+    const header = document.querySelector('.site-header');
+    if (!header) return;
+    const TRIGGER = 60;
+    let scrolled = null;
+    const update = () => {
+      const next = window.scrollY > TRIGGER;
+      if (next !== scrolled) {
+        scrolled = next;
+        header.classList.toggle('is-scrolled', next);
+      }
+    };
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+  })();
 })();
