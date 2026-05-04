@@ -372,7 +372,9 @@
     applyPresetFromSetpoint();
   }
 
+  let _lastResult = null;
   function renderResults(r) {
+    _lastResult = r;
     if ($('result-band'))    $('result-band').textContent    = `${pkr(r.totalLow)} – ${pkr(r.totalHigh)}`;
     if ($('result-mid'))     $('result-mid').textContent     = pkr(r.total);
     if ($('result-low'))     $('result-low').textContent     = pkr(r.totalLow);
@@ -426,10 +428,83 @@
 
     if ($('cta-quote')) $('cta-quote').href = quoteUrl('cost-calculator', summary);
     if ($('cta-wa'))    $('cta-wa').href    = whatsappUrl(longSummary);
-    if ($('cta-pdf'))   $('cta-pdf').onclick = () => buildPdfProposal(r, longSummary);
+    if ($('cta-pdf')) {
+      $('cta-pdf').onclick = () => {
+        trackLead('pdf_download', r);
+        buildPdfProposal(r, longSummary);
+      };
+    }
 
     if ($('result-summary')) $('result-summary').textContent = summary;
+
+    fireCostEstimated(r);
   }
+
+  // ---------- tracking ----------
+  // Snapshot the calculator state with each estimate so GA4 + Vercel Analytics
+  // can segment by deal size, city, commodity, and refrigeration architecture.
+  // Tier classification matches the bands used in sales pipeline reviews.
+  function dealTier(totalPkr) {
+    const cr = totalPkr / 1e7; // 1 crore = 10 million PKR
+    if (cr < 2)   return 's';   // <2 cr
+    if (cr < 10)  return 'm';   // 2-10 cr
+    if (cr < 50)  return 'l';   // 10-50 cr
+    return 'xl';                // 50+ cr
+  }
+  function costEventPayload(r) {
+    return {
+      tool: 'cost-calculator',
+      mode: state.mode,
+      city: state.city,
+      commodity: r.commodity,
+      capacity_m3: Math.round(r.volM3 || 0),
+      capacity_tons: Math.round(r.tons || 0),
+      setpoint_c: state.setpointC,
+      setpoint_preset: state.setpointPreset,
+      panel_mm: r.panelMm,
+      site_class: state.siteClass,
+      envelope: state.envelopeChoice,
+      refrig_arch: state.refrigArchitecture,
+      total_pkr_mid: Math.round(r.total || 0),
+      total_pkr_low: Math.round(r.totalLow || 0),
+      total_pkr_high: Math.round(r.totalHigh || 0),
+      cost_per_ton: Math.round(r.costPerTon || 0),
+      cost_per_m3: Math.round(r.costPerM3 || 0),
+      margin_pct: +(r.marginPct * 100).toFixed(1),
+      annual_energy_pkr: Math.round(r.annualEnergyPkr || 0),
+      tier: dealTier(r.total || 0),
+      value: Math.round(r.total || 0)
+    };
+  }
+  // Debounce so dragging the margin slider / typing in inputs doesn't
+  // flood the analytics pipe with one event per keystroke.
+  let _costEvtTimer = null;
+  function fireCostEstimated(r) {
+    if (!window.IzharTrack || !window.IzharTrack.track) return;
+    if (!r || !r.total || !isFinite(r.total)) return;
+    clearTimeout(_costEvtTimer);
+    _costEvtTimer = setTimeout(() => {
+      window.IzharTrack.track('cost_estimated', costEventPayload(r));
+    }, 600);
+  }
+  function trackLead(channel, r) {
+    if (!window.IzharTrack || !window.IzharTrack.track) return;
+    const payload = Object.assign({ channel }, costEventPayload(r || {}));
+    window.IzharTrack.track('lead_intent', payload);
+    window.IzharTrack.track('cost_lead', payload);
+  }
+  // Also fire lead_intent when the user clicks the Quote / WhatsApp CTAs —
+  // the global delegated listener in track.v2.js fires lead_intent based on
+  // href patterns, but it doesn't carry the calculator state. We add a
+  // calculator-aware event so deal size + tier travel with the conversion.
+  document.addEventListener('click', (e) => {
+    const t = e.target;
+    if (!t || !t.closest) return;
+    const cta = t.closest('#cta-quote, #cta-wa');
+    if (!cta) return;
+    const channel = cta.id === 'cta-wa' ? 'whatsapp' : 'quote_form';
+    trackLead(channel, _lastResult);
+  });
 
   // ---------- PDF proposal (uses _shared.js Print pipeline) ----------
   function buildPdfProposal(r, longSummary) {

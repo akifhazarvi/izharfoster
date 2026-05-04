@@ -384,6 +384,35 @@
     onReady();
   }
 
+  // Case-study deep-read signal — fires once when the user scrolls past 75%
+  // of a /projects/<slug>.html page. Distinct from engaged_session (which
+  // fires at 30s OR 50% scroll) — case studies are bottom-loaded with
+  // scope-of-supply tables and "more like this" cross-links, so 75% is the
+  // strong purchase-intent signal for B2B buyers reading a named case study.
+  (function caseStudyDepth() {
+    if (!/\/projects\//.test(location.pathname)) return;
+    if (/\/projects\.html?$/.test(location.pathname)) return; // index page, not a study
+    var slug = (location.pathname.split('/').pop() || '').replace(/\.html$/, '');
+    if (!slug) return;
+    var fired = false;
+    var ticking = false;
+    function check() {
+      if (fired || ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        var h = document.documentElement;
+        var pct = (h.scrollTop + window.innerHeight) / h.scrollHeight;
+        if (pct >= 0.75) {
+          fired = true;
+          track('case_study_read', { slug: slug, depth: '75' });
+          window.removeEventListener('scroll', check);
+        }
+        ticking = false;
+      });
+    }
+    window.addEventListener('scroll', check, { passive: true });
+  })();
+
   // Engaged-session signal — fires once when the user has spent ≥30s on page
   // OR has scrolled past 50% of document height. Helps separate bouncers
   // from real prospects.
