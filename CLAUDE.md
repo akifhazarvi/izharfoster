@@ -75,7 +75,7 @@ izharfoster/
 │       └── data-*.json         # 12 data files (refrigerants, cities, panels, crops, equipment...)
 │
 ├── css/
-│   ├── style.css               # Full design system (~3900 lines)
+│   ├── style.v2.css            # Full design system (~5800 lines) — THE LIVE STYLESHEET. Every HTML page links this. Legacy `style.css` was deleted; do not recreate it.
 │   └── consultant.css          # Cold Consultant drawer (linked from CTAs)
 │
 └── images/
@@ -94,8 +94,8 @@ izharfoster/
 |---|---|---|
 | Grid columns must use `minmax(0, Nfr)` not bare `Nfr` | Children with long text collapse otherwise | every `grid-template-columns` |
 | Rail is `position: fixed` — never inside a grid | Double-counts width and breaks responsive | `.rail` + `.shell` |
-| `html` and `body` both have `overflow-x: clip` + `max-width: 100vw` | Stops phantom scroll from off-screen drawers (`.cc-panel`, `.calc-modal`) without breaking sticky | `style.css` reset |
-| `img, video, iframe, svg { max-width: 100%; height: auto }` global | Belt-and-braces for rich content | `style.css` reset |
+| `html` and `body` both have `overflow-x: clip` + `max-width: 100vw` | Stops phantom scroll from off-screen drawers (`.cc-panel`, `.calc-modal`) without breaking sticky | `style.v2.css` reset |
+| `img, video, iframe, svg { max-width: 100%; height: auto }` global | Belt-and-braces for rich content | `style.v2.css` reset |
 | Header phone + brand-tag must `white-space: nowrap; flex-shrink: 0` | Layout breaks on narrow tablets | `.nav-phone`, `.nav-cta` |
 | Italic gradient text needs `padding-right: .14em` + `display: inline-block` | `-webkit-background-clip: text` clips italic tails — "cold" → "cola" | `.em` |
 
@@ -111,8 +111,8 @@ The site uses a 4-breakpoint scheme:
 
 ### Path depth for assets
 
-- Root pages (`about.html` etc.): `css/style.css`, `js/main.js`, `images/`
-- Subdirectory (`services/`, `blog/`, `tools/`): `../css/style.css`, `../js/main.js`, `../images/`
+- Root pages (`about.html` etc.): `css/style.v2.css`, `js/main.js`, `images/`
+- Subdirectory (`services/`, `blog/`, `tools/`): `../css/style.v2.css`, `../js/main.js`, `../images/`
 
 ## Engineering calculator suite
 
