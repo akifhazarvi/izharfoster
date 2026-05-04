@@ -5965,6 +5965,63 @@ body.lc-open .lc-backdrop {
   }
   .footer-social { padding: 18px 0 18px; }
   .footer-social-icons a { padding: 8px; }
+
+  /* === Service-page hero aside → Spec Card (PR 3).
+     The .page-hero .aside on every service/interior page already holds the right
+     spec-card content (Range, Capacity, Panel core...). On desktop it sits in
+     the right column inside the dark hero. On mobile it currently stacks under
+     the H1 inside the dark band, blowing the hero up to 1300+ px. We re-style
+     it as a paper-coloured Spec Card seam — same component language as the
+     homepage .spec-card — and clip the dark hero band so it ends with the
+     prose, not with the aside. */
+  .page-hero .aside {
+    background: var(--paper) !important;
+    border: none !important;
+    border-top: 1px solid var(--line) !important;
+    border-bottom: 1px solid var(--line) !important;
+    border-radius: 0 !important;
+    padding: 4px 0 0 !important;
+    margin: var(--mb-y-tight) calc(var(--mb-x) * -1) 0 !important;
+    gap: 0 !important;
+  }
+  .page-hero .aside .label {
+    padding: 14px var(--mb-x) 4px !important;
+    font-size: .58rem !important;
+    letter-spacing: .22em !important;
+    color: var(--muted) !important;
+  }
+  .page-hero .aside .fact {
+    padding: 14px var(--mb-x) !important;
+    border-bottom: 1px solid var(--line) !important;
+    font-family: var(--font-mono) !important;
+    font-size: .85rem !important;
+    align-items: center;
+  }
+  .page-hero .aside .fact:last-child { border-bottom: none !important; }
+  .page-hero .aside .fact .k {
+    color: var(--muted) !important;
+    font-size: .62rem !important;
+    letter-spacing: .14em !important;
+    text-transform: uppercase !important;
+    flex: 0 0 auto;
+  }
+  .page-hero .aside .fact .v {
+    color: var(--ink) !important;
+    font-weight: 500 !important;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  /* The dark hero band shrinks to wrap only the prose. The aside lives outside it visually. */
+  .page-hero { padding-bottom: 0 !important; }
+  .page-hero .container {
+    padding-bottom: 32px;
+  }
+  /* Pull the aside flush below the dark band by giving it a paper background that
+     extends the full bleed width (negative margin already does this above). */
 }
 
 /* === Very narrow phones: Spec Card collapses to a single readable column */
