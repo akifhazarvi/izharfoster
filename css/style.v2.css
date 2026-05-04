@@ -5731,9 +5731,10 @@ body.lc-open .lc-backdrop {
     --mb-rule:      rgba(20,28,40,.08);
   }
 
-  /* === Header trim: 78 → 56px, smaller logo (clean wordmark from logo-mark.svg via <picture> source), hide redundant nav-phone, kill the duplicate "Request quote" CTA — the floating live-chat FAB carries WhatsApp + Call + Quote. */
+  /* === Header trim: 78 → 56px, scaled-down plaque logo (same brand mark as desktop), hide redundant nav-phone, kill the duplicate "Request quote" CTA — the floating live-chat FAB carries WhatsApp + Call + Quote. */
   .nav { height: 56px !important; padding: 0 var(--mb-x); gap: 8px; }
-  .brand-logo { height: 28px !important; max-height: 28px !important; max-width: 180px !important; width: auto !important; }
+  /* Plaque aspect is 460:130 (~3.54:1). At 36px tall it's 127px wide — the plaque is recognisable, the train glyph reads, the nav still has room for the hamburger on the smallest phones. */
+  .brand-logo { height: 36px !important; max-height: 36px !important; max-width: 200px !important; width: auto !important; }
   .nav-phone { display: none; }
   .nav-cta { gap: 8px; }
   .nav-cta .btn-primary { display: none; }
@@ -5758,11 +5759,10 @@ body.lc-open .lc-backdrop {
     backdrop-filter: saturate(160%) blur(14px);
     -webkit-backdrop-filter: saturate(160%) blur(14px);
   }
-  /* While transparent over the hero, the wordmark needs to read on the dark photo: invert it to paper colour. */
-  body.has-translucent-header .site-header:not(.is-scrolled) .brand-logo {
-    filter: brightness(0) invert(1);
-  }
-  /* The hamburger lines also need to flip to paper while header is transparent. */
+  /* The plaque logo carries its own navy frame + cream interior, so it reads on
+     either dark or light surrounds without any colour treatment. The hamburger
+     does need to flip to paper-coloured outline while the header is transparent
+     so the icon reads on the photo. */
   body.has-translucent-header .site-header:not(.is-scrolled) .menu-toggle {
     border-color: rgba(245,242,236,.4);
     background: transparent;
