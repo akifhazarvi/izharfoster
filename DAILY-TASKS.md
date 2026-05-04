@@ -1,6 +1,6 @@
 # Izhar Foster — Daily Task List
 
-**Last updated:** 2026-05-03
+**Last updated:** 2026-05-04
 **Score baseline:** 78/100 (ACTION-PLAN.md, 2026-05-02)
 **Canonical roadmap:** [GROWTH-PLAN.md](GROWTH-PLAN.md) | Resolved conflicts: [DECISIONS.md](DECISIONS.md)
 
@@ -218,3 +218,4 @@ Sequence fixed by DECISIONS.md:
 | 2026-05-03 | `c4d614a` | AP#13 pharma MKT+WHO PQS+excursion, AP#14 thin blog posts |
 | 2026-05-03 | `a759232` | AP#12 static methodology on 8 tool pages |
 | 2026-05-03 | `7a81618` | AP#5 E.164 schema, AP#6 IndexNow, AP#10 openingHours, AP#18 Karachi geo |
+| 2026-05-04 | _pending_  | Striking-distance CTR fix: `/services/pir-sandwich-panels` title rewrite for "4×8 sandwich panel price" (pos 9.8, 63 imp, 0 clk); `/services/ca-stores` title rewrite for "controlled atmosphere storage" (pos 8.3, 27 imp, 0 clk); honest `Service.offers.priceSpecification` + `areaServed: Pakistan` on PIR + CA pages (no fake price); `Article.author.@id` → `team/{slug}#person` entity link on all 10 blog posts (Dec 2025 E-E-A-T entity-graph signal). Backed by GSC 28-day striking-distance audit + research §2/§7 |
