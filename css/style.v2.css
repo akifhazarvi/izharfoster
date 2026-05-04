@@ -5720,6 +5720,8 @@ body.lc-open .lc-backdrop {
 /* ----- Hide the Spec Card on desktop — it's the mobile seam. */
 @media (min-width: 721px) {
   .spec-card.spec-card-hero { display: none; }
+  /* Temperature strip is mobile-only chrome; the desktop spectrum rail (.rail) carries the same wayfinding role. */
+  .temp-strip { display: none; }
 }
 
 @media (max-width: 720px) {
@@ -5771,6 +5773,73 @@ body.lc-open .lc-backdrop {
     background: var(--paper);
   }
 
+  /* === Horizontal Temperature Strip — mobile chrome wayfinding.
+     Sits sticky under the 56px header. 4px gradient line + 5 mono tick labels
+     beneath. The active tick (set by JS based on section[data-temp]) lights up. */
+  .temp-strip {
+    position: sticky;
+    top: 56px;
+    z-index: 39;
+    height: 24px;
+    pointer-events: none;
+    background: rgba(245,242,236,.86);
+    backdrop-filter: saturate(160%) blur(14px);
+    -webkit-backdrop-filter: saturate(160%) blur(14px);
+    border-bottom: 1px solid var(--line-2);
+  }
+  /* The 4px gradient bar at the top of the strip (replaces the desktop rail's main visual). */
+  .temp-strip-grad {
+    display: block;
+    height: 3px;
+    width: 100%;
+    background: linear-gradient(
+      90deg,
+      var(--t-cold) 0%,
+      #173E66      18%,
+      var(--t-mid) 48%,
+      #B8E5EC      68%,
+      var(--paper-2) 86%,
+      var(--t-warm) 100%
+    );
+    opacity: .9;
+  }
+  .temp-strip-marks {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2px 14px 0;
+    height: 21px;
+  }
+  .temp-strip-mark {
+    font-family: var(--font-mono);
+    font-size: .58rem;
+    font-weight: 500;
+    letter-spacing: .04em;
+    color: var(--muted);
+    opacity: .55;
+    transition: opacity .25s ease, color .25s ease, transform .25s ease;
+    line-height: 1;
+  }
+  .temp-strip-mark.is-live {
+    opacity: 1;
+    color: var(--ink);
+    transform: scale(1.06);
+  }
+  /* While the header is in transparent state, the strip blends with it: same
+     transparency, no border, gradient remains visible to keep the wayfinding cue. */
+  body.has-translucent-header .site-header:not(.is-scrolled) + .temp-strip {
+    background: linear-gradient(180deg, rgba(10,15,25,.45) 0%, rgba(10,15,25,.0) 100%);
+    border-bottom-color: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  body.has-translucent-header .site-header:not(.is-scrolled) + .temp-strip .temp-strip-mark {
+    color: rgba(245,242,236,.72);
+  }
+  body.has-translucent-header .site-header:not(.is-scrolled) + .temp-strip .temp-strip-mark.is-live {
+    color: var(--paper);
+  }
+
   /* === HERO PLATE — Apple register, ~30% of the viewport story.
      Edge-to-edge full-bleed, lighter overlay (linear gradient bottom-only),
      mono eyebrow replaces the bordered chip, single primary CTA. */
@@ -5778,14 +5847,20 @@ body.lc-open .lc-backdrop {
     min-height: auto;
     padding: 0;
   }
-  /* When the page opts into a translucent header, pull the hero photo up so it
-     bleeds behind the (transparent) header chrome — no more paper band at the top. */
-  body.has-translucent-header .hp-hero {
+  /* When the page opts into a translucent header, pull both hero variants
+     (homepage .hp-hero, interior .page-hero) up by the header height so the
+     hero background bleeds behind the (transparent) header chrome — no more
+     paper band at the top. */
+  body.has-translucent-header .hp-hero,
+  body.has-translucent-header .page-hero {
     margin-top: -56px;
   }
-  /* Push the inner hero content down by the header height so text doesn't sit under chrome. */
+  /* Push the inner content down by the header height so text doesn't sit under chrome. */
   body.has-translucent-header .hp-hero-content {
     padding-top: 132px;
+  }
+  body.has-translucent-header .page-hero {
+    padding-top: 130px;
   }
   .hp-hero-overlay {
     background: linear-gradient(180deg,
@@ -5863,6 +5938,33 @@ body.lc-open .lc-backdrop {
   /* === Floating live-chat trigger: nudge up so it doesn't compete with the hero CTA on the first paint */
   .lc-root { bottom: 16px; right: 16px; }
   .lc-trigger { width: 54px; height: 54px; }
+
+  /* === Hide the floating chat bubble while the mobile menu drawer is open.
+     Two simultaneous floating actions on a 390px screen is noise. */
+  body:has(.nav-center.open) .lc-root { opacity: 0; pointer-events: none; transform: scale(.85); transition: opacity .15s, transform .2s; }
+
+  /* === Footer mobile pass — minimum-viable spacing fix.
+     Currently the footer is ~1620px tall on a 390px phone because every link sits
+     inside an already large gap, then `padding: 8px 0` adds more. Tighten the
+     gap and let `padding: 12px 0` carry the 44px tap target. */
+  .site-footer { padding: 56px var(--mb-x) 28px; }
+  .footer-grid { gap: 36px; }
+  .footer-grid ul { gap: 0; }
+  .footer-grid a {
+    padding: 11px 0;
+    display: inline-block;
+    min-height: 44px;
+    line-height: 1.4;
+  }
+  .footer-grid h4 { margin-bottom: 8px; }
+  .footer-grid p { margin-bottom: 12px; }
+  .footer-bottom {
+    padding-top: 20px;
+    gap: 8px;
+    font-size: .68rem;
+  }
+  .footer-social { padding: 18px 0 18px; }
+  .footer-social-icons a { padding: 8px; }
 }
 
 /* === Very narrow phones: Spec Card collapses to a single readable column */

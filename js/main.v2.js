@@ -342,10 +342,13 @@
   });
 
   // --- Translucent header over hero (mobile-only).
-  // Pages with a hero photo opt in by adding `data-translucent-header` to <body>.
-  // Header starts transparent over the hero, paper-with-blur after 60px scroll.
+  // Auto-detects pages that have a hero (.hp-hero or .page-hero immediately after
+  // the .site-header). No per-page opt-in required — any page that has either of
+  // those hero blocks will get the transparent → scrolled chrome.
+  // Pages without a hero (e.g. privacy.html) keep the existing solid header.
   (function wireTranslucentHeader() {
-    if (!document.body.hasAttribute('data-translucent-header')) return;
+    const hero = document.querySelector('.site-header + .hp-hero, .site-header + .page-hero, .shell-content > .hp-hero, .shell-content > .page-hero');
+    if (!hero) return;
     document.body.classList.add('has-translucent-header');
     const header = document.querySelector('.site-header');
     if (!header) return;
@@ -360,5 +363,62 @@
     };
     update();
     window.addEventListener('scroll', update, { passive: true });
+  })();
+
+  // --- Horizontal Temperature Strip (mobile-only chrome).
+  // A 4px gradient strip under the header with 5 ticks: −40 / −25 / 0 / +5 / +25.
+  // The tick whose value matches the in-view section's `data-temp` attribute
+  // lights up. Replaces the desktop fixed-rail's wayfinding role on mobile.
+  // Auto-injects on every page that has the translucent header (i.e. has a hero).
+  (function wireTempStrip() {
+    if (!document.body.classList.contains('has-translucent-header')) return;
+    if (document.querySelector('.temp-strip')) return;
+    const header = document.querySelector('.site-header');
+    if (!header) return;
+
+    const TICKS = [
+      { v: '-40', label: '−40°' },
+      { v: '-25', label: '−25°' },
+      { v: '0',   label: '0°'  },
+      { v: '5',   label: '+5°' },
+      { v: '25',  label: '+25°' },
+    ];
+    const strip = document.createElement('div');
+    strip.className = 'temp-strip';
+    strip.setAttribute('aria-hidden', 'true');
+    strip.innerHTML =
+      '<span class="temp-strip-grad"></span>' +
+      '<div class="temp-strip-marks">' +
+        TICKS.map(t => `<span class="temp-strip-mark" data-v="${t.v}">${t.label}</span>`).join('') +
+      '</div>';
+    header.insertAdjacentElement('afterend', strip);
+
+    const sections = [...document.querySelectorAll('[data-temp]')];
+    if (!sections.length) return;
+    const marks = [...strip.querySelectorAll('.temp-strip-mark')];
+    const setActive = (v) => {
+      marks.forEach(m => m.classList.toggle('is-live', m.dataset.v === v));
+    };
+    // Pick the section whose top is closest to (but above or at) the strip line.
+    const STRIP_OFFSET = 60; // header (56) + strip (4)
+    let raf = null;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = null;
+        let active = '';
+        for (const s of sections) {
+          const r = s.getBoundingClientRect();
+          if (r.top - STRIP_OFFSET <= 0 && r.bottom > STRIP_OFFSET) {
+            active = s.getAttribute('data-temp') || '';
+            // Don't break — later sections override (last match wins for nesting).
+          }
+        }
+        setActive(active);
+      });
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
   })();
 })();
