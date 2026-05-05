@@ -74,6 +74,10 @@
     { "source": "/index", "destination": "/", "permanent": true },
     { "source": "/index.html", "destination": "/", "permanent": true },
 
+    { "source": "/:slug.html", "destination": "/:slug", "permanent": true },
+    { "source": "/:dir/:slug.html", "destination": "/:dir/:slug", "permanent": true },
+    { "source": "/:dir/:sub/:slug.html", "destination": "/:dir/:sub/:slug", "permanent": true },
+
     { "source": "/pir-panels", "destination": "/services/pir-sandwich-panels", "permanent": true },
     { "source": "/pir-panels/:rest*", "destination": "/services/pir-sandwich-panels", "permanent": true },
     { "source": "/eps-panels", "destination": "/services/pir-sandwich-panels", "permanent": true },
