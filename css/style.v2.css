@@ -8,9 +8,18 @@
 
 :root {
   /* Spectrum — these ARE the palette */
-  --t-cold:     #0A1F3D;   /* −40°C glacier */
+  --t-cold:     #0A1F3D;   /* −40°C glacier (temperature spectrum, NOT brand) */
   --t-mid:      #4FC3D9;   /* 0°C signal cyan */
   --t-warm:     #E36A1E;   /* +25°C ember (CTA) */
+
+  /* Izhar Group sister-company brand blue.
+     Matches the parent group's royal/cobalt blue used in their monogram
+     (izharengineering.com / izhar.com). Use this on the monogram, the
+     footer brand mark, and any "we belong to Izhar Group" signal —
+     never for temperature/cold semantics, which stay on --t-cold. */
+  --brand-blue:        #1E4FA8;
+  --brand-blue-light:  #2360BF;
+  --brand-blue-dark:   #163A7E;
 
   /* Surface — bone white, never #fff */
   --paper:      #F5F2EC;
