@@ -20,13 +20,13 @@
       <stop offset="100%" stop-color="#DCD4C0"/>
     </linearGradient>
 
-    <!-- Granular foam texture — small dots to suggest closed-cell PIR -->
+    <!-- (Foam texture pattern removed — at small render sizes <= 30px tall
+         the 6×6 dot tile degraded into vertical moiré streaks. The cream
+         foam now uses the flat #foamCore gradient — the panel cross-section
+         reads through STRUCTURE: the cream rim that wraps around the
+         tongue-tab cuts. No dots needed at logo scale.) -->
     <pattern id="foamTexture" x="0" y="0" width="6" height="6" patternUnits="userSpaceOnUse">
       <rect width="6" height="6" fill="url(#foamCore)"/>
-      <circle cx="1.2" cy="1.2" r="0.45" fill="#C8BFA6" opacity="0.55"/>
-      <circle cx="4.3" cy="2.5" r="0.32" fill="#D5CDB8" opacity="0.45"/>
-      <circle cx="2.8" cy="4.6" r="0.40" fill="#B8AE94" opacity="0.40"/>
-      <circle cx="5.1" cy="5.3" r="0.28" fill="#D5CDB8" opacity="0.50"/>
     </pattern>
 
     <!-- GREEN compressor body — emerald industrial tone matching the reference logo -->
@@ -61,7 +61,11 @@
          family the parent group already uses for headings and body. */
       .wm-text {
         fill: #F5F2EC;
-        font-family: 'Alfa Slab One', 'Roboto Slab', Georgia, serif;
+        /* Heavy slab fallback chain. Alfa Slab is embedded above as base64
+           and is the primary. If a renderer fails to honor SVG @font-face,
+           fall through to other heavy slabs that ship on most systems. */
+        font-family: 'Alfa Slab One', 'Roboto Slab', 'Bookman Old Style',
+                     'Rockwell', 'Courier New', monospace;
         font-weight: 900;
         font-size: 50px;
         letter-spacing: 0.5px;
