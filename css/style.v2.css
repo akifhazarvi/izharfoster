@@ -5733,44 +5733,36 @@ body.lc-open .lc-backdrop {
     --mb-rule:      rgba(20,28,40,.08);
   }
 
-  /* === Header trim: 78 → 56px, scaled-down plaque logo (same brand mark as desktop), hide redundant nav-phone, kill the duplicate "Request quote" CTA — the floating live-chat FAB carries WhatsApp + Call + Quote. */
-  .nav { height: 56px !important; padding: 0 var(--mb-x); gap: 8px; }
-  /* Plaque aspect is 460:130 (~3.54:1). At 36px tall it's 127px wide — the plaque is recognisable, the train glyph reads, the nav still has room for the hamburger on the smallest phones. */
-  .brand-logo { height: 36px !important; max-height: 36px !important; max-width: 200px !important; width: auto !important; }
+  /* === Header — Apple-mode: 64px tall, larger plaque logo for full brand presence.
+     The chrome is always-visible frosted glass (see below), so the logo reads at full
+     strength at all times. Plaque aspect 460:130 → at 44px tall the plaque is 156px
+     wide, leaving the hamburger (44×44) plenty of room with 16px gutter. */
+  .nav { height: 64px !important; padding: 0 var(--mb-x); gap: 8px; }
+  .brand-logo { height: 44px !important; max-height: 44px !important; max-width: 220px !important; width: auto !important; }
   .nav-phone { display: none; }
   .nav-cta { gap: 8px; }
   .nav-cta .btn-primary { display: none; }
   .menu-toggle { width: 44px; height: 44px; }
-  /* The drawer (`.nav-center.open`) is positioned `top: 64px` from the legacy header height. Re-anchor to the new 56px header. */
-  .nav-center.open { top: 56px; }
+  /* Drawer anchors to the new 64px header. */
+  .nav-center.open { top: 64px; }
 
-  /* === Transparent-on-hero header.
-     Default: header is transparent so the hero photo bleeds under it.
-     Once the user scrolls past the hero (60px), JS adds `.is-scrolled` to .site-header
-     and the paper background + blur reasserts. This is the Linear / Vercel pattern. */
+  /* === Apple-mode header — always-on frosted glass.
+     The header is NEVER transparent on mobile. Paper-tinted frosted glass
+     with heavy blur is shown at all times (including over the hero photo),
+     so the logo and any chrome are always crisp and legible.
+     Apple does this on iphone.com — chrome never disappears, brand stays
+     at full strength. The hero pushes content with `padding-top: 132px`
+     so the photo bleeds under the chrome, but the chrome itself is opaque. */
   body.has-translucent-header .site-header {
-    background: transparent;
-    border-bottom-color: transparent;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    transition: background .25s ease, border-color .25s ease, backdrop-filter .25s ease;
+    background: rgba(255,255,255,.88);
+    border-bottom: 1px solid rgba(20,28,40,.1);
+    backdrop-filter: saturate(180%) blur(24px);
+    -webkit-backdrop-filter: saturate(180%) blur(24px);
+    transition: background .2s ease;
   }
   body.has-translucent-header .site-header.is-scrolled {
-    background: rgba(245,242,236,.86);
+    background: rgba(245,242,236,.96);
     border-bottom-color: var(--line-2);
-    backdrop-filter: saturate(160%) blur(14px);
-    -webkit-backdrop-filter: saturate(160%) blur(14px);
-  }
-  /* The plaque logo carries its own navy frame + cream interior, so it reads on
-     either dark or light surrounds without any colour treatment. The hamburger
-     does need to flip to paper-coloured outline while the header is transparent
-     so the icon reads on the photo. */
-  body.has-translucent-header .site-header:not(.is-scrolled) .menu-toggle {
-    border-color: rgba(245,242,236,.4);
-    background: transparent;
-  }
-  body.has-translucent-header .site-header:not(.is-scrolled) .menu-toggle span {
-    background: var(--paper);
   }
 
   /* === Horizontal Temperature Strip — mobile chrome wayfinding.
@@ -5778,7 +5770,7 @@ body.lc-open .lc-backdrop {
      beneath. The active tick (set by JS based on section[data-temp]) lights up. */
   .temp-strip {
     position: sticky;
-    top: 56px;
+    top: 64px;
     z-index: 39;
     height: 24px;
     pointer-events: none;
@@ -5853,14 +5845,14 @@ body.lc-open .lc-backdrop {
      paper band at the top. */
   body.has-translucent-header .hp-hero,
   body.has-translucent-header .page-hero {
-    margin-top: -56px;
+    margin-top: -64px;
   }
   /* Push the inner content down by the header height so text doesn't sit under chrome. */
   body.has-translucent-header .hp-hero-content {
-    padding-top: 132px;
+    padding-top: 144px;
   }
   body.has-translucent-header .page-hero {
-    padding-top: 130px;
+    padding-top: 140px;
   }
   .hp-hero-overlay {
     background: linear-gradient(180deg,
@@ -5878,17 +5870,18 @@ body.lc-open .lc-backdrop {
   /* Replace the bordered pill with a mono eyebrow + hairline */
   .hp-hero-tag {
     display: inline-block;
-    padding: 0 0 8px;
-    margin-bottom: 18px;
+    padding: 0 0 10px;
+    margin-bottom: 20px;
     border: none;
-    border-bottom: 1px solid rgba(245,242,236,.32);
+    border-bottom: 1px solid rgba(245,242,236,.4);
     border-radius: 0;
-    font-size: .64rem;
-    letter-spacing: .26em;
+    font-size: .78rem;
+    letter-spacing: .18em;
     text-transform: uppercase;
-    color: rgba(245,242,236,.78);
-    max-width: 90%;
+    color: rgba(245,242,236,.92);
+    max-width: 100%;
     line-height: 1.5;
+    font-weight: 500;
   }
 
   .hp-hero h1 {
