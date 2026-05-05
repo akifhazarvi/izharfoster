@@ -6037,3 +6037,362 @@ body.lc-open .lc-backdrop {
   .nav { padding: 0 14px; gap: 6px; }
   .brand-logo { height: 32px !important; max-height: 32px !important; max-width: 150px !important; }
 }
+
+/* ============================================================
+   PR 4 — TOOL PAGES MOBILE REBUILD
+   Applies to all 7 engineering calculator pages.
+   Pattern: inputs fill the screen; a sticky result-sheet anchors
+   to the bottom showing the headline number at all times and
+   expanding to the full result card on tap.
+============================================================ */
+
+/* ── B.0  Dark header on tool pages (mobile only) ──
+   Tool pages have no hero photo. The site header stays paper-white by default,
+   creating an ugly two-band look (white nav + dark titlebar).
+   JS adds `has-dark-header` to body when `.calc-titlebar` is detected.
+   On mobile, we merge the nav into the dark instrument panel.
+*/
+@media (max-width: 720px) {
+  body.has-dark-header .site-header {
+    background: var(--t-cold) !important;
+    border-bottom-color: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  /* Hamburger lines: paper-coloured on dark bg */
+  body.has-dark-header .menu-toggle {
+    border-color: rgba(245,242,236,.22) !important;
+    background: transparent !important;
+  }
+  body.has-dark-header .menu-toggle span {
+    background: var(--paper) !important;
+  }
+  /* Nav links (phone number) — paper on dark */
+  body.has-dark-header .nav-phone {
+    color: rgba(245,242,236,.65);
+  }
+  /* Hide the paper-coloured "Request quote" primary CTA in dark header — the
+     result sheet already carries the primary CTA action. */
+  body.has-dark-header .nav-cta .btn-primary {
+    display: none !important;
+  }
+}
+
+/* ── B.1  Calculator titlebar — Bitzer-register instrument panel on mobile ──
+   Dark navy background with spectrum gradient stripe. Mono type. Paper-ghost
+   action pills. Transforms the squished desktop chrome into a deliberate
+   instrument header — matching the Bitzer register from the design system.
+*/
+@media (max-width: 720px) {
+  .calc-titlebar {
+    /* 3px spectrum stripe at top, then solid dark navy fill */
+    background:
+      linear-gradient(
+        90deg,
+        var(--t-cold) 0%, #173E66 18%, var(--t-mid) 48%,
+        #B8E5EC 68%, var(--paper-2) 86%, var(--t-warm) 100%
+      ) top / 100% 3px no-repeat,
+      var(--t-cold);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    padding: 0;
+    gap: 0;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* Title block */
+  .calc-titlebar > div:first-child {
+    padding: 17px var(--mb-x) 12px;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  .calc-title {
+    font-size: 1rem !important;
+    font-family: var(--font-mono) !important;
+    font-weight: 600 !important;
+    letter-spacing: -.01em;
+    line-height: 1.25;
+    color: var(--paper) !important;
+    margin: 4px 0 0;
+  }
+  .calc-eyebrow {
+    font-size: .58rem !important;
+    letter-spacing: .18em;
+    color: rgba(245,242,236,.45) !important;
+  }
+
+  /* Action buttons row — paper-ghost pills on dark bg */
+  .calc-titlebar-actions {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 6px;
+    padding: 10px var(--mb-x);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    -webkit-mask-image: linear-gradient(to right, black 88%, transparent 100%);
+    mask-image: linear-gradient(to right, black 88%, transparent 100%);
+    scrollbar-width: none;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  .calc-titlebar-actions::-webkit-scrollbar { display: none; }
+  .calc-titlebar-actions .btn {
+    padding: 6px 12px !important;
+    font-size: .72rem !important;
+    white-space: nowrap;
+    flex-shrink: 0;
+    /* Override btn-outline and btn-primary to paper-ghost style */
+    background: rgba(245,242,236,.08) !important;
+    border-color: rgba(245,242,236,.18) !important;
+    color: rgba(245,242,236,.82) !important;
+    border-radius: var(--r-sm) !important;
+    box-shadow: none !important;
+  }
+  .calc-titlebar-actions .btn:active {
+    background: rgba(245,242,236,.16) !important;
+  }
+
+  /* Unit toggle row — override inline-flex pill to full-width row */
+  .calc-units-toggle {
+    display: flex !important;
+    flex-direction: row;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 8px var(--mb-x) 10px;
+    gap: 6px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  .calc-units-toggle button {
+    flex: 1 1 0%;
+    min-width: 0;
+    padding: 7px 0 !important;
+    font-size: .72rem !important;
+    border-radius: var(--r-sm) !important;
+    border: 1px solid rgba(245,242,236,.18) !important;
+    background: rgba(245,242,236,.06) !important;
+    color: rgba(245,242,236,.6) !important;
+    text-align: center;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .calc-units-toggle button[aria-pressed="true"] {
+    background: var(--t-warm) !important;
+    border-color: var(--t-warm) !important;
+    color: var(--paper) !important;
+  }
+
+  /* Breadcrumb and mode badge — redundant on mobile */
+  .calc-breadcrumb { display: none; }
+  .calc-jobmode-badge { display: none; }
+}
+
+/* ── B.2  Grid — single column, space for the bottom sheet ── */
+@media (max-width: 720px) {
+  .calc-grid {
+    display: block !important;
+    padding: 20px var(--mb-x) 120px !important; /* 120px = result-sheet collapsed height */
+  }
+  /* Aside becomes the result-sheet anchor; it is pulled out of flow via the
+     fixed result sheet below. Hide it here so the collapsed sheet is the only result UI. */
+  .calc-aside {
+    display: none !important;
+  }
+}
+
+/* ── B.3  Sticky result sheet ──
+   JS (wireCalcResultSheet) injects a `.calc-result-sheet` clone/move into
+   <body> on mobile. This block styles that fixed element.
+
+   Collapsed (default): 84px — eyebrow + big-number + chevron handle.
+   Expanded (.is-expanded): 80vh — full result panel with overflow scroll.
+*/
+.calc-result-sheet {
+  display: none; /* shown only by JS on ≤720px */
+}
+@media (max-width: 720px) {
+  .calc-result-sheet {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 80;
+    background: var(--paper);
+    border-top: 1px solid var(--line);
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -8px 40px -8px rgba(10,15,25,.18);
+    max-height: 84px;
+    overflow: hidden;
+    transition: max-height .32s cubic-bezier(.4,0,.2,1);
+    will-change: max-height;
+  }
+  .calc-result-sheet.is-expanded {
+    max-height: 82vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Drag handle */
+  .calc-result-sheet-handle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--mb-x);
+    min-height: 84px;
+    cursor: pointer;
+    flex-shrink: 0;
+    gap: 12px;
+    /* Tap target ≥44px enforced by min-height:84px */
+  }
+  .calc-result-sheet-handle:active { background: var(--paper-2); }
+
+  /* Big number inside the handle */
+  .calc-result-sheet-num {
+    font-family: var(--font-mono);
+    font-feature-settings: 'tnum';
+    font-size: clamp(1.6rem, 6vw, 2.1rem);
+    font-weight: 600;
+    letter-spacing: -.03em;
+    color: var(--t-warm);
+    line-height: 1;
+  }
+  .calc-result-sheet-label {
+    font-family: var(--font-mono);
+    font-size: .6rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+  .calc-result-sheet-chevron {
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    flex-shrink: 0;
+    transition: transform .25s ease;
+    color: var(--ink-2);
+    font-size: .85rem;
+    line-height: 1;
+  }
+  .calc-result-sheet.is-expanded .calc-result-sheet-chevron {
+    transform: rotate(180deg);
+  }
+
+  /* The inner result card when sheet is expanded */
+  .calc-result-sheet-inner {
+    padding: 0 var(--mb-x) calc(var(--mb-x) + env(safe-area-inset-bottom, 0px));
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .calc-result-sheet-inner .calc-result {
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+  /* When expanded, shrink the handle to a slim "Close" bar */
+  .calc-result-sheet.is-expanded .calc-result-sheet-handle {
+    min-height: 0;
+    height: 44px;
+    justify-content: flex-end;
+    padding: 0 var(--mb-x);
+    border-bottom: 1px solid var(--line-2);
+  }
+  /* Hide label, big number, and sub-line from the handle when expanded —
+     the full result card immediately below shows all this information. */
+  .calc-result-sheet.is-expanded .calc-result-sheet-label,
+  .calc-result-sheet.is-expanded .calc-result-sheet-num,
+  .calc-result-sheet.is-expanded .calc-result-sheet-handle .calc-result-sub {
+    display: none;
+  }
+  /* Show a "Close" label to the left of the chevron when expanded.
+     Use ::before on the handle (not inside the rotating chevron). */
+  .calc-result-sheet.is-expanded .calc-result-sheet-handle::before {
+    content: 'Close';
+    font-family: var(--font-mono);
+    font-size: .68rem;
+    letter-spacing: .06em;
+    color: var(--muted);
+    flex: 1;
+    text-align: right;
+    margin-right: 8px;
+  }
+  /* In the inner card, hide the redundant result-head (eyebrow + big num) since
+     the handle already communicated capacity before the user tapped. Show the
+     breakdown and cost sections directly — they are the reason to expand. */
+  .calc-result-sheet-inner .calc-result-head {
+    display: none;
+  }
+}
+
+/* ── B.4  Methodology section — truncate on mobile ──
+   JS (wireMethodologyToggle) adds [data-method-collapsed] to the section.
+   CSS does the truncation. Without JS the section is always visible.
+*/
+@media (max-width: 720px) {
+  .section-soft[aria-label="Methodology"][data-method-collapsed] .method-body-wrap {
+    max-height: 4.8em; /* ~3 lines */
+    overflow: hidden;
+    position: relative;
+  }
+  .section-soft[aria-label="Methodology"][data-method-collapsed] .method-body-wrap::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 2em;
+    background: linear-gradient(transparent, var(--paper-2));
+    pointer-events: none;
+  }
+  .method-expand-btn {
+    font-family: var(--font-mono);
+    font-size: .78rem;
+    letter-spacing: .06em;
+    color: var(--t-warm);
+    background: none;
+    border: none;
+    padding: 10px 0 4px;
+    cursor: pointer;
+    display: block;
+    margin-top: 6px;
+  }
+  /* Hide expand btn when not collapsed */
+  .section-soft[aria-label="Methodology"]:not([data-method-collapsed]) .method-expand-btn {
+    display: none;
+  }
+
+  /* Tighten the methodology container padding on mobile */
+  .section-soft[aria-label="Methodology"] > div {
+    padding: 1.5rem var(--mb-x) !important;
+  }
+}
+
+/* ── B.5  Form section spacing tightening on mobile ── */
+@media (max-width: 720px) {
+  .calc-section {
+    padding: 20px 0;
+  }
+  .calc-section-head {
+    margin-bottom: 14px;
+  }
+  .calc-section-body {
+    gap: 12px;
+  }
+  /* Application grid tiles — 2 columns on mobile instead of 4-5 */
+  .calc-app-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+  .calc-app-tile {
+    padding: 10px 8px !important;
+    font-size: .72rem !important;
+  }
+  .calc-app-tile .icon { font-size: 1.4rem !important; }
+}
+
+/* ── B.6  Desktop: restore normal layout (undo mobile overrides) ── */
+@media (min-width: 721px) {
+  .calc-result-sheet { display: none !important; }
+}
