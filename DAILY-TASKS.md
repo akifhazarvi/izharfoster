@@ -40,13 +40,11 @@ Work top-to-bottom. Mark done with `[x]`. Each PR title must reference the GROWT
 
 ### Day 2 — Content + schema (3-4 hr)
 
-- [ ] `AP#1` Link `/services/pharmaceutical-cold-storage` from homepage hero scrubber + products grid  
-  **Files:** `index.html`  
-  **Why:** 16,740 imp at pos 59 — no homepage internal-link equity flows to it yet.
+- [x] `AP#1` Link `/services/pharmaceutical-cold-storage` from homepage products grid (added dedicated 7th product card between Cold Stores and Refrigeration Systems) — commit `abff036`
 
-- [ ] `AP#2` De-anonymise pharma page reference projects — name real clients or remove the placeholder entries  
-  **Files:** `services/pharmaceutical-cold-storage.html`  
-  **Options:** "Tier-1 multinational pharma, Karachi, 2023, 800 m³" or delete
+- [x] `AP#2` De-anonymise pharma page reference projects — replaced "confidential client" placeholders with named clients pulled from clients.html: Getz Pharma, Sami Pharmaceuticals, Searle Pakistan, plus USAID/EPI vaccine programmes — commit `abff036`
+
+- [x] **GP§6/§7 #1 — pharma page growth bundle** — added Stage-2 trust band (named clients · 1959 / 277,460 sqft plant · 2,100+ installations) directly under H1 + sharpened title/meta/og to lead with the exact-match query "pharmaceutical cold storage in Pakistan" (2,729 imp at pos 68 — single biggest GSC gap query). Combined with GSC sitemap cleanup (commit a0e6147 + manual UI deletion 2026-05-05), this is the full first-pass attack on the 16,740-impression pharma opportunity — commit `abff036`
 
 - [ ] `AP#7` Fix `refrigerated-vehicles.html` og:image — replace pharma room image with `og-default.jpg`  
   **Files:** `services/refrigerated-vehicles.html`  
