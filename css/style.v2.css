@@ -5778,11 +5778,12 @@ body.lc-open .lc-backdrop {
   }
 
   /* === Header — Apple-mode: 64px tall, larger plaque logo for full brand presence.
-     The official Izhar Foster monogram has ~2.66:1 aspect (1320×496). At 48px
-     tall the banner is ~128px wide — readable wordmark + visible compressor.
-     The chrome is always-visible frosted glass so the logo reads at full strength. */
+     Match the hamburger's 44×44 size so brand top/bottom edges align with
+     the hamburger top/bottom edges — no more 2px offset between them. The
+     official monogram has ~4.66:1 aspect (480×103); at 44px tall the banner
+     is ~205px wide, plenty of room for wordmark + visible compressor. */
   .nav { height: 64px !important; padding: 0 var(--mb-x); gap: 8px; }
-  .brand-logo { height: 48px !important; max-height: 48px !important; max-width: 240px !important; width: auto !important; }
+  .brand-logo { height: 44px !important; max-height: 44px !important; max-width: 220px !important; width: auto !important; }
   .nav-phone { display: none; }
   .nav-cta { gap: 8px; }
   .nav-cta .btn-primary { display: none; }
@@ -6118,11 +6119,11 @@ body.lc-open .lc-backdrop {
   .spec-card-row:last-child { border-bottom: none; }
 }
 
-/* === Very narrow phones (≤380): extra header tightening — but keep the
-     monogram at a readable size. At 40px tall × 2.66 aspect = 106px wide. */
+/* === Very narrow phones (≤380): keep brand-logo at 44px so it stays
+     edge-aligned with the hamburger. Just tighten outer padding slightly. */
 @media (max-width: 380px) {
   .nav { padding: 0 14px; gap: 6px; }
-  .brand-logo { height: 40px !important; max-height: 40px !important; max-width: 180px !important; }
+  .brand-logo { max-width: 200px !important; }
 }
 
 /* ============================================================
