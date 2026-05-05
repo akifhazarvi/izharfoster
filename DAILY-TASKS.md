@@ -36,6 +36,7 @@ Work top-to-bottom. Mark done with `[x]`. Each PR title must reference the GROWT
 - [x] `AP#15` Move GA4 `gtag` block below `<meta charset>` + `<meta viewport>` — commit `a9ca809`
 - [x] `AP#18` Add Karachi geo coordinates + `branchOf` schema to karachi page — commit `7a81618`
 - [x] **GA4 attribution fix** — rename `js/track.js` user_properties + per-event params from reserved keys (`source`/`medium`/`campaign`/`attribution_*`) to `izhar_*` so they enrich GA4 native channel grouping instead of overwriting it (was producing `direct_via_legacy_redirect`, `google_organic`, `utm:chatgpt.com` as Unassigned sessions; root cause of "why so many Unassigned" diagnosis on 2026-05-04) — commit `5f4a1ac`
+- [x] **GSC indexing cleanup (GP§6)** — diagnosed via Composio GSC MCP: 58 "Crawled - currently not indexed" was mostly `.html` duplicate noise (Google had already canonicalised) and three legacy WordPress sitemaps (`sitemap_index.xml`, `post-sitemap.xml`, `page-sitemap.xml`) still submitted from 2023/Jul-2025 telling Google to re-crawl ~124 dead URLs. Added 3 `.html` → extensionless 301 rules to `vercel.json` and removed malformed `Service.offers.priceSpecification` (no `price`) from `services/ca-stores.html` schema — commit `a0e6147`. **Manual GSC UI step pending:** remove the three legacy sitemaps in Search Console > Sitemaps.
 
 ### Day 2 — Content + schema (3-4 hr)
 
