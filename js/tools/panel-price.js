@@ -240,7 +240,7 @@
         Rs ${fmt(totalMin)} – Rs ${fmt(totalMax)}</p>
 
         <p style="font-size:.75em;color:var(--ink-2);margin-top:1em;border-top:1px solid var(--paper-3);padding-top:.75em;">
-        Methodology: bands derived from public Pakistan market data (Silver Steel + Golden Steel published PU price tables, OLX Pakistan listing reverse-conversion from PKR/sqft, IndiaMART India floor reference) plus a steel-coil cost build (PPGI ~PKR 197,000/ton + PIR foam + 35% manufacturing/margin). Izhar premium of +15-18% over PU public median justified by FireSafe PIR specification (B1 fire class, λ 0.022 W/m·K aged BS EN 14509, eco-pentane blowing agent). Last updated ${data.$last_updated}.
+        Methodology: bands derived from current Pakistan market data plus a steel-coil cost build (PPGI ~PKR 197,000/ton + PIR foam + 35% manufacturing/margin). Izhar premium positioning over PU public median justified by FireSafe PIR specification (B1 fire class, λ 0.022 W/m·K aged BS EN 14509, eco-pentane blowing agent). Indicative — final quote on application.
         </p>
       `;
     }

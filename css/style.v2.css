@@ -5968,27 +5968,76 @@ body.lc-open .lc-backdrop {
      Two simultaneous floating actions on a 390px screen is noise. */
   body:has(.nav-center.open) .lc-root { opacity: 0; pointer-events: none; transform: scale(.85); transition: opacity .15s, transform .2s; }
 
-  /* === Footer mobile pass — minimum-viable spacing fix.
-     Currently the footer is ~1620px tall on a 390px phone because every link sits
-     inside an already large gap, then `padding: 8px 0` adds more. Tighten the
-     gap and let `padding: 12px 0` carry the 44px tap target. */
-  .site-footer { padding: 56px var(--mb-x) 28px; }
-  .footer-grid { gap: 36px; }
-  .footer-grid ul { gap: 0; }
+  /* === Footer mobile rebuild — compact, human, single-flow.
+     The previous footer had a 2.4rem "Izhar Foster" wordmark (huge),
+     mono-styled phone numbers (felt like terminal output), and ~1500px
+     vertical height. Rebuild as a tight single-column flow with display
+     typography for human-facing items, mono only for technical metadata.
+  */
+  .site-footer { padding: 40px var(--mb-x) 24px; }
+
+  /* Brand block: shrink the wordmark, tighten lede paragraph */
+  .footer-brand-name {
+    font-size: 1.5rem !important;
+    margin-bottom: 12px !important;
+  }
+  .footer-brand-name::before {
+    bottom: 2px;
+    width: 10px;
+    height: 3px;
+  }
+  .footer-grid p {
+    font-size: .9rem !important;
+    line-height: 1.55;
+    max-width: none !important;
+    margin-bottom: 8px !important;
+    color: rgba(245,242,236,.7) !important;
+  }
+
+  /* Section spacing: tight, single column */
+  .footer-grid {
+    gap: 28px !important;
+    margin-bottom: 28px !important;
+  }
+  .footer-grid h4 {
+    font-size: .64rem !important;
+    letter-spacing: .18em !important;
+    margin-bottom: 10px !important;
+    color: rgba(245,242,236,.42) !important;
+  }
+  .footer-grid ul {
+    gap: 0;
+    font-size: .98rem;
+  }
   .footer-grid a {
-    padding: 11px 0;
+    padding: 9px 0;
     display: inline-block;
     min-height: 44px;
-    line-height: 1.4;
+    line-height: 1.45;
+    color: var(--paper);
+    font-weight: 400;
   }
-  .footer-grid h4 { margin-bottom: 8px; }
-  .footer-grid p { margin-bottom: 12px; }
+
+  /* Phone / WhatsApp / email — drop the mono treatment, use display font.
+     Mono only stays on the postal address (technical metadata). */
+  .footer-grid li.mono {
+    font-family: var(--font-display) !important;
+  }
+  .footer-grid li.mono a {
+    font-family: var(--font-display) !important;
+    font-size: 1rem;
+    letter-spacing: -.01em;
+  }
+
+  /* Footer bottom (copyright / privacy / terms) — keep mono, very small */
   .footer-bottom {
-    padding-top: 20px;
+    padding-top: 18px;
     gap: 8px;
-    font-size: .68rem;
+    font-size: .66rem;
+    flex-direction: column;
+    align-items: flex-start;
   }
-  .footer-social { padding: 18px 0 18px; }
+  .footer-social { padding: 14px 0; }
   .footer-social-icons a { padding: 8px; }
 
   /* === Service-page hero aside → Spec Card (PR 3).
