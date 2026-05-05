@@ -3434,6 +3434,38 @@ body.lc-open .lc-backdrop {
     grid-template-columns: 1fr;
   }
   .form-row { grid-template-columns: 1fr; }
+  /* Prose containers must shrink-wrap on mobile — wide tables inside push width otherwise */
+  .prose, .detail-grid > *, .section > *, main > * { min-width: 0; max-width: 100%; }
+  /* Wide content tables: turn into block + scroll on mobile. Excludes
+     .csg-table which already lives inside a .csg-table-wrap scroller and
+     uses sticky thead — turning it into block would break that. */
+  .prose table:not(.csg-table),
+  .spec-table,
+  .section table:not(.csg-table) {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    font-size: .78rem;
+    margin: 22px 0;
+  }
+  .prose table:not(.csg-table) th, .prose table:not(.csg-table) td,
+  .spec-table th, .spec-table td,
+  .section table:not(.csg-table) th, .section table:not(.csg-table) td {
+    padding: 9px 12px;
+    word-break: break-word;
+    hyphens: auto;
+  }
+  .prose table:not(.csg-table) th,
+  .spec-table th,
+  .section table:not(.csg-table) th {
+    font-size: .62rem;
+    letter-spacing: .1em;
+  }
+  /* For .csg-table: ensure the wrap shrinks correctly within a flex/grid parent */
+  .csg-table-wrap { max-width: 100%; }
+  .csg-table { font-size: .82rem; }
+  .csg-table th, .csg-table td { padding: 10px 12px !important; }
   .faq-item summary {
     grid-template-columns: 40px minmax(0,1fr) auto;
     gap: 16px;
