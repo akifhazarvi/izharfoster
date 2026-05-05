@@ -1,7 +1,5 @@
 {
-  "$comment": "FireSafe PIR sandwich panel indicative price bands — Pakistan, Q2 2026. Panel-only, ex-works Lahore plant. Excludes structural support, freight, installation. Bands derived from market research (OLX Pakistan reverse-conversion, Silver Steel + Golden Steel published PU price tables, PPGI steel-coil cost build, IndiaMART India floor reference). Izhar premium positioning at market median +15-18%, justified by FireSafe PIR (B1 fire class, lambda 0.022 W/m·K aged, eco-pentane).",
-  "$last_updated": "2026-05-04",
-  "$source_methodology": "research-subagent-2026-05-04",
+  "$comment": "FireSafe PIR sandwich panel indicative price bands — Pakistan. Panel-only, ex-works Lahore plant. Excludes structural support, freight, installation. Izhar premium positioning at market median +15-18%, justified by FireSafe PIR (B1 fire class, lambda 0.022 W/m·K aged, eco-pentane).",
   "currency": "PKR",
   "unit": "per_m2",
   "uncertainty_band_pct": 15,
