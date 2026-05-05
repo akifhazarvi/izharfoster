@@ -294,6 +294,7 @@ h1, h2, h3, h4 {
 .hp-hero-img img {
   width: 100%; height: 100%;
   object-fit: cover;
+  object-position: center center;
   display: block;
 }
 .hp-hero-overlay {
@@ -5618,9 +5619,11 @@ body.lc-open .lc-backdrop {
   .cert-strip-rail::-webkit-scrollbar { display: none; }
   .cert-strip-rail > .cert-badge {
     flex: 0 0 auto;
-    width: 132px;
+    /* Show 2.5 cards in a 375px viewport: (375 - 20*2 gutter - 10 gap)/2.5 ≈ 130
+       But 110 gives more breathing room and shows ~3 cards as a clear scroll cue. */
+    width: 110px;
     min-height: 100px;
-    padding: 14px 12px;
+    padding: 14px 10px;
     background: var(--paper);
     border: 1px solid var(--line);
     border-right: 1px solid var(--line);
@@ -6296,7 +6299,11 @@ body.lc-open .lc-backdrop {
     border-top: 1px solid var(--line);
     border-radius: 16px 16px 0 0;
     box-shadow: 0 -8px 40px -8px rgba(10,15,25,.18);
-    max-height: 84px;
+    /* Allow the sheet to fit its handle content naturally — some tools have
+       a 1-line result, others have label + big number + sub-line (3+ lines).
+       max-height kicks in only when the sheet is collapsed. */
+    max-height: 140px;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
     overflow: hidden;
     transition: max-height .32s cubic-bezier(.4,0,.2,1);
     will-change: max-height;
@@ -6307,19 +6314,46 @@ body.lc-open .lc-backdrop {
     -webkit-overflow-scrolling: touch;
   }
 
-  /* Drag handle */
+  /* Drag handle — generous padding, breathes around content */
   .calc-result-sheet-handle {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 var(--mb-x);
-    min-height: 84px;
+    padding: 14px var(--mb-x);
+    min-height: 72px;
     cursor: pointer;
     flex-shrink: 0;
     gap: 12px;
-    /* Tap target ≥44px enforced by min-height:84px */
   }
   .calc-result-sheet-handle:active { background: var(--paper-2); }
+  /* Sub-line (per m² / per sqft etc.) — wrap to 2 lines if needed,
+     never clip mid-number. */
+  .calc-result-sheet-handle .calc-result-sub {
+    font-family: var(--font-mono);
+    font-size: .68rem;
+    color: var(--muted);
+    margin-top: 4px;
+    line-height: 1.35;
+    white-space: normal;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    max-width: 100%;
+  }
+  /* The left side of the handle (label + big num + sub) needs min-width: 0
+     so it can shrink — otherwise the handle's space-between justification
+     pushes the sub-line past the chevron. */
+  .calc-result-sheet-handle > div:first-child {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+  /* Lift the floating chat FAB above the result sheet so the orange button
+     doesn't fight with the sticky bar at the bottom */
+  body:has(.calc-result-sheet) .lc-trigger,
+  body:has(.calc-result-sheet) .fab-wa {
+    bottom: 132px !important;
+  }
 
   /* Big number inside the handle */
   .calc-result-sheet-num {

@@ -198,8 +198,8 @@
     }
 
     els.confidenceNote.textContent = panel.confidence === 'medium'
-      ? 'Indicative band ±15%. Anchored to Pakistan market data + published competitor PU pricing + steel-coil cost build.'
-      : 'Indicative band ±20%. Public market data is thin for this thickness — quote-confirmed.';
+      ? 'Indicative band ±15%. Anchored to current Pakistan market data and a steel-coil cost build.'
+      : 'Indicative band ±20%. Quote-confirmed for this thickness.';
 
     // Summary line for CTAs
     const summary = `${thicknessMm} mm FireSafe PIR · ${data.facing_multipliers[facingKey].label.split(':')[0]} facing · ${fmt(qtyM2, 0)} m² · ${cities.find(c => c.value === cityKey)?.label || ''} → indicative Rs ${fmt(totalMin)} – ${fmt(totalMax)} (mid Rs ${fmt(totalMid)})`;
