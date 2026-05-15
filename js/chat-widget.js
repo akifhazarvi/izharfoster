@@ -57,19 +57,26 @@
 
   // ----- styles (single inject) -----
   var css = '\
-.ifc-fab{position:fixed;bottom:20px;right:20px;z-index:9998;cursor:pointer;display:flex;align-items:center;gap:10px}\
-.ifc-fab-btn{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#E36A1E 0%,#FF8847 100%);box-shadow:0 6px 24px rgba(227,106,30,.45),0 2px 8px rgba(0,0,0,.15);display:flex;align-items:center;justify-content:center;color:#fff;font-size:26px;border:0;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease;position:relative}\
-.ifc-fab-btn:hover{transform:scale(1.08);box-shadow:0 8px 32px rgba(227,106,30,.6)}\
-.ifc-fab-btn:focus-visible{outline:3px solid rgba(227,106,30,.4);outline-offset:3px}\
-.ifc-fab-btn::before{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid #E36A1E;opacity:0;animation:ifc-pulse 2.4s ease-out infinite}\
-@keyframes ifc-pulse{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.6);opacity:0}}\
-.ifc-fab-dot{position:absolute;top:8px;right:8px;width:10px;height:10px;border-radius:50%;background:#22C55E;border:2px solid #fff;box-shadow:0 0 0 0 rgba(34,197,94,.6);animation:ifc-dot 2s ease-out infinite}\
-@keyframes ifc-dot{0%{box-shadow:0 0 0 0 rgba(34,197,94,.6)}70%{box-shadow:0 0 0 10px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}\
-.ifc-fab-label{background:#0A1F3D;color:#F5F2EC;padding:10px 14px;border-radius:24px;font:600 .85rem var(--font-mono,"JetBrains Mono",ui-monospace,monospace);box-shadow:0 4px 16px rgba(10,31,61,.3);opacity:0;transform:translateX(20px);transition:opacity .3s ease,transform .3s ease;white-space:nowrap;pointer-events:none}\
-.ifc-fab.is-revealed .ifc-fab-label{opacity:1;transform:translateX(0)}\
-.ifc-fab-label::after{content:"";position:absolute;right:-6px;top:50%;transform:translateY(-50%);border:6px solid transparent;border-left-color:#0A1F3D}\
-.ifc-fab.is-open .ifc-fab-label{display:none}\
+.ifc-fab{position:fixed;bottom:20px;right:20px;z-index:9998;cursor:pointer;display:flex;align-items:stretch;gap:0;font-family:inherit}\
+.ifc-fab-pill{display:flex;align-items:center;background:#0A1F3D;color:#fff;padding:14px 18px 14px 22px;margin-right:-18px;border-radius:36px 0 0 36px;font:600 .92rem inherit;line-height:1.2;box-shadow:0 6px 20px rgba(10,31,61,.25);white-space:nowrap;border:0;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease,padding .2s ease;text-align:left}\
+.ifc-fab-pill:hover{transform:translateX(-2px);box-shadow:0 8px 28px rgba(10,31,61,.4)}\
+.ifc-fab-pill strong{display:block;font-weight:700;letter-spacing:.01em}\
+.ifc-fab-pill span{display:block;font:500 .72rem/.9 var(--font-mono,"JetBrains Mono",ui-monospace,monospace);color:#FFB388;margin-top:3px;letter-spacing:.04em;text-transform:uppercase}\
+@media (max-width:640px){.ifc-fab-pill{display:none}}\
+.ifc-fab-btn{width:72px;height:72px;border-radius:50%;background:#25D366;box-shadow:0 8px 28px rgba(37,211,102,.45),0 3px 10px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center;color:#fff;border:3px solid #fff;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease;position:relative;z-index:2;padding:0}\
+.ifc-fab-btn:hover{transform:scale(1.06);box-shadow:0 10px 34px rgba(37,211,102,.6)}\
+.ifc-fab-btn:focus-visible{outline:3px solid rgba(37,211,102,.5);outline-offset:3px}\
+.ifc-fab-btn::before{content:"";position:absolute;inset:-8px;border-radius:50%;border:2.5px solid #25D366;opacity:0;animation:ifc-pulse 2.4s ease-out infinite;z-index:-1}\
+@keyframes ifc-pulse{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.55);opacity:0}}\
+.ifc-fab.is-bounced .ifc-fab-btn{animation:ifc-bounce .8s ease-out}\
+@keyframes ifc-bounce{0%,100%{transform:translateY(0)}25%{transform:translateY(-14px) scale(1.05)}50%{transform:translateY(0)}65%{transform:translateY(-6px)}80%{transform:translateY(0)}}\
+.ifc-fab-dot{position:absolute;top:6px;right:6px;width:14px;height:14px;border-radius:50%;background:#fff;border:2px solid #25D366;box-shadow:0 0 0 0 rgba(255,255,255,.7);animation:ifc-dot 2s ease-out infinite;z-index:3}\
+.ifc-fab-dot::after{content:"";position:absolute;inset:2px;border-radius:50%;background:#22C55E}\
+@keyframes ifc-dot{0%{box-shadow:0 0 0 0 rgba(34,197,94,.6)}70%{box-shadow:0 0 0 8px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}\
+.ifc-fab.is-open .ifc-fab-pill{display:none}\
 .ifc-fab.is-open .ifc-fab-btn::before{display:none}\
+.ifc-fab.is-open .ifc-fab-btn{background:#0A1F3D}\
+.ifc-fab.is-open .ifc-fab-dot{display:none}\
 \
 .ifc-panel{position:fixed;bottom:90px;right:20px;width:min(380px,calc(100vw - 32px));max-height:min(620px,calc(100vh - 120px));background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(10,31,61,.28),0 6px 18px rgba(0,0,0,.1);z-index:9999;display:none;flex-direction:column;overflow:hidden;font-family:inherit;animation:ifc-slide-up .25s ease}\
 .ifc-panel.is-open{display:flex}\
@@ -131,9 +138,12 @@
     fab.className = 'ifc-fab';
     fab.id = 'ifc-fab';
     fab.innerHTML = '\
-<span class="ifc-fab-label">Chat with engineering &middot; reply in 24h</span>\
-<button class="ifc-fab-btn" id="ifc-fab-btn" aria-label="Open engineering chat" type="button">\
-  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>\
+<button class="ifc-fab-pill" id="ifc-fab-pill" type="button" aria-label="Get a sized quote in 60 seconds">\
+  <span>Engineering desk</span>\
+  <strong>Get a sized quote &nbsp;&rarr;</strong>\
+</button>\
+<button class="ifc-fab-btn" id="ifc-fab-btn" aria-label="Open WhatsApp engineering chat" type="button">\
+  <svg width="38" height="38" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16.003 0C7.166 0 .003 7.163.003 16c0 2.808.729 5.55 2.116 7.964L.003 32l8.262-2.083C10.605 31.241 13.273 32 16.003 32c8.837 0 16-7.163 16-16S24.84 0 16.003 0zm0 29.333c-2.475 0-4.9-.665-7.012-1.928l-.503-.299-5.232 1.319 1.339-5.105-.328-.523A13.246 13.246 0 012.67 16c0-7.353 5.98-13.333 13.333-13.333S29.336 8.647 29.336 16 23.355 29.333 16.003 29.333zm7.349-9.99c-.403-.201-2.382-1.175-2.751-1.31-.369-.134-.638-.201-.906.202-.268.402-1.04 1.31-1.275 1.578-.235.268-.469.302-.872.101-.403-.201-1.702-.627-3.242-2-1.199-1.069-2.008-2.39-2.243-2.792-.235-.403-.025-.62.176-.821.181-.18.403-.469.604-.704.201-.235.268-.403.402-.671.134-.268.067-.503-.034-.704-.101-.201-.906-2.185-1.242-2.992-.327-.785-.66-.678-.906-.691l-.772-.014c-.268 0-.704.101-1.073.503-.369.402-1.41 1.378-1.41 3.361s1.444 3.9 1.645 4.168c.201.268 2.841 4.338 6.882 6.083.961.415 1.711.663 2.296.848.965.307 1.843.264 2.537.16.774-.116 2.382-.974 2.717-1.913.335-.939.335-1.745.235-1.913-.101-.168-.369-.268-.772-.469z"/></svg>\
   <span class="ifc-fab-dot" aria-hidden="true"></span>\
 </button>';
 
@@ -162,14 +172,16 @@
 
     wireEvents();
 
-    // reveal label after 1.5s on first page view of session
-    if (!sessionStorage.getItem('ifc_label_shown')){
+    // One-time attention bounce after 8s on first page view of session.
+    // Subtle — the bigger FAB + WhatsApp-green colour does the heavy lifting.
+    if (!sessionStorage.getItem('ifc_bounced')){
       setTimeout(function(){
-        fab.classList.add('is-revealed');
-        try { sessionStorage.setItem('ifc_label_shown', '1'); } catch(_){}
-        // auto-hide label after 8s
-        setTimeout(function(){ fab.classList.remove('is-revealed'); }, 8000);
-      }, 1500);
+        if (!state.open){
+          fab.classList.add('is-bounced');
+          setTimeout(function(){ fab.classList.remove('is-bounced'); }, 900);
+          try { sessionStorage.setItem('ifc_bounced', '1'); } catch(_){}
+        }
+      }, 8000);
     }
   }
 
@@ -444,10 +456,10 @@
   }
 
   function wireEvents(){
-    $('ifc-fab-btn').addEventListener('click', function(){
-      if (state.open) close();
-      else open();
-    });
+    function toggle(){ if (state.open) close(); else open(); }
+    $('ifc-fab-btn').addEventListener('click', toggle);
+    var pill = $('ifc-fab-pill');
+    if (pill) pill.addEventListener('click', toggle);
     $('ifc-close').addEventListener('click', close);
     // Esc to close
     document.addEventListener('keydown', function(e){
