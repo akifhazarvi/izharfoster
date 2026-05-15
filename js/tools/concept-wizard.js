@@ -223,9 +223,18 @@
   }
 
   // ----- analytics -----
+  // Route through IzharTrack (track.js) when available so events inherit
+  // session attribution, Vercel Analytics mirror, and ?debug_track=1 logging.
   function track(event, params){
-    if (!window.gtag) return;
-    try { gtag('event', event, params || {}); } catch(_){}
+    try {
+      if (window.IzharTrack && typeof window.IzharTrack.track === 'function') {
+        window.IzharTrack.track(event, Object.assign({ source_tool: 'concept_wizard' }, params || {}));
+        return;
+      }
+    } catch(_){}
+    try {
+      if (window.gtag) gtag('event', event, params || {});
+    } catch(_){}
   }
 
   // ----- bootstrap -----

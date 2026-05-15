@@ -98,9 +98,16 @@
       track('lead_intent', { channel: 'email', location: location_id });
       return;
     }
-    // "Get a quote" / contact CTA — top-of-funnel intent (not a lead yet).
+    // "Get a quote" / contact / wizard / ROI calc CTA — top-of-funnel intent
+    // (not a lead yet). Recognises the new conversion artefacts shipped 2026-05-14.
     if (/contact(\.html)?($|[?#])/.test(href) || /(quote|contact|get in touch|talk to|consult)/i.test(label)) {
-      track('cta_quote_click', { href: href, label: label, location: location_id });
+      track('cta_quote_click', { href: href, label: label, location: location_id, destination: 'contact' });
+    } else if (/\/tools\/concept-wizard/.test(href) || /(wizard|5\s*[-\s]?question|sized concept)/i.test(label)) {
+      track('cta_wizard_click', { href: href, label: label, location: location_id });
+      track('cta_quote_click', { href: href, label: label, location: location_id, destination: 'wizard' });
+    } else if (/\/tools\/roi-payback/.test(href) || /(roi|payback|money calculator|spoilage)/i.test(label)) {
+      track('cta_roi_click', { href: href, label: label, location: location_id });
+      track('cta_quote_click', { href: href, label: label, location: location_id, destination: 'roi' });
     }
   }, { capture: true });
 
@@ -443,4 +450,77 @@
       });
     }, { passive: true });
   })();
+
+  // Scroll depth milestones — separate from engagement signal. Fires at 25 /
+  // 50 / 75 / 100% so we can build a heatmap of drop-off depth per page.
+  (function scrollDepth() {
+    var thresholds = [25, 50, 75, 95];
+    var fired = {};
+    var ticking = false;
+    function check() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        var h = document.documentElement;
+        var pct = ((h.scrollTop + window.innerHeight) / h.scrollHeight) * 100;
+        thresholds.forEach(function (t) {
+          if (!fired[t] && pct >= t) {
+            fired[t] = true;
+            track('scroll_depth', { depth: t });
+          }
+        });
+        if (Object.keys(fired).length === thresholds.length) {
+          window.removeEventListener('scroll', check);
+        }
+        ticking = false;
+      });
+    }
+    window.addEventListener('scroll', check, { passive: true });
+  })();
+
+  // Time-on-page tiers — fires at 60s / 120s / 300s. Combined with scroll
+  // depth, this shows whether visitors are reading or just leaving the tab open.
+  (function timeOnPage() {
+    [60, 120, 300].forEach(function (sec) {
+      setTimeout(function () {
+        // Only fire if the tab is actually visible — leaving a tab open doesn't count.
+        if (document.visibilityState === 'visible') {
+          track('time_on_page', { seconds: sec });
+        }
+      }, sec * 1000);
+    });
+  })();
+
+  // External link clicks — anything that leaves izharfoster.com (other than
+  // the lead-intent links already tracked above). Useful for spotting which
+  // external resources buyers care about (partner sites, standards docs).
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    // Skip the ones already tracked + same-origin + anchors
+    if (!/^https?:/i.test(href)) return;
+    if (/^https?:\/\/(api\.)?wa\.me\//i.test(href) || /^https?:\/\/(www\.)?whatsapp\.com\//i.test(href)) return;
+    if (/^tel:|^mailto:/i.test(href)) return;
+    try {
+      var u = new URL(href);
+      if (u.hostname === location.hostname) return;
+      track('external_link_click', {
+        host: u.hostname,
+        href: href.slice(0, 200),
+        label: (a.textContent || '').trim().slice(0, 80)
+      });
+    } catch (err) { /* noop */ }
+  }, { capture: true });
+
+  // Page-hide beacon — captures bounce/exit on close. Useful for measuring
+  // how far a visitor got before leaving (combined with scroll_depth above).
+  window.addEventListener('pagehide', function () {
+    var h = document.documentElement;
+    var pct = Math.round(((h.scrollTop + window.innerHeight) / h.scrollHeight) * 100);
+    track('page_exit', {
+      depth_pct: pct,
+      dwell_ms: Date.now() - (window.performance && performance.timing && performance.timing.navigationStart || Date.now())
+    });
+  });
 })();

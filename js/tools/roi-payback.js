@@ -9,6 +9,31 @@
   var CURRENCY_KEY = 'izhar_roi_currency_v1';
   var CITY_OVERRIDE_KEY = 'izhar_roi_currency_override_v1';
 
+  // ----- analytics — route through IzharTrack so events get session attribution +
+  // Vercel Analytics mirror + ?debug_track=1 logging. Fallback to raw gtag if not loaded. -----
+  function track(event, params){
+    try {
+      if (window.IzharTrack && typeof window.IzharTrack.track === 'function') {
+        window.IzharTrack.track(event, Object.assign({ source_tool: 'roi_calculator' }, params || {}));
+        return;
+      }
+    } catch(_){}
+    try {
+      if (window.gtag) gtag('event', event, params || {});
+    } catch(_){}
+  }
+  // Debounce helper so commodity_change / city_change / currency_change /
+  // throughput_change don't flood the event stream on every keystroke.
+  function debounce(fn, ms){
+    var t;
+    return function(){
+      var args = arguments, self = this;
+      clearTimeout(t);
+      t = setTimeout(function(){ fn.apply(self, args); }, ms);
+    };
+  }
+  var resultViewFired = false; // single result_view per session per page
+
   // ----- state -----
   var state = {
     commodity: null,
@@ -204,6 +229,20 @@
 
     drawChart(r);
     updateWhatsApp(r);
+
+    // Fire result_view ONCE per session per page — signals the user got to a
+    // real number, the highest-intent moment on this page short of WhatsApp.
+    if (!resultViewFired && isFinite(r.paybackMonths) && r.lossMonthly > 0){
+      resultViewFired = true;
+      track('roi_result_view', {
+        commodity: r.comm.id,
+        city: state.cityId,
+        currency: state.currency,
+        payback_months: Math.round(r.paybackMonths),
+        capex_pkr_mid: Math.round(r.capexMid),
+        loss_monthly_pkr: Math.round(r.lossMonthly)
+      });
+    }
   }
 
   function drawChart(r){
@@ -308,12 +347,25 @@
       'Please send back a sized concept and a precise quote.\n— Sent via izharfoster.com/tools/roi-payback';
     a.href = 'https://wa.me/' + WA + '?text=' + encodeURIComponent(msg);
 
-    // GA4 event when CTA is rendered ready (cheap impression-marker)
-    if (window.gtag){
-      // do not spam — only when clicked
-      a.onclick = function(){
-        try { gtag('event', 'roi_whatsapp_click', { commodity: r.comm.id, city: state.cityId, payback_months: isFinite(r.paybackMonths) ? Math.round(r.paybackMonths) : -1 }); } catch(_){}
-      };
+    // GA4 event when the CTA is clicked — route through IzharTrack so the event
+    // inherits session attribution. Use removeEventListener guard to prevent
+    // double-firing if updateWhatsApp() is called multiple times (it is, on
+    // every input change). Bound on first call only; subsequent calls just
+    // refresh the href.
+    if (!a.dataset.tracked){
+      a.dataset.tracked = '1';
+      a.addEventListener('click', function(){
+        track('roi_whatsapp_click', {
+          commodity: r.comm.id,
+          city: state.cityId,
+          currency: state.currency,
+          payback_months: isFinite(r.paybackMonths) ? Math.round(r.paybackMonths) : -1,
+          capex_pkr_mid: Math.round(r.capexMid),
+          loss_monthly_pkr: Math.round(r.lossMonthly),
+          lead_intent: 'whatsapp_roi_handoff' // mirror the lead_intent convention used in track.js
+        });
+        track('lead_intent', { channel: 'whatsapp', source: 'roi_calculator' });
+      });
     }
   }
 
@@ -363,12 +415,17 @@
       var displayPrice = state.pricePkrKg * meta.per_pkr;
       var rounded = state.currency === 'OMR' ? Math.round(displayPrice * 100) / 100 : Math.round(displayPrice * 10) / 10;
       $('price').value = rounded;
+      track('roi_commodity_change', { commodity: state.commodity });
       render();
     });
+    var trackThroughput = debounce(function(v){
+      track('roi_throughput_change', { value: v, unit: state.throughputUnit });
+    }, 700);
     $('throughput').addEventListener('input', function(e){
       var v = parseFloat(e.target.value);
       state.throughputTonnes = isNaN(v) ? 0 : v;
       render();
+      if (state.throughputTonnes > 0) trackThroughput(state.throughputTonnes);
     });
     $('price').addEventListener('input', function(e){
       var v = parseFloat(e.target.value);
@@ -379,6 +436,7 @@
     $('city').addEventListener('change', function(e){
       state.cityId = e.target.value;
       // auto-switch display currency if the user hasn't manually overridden
+      var autoSwitched = false;
       if (!state.userOverrodeCurrency){
         var fx = state.data.roi.fx;
         var country = fx.city_to_country[e.target.value];
@@ -387,8 +445,10 @@
           state.currency = preferred;
           saveCurrencyState();
           applyCurrencyUI();
+          autoSwitched = true;
         }
       }
+      track('roi_city_change', { city: state.cityId, currency_auto_switched: autoSwitched, new_currency: state.currency });
       render();
     });
     $('turnover').addEventListener('change', function(e){
@@ -409,10 +469,12 @@
       b.addEventListener('click', function(){
         var code = b.getAttribute('data-currency');
         if (code === state.currency) return;
+        var prev = state.currency;
         state.currency = code;
         state.userOverrodeCurrency = true;
         saveCurrencyState();
         applyCurrencyUI();
+        track('roi_currency_change', { from: prev, to: code, user_override: true });
         render();
       });
     });
@@ -501,6 +563,15 @@
         applyCurrencyUI();
         wireInputs();
         render();
+        // Fire roi_open after first render so the event payload can include
+        // the initial state (from URL params or localStorage). track.js's
+        // tool_open fires too — this is the higher-fidelity twin.
+        track('roi_open', {
+          commodity: state.commodity,
+          city: state.cityId,
+          currency: state.currency,
+          from_url_param: location.search ? true : false
+        });
       })
       .catch(function(err){
         console.error('ROI calculator data load failed', err);

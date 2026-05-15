@@ -247,6 +247,25 @@ Tracked in `DAILY-TASKS.md`. Not built this PR because they're not the bottlenec
 
 ---
 
+## 4.5 Tracking — the full event catalogue
+
+Source of truth: [EVENTS.md](EVENTS.md). 37 unique events covering the entire lead funnel, from `session_start` through every CTA / chat step / wizard step / ROI input / lead submission. Every event fires to **GA4** + **Vercel Analytics** + `dataLayer` via the unified `window.IzharTrack.track()` in [js/track.js](js/track.js).
+
+The chat widget, wizard, and ROI calculator all route through `IzharTrack` so events inherit session attribution (AI-search detection, social in-app browsers, legacy-redirect tagging, UTM honoring). To debug live, append `?debug_track=1` to any URL — every event logs to console with the `[track]` prefix.
+
+**Key funnel events to watch in GA4:**
+
+| Stage | Event | Target |
+|---|---|---|
+| Engagement | `engaged_session` (30s OR 50% scroll) | ≥35% of sessions |
+| Top-of-funnel intent | `cta_quote_click` / `cta_wizard_click` / `cta_roi_click` | ≥8% of engaged |
+| Tool opens | `chat_open` / `wizard_start` / `roi_open` | ≥30% of CTAs |
+| Mid-funnel completion | `roi_result_view`, `chat_step` ≥3, `wizard_step` ≥3 | ≥60% of opens |
+| Lead submitted | `chat_submit` / `wizard_submit` / `form_submit` | ≥40% of starters |
+| Lead delivered | `whatsapp_click` (with `lead_intent`) | = total leads |
+
+Mark these as GA4 conversion events: `wizard_submit`, `chat_submit`, `form_submit`, `lead_submitted`, `roi_whatsapp_click`. See EVENTS.md §9 for dashboard build recommendations + custom audience suggestions.
+
 ## 5. How we know if it's working
 
 After this ships, the metrics to watch (Composio MCP, GA4, weekly):

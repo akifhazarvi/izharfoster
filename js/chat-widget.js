@@ -37,9 +37,19 @@
 
   // ----- helpers -----
   function $(id){ return document.getElementById(id); }
+  // Route through IzharTrack (track.js) when available — gets session attribution,
+  // Vercel Analytics mirror, dataLayer push, and ?debug_track=1 console logs for free.
+  // Falls back to raw gtag if track.js hasn't loaded yet.
   function track(event, params){
-    if (!window.gtag) return;
-    try { gtag('event', event, params || {}); } catch(_){}
+    try {
+      if (window.IzharTrack && typeof window.IzharTrack.track === 'function') {
+        window.IzharTrack.track(event, Object.assign({ source_tool: 'chat_widget' }, params || {}));
+        return;
+      }
+    } catch(_){}
+    try {
+      if (window.gtag) gtag('event', event, params || {});
+    } catch(_){}
   }
   function persist(){
     try { sessionStorage.setItem(STATE_KEY, JSON.stringify(state)); } catch(_){}

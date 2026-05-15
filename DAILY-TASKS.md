@@ -167,6 +167,28 @@ Each page: 800–1,200 words. Named local project, city-specific design notes, L
 
 ---
 
+## 2026-05-14 — Lead-event tracking audit + full event catalogue (EVENTS.md)
+
+User ask: "make sure we have all events to track anyone trying or created any leads or intent." Audited existing `js/track.js` (already extensive — 16 events + auto-tracking of WhatsApp/phone/email/CTA/form/tool/case-study/engagement); plugged gaps; routed all session-built tools through `window.IzharTrack.track()` so events inherit session attribution.
+
+- [x] **`EVENTS.md`** (new) — full event catalogue. 37 events documented with trigger / params / owner / test page. Source of truth: if an event fires but isn't documented here, it's a bug.
+- [x] **`js/track.js` extended** —
+  - `cta_quote_click` heuristic now also recognises `/tools/concept-wizard` and `/tools/roi-payback` URLs (was: only `/contact`); adds `destination: 'contact' | 'wizard' | 'roi'` param. Also fires `cta_wizard_click` / `cta_roi_click` as more specific signals.
+  - **New events:** `scroll_depth` (25 / 50 / 75 / 95% milestones), `time_on_page` (60s / 120s / 300s tiers, visibility-checked), `external_link_click` (every non-WhatsApp external host), `page_exit` (depth + dwell on `pagehide`).
+- [x] **`js/chat-widget.js`** — routes through `window.IzharTrack.track()` so chat events (`chat_open` / `chat_step` / `chat_submit` / `chat_dismiss`) get full session attribution + Vercel Analytics mirror + `?debug_track=1` console output. Falls back to raw `gtag` if IzharTrack isn't loaded yet.
+- [x] **`js/tools/concept-wizard.js`** — same `IzharTrack` routing for `wizard_start` / `wizard_step` / `wizard_submit` / `wizard_abandon`.
+- [x] **`js/tools/roi-payback.js`** — was firing only 1 event (`roi_whatsapp_click` directly via gtag). Now fires 7: `roi_open`, `roi_commodity_change`, `roi_city_change`, `roi_currency_change`, `roi_throughput_change` (debounced 700ms), `roi_result_view` (highest-intent moment short of WhatsApp — fires once per session when a finite payback is rendered), `roi_whatsapp_click` (with full payload + `lead_intent` mirror). Also fixed the brittle `a.onclick =` pattern that overwrote handlers on every render; now uses `addEventListener` with a `data-tracked` guard.
+- [x] **`FUNNEL.md` §4.5** — tracking section added with key funnel events + GA4 conversion-event recommendations.
+
+### Next — GA4 dashboard build (manual UI work, queued)
+
+- [ ] In GA4 admin, mark these as conversion events: `wizard_submit`, `chat_submit`, `form_submit`, `lead_submitted`, `roi_whatsapp_click`.
+- [ ] Build funnel report: session_start → engaged_session → cta_*_click → wizard/chat/roi open → step ≥3 → submit → whatsapp_click. Drop-off chart per stage.
+- [ ] Build custom audiences: high-intent visitors (`roi_result_view` OR `wizard_step ≥3` OR `chat_step ≥3`); dropped wizard (`wizard_start` AND NOT `wizard_submit` in 24h); AI-search arrivals; KSA visitors. See EVENTS.md §9.
+- [ ] After 14 days of data, audit which events have <20 occurrences and trim them (over-tracking is noise). Conversely if drop-off shows a missing intermediate signal, add it.
+
+---
+
 ## 2026-05-14 — Chat widget: scripted-bot CTA on every page (FUNNEL.md §2.0.1)
 
 User ask: "now work on conversion cta chat icon chat bot, we need to generate leads". Three modes inside one widget (the user picked "i want all of them"): quick scripted chat, WhatsApp-direct, or full wizard.
