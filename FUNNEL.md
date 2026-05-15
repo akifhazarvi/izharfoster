@@ -121,6 +121,20 @@ Verified by fetching competitor HTML directly — no DataForSEO needed:
                        └──────────────────────┘
 ```
 
+### 2.0.1 The chat widget (added 2026-05-14)
+
+A persistent bottom-right chat FAB on every page (except the wizard and ROI calc themselves — they'd loop). On open, three choices:
+
+1. **Quick chat — 60 seconds** → scripted 4-step conversation flow with typing-dot animation (sector → capacity → city → phone) → opens WhatsApp prefilled with structured brief.
+2. **WhatsApp now — skip the bot** → direct `wa.me` deep-link with the current page path tagged in the message body.
+3. **Full wizard (5 questions)** → navigates to `/tools/concept-wizard`.
+
+This is the "chat icon → bot → engineer" funnel the user asked for. Honest framing: the widget header says **"Engineering desk · Online · replies in 24h"** — never claims AI. Dismiss state persists in `sessionStorage`, so closing it once stops nagging the visitor.
+
+The widget replaces the previous `.fab-wa` WhatsApp pill at runtime — same screen real estate, much higher conversion ceiling. GA4 events: `chat_open`, `chat_step` (per step), `chat_submit`, `chat_dismiss` — so we can measure exactly where the drop-offs are and iterate the script.
+
+Implementation note: single file (`js/chat-widget.js`), single `<script src="/js/chat-widget.js" defer>` tag, scoped CSS injected at runtime. Drops into any new page with one line. 66 pages site-wide.
+
 ### 2.1 Why every artefact ends on WhatsApp
 
 The existing contact form (`contact.html`) already submits via `wa.me` deep-link with a structured message. Pakistan B2B cold-storage sales happens on WhatsApp. The wizard and Tool 10 inherit the same handoff — **no new backend, no email follow-up latency, no SaaS chat fees**. The wizard's "submit" button is "Send my spec to an engineer on WhatsApp." The ROI calculator's CTA is "WhatsApp this result to an engineer for a precise quote."

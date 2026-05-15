@@ -167,6 +167,26 @@ Each page: 800–1,200 words. Named local project, city-specific design notes, L
 
 ---
 
+## 2026-05-14 — Chat widget: scripted-bot CTA on every page (FUNNEL.md §2.0.1)
+
+User ask: "now work on conversion cta chat icon chat bot, we need to generate leads". Three modes inside one widget (the user picked "i want all of them"): quick scripted chat, WhatsApp-direct, or full wizard.
+
+- [x] **`js/chat-widget.js`** (new, ~440 lines): self-contained chat FAB + slide-up panel + 4-step scripted conversation (sector → capacity → city → phone) → WhatsApp handoff with structured brief. Pulse animation on the FAB. Typing-dot animation on bot messages. Honest framing: "Engineering desk · Online · replies in 24h" — never claims AI. Dismiss state persists in `sessionStorage` (closing once stops nagging). GA4 events: `chat_open`, `chat_step`, `chat_submit`, `chat_dismiss`.
+- [x] **Site-wide injection** — single `<script src="/js/chat-widget.js" defer></script>` added after `main.v2.js` on all 66 pages with a layout shell (root, services, projects, blog, tools, city pages). Two pages excluded by the widget's own pathname check (concept-wizard + roi-payback would loop).
+- [x] **Replaces the old `.fab-wa` WhatsApp pill** — same bottom-right slot, same WhatsApp escape hatch (via the "WhatsApp now" choice), but now the default path is a structured chat that captures intent before handoff. Old pill removed at runtime by the widget itself (no markup edits needed across 66 files).
+- [x] **FUNNEL.md §2.0.1** — chat widget design documented.
+
+### Next — chat widget iteration (queue once GA4 data lands)
+
+- [ ] Watch `chat_step` drop-off in GA4 weekly. Tune copy on whichever step has highest abandonment.
+- [ ] A/B the FAB label text ("Chat with engineering · reply in 24h" vs alternatives) after 2 weeks of data.
+- [ ] Add a 5th step "What's your role?" (Owner / Manager / Consultant / Procurement) once we have data showing role correlates with conversion — currently keeping it 4 steps to maximise completion rate.
+- [ ] Add `?prefill_sector=pharma` URL param so a CTA on the pharma page can open the chat with sector preselected.
+- [ ] Multilingual: detect `lang=ar` or `navigator.language` and translate widget copy for Saudi visitors (Phase 2).
+- [ ] Optional later: handover to a real CRM (HubSpot free tier? Pipedrive?) once WhatsApp inbox volume justifies it.
+
+---
+
 ## 2026-05-14 — Conversion funnel rebuild (FUNNEL.md)
 
 Triggered by user instruction: "Don't bullshit, research, build logic and repeat." Full GSC + competitor research run; designed and shipped a conversion-first funnel that routes every visitor to one of two new artefacts (wizard or ROI calculator) and hands off to a human engineer on WhatsApp. **Source of truth: [FUNNEL.md](FUNNEL.md)** — read this before changing any CTA.

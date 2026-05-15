@@ -1,8 +1,11 @@
 _scrape/
 _kr_scrape/
 _scrape_coldstore/
+_audit/
 node_modules/
 .DS_Store
 Thumbs.db
 *.log
 *.bak
+screenshots/
+izhargroup_logo.jpeg
