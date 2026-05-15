@@ -399,6 +399,221 @@
 </section>
 
 <!-- ============================================================
+     COLD MAP — Pakistan installs + GCC export reach
+     Reusable component: also embedded on services/cold-storage-saudi-arabia.html
+     ============================================================ -->
+<section class="section cold-map-section" data-temp="-10" id="cold-map" aria-labelledby="cold-map-heading">
+  <div class="clients-section-head" style="max-width:1320px;margin-bottom:32px">
+    <span class="eyebrow">Cold Map · Pakistan &amp; GCC</span>
+    <h2 id="cold-map-heading">Where Izhar Foster cold chain lives — and where we ship it next.</h2>
+    <p style="max-width:62ch;color:var(--ink-2);margin-top:12px">Solid pins are named, delivered installations across Pakistan. Hollow pins are GCC cities where Izhar Foster currently exports FireSafe PIR panels, refrigeration equipment, and engineering supervision &mdash; including Saudi Arabia, where our engineers travel for design, commissioning, and handover.</p>
+  </div>
+
+  <div class="cold-map-wrap" style="max-width:1320px;margin:0 auto">
+    <style>
+      .cold-map-figure{position:relative;background:#0A1F3D;border-radius:16px;overflow:hidden;box-shadow:0 12px 40px rgba(10,31,61,.18);aspect-ratio:16/9}
+      .cold-map-figure svg{width:100%;height:100%;display:block;font-family:var(--font-mono,'JetBrains Mono',ui-monospace,monospace)}
+      .cm-land{fill:#1A3A66;stroke:#2E5689;stroke-width:.4}
+      .cm-water{fill:#0A1F3D}
+      .cm-label{fill:rgba(245,242,236,.55);font-size:9px;letter-spacing:.08em;text-transform:uppercase;pointer-events:none}
+      .cm-label-country{fill:rgba(245,242,236,.32);font-size:11px;font-weight:600;letter-spacing:.16em;pointer-events:none}
+      .cm-route{stroke:#E36A1E;stroke-width:1.1;fill:none;stroke-dasharray:4 4;opacity:.5}
+      .cm-pin{cursor:pointer;transition:transform .2s ease}
+      .cm-pin:hover,.cm-pin:focus-visible{transform:translateY(-2px);outline:none}
+      .cm-pin-dot-pk{fill:#E36A1E;stroke:#F5F2EC;stroke-width:1.4}
+      .cm-pin-dot-ksa{fill:none;stroke:#E36A1E;stroke-width:1.6;stroke-dasharray:2 1.5}
+      .cm-pin-label{fill:#F5F2EC;font-size:9.5px;font-weight:500;pointer-events:none;text-shadow:0 1px 2px rgba(0,0,0,.6)}
+      .cm-legend{position:absolute;bottom:18px;left:18px;background:rgba(10,31,61,.86);backdrop-filter:blur(6px);border:1px solid rgba(245,242,236,.15);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;font-family:var(--font-mono,'JetBrains Mono',ui-monospace,monospace);font-size:11px;color:#F5F2EC;max-width:240px}
+      .cm-legend-row{display:flex;align-items:center;gap:10px}
+      .cm-legend-swatch{display:inline-block;width:14px;height:14px;border-radius:50%;flex-shrink:0}
+      .cm-legend-swatch.pk{background:#E36A1E;border:1.4px solid #F5F2EC}
+      .cm-legend-swatch.ksa{background:transparent;border:1.6px dashed #E36A1E}
+      .cm-tooltip{position:absolute;background:#F5F2EC;color:#0A1F3D;padding:10px 12px;border-radius:8px;font-size:.86rem;line-height:1.4;max-width:240px;box-shadow:0 8px 24px rgba(0,0,0,.3);pointer-events:none;opacity:0;transform:translate(-50%,-110%);transition:opacity .15s ease;z-index:10}
+      .cm-tooltip.is-active{opacity:1}
+      .cm-tooltip strong{display:block;font-weight:600;margin-bottom:2px;color:#0A1F3D}
+      .cm-tooltip span{color:#6E6F73;font-size:.78rem;font-family:var(--font-mono,'JetBrains Mono',ui-monospace,monospace)}
+      .cm-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-top:24px;max-width:1320px}
+      .cm-stat{background:var(--paper-2,#ECE7DC);border-radius:10px;padding:18px 20px}
+      .cm-stat-n{font-family:var(--font-mono,'JetBrains Mono',ui-monospace,monospace);font-size:1.6rem;font-weight:600;color:#0A1F3D;display:block;line-height:1}
+      .cm-stat-u{font-family:var(--font-mono,'JetBrains Mono',ui-monospace,monospace);font-size:.72rem;color:#6E6F73;letter-spacing:.08em;text-transform:uppercase;margin-top:6px;display:block}
+      .cm-stat-l{font-size:.86rem;color:#2A2D33;margin-top:8px;display:block}
+      @media (max-width:720px){
+        .cold-map-figure{aspect-ratio:4/3}
+        .cm-legend{font-size:10px;padding:10px 12px;max-width:200px}
+        .cm-pin-label{font-size:8px}
+        .cm-label-country{font-size:9px}
+      }
+    </style>
+
+    <figure class="cold-map-figure" role="img" aria-label="Map of Izhar Foster cold storage installations across Pakistan and export reach into the Gulf Cooperation Council region">
+      <svg viewBox="0 0 800 450" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+        <!-- Background sea -->
+        <rect class="cm-water" x="0" y="0" width="800" height="450"/>
+
+        <!-- Pakistan landmass (simplified silhouette, lon 60-77E, lat 23-37N) -->
+        <path class="cm-land" d="M 555,95 L 595,90 L 625,98 L 648,110 L 660,135 L 668,160 L 678,180 L 690,200 L 685,225 L 670,245 L 655,265 L 632,278 L 610,285 L 588,295 L 568,305 L 550,300 L 535,288 L 520,270 L 510,250 L 504,228 L 498,205 L 494,185 L 490,165 L 492,145 L 502,125 L 522,108 Z"/>
+
+        <!-- Saudi Arabia / Arabian Peninsula (lon 35-55E, lat 16-32N) -->
+        <path class="cm-land" d="M 215,130 L 260,125 L 305,130 L 355,140 L 395,155 L 425,175 L 442,200 L 448,230 L 442,260 L 425,285 L 400,308 L 370,322 L 335,330 L 295,328 L 258,318 L 225,302 L 200,278 L 188,248 L 185,218 L 192,185 L 205,155 Z"/>
+
+        <!-- UAE (lon 51-56E, lat 22-26N) -->
+        <path class="cm-land" d="M 425,238 L 450,234 L 470,242 L 478,255 L 472,268 L 455,275 L 435,272 L 425,260 Z"/>
+
+        <!-- Qatar peninsula -->
+        <path class="cm-land" d="M 405,235 L 415,232 L 418,250 L 412,260 L 405,256 Z"/>
+
+        <!-- Oman (lon 52-60E, lat 17-26N) -->
+        <path class="cm-land" d="M 472,265 L 498,272 L 515,288 L 522,310 L 515,325 L 495,328 L 478,318 L 470,300 L 470,282 Z"/>
+
+        <!-- Country labels -->
+        <text class="cm-label-country" x="585" y="195" text-anchor="middle">PAKISTAN</text>
+        <text class="cm-label-country" x="320" y="235" text-anchor="middle">SAUDI ARABIA</text>
+        <text class="cm-label-country" x="450" y="258" text-anchor="middle" style="font-size:7px">UAE</text>
+        <text class="cm-label-country" x="495" y="305" text-anchor="middle" style="font-size:7px">OMAN</text>
+
+        <!-- Sea label -->
+        <text class="cm-label" x="500" y="375" text-anchor="middle">ARABIAN SEA</text>
+
+        <!-- Export route lines (Lahore → KSA + GCC cities) -->
+        <path class="cm-route" d="M 595,160 Q 470,180 350,205"/>
+        <path class="cm-route" d="M 595,160 Q 500,180 290,275"/>
+        <path class="cm-route" d="M 595,160 Q 510,200 405,260"/>
+        <path class="cm-route" d="M 595,160 Q 510,210 445,250"/>
+
+        <!-- PAKISTAN PINS (solid) -->
+        <!-- Lahore -->
+        <g class="cm-pin" tabindex="0" data-pin="Lahore" data-title="Lahore — HQ &amp; Manufacturing" data-sub="Plant · 277,460 sqft · 2,100+ installations">
+          <circle class="cm-pin-dot-pk" cx="595" cy="160" r="6.5"/>
+          <text class="cm-pin-label" x="605" y="163">Lahore · HQ</text>
+        </g>
+        <!-- Karachi -->
+        <g class="cm-pin" tabindex="0" data-pin="Karachi" data-title="Karachi — Connect Logistics" data-sub="3PL multi-temp · port cold chain">
+          <circle class="cm-pin-dot-pk" cx="540" cy="248" r="5.5"/>
+          <text class="cm-pin-label" x="550" y="251">Karachi</text>
+        </g>
+        <!-- Multan -->
+        <g class="cm-pin" tabindex="0" data-pin="Multan" data-title="Multan" data-sub="Mango &amp; date cold chain · 47°C design">
+          <circle class="cm-pin-dot-pk" cx="585" cy="200" r="5"/>
+          <text class="cm-pin-label" x="595" y="203">Multan</text>
+        </g>
+        <!-- Faisalabad -->
+        <g class="cm-pin" tabindex="0" data-pin="Faisalabad" data-title="Faisalabad" data-sub="Dairy belt · Interloop">
+          <circle class="cm-pin-dot-pk" cx="580" cy="175" r="5"/>
+          <text class="cm-pin-label" x="558" y="172" text-anchor="end">Faisalabad</text>
+        </g>
+        <!-- Gujranwala -->
+        <g class="cm-pin" tabindex="0" data-pin="Gujranwala" data-title="Gujranwala — Naubahar" data-sub="Pepsi bottling cold storage &amp; QC lab">
+          <circle class="cm-pin-dot-pk" cx="600" cy="148" r="5"/>
+          <text class="cm-pin-label" x="610" y="151">Gujranwala</text>
+        </g>
+        <!-- Sialkot -->
+        <g class="cm-pin" tabindex="0" data-pin="Sialkot" data-title="Sialkot" data-sub="Frozen bakery storage">
+          <circle class="cm-pin-dot-pk" cx="612" cy="138" r="4"/>
+          <text class="cm-pin-label" x="622" y="141">Sialkot</text>
+        </g>
+        <!-- Islamabad -->
+        <g class="cm-pin" tabindex="0" data-pin="Islamabad" data-title="Islamabad" data-sub="Hypermarket retail cold storage">
+          <circle class="cm-pin-dot-pk" cx="600" cy="125" r="5"/>
+          <text class="cm-pin-label" x="610" y="128">Islamabad</text>
+        </g>
+        <!-- Phool Nagar (HAC Agri) -->
+        <g class="cm-pin" tabindex="0" data-pin="PhoolNagar" data-title="Phool Nagar — HAC Agri" data-sub="3,000-t CA store · 20 rooms · Fruit Control Italiana">
+          <circle class="cm-pin-dot-pk" cx="590" cy="170" r="5"/>
+          <text class="cm-pin-label" x="568" y="167" text-anchor="end">Phool Nagar</text>
+        </g>
+        <!-- Sindh (USAID banana ripening) -->
+        <g class="cm-pin" tabindex="0" data-pin="Sindh" data-title="Sindh — USAID Banana Ripening" data-sub="Ethylene-controlled rooms for smallholder cooperatives">
+          <circle class="cm-pin-dot-pk" cx="555" cy="270" r="5"/>
+          <text class="cm-pin-label" x="565" y="273">Sindh</text>
+        </g>
+        <!-- KPK (Apple CA) -->
+        <g class="cm-pin" tabindex="0" data-pin="KPK" data-title="KPK" data-sub="Apple CA store · 3,500 m³ · 2.5% O₂">
+          <circle class="cm-pin-dot-pk" cx="572" cy="110" r="5"/>
+          <text class="cm-pin-label" x="550" y="107" text-anchor="end">KPK</text>
+        </g>
+
+        <!-- GCC EXPORT REACH PINS (hollow / dashed) -->
+        <!-- Riyadh -->
+        <g class="cm-pin" tabindex="0" data-pin="Riyadh" data-title="Riyadh — Export reach" data-sub="PIR panels &amp; refrigeration equipment · engineer commissioning">
+          <circle class="cm-pin-dot-ksa" cx="350" cy="205" r="6.5"/>
+          <text class="cm-pin-label" x="360" y="208">Riyadh</text>
+        </g>
+        <!-- Jeddah -->
+        <g class="cm-pin" tabindex="0" data-pin="Jeddah" data-title="Jeddah — Export reach" data-sub="Red Sea port · pharma &amp; food import cold chain">
+          <circle class="cm-pin-dot-ksa" cx="290" cy="275" r="6"/>
+          <text class="cm-pin-label" x="280" y="278" text-anchor="end">Jeddah</text>
+        </g>
+        <!-- Dammam -->
+        <g class="cm-pin" tabindex="0" data-pin="Dammam" data-title="Dammam — Export reach" data-sub="Eastern Province · oil &amp; gas industrial cold storage">
+          <circle class="cm-pin-dot-ksa" cx="405" cy="208" r="6"/>
+          <text class="cm-pin-label" x="415" y="211">Dammam</text>
+        </g>
+        <!-- Dubai (UAE) -->
+        <g class="cm-pin" tabindex="0" data-pin="Dubai" data-title="Dubai — Export reach" data-sub="Re-export hub · logistics &amp; pharma">
+          <circle class="cm-pin-dot-ksa" cx="445" cy="250" r="6"/>
+          <text class="cm-pin-label" x="455" y="253">Dubai</text>
+        </g>
+      </svg>
+
+      <div class="cm-legend" aria-hidden="true">
+        <div class="cm-legend-row"><span class="cm-legend-swatch pk"></span><span>Delivered installation · Pakistan</span></div>
+        <div class="cm-legend-row"><span class="cm-legend-swatch ksa"></span><span>Export reach · GCC</span></div>
+      </div>
+
+      <div class="cm-tooltip" id="cm-tooltip" role="tooltip" aria-hidden="true">
+        <strong id="cm-tooltip-title">&nbsp;</strong>
+        <span id="cm-tooltip-sub">&nbsp;</span>
+      </div>
+    </figure>
+
+    <div class="cm-stats">
+      <div class="cm-stat"><span class="cm-stat-n">2,100<sup style="font-size:.6em">+</sup></span><span class="cm-stat-u">installations</span><span class="cm-stat-l">Delivered across Pakistan since 1959</span></div>
+      <div class="cm-stat"><span class="cm-stat-n">10</span><span class="cm-stat-u">PK cities</span><span class="cm-stat-l">Manufacturing in Lahore, projects nationwide</span></div>
+      <div class="cm-stat"><span class="cm-stat-n">4</span><span class="cm-stat-u">GCC cities</span><span class="cm-stat-l">Export reach &mdash; panels, equipment, commissioning</span></div>
+      <div class="cm-stat"><span class="cm-stat-n">BS&nbsp;EN&nbsp;14509</span><span class="cm-stat-u">panel standard</span><span class="cm-stat-l">λ 0.022 W/m·K · meets GCC fire &amp; thermal codes</span></div>
+    </div>
+
+    <p style="max-width:62ch;color:var(--muted);font-size:.86rem;margin-top:20px;font-family:var(--font-mono,'JetBrains Mono',ui-monospace,monospace);letter-spacing:.02em">Map is a schematic for orientation, not a survey-grade boundary. GCC pins indicate Izhar Foster export reach for panels, refrigeration equipment, and fly-in engineering &mdash; local installation is performed in partnership with regional contractors. <a href="services/cold-storage-saudi-arabia">Saudi Arabia &amp; GCC service page &rarr;</a></p>
+  </div>
+
+  <script>
+    (function(){
+      var pins = document.querySelectorAll('#cold-map .cm-pin');
+      var tip = document.getElementById('cm-tooltip');
+      var tTitle = document.getElementById('cm-tooltip-title');
+      var tSub = document.getElementById('cm-tooltip-sub');
+      var fig = document.querySelector('#cold-map .cold-map-figure');
+      if(!pins.length || !tip || !fig) return;
+
+      function show(pin, evt){
+        tTitle.textContent = pin.getAttribute('data-title') || '';
+        tSub.textContent = pin.getAttribute('data-sub') || '';
+        var rect = fig.getBoundingClientRect();
+        var bb = pin.getBoundingClientRect();
+        var x = (bb.left + bb.width/2) - rect.left;
+        var y = bb.top - rect.top;
+        tip.style.left = x + 'px';
+        tip.style.top = y + 'px';
+        tip.classList.add('is-active');
+        tip.setAttribute('aria-hidden','false');
+      }
+      function hide(){
+        tip.classList.remove('is-active');
+        tip.setAttribute('aria-hidden','true');
+      }
+      pins.forEach(function(p){
+        p.addEventListener('mouseenter', function(e){ show(p, e); });
+        p.addEventListener('mouseleave', hide);
+        p.addEventListener('focus', function(e){ show(p, e); });
+        p.addEventListener('blur', hide);
+        p.addEventListener('click', function(e){ show(p, e); });
+      });
+      document.addEventListener('scroll', hide, { passive: true });
+    })();
+  </script>
+</section>
+
+<!-- ============================================================
      SECONDARY PROJECTS — data list
      ============================================================ -->
 <section class="section" data-temp="-15" style="padding-top:48px">
