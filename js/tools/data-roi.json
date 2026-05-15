@@ -1,0 +1,237 @@
+{
+  "$comment": "Cold Store Money Calculator (Tool 10) — commodity spoilage rates, PK selling price defaults, capacity factors. INDICATIVE — user-editable selling price, ±25% band applied at output.",
+  "$last_updated": "2026-05-14",
+  "$sources": [
+    "FAO Postharvest Loss Compendium 2011 (commodity losses without cold chain)",
+    "Punjab Agriculture Marketing Board postharvest survey 2022-2024",
+    "Pakistan Bureau of Statistics wholesale price survey 2024-2025",
+    "USDA Handbook 66 (CA storage commodities)",
+    "WHO TRS 961 Annex 9 (pharmaceutical cold chain spoilage assumed near-zero with chain, 100% economic loss at chain break)"
+  ],
+  "uncertainty_band_pct": 25,
+  "currency": "PKR",
+
+  "fx": {
+    "$comment": "Hardcoded indicative FX rates — base currency PKR. Update when any rate drifts more than 5% (last revision triggered if PKR weakens significantly or any pegged GCC currency revalues). UI shows the as-of date with an honest 'confirm exact pricing with engineer' band. The +-25% uncertainty band on outputs swamps any small FX drift.",
+    "base": "PKR",
+    "rates_as_of": "2026-05-14",
+    "rates": {
+      "PKR": { "code": "PKR", "symbol": "Rs", "name": "Pakistani Rupee", "per_pkr": 1, "decimals": 0 },
+      "SAR": { "code": "SAR", "symbol": "SAR", "name": "Saudi Riyal", "per_pkr": 0.01333, "decimals": 0, "$note": "1 SAR ~= 75 PKR (peg ~3.75 SAR/USD)" },
+      "USD": { "code": "USD", "symbol": "$", "name": "US Dollar", "per_pkr": 0.00357, "decimals": 0, "$note": "1 USD ~= 280 PKR" },
+      "AED": { "code": "AED", "symbol": "AED", "name": "UAE Dirham", "per_pkr": 0.01316, "decimals": 0, "$note": "1 AED ~= 76 PKR (peg ~3.67 AED/USD)" },
+      "QAR": { "code": "QAR", "symbol": "QAR", "name": "Qatari Riyal", "per_pkr": 0.01316, "decimals": 0, "$note": "1 QAR ~= 76 PKR (peg ~3.64 QAR/USD)" },
+      "OMR": { "code": "OMR", "symbol": "OMR", "name": "Omani Rial", "per_pkr": 0.00139, "decimals": 1, "$note": "1 OMR ~= 720 PKR (peg ~0.385 OMR/USD)" }
+    },
+    "default_currency_by_country": {
+      "PK": "PKR",
+      "SA": "SAR",
+      "AE": "AED",
+      "QA": "QAR",
+      "OM": "OMR",
+      "OTHER": "USD"
+    },
+    "city_to_country": {
+      "lahore": "PK", "karachi": "PK", "islamabad": "PK", "faisalabad": "PK",
+      "multan": "PK", "rawalpindi": "PK", "gujranwala": "PK", "sialkot": "PK",
+      "hyderabad": "PK", "sukkur": "PK", "peshawar": "PK", "quetta": "PK",
+      "gwadar": "PK", "jacobabad": "PK",
+      "saudi_riyadh": "SA", "saudi_jeddah": "SA", "saudi_dammam": "SA",
+      "uae_dubai": "AE"
+    }
+  },
+
+
+  "commodities": [
+    {
+      "id": "mango",
+      "label": "Mango (Sindhri, Chaunsa)",
+      "spoilage_no_chain_pct": 35,
+      "spoilage_with_chain_pct": 6,
+      "default_price_pkr_per_kg": 220,
+      "temp_band": "+10 to +13°C",
+      "m3_per_tonne": 4.0,
+      "notes": "FAO PK mango loss study: 35-50% loss farm-to-market without cold chain. Cold chain drops to 5-8%.",
+      "sector": "agri-export"
+    },
+    {
+      "id": "dates",
+      "label": "Dates (Aseel, Karbalaiyan)",
+      "spoilage_no_chain_pct": 25,
+      "spoilage_with_chain_pct": 4,
+      "default_price_pkr_per_kg": 480,
+      "temp_band": "0 to +2°C",
+      "m3_per_tonne": 2.8,
+      "notes": "Sindh/Balochistan dates. CA storage extends to 12 months at +0.5°C, 2-5% O2.",
+      "sector": "agri-export"
+    },
+    {
+      "id": "citrus",
+      "label": "Citrus (Kinnow, orange)",
+      "spoilage_no_chain_pct": 30,
+      "spoilage_with_chain_pct": 7,
+      "default_price_pkr_per_kg": 90,
+      "temp_band": "+4 to +8°C",
+      "m3_per_tonne": 3.8,
+      "notes": "Sargodha belt. Without cold chain, kinnow loses 25-35% in 14 days post-harvest.",
+      "sector": "agri-export"
+    },
+    {
+      "id": "banana",
+      "label": "Banana (green, for ripening)",
+      "spoilage_no_chain_pct": 40,
+      "spoilage_with_chain_pct": 5,
+      "default_price_pkr_per_kg": 120,
+      "temp_band": "+13 to +14°C (transit), +14-17 ripening",
+      "m3_per_tonne": 4.2,
+      "notes": "Karachi import + Sindh production. Ripening rooms required.",
+      "sector": "agri-export"
+    },
+    {
+      "id": "potato",
+      "label": "Potato (table + seed)",
+      "spoilage_no_chain_pct": 20,
+      "spoilage_with_chain_pct": 3,
+      "default_price_pkr_per_kg": 65,
+      "temp_band": "+4 to +8°C (table), +2 to +4°C (seed)",
+      "m3_per_tonne": 1.7,
+      "notes": "Okara/Pakpattan/Sahiwal. Seed potato requires +2-4°C with sprout suppression.",
+      "sector": "agri-staple"
+    },
+    {
+      "id": "onion",
+      "label": "Onion",
+      "spoilage_no_chain_pct": 30,
+      "spoilage_with_chain_pct": 5,
+      "default_price_pkr_per_kg": 80,
+      "temp_band": "0 to +2°C, 65-75% RH",
+      "m3_per_tonne": 2.2,
+      "notes": "Mirpurkhas/Khairpur. Critical for price stabilisation during glut.",
+      "sector": "agri-staple"
+    },
+    {
+      "id": "tomato",
+      "label": "Tomato",
+      "spoilage_no_chain_pct": 40,
+      "spoilage_with_chain_pct": 8,
+      "default_price_pkr_per_kg": 90,
+      "temp_band": "+10 to +13°C (mature green), +7 to +10°C (ripe)",
+      "m3_per_tonne": 4.5,
+      "notes": "Pre-cooling critical. Chilling injury below +10°C for unripe.",
+      "sector": "agri-perishable"
+    },
+    {
+      "id": "dairy",
+      "label": "Dairy (milk, yoghurt, cheese)",
+      "spoilage_no_chain_pct": 25,
+      "spoilage_with_chain_pct": 2,
+      "default_price_pkr_per_kg": 220,
+      "temp_band": "+2 to +4°C",
+      "m3_per_tonne": 1.5,
+      "notes": "Engro/Olper's/Nestlé MCC model. 2% loss with chain, 25% without.",
+      "sector": "dairy"
+    },
+    {
+      "id": "meat-poultry",
+      "label": "Meat & Poultry (chilled)",
+      "spoilage_no_chain_pct": 30,
+      "spoilage_with_chain_pct": 3,
+      "default_price_pkr_per_kg": 850,
+      "temp_band": "0 to +4°C (chilled), -18 to -25°C (frozen)",
+      "m3_per_tonne": 2.5,
+      "notes": "Carcass chilling + frozen storage. HACCP scope.",
+      "sector": "meat"
+    },
+    {
+      "id": "seafood",
+      "label": "Seafood (shrimp, fish frozen)",
+      "spoilage_no_chain_pct": 35,
+      "spoilage_with_chain_pct": 4,
+      "default_price_pkr_per_kg": 1400,
+      "temp_band": "-25 to -40°C (blast), -25°C storage",
+      "m3_per_tonne": 1.8,
+      "notes": "Karachi coast. Export grade requires blast at -35°C.",
+      "sector": "seafood"
+    },
+    {
+      "id": "pharma",
+      "label": "Pharmaceutical (vaccines, biologics)",
+      "spoilage_no_chain_pct": 100,
+      "spoilage_with_chain_pct": 0.5,
+      "default_price_pkr_per_kg": 25000,
+      "temp_band": "+2 to +8°C (cold chain), -20°C (frozen)",
+      "m3_per_tonne": 3.0,
+      "notes": "WHO TRS 961 Annex 9. ANY chain break = total economic loss. PKR/kg includes vial + biological.",
+      "sector": "pharma"
+    },
+    {
+      "id": "fmcg-frozen",
+      "label": "FMCG frozen (ice cream, ready meals)",
+      "spoilage_no_chain_pct": 100,
+      "spoilage_with_chain_pct": 1,
+      "default_price_pkr_per_kg": 380,
+      "temp_band": "-18 to -25°C",
+      "m3_per_tonne": 2.2,
+      "notes": "Gourmet/Omore scale. Chain break = total loss (re-freeze rejected).",
+      "sector": "fmcg"
+    }
+  ],
+
+  "cities_tariff": {
+    "$comment": "PKR/kWh — commercial B-3 industrial tariff 2025-26 weighted average. Karachi = K-Electric, others = LESCO/MEPCO/IESCO/FESCO/HESCO/PESCO/QESCO/TESCO depending on city.",
+    "lahore": 42,
+    "karachi": 47,
+    "islamabad": 41,
+    "faisalabad": 42,
+    "multan": 42,
+    "rawalpindi": 41,
+    "gujranwala": 42,
+    "sialkot": 42,
+    "hyderabad": 43,
+    "sukkur": 43,
+    "peshawar": 40,
+    "quetta": 39,
+    "gwadar": 41,
+    "jacobabad": 43,
+    "saudi_riyadh": 18,
+    "saudi_jeddah": 18,
+    "saudi_dammam": 18,
+    "uae_dubai": 22,
+    "$comment_gcc": "Saudi SEC industrial commercial tariff approx PKR 18/kWh equivalent (SAR 0.24/kWh @ PKR 75/SAR). DEWA Dubai approx PKR 22/kWh."
+  },
+
+  "capex_pkr_per_m3": {
+    "$comment": "All-in cold store capex including PIR panels, refrigeration, civil, doors, controls. Tighter band than uncertainty allows for envelope choice. Used as midpoint with ±20%.",
+    "chilled_above_zero": 21000,
+    "chilled_zero_to_four": 22000,
+    "frozen_minus_eighteen": 26000,
+    "blast_freezer_minus_thirty": 34000,
+    "ca_store": 31000,
+    "pharma_validated": 38000
+  },
+
+  "opex_kwh_per_m3_per_year": {
+    "$comment": "Annual kWh per m3 by temperature class. ASHRAE Ch. 24 simplified rule-of-thumb adjusted for Pakistan 42-45 deg C summer ambient. Lower bound = well-insulated 100mm panel, upper bound = thin panel + high dock cycling. Use midpoint.",
+    "chilled_above_zero": 55,
+    "chilled_zero_to_four": 65,
+    "frozen_minus_eighteen": 110,
+    "blast_freezer_minus_thirty": 180,
+    "ca_store": 80,
+    "pharma_validated": 90
+  },
+
+  "opex_extras_pct_of_capex": {
+    "$comment": "Annual non-electricity opex: maintenance, consumables, labour, monitoring. Percentage of total capex.",
+    "default": 0.04,
+    "pharma": 0.07
+  },
+
+  "throughput_to_capacity_factor": {
+    "$comment": "Multiplier from monthly throughput (tonnes) to required storage capacity (tonnes-held-on-average). Lower = faster turnover (e.g. 3PL), higher = longer storage (e.g. CA, seed potato, dates).",
+    "fast_turnover_3pl": 0.4,
+    "standard_30d_hold": 1.0,
+    "ca_long_term": 4.0,
+    "seasonal_dates_potato": 6.0,
+    "$default": 1.0
+  }
+}

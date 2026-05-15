@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PLY0DZWNEM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PLY0DZWNEM');
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
+  <script defer src="/_vercel/speed-insights/script.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="canonical" href="https://izharfoster.com/tools/roi-payback">
+<title>Cold Store ROI &amp; Payback Calculator — What you lose, what it costs, when it pays back | Izhar Foster</title>
+<meta name="description" content="Free cold storage ROI calculator. Tell us your commodity, throughput, and city — see your monthly spoilage loss, the cold store capex, and the payback in months. Defensible math from FAO + ASHRAE + Pakistan tariff data. The number nobody else publishes.">
+<meta property="og:title" content="Cold Store ROI &amp; Payback Calculator | Izhar Foster">
+<meta property="og:url" content="https://izharfoster.com/tools/roi-payback">
+<meta property="og:locale" content="en_PK">
+<meta property="og:description" content="What is spoilage costing you right now? When does a cold store pay back? 30-second answer with defensible Pakistan + KSA numbers.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://izharfoster.com/images/og-default.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="https://izharfoster.com/images/favicon-mark.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="https://izharfoster.com/images/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://izharfoster.com/images/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"></noscript>
+<link rel="stylesheet" href="../css/style.v2.css">
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Cold Store ROI &amp; Payback Calculator — Izhar Foster","description":"Free cold storage return-on-investment and payback calculator tuned to Pakistan and KSA markets. Inputs: commodity, monthly throughput, selling price, delivery city. Outputs: monthly and annual spoilage loss currently being absorbed, cold store capex band, payback in months, 10-year cash position. Math grounded in FAO Postharvest Compendium, ASHRAE Refrigeration Handbook Ch. 24, and published city tariff schedules (LESCO, K-Electric, IESCO, MEPCO, FESCO + Saudi SEC, DEWA).","applicationCategory":"BusinessApplication","operatingSystem":"Web","url":"https://izharfoster.com/tools/roi-payback","offers":{"@type":"Offer","price":"0","priceCurrency":"PKR"},"creator":{"@id":"https://izharfoster.com#organization"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"How does Izhar Foster calculate the spoilage loss?","acceptedAnswer":{"@type":"Answer","text":"Each commodity carries a spoilage rate from the FAO Postharvest Loss Compendium 2011 and the Punjab Agriculture Marketing Board surveys 2022-2024. For example, mango loses 30-50% farm-to-market without cold chain in Pakistan, falling to 5-8% with cold chain. Monthly loss = throughput × (spoilage-without − spoilage-with) × selling price. The selling price is editable so you can use your own number rather than the wholesale default."}},
+{"@type":"Question","name":"How is the cold store capex estimated?","acceptedAnswer":{"@type":"Answer","text":"Capex per cubic metre is taken from a Pakistan-realistic 2026 build cost stack: PIR panels + refrigeration plant + civil works + doors + controls. Different temperature classes (chilled, frozen, blast, CA, pharma) carry different rates. The required volume is derived from your monthly throughput multiplied by a turnover factor (default = 30-day average hold). Output is shown as a ±20% band — exact pricing requires a site visit and engineer review."}},
+{"@type":"Question","name":"How is payback calculated?","acceptedAnswer":{"@type":"Answer","text":"Payback months = capex ÷ (monthly loss avoided − monthly opex). Monthly opex is electricity (city tariff × kWh/m³/year × volume ÷ 12) plus 4-7% of capex divided by 12 for maintenance and labour. The calculator only credits loss avoided, not revenue uplift from premium pricing or new export markets — both of which usually accelerate payback further. We show a non-discounted 10-year cash position chart with a transparent caveat."}},
+{"@type":"Question","name":"Why is the result a range, not a number?","acceptedAnswer":{"@type":"Answer","text":"Real cold-store projects vary ±20% on capex (PIR panel thickness, civil scope, refrigeration choice, location) and selling prices move with the market. We publish a band rather than fake precision — this matches how Izhar Foster's sales engineers quote internally. To collapse the band to a single number, request a precise quote on WhatsApp with the auto-filled summary at the bottom of the result."}},
+{"@type":"Question","name":"Does this work for Saudi Arabia projects?",
+"acceptedAnswer":{"@type":"Answer","text":"Yes. Saudi cities (Riyadh, Jeddah, Dammam) use SEC commercial industrial tariff converted to PKR-equivalent for the calculation, and Dubai uses DEWA. Capex is shown in PKR as an FOB-Karachi baseline; for delivered-to-KSA cost add 12-18% for sea freight + customs + fly-in engineering. See the Saudi Arabia services page for the export model."}},
+{"@type":"Question","name":"Can I trust these numbers?","acceptedAnswer":{"@type":"Answer","text":"The math is built from public sources we cite in-tool: FAO Postharvest Compendium, ASHRAE Refrigeration Handbook Ch. 24, USDA Handbook 66, and 2025-26 published tariff schedules from LESCO / K-Electric / IESCO / MEPCO / FESCO / HESCO / PESCO / QESCO / Saudi SEC / DEWA. Izhar Foster's sales-engineer team uses the same data internally. The output is indicative — exact prices and exact opex require site survey, but the order of magnitude is defensible and the payback months are the question worth fighting over, not the third decimal."}}
+]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"Home","item":"https://izharfoster.com/"},
+{"@type":"ListItem","position":2,"name":"Tools","item":"https://izharfoster.com/tools"},
+{"@type":"ListItem","position":3,"name":"Cold Store ROI &amp; Payback Calculator","item":"https://izharfoster.com/tools/roi-payback"}
+]}
+</script>
+</head>
+<body>
+<div class="shell">
+  <aside class="rail" aria-hidden="true">
+    <span class="wm">&minus;40&deg;C &rarr; +25&deg;C</span>
+    <div class="marks">
+      <span class="mark">&minus;40&deg;</span><span class="mark">&minus;25&deg;</span><span class="mark">0&deg;</span><span class="mark">+10&deg;</span><span class="mark warm">+25&deg;</span>
+    </div>
+    <span class="pin" style="top:50%;"></span>
+  </aside>
+  <div class="shell-content">
+    <header class="site-header"><div class="nav">
+      <a href="/" class="brand" aria-label="Izhar Foster home"><img src="../images/logo.svg" alt="Izhar Foster" class="brand-logo"></a>
+      <ul class="nav-center" id="nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="../solutions">Solutions</a></li>
+        <li><a href="../projects">Projects</a></li>
+        <li><a href="../tools" class="active">Tools</a></li>
+        <li><a href="../about">Story</a></li>
+        <li><a href="../clients">Clients</a></li>
+        <li><a href="../blog">Blog</a></li>
+        <li><a href="../contact">Contact</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="tel:+924235383543" class="nav-phone"><span class="live"></span>+92 42 3538 3543</a>
+        <a href="concept-wizard" class="btn btn-primary btn-sm">Get a quote <span class="arr">&rarr;</span></a>
+        <button class="menu-toggle" aria-label="Open menu"><span></span><span></span><span></span></button>
+      </div>
+    </div></header>
+
+<section class="page-hero" data-temp="-5">
+  <div class="container">
+    <div>
+      <div class="breadcrumb"><a href="/">Home</a><span class="sep">/</span><a href="../tools">Tools</a><span class="sep">/</span><span>ROI &amp; Payback Calculator</span></div>
+      <span class="temp-badge" style="--badge-color:#E36A1E"><span class="dot"></span>Tool 10 &middot; New &middot; Pakistan + KSA</span>
+      <h1>How much is spoilage <em>actually costing you</em>? And when does a cold store pay back?</h1>
+      <p class="lead">Tell us what you store, how much, where, and how you price it. In 30 seconds you'll see the monthly spoilage you're absorbing today, the indicative cold-store capex to fix it, and the payback in months &mdash; with a 10-year cash position chart. Math grounded in FAO postharvest losses, ASHRAE Ch. 24, and live Pakistan electricity tariffs. The numbers nobody else publishes.</p>
+    </div>
+    <aside class="aside">
+      <span class="label">What this tool answers</span>
+      <div class="fact"><span class="k">Question 1</span><span class="v">What am I losing now?</span></div>
+      <div class="fact"><span class="k">Question 2</span><span class="v">What does a cold store cost?</span></div>
+      <div class="fact"><span class="k">Question 3</span><span class="v">When does it pay back?</span></div>
+      <div class="fact"><span class="k">Method</span><span class="v">FAO &middot; ASHRAE &middot; PK tariffs</span></div>
+      <div class="fact"><span class="k">Output</span><span class="v">PKR &middot; &plusmn;25&percnt; band</span></div>
+      <div class="fact"><span class="k">Handoff</span><span class="v">WhatsApp engineer in 1 tap</span></div>
+    </aside>
+  </div>
+</section>
+
+<section class="section" data-temp="0" style="padding-top:24px">
+  <div class="container">
+    <div class="roi-grid">
+
+      <!-- ============ INPUTS ============ -->
+      <div class="roi-inputs">
+        <h2 style="font-size:1.3rem;margin-bottom:8px">Your situation</h2>
+        <p style="color:var(--ink-2);font-size:.9rem;margin-bottom:18px">Four inputs. No login. No email gate. Results update live.</p>
+
+        <div class="roi-currency-wrap" role="group" aria-label="Display currency">
+          <span class="roi-currency-label">Display in</span>
+          <div class="roi-currency-tabs" id="roi-currency-tabs">
+            <button type="button" data-currency="PKR" class="is-active">PKR</button>
+            <button type="button" data-currency="SAR">SAR</button>
+            <button type="button" data-currency="USD">USD</button>
+            <button type="button" data-currency="AED">AED</button>
+          </div>
+          <p class="roi-currency-note" id="roi-fx-note">Rates as of <span id="roi-fx-date">&mdash;</span> &middot; indicative</p>
+        </div>
+
+        <div class="roi-field">
+          <label for="commodity">1 &middot; What are you storing?</label>
+          <select id="commodity" aria-describedby="commodity-help"></select>
+          <p id="commodity-help" class="roi-help"></p>
+        </div>
+
+        <div class="roi-field">
+          <label for="throughput">2 &middot; How much per month? <span class="roi-unit-toggle"><button type="button" data-unit="tonnes" class="is-active">tonnes</button> / <button type="button" data-unit="m3">m&sup3;</button></span></label>
+          <input type="number" id="throughput" min="1" max="50000" step="1" value="100">
+          <p class="roi-help">A small grocery cold room is 10-30 tonnes/month. A district-level pack-house is 200-500. An export 3PL is 1,000+.</p>
+        </div>
+
+        <div class="roi-field">
+          <label for="price">3 &middot; Your selling price (<span id="price-currency-label">PKR</span> / kg)</label>
+          <input type="number" id="price" min="0.01" max="100000" step="0.01">
+          <p class="roi-help">Default is the wholesale 2025-26 Pakistan average for the commodity above. Use your own number for a sharper answer &mdash; you can enter the price in whichever currency you picked above.</p>
+        </div>
+
+        <div class="roi-field">
+          <label for="city">4 &middot; Where will the store be?</label>
+          <select id="city"></select>
+          <p class="roi-help">Drives the electricity tariff (LESCO / K-Electric / SEC etc.) and the 50&deg;C-design refrigeration penalty for KSA.</p>
+        </div>
+
+        <details class="roi-advanced">
+          <summary>Advanced &mdash; turnover &amp; hold time</summary>
+          <div class="roi-field" style="margin-top:14px">
+            <label for="turnover">Average days product is held in store</label>
+            <select id="turnover">
+              <option value="0.4">~12 days &mdash; fast 3PL / banana ripening</option>
+              <option value="1.0" selected>~30 days &mdash; standard hold</option>
+              <option value="4.0">~120 days &mdash; CA store / long-term</option>
+              <option value="6.0">~180 days &mdash; seasonal (dates, seed potato)</option>
+            </select>
+            <p class="roi-help">Faster turnover = smaller store, lower capex. Default is 30 days.</p>
+          </div>
+        </details>
+      </div>
+
+      <!-- ============ OUTPUTS ============ -->
+      <div class="roi-outputs">
+        <div class="roi-result-card roi-loss">
+          <span class="roi-result-label">1 &middot; You are losing <em>right now</em></span>
+          <div class="roi-big-number"><span id="loss-monthly">&mdash;</span><span class="roi-unit"><span class="cur-label">PKR</span> / month</span></div>
+          <div class="roi-sub">≈ <span id="loss-annual">&mdash;</span> per year &middot; <span id="loss-pct">&mdash;</span> of your throughput value</div>
+        </div>
+
+        <div class="roi-result-card roi-capex">
+          <span class="roi-result-label">2 &middot; What a cold store costs (capex, &plusmn;20&percnt;)</span>
+          <div class="roi-big-number"><span id="capex-low">&mdash;</span> &ndash; <span id="capex-high">&mdash;</span><span class="roi-unit cur-label">PKR</span></div>
+          <div class="roi-sub"><span id="store-volume">&mdash;</span> m&sup3; storage &middot; <span id="store-temp">&mdash;</span> &middot; <span id="store-class">&mdash;</span></div>
+        </div>
+
+        <div class="roi-result-card roi-payback">
+          <span class="roi-result-label">3 &middot; Payback</span>
+          <div class="roi-big-number"><span id="payback-months">&mdash;</span><span class="roi-unit">months</span></div>
+          <div class="roi-sub">Operating cost <span id="opex-monthly">&mdash;</span> <span class="cur-label">PKR</span>/month &middot; net monthly cash gain <span id="net-monthly">&mdash;</span> <span class="cur-label">PKR</span></div>
+        </div>
+
+        <!-- 10-year chart -->
+        <div class="roi-chart-wrap">
+          <h3 style="font-size:1rem;margin-bottom:8px">10-year cash position</h3>
+          <p style="color:var(--ink-2);font-size:.8rem;margin-bottom:14px">Cumulative cash position (loss avoided &minus; opex &minus; capex). Non-discounted; the real NPV is usually better.</p>
+          <svg id="roi-chart" viewBox="0 0 480 220" preserveAspectRatio="none" aria-label="10-year cash position chart" style="width:100%;height:auto"></svg>
+        </div>
+
+        <!-- CTAs -->
+        <div class="roi-cta-stack">
+          <a id="cta-whatsapp" href="#" target="_blank" rel="noopener" class="btn btn-primary btn-lg" style="width:100%">WhatsApp this result to an engineer <span class="arr">&rarr;</span></a>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+            <a href="concept-wizard" class="btn btn-outline">5-min concept wizard</a>
+            <a href="../contact" class="btn btn-outline">Email a precise quote</a>
+          </div>
+        </div>
+
+        <p class="roi-caveat">
+          <strong>Honest caveat:</strong> output is a band (&plusmn;25&percnt;), grounded in FAO, ASHRAE Ch. 24, and 2025-26 published city tariffs. Loss-avoided credit only &mdash; revenue uplift from new export markets or premium pricing is not included and usually accelerates payback further. Site survey + engineer review collapses the band.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section" data-temp="" style="padding-top:48px">
+  <div class="container">
+    <div class="prose" style="max-width:75ch">
+      <h2>How this calculator works</h2>
+      <p>Three numbers, defensible each:</p>
+
+      <h3>1. Loss you are absorbing now</h3>
+      <p>Monthly loss (PKR) = monthly throughput (kg) &times; (spoilage % without cold chain &minus; spoilage % with cold chain) &times; selling price (PKR/kg). The without-chain and with-chain spoilage rates come from the <a href="https://www.fao.org/3/i2697e/i2697e.pdf" target="_blank" rel="noopener nofollow">FAO Postharvest Loss Compendium 2011</a>, the Punjab Agriculture Marketing Board postharvest surveys 2022-2024, and USDA Handbook 66 for CA-storable commodities. Pharmaceutical loss is treated as a step function: chain-intact = ~0.5% loss; chain-break = 100% loss (WHO TRS 961 Annex 9).</p>
+
+      <h3>2. Capex band</h3>
+      <p>Required storage volume = monthly throughput &times; turnover-factor &times; m&sup3;/tonne (from commodity data). Capex/m&sup3; rate is selected by temperature class: chilled (above zero), chilled (0-4&deg;C), frozen (&minus;18&deg;C), blast freezer (&minus;30&deg;C), CA store, or pharma-validated. Rates are 2026 Pakistan-realistic build costs (PIR panels + refrigeration plant + civil + doors + controls + commissioning) from `data-pricing.json` &mdash; itself benchmarked against Izhar Foster's order book 2023-2025. A &plusmn;20&percnt; band is applied at output to reflect real-project variation.</p>
+
+      <h3>3. Payback</h3>
+      <p>Monthly operating cost = (electricity: kWh/m&sup3;/year &times; volume &times; city tariff PKR/kWh) &divide; 12 + (non-electricity: 4-7&percnt; of capex) &divide; 12. Payback months = capex (midpoint) &divide; (monthly loss avoided &minus; monthly opex). If opex &gt; loss avoided, the calculator says so plainly &mdash; cold storage is not justifiable on loss-avoidance alone at that scale and the engineer should propose a different scope.</p>
+
+      <h3>What the calculator deliberately doesn&apos;t include</h3>
+      <ul>
+        <li>Premium pricing from quality preservation (typically adds 10-25&percnt; on top of avoided loss for fresh produce).</li>
+        <li>Access to new export markets (mango/dates to EU and GCC require cold-chain by buyer mandate).</li>
+        <li>Insurance discount and bank-financing eligibility for cold-chain businesses.</li>
+        <li>Solar PV self-generation offset (modelled in Tool 2 &mdash; energy cost calculator).</li>
+        <li>Working capital release from lower spoilage (significant for high-value commodities).</li>
+      </ul>
+      <p>Every one of these accelerates payback. The published payback months are therefore a <strong>ceiling</strong>, not a midpoint.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" data-temp="-10">
+  <div class="container" style="max-width:1100px; text-align:center; padding:48px 24px; background:linear-gradient(135deg, var(--paper-2,#ECE7DC) 0%, rgba(227,106,30,.08) 100%); border-radius:16px; margin: 0 auto;">
+    <span class="eyebrow">Don&apos;t guess. Get sized.</span>
+    <h2 style="margin-top:8px">5 questions, then an engineer is on WhatsApp.</h2>
+    <p style="max-width:58ch; margin:16px auto; color:var(--ink-2)">If the payback is interesting, the next step is sizing. Our concept wizard takes you through 5 questions about your product, capacity, location, timeline, and contact &mdash; then drops the spec straight into a structured WhatsApp message to our engineering team. No login, no email gate, no chat bot pretending to be a human.</p>
+    <a href="concept-wizard" class="btn btn-primary btn-lg">Open the concept wizard <span class="arr">&rarr;</span></a>
+  </div>
+</section>
+
+<section class="cta-banner">
+  <div class="grid">
+    <div>
+      <span class="eyebrow" style="color:rgba(245,242,236,.6)">Talk to engineering</span>
+      <h2>Or skip the calculator &mdash; <em>WhatsApp us your spec</em>.</h2>
+      <p>If you already know your product, capacity, and location, send it directly. An engineer responds within 24 hours with a sized concept and indicative budget.</p>
+    </div>
+    <div class="btns">
+      <a href="https://wa.me/923215383544?text=Hi%20Izhar%20Foster%20%E2%80%94%20cold%20storage%20enquiry%20via%20ROI%20calculator" target="_blank" rel="noopener" class="btn btn-primary btn-lg">WhatsApp our team</a>
+      <a href="../contact" class="btn btn-outline btn-lg">Email quote form</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand-name">Izhar&nbsp;Foster</div>
+      <p>Cold-chain division of Izhar Group. Engineered cold across the temperature spectrum &mdash; for Pakistan&apos;s food, medicine, and harvests.</p>
+      <p class="mono" style="font-size:.78rem;color:rgba(245,242,236,.4);letter-spacing:.06em">A division of <a href="../about">Izhar Group</a> &middot; 12 engineering companies</p>
+    </div>
+    <div>
+      <h4>Solutions</h4>
+      <ul>
+        <li><a href="../services/cold-stores">Cold Stores</a></li>
+        <li><a href="../services/pir-sandwich-panels">PIR Panels</a></li>
+        <li><a href="../services/refrigeration-systems">Refrigeration</a></li>
+        <li><a href="../services/ca-stores">CA Stores</a></li>
+        <li><a href="../services/insulated-doors">Insulated Doors</a></li>
+        <li><a href="../services/cold-storage-saudi-arabia">Saudi Arabia</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Tools</h4>
+      <ul>
+        <li><a href="concept-wizard">Concept Wizard &middot; NEW</a></li>
+        <li><a href="roi-payback">ROI Calculator &middot; NEW</a></li>
+        <li><a href="panel-price">Panel Price</a></li>
+        <li><a href="cost-calculator">Cost Estimator</a></li>
+        <li><a href="load-calculator">Load Calculator</a></li>
+        <li><a href="energy-cost">Energy &amp; Payback</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Get in touch</h4>
+      <ul>
+        <li class="mono"><a href="tel:+924235383543">+92 42 3538 3543</a></li>
+        <li class="mono"><a href="https://wa.me/923215383544">+92 321 5383544 &middot; WhatsApp</a></li>
+        <li class="mono"><a href="mailto:info@izharfoster.com">info@izharfoster.com</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; <span id="y">2026</span> Izhar Foster (Pvt) Limited &middot; A division of Izhar Group</span>
+    <span><a href="../privacy">Privacy</a> &middot; <a href="../terms">Terms</a> &middot; <a href="../sitemap.xml">Sitemap</a></span>
+  </div>
+</footer>
+
+  </div></div>
+
+<!-- Tool-scoped styles -->
+<style>
+  .roi-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:32px;align-items:start}
+  @media (max-width:900px){.roi-grid{grid-template-columns:1fr}}
+  .roi-inputs{background:var(--paper-2,#ECE7DC);border-radius:14px;padding:28px;position:sticky;top:24px}
+  @media (max-width:900px){.roi-inputs{position:static}}
+  .roi-currency-wrap{margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid rgba(0,0,0,.08)}
+  .roi-currency-label{display:block;text-transform:uppercase;letter-spacing:.08em;font-size:.7rem;font-weight:600;color:var(--muted,#6E6F73);font-family:var(--font-mono,'JetBrains Mono',ui-monospace,monospace);margin-bottom:8px}
+  .roi-currency-tabs{display:flex;gap:6px;background:#fff;padding:4px;border-radius:8px;border:1px solid var(--border,#d6d1c5)}
+  .roi-currency-tabs button{flex:1;background:transparent;border:0;padding:8px 6px;font:600 .82rem var(--font-mono,'JetBrains Mono',ui-monospace,monospace);color:var(--ink-2,#2A2D33);cursor:pointer;border-radius:5px;transition:all .15s ease;letter-spacing:.04em}
+  .roi-currency-tabs button:hover{background:rgba(227,106,30,.08)}
+  .roi-currency-tabs button.is-active{background:var(--ember,#E36A1E);color:#fff;box-shadow:0 1px 2px rgba(227,106,30,.3)}
+  .roi-currency-note{margin-top:8px;font-size:.72rem;color:var(--muted,#6E6F73);font-family:var(--font-mono,'JetBrains Mono',ui-monospace,monospace);letter-spacing:.02em}
+  .roi-field{margin-bottom:20px}
+  .roi-field label{display:block;font-weight:600;color:var(--ink-1,#111);margin-bottom:8px;font-size:.95rem}
+  .roi-field select,.roi-field input{width:100%;padding:12px 14px;border:1.5px solid var(--border,#d6d1c5);border-radius:8px;font-size:1rem;background:#fff;font-family:inherit;-webkit-appearance:none;appearance:none}
+  .roi-field select{background-image:url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236E6F73' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+  .roi-field input:focus,.roi-field select:focus{outline:none;border-color:var(--ember,#E36A1E);box-shadow:0 0 0 3px rgba(227,106,30,.15)}
+  .roi-help{margin-top:6px;font-size:.8rem;color:var(--muted,#6E6F73);line-height:1.4}
+  .roi-unit-toggle{font-weight:400;font-size:.82rem;color:var(--muted,#6E6F73);float:right}
+  .roi-unit-toggle button{background:none;border:none;color:var(--muted,#6E6F73);cursor:pointer;padding:2px 8px;border-radius:4px;font:inherit}
+  .roi-unit-toggle button.is-active{background:var(--ink-1,#111);color:#fff}
+  .roi-advanced{margin-top:8px;padding:14px 16px;background:rgba(255,255,255,.5);border-radius:8px;cursor:pointer}
+  .roi-advanced summary{font-weight:600;color:var(--ink-2,#2A2D33);font-size:.9rem;list-style:none}
+  .roi-advanced summary::-webkit-details-marker{display:none}
+  .roi-advanced summary::before{content:'+ ';color:var(--ember,#E36A1E);font-family:var(--font-mono,'JetBrains Mono',ui-monospace,monospace)}
+  .roi-advanced[open] summary::before{content:'− '}
+  .roi-result-card{background:#fff;border:1px solid var(--border,#e5e0d8);border-radius:12px;padding:22px 24px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  .roi-result-card.roi-loss{background:linear-gradient(135deg,#FFF3EC 0%,#FFE0CB 100%);border-color:#F4B98C}
+  .roi-result-card.roi-capex{background:#0A1F3D;border-color:#1A3A66;color:#F5F2EC}
+  .roi-result-card.roi-capex .roi-result-label{color:rgba(245,242,236,.65)}
+  .roi-result-card.roi-capex .roi-big-number{color:#F5F2EC}
+  .roi-result-card.roi-capex .roi-sub{color:rgba(245,242,236,.7)}
+  .roi-result-card.roi-payback{background:#E36A1E;border-color:#E36A1E;color:#fff}
+  .roi-result-card.roi-payback .roi-result-label{color:rgba(255,255,255,.85)}
+  .roi-result-card.roi-payback .roi-big-number{color:#fff}
+  .roi-result-card.roi-payback .roi-sub{color:rgba(255,255,255,.85)}
+  .roi-result-label{display:block;text-transform:uppercase;letter-spacing:.1em;font-size:.72rem;font-weight:600;color:var(--muted,#6E6F73);font-family:var(--font-mono,'JetBrains Mono',ui-monospace,monospace)}
+  .roi-big-number{font-family:var(--font-mono,'JetBrains Mono',ui-monospace,monospace);font-size:2.2rem;font-weight:600;margin-top:6px;line-height:1.1;letter-spacing:-.02em}
+  .roi-big-number .roi-unit{font-size:.85rem;font-weight:400;color:var(--muted,#6E6F73);margin-left:8px;letter-spacing:0}
+  .roi-result-card.roi-capex .roi-big-number .roi-unit,.roi-result-card.roi-payback .roi-big-number .roi-unit{color:rgba(255,255,255,.7)}
+  .roi-sub{margin-top:10px;font-size:.86rem;color:var(--ink-2,#2A2D33);line-height:1.5}
+  .roi-chart-wrap{background:#fff;border:1px solid var(--border,#e5e0d8);border-radius:12px;padding:20px 22px;margin-top:14px}
+  #roi-chart{display:block;background:linear-gradient(180deg,#FAFAF7 0%,#fff 100%);border-radius:8px}
+  .roi-cta-stack{margin-top:20px}
+  .roi-caveat{margin-top:18px;padding:14px 16px;background:#FFF8E1;border-left:3px solid #F0B400;border-radius:6px;font-size:.82rem;color:var(--ink-2,#2A2D33);line-height:1.5}
+  .roi-caveat strong{color:#9A6B00}
+</style>
+
+<a href="https://wa.me/923215383544?text=Hi%20Izhar%20Foster%20%E2%80%94%20sent%20via%20izharfoster.com" class="fab-wa" target="_blank" rel="noopener" aria-label="WhatsApp">WA</a>
+<script src="../js/main.v2.js" defer></script>
+<script src="../js/track.js" defer></script>
+<script src="../js/tools/roi-payback.js" defer></script>
+<script>document.getElementById('y').textContent=new Date().getFullYear();</script>
+</body></html>

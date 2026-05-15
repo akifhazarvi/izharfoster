@@ -1,10 +1,25 @@
 # Izhar Foster — Daily Task List
 
-**Last updated:** 2026-05-04
+**Last updated:** 2026-05-14
 **Score baseline:** 78/100 (ACTION-PLAN.md, 2026-05-02)
 **Canonical roadmap:** [GROWTH-PLAN.md](GROWTH-PLAN.md) | Resolved conflicts: [DECISIONS.md](DECISIONS.md)
 
 Work top-to-bottom. Mark done with `[x]`. Each PR title must reference the GROWTH-PLAN section it implements.
+
+---
+
+## 2026-05-14 — GA4 + GSC review (28d 2026-04-16 → 2026-05-13)
+
+**Headline:** clicks **+22.7%** (176 → 216), CTR **+24%** (2.34% → 2.90%), impressions flat, position flat. The CTR work (PIR title rewrite, AggregateOffer schema, pharma growth bundle, 4 legacy 301s) is converting existing rankings to clicks — exactly the GROWTH-PLAN thesis. **Press the same lever harder.**
+
+**Pharma page reality check:** `/services/pharmaceutical-cold-storage` jumped from pos 59 → pos 17.5 (huge) but **zero clicks on commercial queries**. Google still routes `pharma cold chain`, `what is cold chain`, `cold chain` (combined 174+ imp, 0 clicks) to two legacy `/blogs/what-is-cold-chain...` and `/blogs/what-is-cold-storage...` URLs ranking pos 54–84. The 301s exist (commit d366092). Content gap is the bottleneck, not redirects — service page needed informational + manufacturer + GMP commercial sections to capture both intents.
+
+**Top 3 data insights driving this week's task changes:**
+1. CTR machine works — don't pivot to new keywords, press existing list
+2. Pharma rebuild is half-done — needs commercial + informational content depth (THIS PR ships it)
+3. Direct = 28% engagement → bot traffic; Vercel Singapore IP filter is single highest-value GA4 cleanup
+
+---
 
 ---
 
@@ -79,6 +94,13 @@ Work top-to-bottom. Mark done with `[x]`. Each PR title must reference the GROWT
 
 ## Week 2 (2026-05-10 → 16) — Trust band + content depth
 
+### NEW data-driven priorities (added 2026-05-14 after GA4 + GSC review)
+
+- [x] **`GP§7 #1` — pharma page commercial + informational rebuild** — added 4 new H2 sections to `services/pharmaceutical-cold-storage.html` (524 lines, +37%) targeting zero-click GSC queries: "The pharmaceutical cold chain — what it is and why every link matters" (captures `what is cold chain`, `pharma cold chain`, `cold chain meaning`, `importance of cold chain in pharmaceutical industry` — 174 imp combined, currently routed to legacy /blogs/ URLs at pos 54–84); "Pharmaceutical cold storage manufacturer in Pakistan — what we build and how we build it" (captures `cold storage manufacturer` pos 58, `cold store manufacturers in pakistan` 43 imp pos 11, `pharmaceutical cold storage manufacturer`); "Types of pharmaceutical cold rooms we build" with 8-row class table (captures `cold room in pharmaceutical industry`, `pharma cold room`, `pharmaceutical cold room`, `vaccine cold room`); "WHO GMP and the cold-chain regulatory stack" + "WHO PQS-compliant vaccine cold storage" (captures `gmp cold storage`, `WHO TRS 961`, `WHO PQS E003`). FAQ expanded 8 → 18 items covering exact-match informational queries. Service schema upgraded with `hasOfferCatalog` (8 cold-room types) and `additionalProperty` array (18 spec PropertyValues — temperature range, redundancy, panel λ, fire class, design ambient, lead times, design life, manufacturing location, operating since, installations delivered). New `MedicalWebPage` schema overlay added for pharma-authority signal. Title + meta description rewritten to lead with "GMP Cold Room Manufacturer". All 4 JSON-LD blocks parse. — **commit pending**
+- [ ] **GA4 admin UI step** (you, not me; GP§11) — create "AI Assistants" custom channel group in GA4 Admin > Channel groups matching chatgpt.com/perplexity.ai/claude.ai/copilot.microsoft.com/gemini.google.com hosts; add Vercel Singapore IP filter to drop bot traffic that is currently 28%-engagement-poisoning Direct sessions. Verification window: 7 days post-filter, re-pull `sessionDefaultChannelGroup × sessionSource` and confirm Direct engagement rate jumps above 50%. See memory `project_ga4_admin_followups.md`.
+- [ ] **`GP§6 #20` — `cold store manufacturers in pakistan` content add** (43 imp, pos 11, striking distance) — add a "Cold store manufacturer in Pakistan — what to ask any supplier" H2 + factual abstract paragraph to `services/cold-stores.html`, mirroring the manufacturer section added to pharma page. Same pattern, different keyword. Use the existing 1959/277,460 sqft/2,100 installations trust facts.
+- [ ] **`GP§6 PIR speed`** — promote AP#3 (Google Fonts async on `services/pir-sandwich-panels.html`). It's the #2 organic landing page (39 sessions, only 5 conversions) — page speed likely the blocker. 5 min sed across `<head>` blocks.
+
 ### Day 4 — Homepage visual hierarchy (GP§13.2)
 
 - [ ] Move Cold Stores card to **position 1** in homepage product grid (currently position 3–4)
@@ -142,6 +164,66 @@ Each page: 800–1,200 words. Named local project, city-specific design notes, L
 - [x] `cold-storage-karachi.html` — exists, has geo + branchOf (commit `7a81618`)
 - [ ] `cold-storage-multan.html` — mango / dates / ASHRAE 50°C / MEPCO / HAC Agri tie-in (`AP#20`)
 - [ ] `cold-storage-faisalabad.html` — dairy belt / Interloop / FESCO (`AP#21`)
+
+---
+
+## 2026-05-14 — Conversion funnel rebuild (FUNNEL.md)
+
+Triggered by user instruction: "Don't bullshit, research, build logic and repeat." Full GSC + competitor research run; designed and shipped a conversion-first funnel that routes every visitor to one of two new artefacts (wizard or ROI calculator) and hands off to a human engineer on WhatsApp. **Source of truth: [FUNNEL.md](FUNNEL.md)** — read this before changing any CTA.
+
+- [x] **Research** — GSC 28-day pull via `seo-google` subagent (used 2026-04-30 Composio data already in `_kr_scrape/GSC-ANALYSIS.md`); competitor + AI-search gap analysis via `seo-dataforseo` subagent. **DataForSEO MCP failed to connect** in this session — qualitative gap analysis from competitor HTML used instead. Re-run live DataForSEO once MCP surface is wired.
+- [x] **FUNNEL.md** — one-pager diagnosis: top 5 CTR-rot pages (11k impressions / <1% CTR — biggest immediate win), pharma cluster (5.5k impressions / ~0% CTR — biggest growth lever), price-signal queries (3-4% CTR, need more visibility), competitor whitespace (zero PK competitor publishes any calculator or payback number).
+- [x] **Tool 10 — Cold Store ROI &amp; Payback Calculator** at `/tools/roi-payback`. 4 inputs (commodity, throughput, selling price, city) → 3 outputs (monthly spoilage loss, capex band, payback months) + 10-yr cash chart. Math from FAO Postharvest Compendium + ASHRAE Ch. 24 + 2025-26 PK/KSA tariffs. Defensible ±25% band. WhatsApp handoff. Files: `tools/roi-payback.html`, `js/tools/roi-payback.js`, `js/tools/data-roi.json`.
+- [x] **5-Question Concept Wizard** at `/tools/concept-wizard`. Sector → capacity → location → timeline → contact. Country dropdown switches PK / KSA city lists. localStorage persistence, URL prefill (`?sector=pharma`, `?country=SA`, etc), GA4 events (`wizard_start`, `wizard_step`, `wizard_submit`, `wizard_abandon`). On submit, opens WhatsApp prefilled with structured brief. Files: `tools/concept-wizard.html`, `js/tools/concept-wizard.js`.
+- [x] **Site-wide CTA rewire (initial pass)** — homepage hero, homepage nav-pill, KSA hub hero CTA, services/cold-stores mid-page CTA, services/pir-sandwich-panels mid-page CTA. All point to wizard primary + ROI calculator secondary.
+- [x] `tools.html` — 2 new tool cards at the top (wizard first, then ROI). Tools count updated 7 → 10.
+- [x] `sitemap.xml` — `/tools/roi-payback` and `/tools/concept-wizard` added; `/tools` lastmod bumped.
+
+### Phase 2 — Conversion funnel scaling (next 2-4 weeks)
+
+Order by impact ÷ effort:
+
+- [ ] **CTR-rot fix on top 5 pages** — rewrite title + meta + add wizard CTA in first scroll on: `/services/cold-stores` (cold storage / pos 8.8 / 0.70% CTR / 3,573 imp), `/services/pir-sandwich-panels` (sandwich panel / pos 5.8 / 0.87% CTR / 2,876 imp), `/services/ca-stores` (controlled atmosphere / pos 5.7 / 0.18% CTR / 2,275 imp), homepage (izhar brand query / pos 9.8 / 0.11% CTR / 1,783 imp), CA stores page for "ca store" exact-match (pos 12 / 0% CTR / 870 imp). Expected: 3-6× clicks on these queries with no rank change.
+- [ ] **Pharma cluster H1 + meta rewrite** — `/services/pharmaceutical-cold-storage` is at pos 40-70 on 5,500 impressions. Title/meta currently doesn't match "pharmaceutical cold storage in Pakistan" exact query. Rewrite + add wizard CTA pre-filled with `?sector=pharma`.
+- [ ] **Wire wizard + ROI calc into more pages** — projects.html cred-band, all 12 service pages bottom CTA, both city pages (Lahore + Karachi), all 9 blog post end-of-article CTAs, contact.html as the "or skip the wizard" fallback.
+- [ ] **Re-run live DataForSEO research** once MCP surface is wired — pull actual KSA + PK keyword volumes, top-3 competitor traffic, AI-search citation patterns for 5 buyer prompts. Replace the qualitative gap analysis in FUNNEL.md §1.5 with hard numbers.
+- [ ] **Add a "compliance pre-qualifier" wizard step for KSA** — SBC 801 (fire), SFDA-GDP (pharma temp mapping), Aramco SAES-Q-001 (oil-and-gas vendor list), MODON industrial-city flag. Inject as Q3.5 when country = SA. De-risks Izhar as a vendor before the call.
+- [ ] **Tool 11 — Refrigerant Cost-per-Ton-Year Comparator** (R-449A vs R-290 vs R-744). Reuses existing Tool 3 (A2L) + Tool 4 (NIST REFPROP) + public refrigerant price feeds. Owns the "EU export F-gas phase-down" conversation. Niche but defensible moat.
+- [ ] **Make every existing tool route to the wizard at exit** — every tool's CTA stack should end with "→ 5-question wizard → engineer."
+
+### Phase 3 — Conversion measurement (after Phase 2 ships)
+
+- [ ] GA4 funnel dashboard: `wizard_start` → `wizard_step` (each) → `wizard_submit` → `whatsapp_click`. Drop-off chart.
+- [ ] Composio MCP weekly autopull: GSC CTR on top-5 rot pages, position movement on pharma cluster, Tool 10 + wizard sessions/conversions. Save as `_kr_scrape/funnel-metrics-week-{N}.md`.
+- [ ] Iterate copy on whichever step has the highest abandonment.
+
+---
+
+## Month 2 — KSA / GCC export funnel (Phase 1 shipped 2026-05-14)
+
+Phase 1 of the Saudi Arabia export-led SEO funnel. Honest positioning: Pakistan-engineered panels and refrigeration exported to GCC, with fly-in engineering supervision. No fabricated local presence — Google penalises fake locality and would torch the Pakistan rankings if caught.
+
+- [x] **`services/cold-storage-saudi-arabia.html`** — KSA hub page. Service schema with `areaServed` for SA + GCC, 8-question FAQ schema, BreadcrumbList, BS EN 14509 / λ 0.022 framing, 5 KSA sectors (pharma, food import & 3PL, dates/produce, dairy & beverage, industrial), honest "what we don't have" callout, fly-in engineering scope, sea-freight transit times Karachi→Jeddah/Dammam. Embeds the Cold Map.
+- [x] **Cold Map component** — SVG-based interactive map (Pakistan + KSA + UAE + Oman silhouettes), 10 solid PK pins for delivered installations (Lahore HQ, Karachi/Connect Logistics, Multan, Faisalabad, Gujranwala/Naubahar, Sialkot, Islamabad, Phool Nagar/HAC Agri, Sindh/USAID banana, KPK/Apple CA), 4 hollow KSA/GCC export pins (Riyadh, Jeddah, Dammam, Dubai), tooltip on hover/focus/click, brand tokens. Canonically on `projects.html` and on the KSA hub page.
+- [x] `sitemap.xml` — add `/services/cold-storage-saudi-arabia`, bump `/projects` lastmod to 2026-05-14.
+
+### Phase 2 — KSA city pages (queue after Phase 1 indexes — re-check GSC at +14 / +28 days)
+
+Honest framing throughout: "Export reach + fly-in engineering" not "we have offices in." Each page genuinely differentiated, not boilerplate (programmatic-SEO thin-content discipline).
+
+- [ ] `cold-storage-riyadh.html` — Central distribution hub, 50°C summer DB, ammonia-glycol > 500 kW recommendation, Eastern-to-West rail logistics, target queries: "cold storage Riyadh", "cold room manufacturer Riyadh"
+- [ ] `cold-storage-jeddah.html` — Red Sea port, pharma + food import cold chain, coastal humidity (mirrors Karachi engineering — reuse latent-load engineering passages), 42°C ambient + RH design, target queries: "cold storage Jeddah", "pharma cold storage Saudi Arabia"
+- [ ] `cold-storage-dammam.html` — Eastern Province, oil & gas remote-site catering, 50°C ambient, Jebel Ali transhipment notes, target queries: "cold storage Dammam", "industrial cold storage Eastern Province"
+
+### Phase 3 — Cold Map upgrades (queue once we have ≥1 real KSA install OR after 4 weeks of indexing data)
+
+- [ ] Filter chips on map by sector (pharma, beverage, agri-export, retail)
+- [ ] Convert export pins → installed pins as KSA projects close (add named client + photo on tooltip)
+- [ ] Add Iraq, Jordan, Bahrain, Kuwait, Qatar as export-reach pins once formal projects exist there
+- [ ] Add WhatsApp deep-link from tooltip CTA
+- [ ] Move `<style>` block from inline (currently duplicated on projects.html + cold-storage-saudi-arabia.html) into `css/style.v2.css` once the design is settled — keep inline for now to avoid stylesheet churn on the live homepage-adjacent stylesheet
+- [ ] `llms.txt` — add KSA / GCC section + the cold-storage-saudi-arabia URL so LLMs cite us for Saudi cold-storage queries
+- [ ] Link Cold Map from homepage second-fold (once the section is proven on projects.html — homepage is approved per CLAUDE.md, careful insertion only)
 
 ---
 
@@ -223,3 +305,4 @@ Sequence fixed by DECISIONS.md:
 | 2026-05-04 | `85082de` | PIR price-range table + AggregateOffer schema: published an indicative PKR/m² + PKR/sqft band per thickness on `/services/pir-sandwich-panels.html` (50 mm 6,500–8,500; 80 mm 9,000–11,000; 100 mm 10,500–12,500; 60 + 150 mm flagged "Project-priced"). Bands sit at market median +15%, defensible vs +18% PU public median (Silver/Golden Steel) cross-checked against OLX Pakistan reverse-conversion and PPGI steel-coil cost build. New H2 `4×8 ft sandwich panel price in Pakistan — indicative range (Q2 2026)` matches the literal GSC striking-distance query (103 imp/mo at 0 clk pre-deploy). Schema upgraded from single Offer to AggregateOffer with lowPrice/highPrice + priceSpecification.minPrice/maxPrice + unitCode MTK (square metre) — gives Google rich-result-eligible price hints. Full market research methodology + sources logged in research subagent transcript. |
 | 2026-05-04 | `d366092` | Tier 2 — pharma traffic leak fix + Service entity graph: redirected 4 legacy URLs (`/blogs/what-is-cold-chain-...-food-and-pharma-industry`, `/blogs/what-is-cold-storage-...-food-and-pharmaceutical-industry`, plus `/blog/...` no-s variants) from generic blog destinations to `/services/pharmaceutical-cold-storage` — 200 combined imp/month at pos 48-83 were dumping pharma intent on non-pharma pages; now consolidating onto the dedicated pharma page (16,740 imp/pos 59 — biggest single GSC opportunity). Also normalised `Service.provider` to `@id` reference (`#organization`) on all 12 service pages — completes the Person/Org entity graph started in `305fd2f`. **Skipped:** "what we measured" passages on pillar pages — audit found those pages already saturated with TCCEC/ASHRAE/BS EN measured data; adding more = padding. **Skipped:** pharma rebuild brief — page already excellent (366 lines, 11 H2s, 6 FAQs); bottleneck was redirect routing not content. **AIO data check:** zero AIO citations in last 28d (only 22 imp tagged TRANSLATED_RESULT) — speculative AIO passage work deprioritised until Google starts citing us. |
 | 2026-05-04 | `305fd2f` | Striking-distance CTR fix: `/services/pir-sandwich-panels` title rewrite for "4×8 sandwich panel price" (pos 9.8, 63 imp, 0 clk); `/services/ca-stores` title rewrite for "controlled atmosphere storage" (pos 8.3, 27 imp, 0 clk); honest `Service.offers.priceSpecification` + `areaServed: Pakistan` on PIR + CA pages (no fake price); `Article.author.@id` → `team/{slug}#person` entity link on all 10 blog posts (Dec 2025 E-E-A-T entity-graph signal). Backed by GSC 28-day striking-distance audit + research §2/§7 |
+| 2026-05-14 | _pending_ | **GP§7 #1 — pharma page commercial + informational rebuild** (data-driven; 28d GA4+GSC review on 2026-05-14). `services/pharmaceutical-cold-storage.html` grew from 382 → 524 lines (+37%, ~3,800 new words). Four new H2 sections: (1) cold-chain pillar — captures `what is cold chain`, `pharma cold chain`, `cold chain meaning`, `importance of cold chain in pharmaceutical industry` currently 174 imp / 0 clicks routed to legacy /blogs/ URLs at pos 54–84; (2) manufacturer commercial — captures `cold storage manufacturer` pos 58, `cold store manufacturers in pakistan` pos 11; (3) 8-row cold-room types table — captures `cold room in pharmaceutical industry`, `pharma cold room`, `vaccine cold room`, `pharmaceutical warehouse cold storage`, `pharmacy walk-in cold room`, `ultra-low −80 °C`, `CRT pharmaceutical warehouse`, `clinical-trial chamber`; (4) WHO GMP regulatory stack + WHO PQS E003 vaccine deep-dive — captures `gmp cold storage`, `WHO TRS 961`. FAQ 8 → 18 items covering exact-match informational queries (`what is cold chain`, `gmp cold storage`, `temperature for pharmaceutical storage`, `MKT mean kinetic temperature`, `largest pharmaceutical cold storage manufacturer in Pakistan`, etc). Service JSON-LD upgraded with `hasOfferCatalog` (8 cold-room type Offers) and `additionalProperty` array (18 spec PropertyValues — temp range, redundancy, λ 0.022, fire class B1, density 40-45 kg/m³, design ambient 46 °C, lead times, 25-year envelope design life, manufacturing location, 1959, 2,100+ installations). New `MedicalWebPage` schema overlay (`MedicalEntity`, `MedicalAudience`, `specialty`, `mainContentOfPage`) for pharma authority signal. FAQPage schema mirrors all 18 FAQs. Title + meta rewritten to lead with "GMP Cold Room Manufacturer" instead of "DRAP GMP Cold Rooms". All 4 JSON-LD blocks parse. **Target:** pharma cluster (16,740 imp baseline) clicks > 0 on commercial queries within 14 days, position move from 17.5 → < 10 within 60 days. Verification: re-pull GSC for pharma URL pattern + the 4 informational queries at 14 and 60 days. |
