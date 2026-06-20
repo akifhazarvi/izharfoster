@@ -8,6 +8,22 @@ Work top-to-bottom. Mark done with `[x]`. Each PR title must reference the GROWT
 
 ---
 
+## 2026-06-20 (PR2) — City pages from GSC demand
+
+GSC city-query pull **overrode the CLAUDE.md city plan**: Multan (~1 imp, branded only) and Faisalabad (0 imp) have no organic demand — building them would be thin doorway pages. Built the two data-backed pages instead:
+
+- [x] **`cold-storage-near-me.html`** — national-coverage hub for the "near me" query cluster (`cold storage near me` 90 + `cold store near me` 6 + `coldstore near me` 8 + ~20 long-tail variants ≈ **130 combined imp, mostly pos 5–9**). Currently mis-served — the Lahore page ranks pos 28.75 for it. Angle: honest "one Lahore plant + national install model" vs local fabricators; transport economics; manufacturer-not-reseller; city chooser. 1,203 words.
+- [x] **`cold-storage-islamabad.html`** — twin-cities page. `cold storage islamabad`, `4x8 sandwich panel price in islamabad` (33 imp), `4x8 ... rawalpindi` (9 imp) — **no page existed**. Distinct engineering angle vs Lahore/Karachi: Pothohar plateau cooler design ambient (38–40°C → smaller plant, opposite of Karachi's humidity story), EPI vaccine cold chain, DRAP HQ, IESCO tariff, institutional/govt documentation. 1,655 words.
+- [x] Both: LocalBusiness + FAQPage + BreadcrumbList JSON-LD (all 6 blocks validated), canonical, full chrome. Cross-linked from Lahore + Karachi related-solutions. Added to sitemap.
+
+**Thin-content / penalty check (verified, not assumed):** body word counts 1,203 / 1,655 (clear the ~300–500 thin threshold by 2–4×). 8-gram Jaccard similarity between all 4 city pages = **0.037–0.055** (duplicate-worry line is 0.20; doorway-penalty territory is ~0.5+). Zero identical FAQ questions across pages. Each page's core claims are location-true only (Islamabad's "cooler → smaller plant" would be wrong on Karachi) — the differentiation Google rewards, not penalised city-swap templating.
+
+**Skipped (data-justified):** Multan, Faisalabad — revisit only if GSC shows demand emerging.
+
+Commits: `43a05bb` (CTR fixes), `df83579` (city pages) — both on `main`.
+
+---
+
 ## 2026-06-20 — GSC review (90d 2026-03-22 → 2026-06-20)
 
 **Headline:** 1,047 clicks / 30,377 imp / 3.45% CTR / **avg pos 9.8** (was 21.7 at 16-mo baseline — position has more than halved; site now ranks page 1 for most money terms). Growth lever stays CTR + closing the page-2/3 gap, not new keywords.
