@@ -1,10 +1,28 @@
 # Izhar Foster — Daily Task List
 
-**Last updated:** 2026-05-14
+**Last updated:** 2026-06-20
 **Score baseline:** 78/100 (ACTION-PLAN.md, 2026-05-02)
 **Canonical roadmap:** [GROWTH-PLAN.md](GROWTH-PLAN.md) | Resolved conflicts: [DECISIONS.md](DECISIONS.md)
 
 Work top-to-bottom. Mark done with `[x]`. Each PR title must reference the GROWTH-PLAN section it implements.
+
+---
+
+## 2026-06-20 — GSC review (90d 2026-03-22 → 2026-06-20)
+
+**Headline:** 1,047 clicks / 30,377 imp / 3.45% CTR / **avg pos 9.8** (was 21.7 at 16-mo baseline — position has more than halved; site now ranks page 1 for most money terms). Growth lever stays CTR + closing the page-2/3 gap, not new keywords.
+
+**Three leaks found + fixed this PR:**
+1. **Legacy-URL duplication (GSC lag, NOT a bug).** Old WP URLs (`/pir-panels/`, `/ca-stores/`, `/cold-stores/`, `/uncategorized/*`, `/prefabricated-structures-pakistan/`) still show ~8k cumulative imp. Verified live: every one 301/308-resolves correctly to its canonical (clean chain, lands 200). No code change needed — Google catch-up only. Double-hop (308 slash-strip → 308 redirect) left as-is; forcing single-hop means disabling `trailingSlash` normalization, which would create new dupes.
+2. **High-imp / low-CTR page-1 rankings.** Title/meta rewrites:
+   - [x] `services/cold-stores.html` — title "Cold Store **Manufacturers** in Pakistan" (was "Construction") — serves `cold store manufacturers in pakistan` (155 imp, pos 16.9, striking distance) + CTR.
+   - [x] `services/prefabricated-structures.html` — title "Prefab Structures in Pakistan — **Installed in Weeks**" (was generic) — `prefab structure` 193 imp, pos 3.5, was only 2.1% CTR.
+   - [x] `services/pir-sandwich-panels.html` — meta now leads with "PIR sandwich panels made in Pakistan" + wall/roof + cold-store use — `sandwich panel` (530 imp, pos 5.1, 0.75% CTR).
+3. **Pharma stranded on broad terms.** Page already comprehensive (525 lines, full IQ/OQ/PQ/MKT/WHO-PQS/DRAP). Ranks pos 2 for exact title phrase but pos 27 `pharmaceutical cold room` (125 imp), pos 76 `pharmaceutical cold storage`, pos 82 `pharma cold chain` (95 imp). Internal links + depth already strong → **authority/time** problem, not on-page. Only genuine gap: exact bigram "pharma cold chain" appeared 0×.
+   - [x] `services/pharmaceutical-cold-storage.html` — added "pharma cold chain" exact phrase naturally in cold-chain section.
+- [x] `sitemap.xml` — bumped lastmod 2026-05-02 → 2026-06-20 for all 4 edited service pages (freshness signal).
+
+**Next (not this PR):** pharma authority play — external signals / backlinks; city pages for `cold storage near me` (90 imp, pos 20.6).
 
 ---
 
@@ -336,6 +354,7 @@ Sequence fixed by DECISIONS.md:
 
 | Date | Commit | Items |
 |------|--------|-------|
+| 2026-06-20 | _pending_ | **New service page `services/blast-freezers.html`** (GP§4 priority pillar — Refrigeration Systems / Cold Stores; demand-driven from the Apr–Jul 2026 inquiry list). Inquiry list showed repeat blast-freezing demand with only a *blog* (informational) to catch it: #32 KFC thawing room, #53 Heaven Foods seekh-kabab blast, #72 Frozen poultry pantry (1000–1500 kg chicken blast), #83 Delight yoghurt, plus ice-cream rooms. New page is **commercial/transactional intent** — three formats (trolley cell / batch room / IQF tunnel) with throughput table, application list (poultry, seekh kabab, ice cream, seafood, fruit pulp, QSR), throughput-based sizing wired to load/condenser/cost calculators, indicative PKR cost table (6 m → 60 m+), Gourmet ice-cream project reference. Deep-links the existing `blog/blast-freezer-vs-blast-chiller-pakistan-guide` for the explainer (clean intent split, no cannibalisation). 3 JSON-LD blocks (Service + 7-Q FAQPage + Breadcrumb, all parse), single H1. Linked from `cold-storage-meat-poultry.html` blast-freezer section + added to `sitemap.xml`. |
 | 2026-06-20 | _pending_ | **New "Marine & Boat Cold Storage" funnel — 3 pages (service + research article + customer blog).** Demand-driven from an internal engineering manual (solar-assisted eutectic on-board fish refrigeration for a Karachi 1,000 kg fishing vessel). NEW vertical not on the current GP pillar list. (1) `services/marine-boat-cold-storage.html` — permanent product page: insulated fish tanks + cold-bank plates charged at dock + solar at sea, 0–4°C hold, ~1,000 kg/trip, days of passive cold retention, marine-grade build; "who it's for" grid (small vessels, export-grade boats, harbour fleets Karachi/Korangi/Gwadar/Pasni), 6-Q FAQ. (2) `blog/solar-cold-storage-fishing-boats-pakistan.html` — ~2,050-word authority/research article citing **FAO** (20–75% post-harvest loss, >70% is quality downgrade, FAO TP 348 shelf-life-vs-temp: 14d@0°C→1.5d@15°C, histamine/gaping science), **Pakistan seafood export** USD 489.2M FY24-25 with fishmeal leading volume, **2007 EU ban** (~USD 50M/yr, deficient cold chain), overfishing + solar-vs-diesel carbon. (3) `blog/stop-losing-your-catch-boat-cold-storage.html` — ~1,100-word conversion blog for boat owners ("melting ice costs you grade & money"). **IP firewall (per CEO instruction): MAXIMUM redaction — outcomes only.** Zero proprietary specs published — grep-verified clean of the eutectic blend recipe, all µF/capacitor/relay/soft-starter values, every part number (Bitzer 2FES-2, Danfoss KP-61/TN-2, LONGi HiMO, Voltronic/Growatt), and the thermal-balance math. Competitor reading any page learns the value proposition, not the buildable recipe. Schema: Service+FAQ+Breadcrumb (service), BlogPosting+FAQ+Breadcrumb (research, with `citation[]`), BlogPosting+Breadcrumb (blog) — all parse. Cross-linked among themselves + to cold-stores/refrigeration/PIR; 3 URLs added to `sitemap.xml`. Research via background general-purpose subagent (FAO/WorldFish/trade-press, all stats attributed + year). |
 | 2026-06-20 | _pending_ | **New service page `services/walk-in-cold-rooms.html`** (GP§4 priority pillar — Cold Stores; demand-driven from the Apr–Jul 2026 inquiry list). The single largest inbound *category* in the 85-inquiry sales pipeline was small-format walk-in chillers & freezer rooms (~15+ inquiries: ice-cream −25°C, restaurant/QSR kitchen freezers, meat & dry-fruit shop freezers, pharmacy/lab chillers) — a segment with **no matching page** (cold-stores.html is warehouse-scale, 50 m³ floor). Page targets `walk-in cold room`, `walk-in freezer room`, `cold room price/cost Pakistan`, `ice cream cold room`, `restaurant freezer room`. Chiller/freezer temp-band table, buyer-segment list, full supplied-and-installed scope, sizing inputs wired to load/condenser/cost calculators, indicative PKR price table (0.8 m → 7 m, sits cleanly below cold-stores.html's 50 m³+ ranges — no conflict). 3 JSON-LD blocks (Service + 6-Q FAQPage + Breadcrumb, all parse), single H1, clean URLs, λ 0.022 BS EN 14509, FireSafe PIR. Linked from `cold-stores.html` industries grid (new cell #07) + added to `sitemap.xml`. **Next demand-driven pages queued from same list:** blast-freezer service page (blog→commercial), Bangladesh/Kazakhstan/Afghanistan export pins on Cold Map. |
 | 2026-05-03 | `bc78be6` | AP#9 GBP entity link, geo coordinates, Maps embed |
