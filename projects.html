@@ -404,9 +404,9 @@
      ============================================================ -->
 <section class="section cold-map-section" data-temp="-10" id="cold-map" aria-labelledby="cold-map-heading">
   <div class="clients-section-head" style="max-width:1320px;margin-bottom:32px">
-    <span class="eyebrow">Cold Map · Pakistan &amp; GCC</span>
+    <span class="eyebrow">Cold Map · Pakistan, GCC &amp; beyond</span>
     <h2 id="cold-map-heading">Where Izhar Foster cold chain lives — and where we ship it next.</h2>
-    <p style="max-width:62ch;color:var(--ink-2);margin-top:12px">Solid pins are named, delivered installations across Pakistan. Hollow pins are GCC cities where Izhar Foster currently exports FireSafe PIR panels, refrigeration equipment, and engineering supervision &mdash; including Saudi Arabia, where our engineers travel for design, commissioning, and handover.</p>
+    <p style="max-width:62ch;color:var(--ink-2);margin-top:12px">Solid pins are named, delivered installations across Pakistan. Hollow pins are export markets where Izhar Foster supplies FireSafe PIR panels, refrigeration equipment, and fly-in engineering supervision &mdash; from the GCC across to Afghanistan, Kazakhstan, and Bangladesh.</p>
   </div>
 
   <div class="cold-map-wrap" style="max-width:1320px;margin:0 auto">
@@ -445,10 +445,10 @@
       }
     </style>
 
-    <figure class="cold-map-figure" role="img" aria-label="Map of Izhar Foster cold storage installations across Pakistan and export reach into the Gulf Cooperation Council region">
-      <svg viewBox="0 0 800 450" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+    <figure class="cold-map-figure" role="img" aria-label="Map of Izhar Foster cold storage installations across Pakistan and export reach into the Gulf Cooperation Council region, Afghanistan, Kazakhstan and Bangladesh">
+      <svg viewBox="0 0 920 450" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
         <!-- Background sea -->
-        <rect class="cm-water" x="0" y="0" width="800" height="450"/>
+        <rect class="cm-water" x="0" y="0" width="920" height="450"/>
 
         <!-- Pakistan landmass (simplified silhouette, lon 60-77E, lat 23-37N) -->
         <path class="cm-land" d="M 555,95 L 595,90 L 625,98 L 648,110 L 660,135 L 668,160 L 678,180 L 690,200 L 685,225 L 670,245 L 655,265 L 632,278 L 610,285 L 588,295 L 568,305 L 550,300 L 535,288 L 520,270 L 510,250 L 504,228 L 498,205 L 494,185 L 490,165 L 492,145 L 502,125 L 522,108 Z"/>
@@ -465,11 +465,22 @@
         <!-- Oman (lon 52-60E, lat 17-26N) -->
         <path class="cm-land" d="M 472,265 L 498,272 L 515,288 L 522,310 L 515,325 L 495,328 L 478,318 L 470,300 L 470,282 Z"/>
 
+        <!-- Afghanistan (lon 60-75E, lat 29-38N) — NW of Pakistan -->
+        <path class="cm-land" d="M 488,90 L 510,70 L 540,58 L 572,55 L 600,62 L 612,80 L 600,95 L 575,100 L 552,98 L 525,100 L 502,105 Z"/>
+
+        <!-- Kazakhstan (lon 60-87E, lat 42-50N) — northern band -->
+        <path class="cm-land" d="M 540,42 L 600,28 L 670,20 L 740,22 L 790,32 L 800,46 L 760,52 L 700,50 L 640,52 L 585,55 L 552,52 Z"/>
+
+        <!-- Bangladesh (lon 88-92E, lat 21-26N) — east of India -->
+        <path class="cm-land" d="M 808,188 L 826,184 L 840,196 L 842,214 L 836,230 L 822,234 L 810,224 L 806,206 Z"/>
+
         <!-- Country labels -->
         <text class="cm-label-country" x="585" y="195" text-anchor="middle">PAKISTAN</text>
         <text class="cm-label-country" x="320" y="235" text-anchor="middle">SAUDI ARABIA</text>
         <text class="cm-label-country" x="450" y="258" text-anchor="middle" style="font-size:7px">UAE</text>
         <text class="cm-label-country" x="495" y="305" text-anchor="middle" style="font-size:7px">OMAN</text>
+        <text class="cm-label-country" x="478" y="58" text-anchor="middle" style="font-size:7px">AFGHANISTAN</text>
+        <text class="cm-label-country" x="700" y="36" text-anchor="middle">KAZAKHSTAN</text>
 
         <!-- Sea label -->
         <text class="cm-label" x="500" y="375" text-anchor="middle">ARABIAN SEA</text>
@@ -479,6 +490,10 @@
         <path class="cm-route" d="M 595,160 Q 500,180 290,275"/>
         <path class="cm-route" d="M 595,160 Q 510,200 405,260"/>
         <path class="cm-route" d="M 595,160 Q 510,210 445,250"/>
+        <!-- Export route lines (Lahore → Afghanistan, Kazakhstan, Bangladesh) -->
+        <path class="cm-route" d="M 595,160 Q 555,110 528,76"/>
+        <path class="cm-route" d="M 595,160 Q 630,95 668,42"/>
+        <path class="cm-route" d="M 595,160 Q 720,165 818,206"/>
 
         <!-- PAKISTAN PINS (solid) -->
         <!-- Lahore -->
@@ -553,11 +568,26 @@
           <circle class="cm-pin-dot-ksa" cx="445" cy="250" r="6"/>
           <text class="cm-pin-label" x="455" y="253">Dubai</text>
         </g>
+        <!-- Kabul / Afghanistan -->
+        <g class="cm-pin" tabindex="0" data-pin="Afghanistan" data-title="Afghanistan — Export reach" data-sub="PIR panels &amp; construction cold-chain · quotation issued">
+          <circle class="cm-pin-dot-ksa" cx="528" cy="76" r="6"/>
+          <text class="cm-pin-label" x="520" y="79" text-anchor="end">Afghanistan</text>
+        </g>
+        <!-- Kazakhstan -->
+        <g class="cm-pin" tabindex="0" data-pin="Kazakhstan" data-title="Kazakhstan — Export reach" data-sub="FireSafe PIR panel supply · quotation issued">
+          <circle class="cm-pin-dot-ksa" cx="668" cy="42" r="6.5"/>
+          <text class="cm-pin-label" x="678" y="45">Kazakhstan</text>
+        </g>
+        <!-- Bangladesh -->
+        <g class="cm-pin" tabindex="0" data-pin="Bangladesh" data-title="Bangladesh — Export reach" data-sub="40-room cold-store enquiry · panels &amp; refrigeration">
+          <circle class="cm-pin-dot-ksa" cx="818" cy="206" r="6"/>
+          <text class="cm-pin-label" x="808" y="209" text-anchor="end">Bangladesh</text>
+        </g>
       </svg>
 
       <div class="cm-legend" aria-hidden="true">
         <div class="cm-legend-row"><span class="cm-legend-swatch pk"></span><span>Delivered installation · Pakistan</span></div>
-        <div class="cm-legend-row"><span class="cm-legend-swatch ksa"></span><span>Export reach · GCC</span></div>
+        <div class="cm-legend-row"><span class="cm-legend-swatch ksa"></span><span>Export reach · GCC &amp; beyond</span></div>
       </div>
 
       <div class="cm-tooltip" id="cm-tooltip" role="tooltip" aria-hidden="true">
@@ -569,11 +599,11 @@
     <div class="cm-stats">
       <div class="cm-stat"><span class="cm-stat-n">2,100<sup style="font-size:.6em">+</sup></span><span class="cm-stat-u">installations</span><span class="cm-stat-l">Delivered across Pakistan since 1959</span></div>
       <div class="cm-stat"><span class="cm-stat-n">10</span><span class="cm-stat-u">PK cities</span><span class="cm-stat-l">Manufacturing in Lahore, projects nationwide</span></div>
-      <div class="cm-stat"><span class="cm-stat-n">4</span><span class="cm-stat-u">GCC cities</span><span class="cm-stat-l">Export reach &mdash; panels, equipment, commissioning</span></div>
+      <div class="cm-stat"><span class="cm-stat-n">7</span><span class="cm-stat-u">export markets</span><span class="cm-stat-l">GCC, Afghanistan, Kazakhstan &amp; Bangladesh &mdash; panels, equipment, commissioning</span></div>
       <div class="cm-stat"><span class="cm-stat-n">BS&nbsp;EN&nbsp;14509</span><span class="cm-stat-u">panel standard</span><span class="cm-stat-l">λ 0.022 W/m·K · meets GCC fire &amp; thermal codes</span></div>
     </div>
 
-    <p style="max-width:62ch;color:var(--muted);font-size:.86rem;margin-top:20px;font-family:var(--font-mono,'JetBrains Mono',ui-monospace,monospace);letter-spacing:.02em">Map is a schematic for orientation, not a survey-grade boundary. GCC pins indicate Izhar Foster export reach for panels, refrigeration equipment, and fly-in engineering &mdash; local installation is performed in partnership with regional contractors. <a href="services/cold-storage-saudi-arabia">Saudi Arabia &amp; GCC service page &rarr;</a></p>
+    <p style="max-width:62ch;color:var(--muted);font-size:.86rem;margin-top:20px;font-family:var(--font-mono,'JetBrains Mono',ui-monospace,monospace);letter-spacing:.02em">Map is a schematic for orientation, not a survey-grade boundary. Hollow pins indicate Izhar Foster export reach for panels, refrigeration equipment, and fly-in engineering &mdash; local installation is performed in partnership with regional contractors. <a href="services/cold-storage-saudi-arabia">Saudi Arabia &amp; GCC service page &rarr;</a></p>
   </div>
 
   <script>
