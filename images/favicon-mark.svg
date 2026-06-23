@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Izhar Foster">
-  <!-- Solid blue rounded square — recognisable at 16px -->
-  <rect width="32" height="32" rx="6" fill="#0A1F3D"/>
+  <!-- Solid corporate-blue rounded square — recognisable at 16px -->
+  <rect width="32" height="32" rx="6" fill="#2160A8"/>
 
-  <!-- Simplified compressor mark: two cylinders + crankcase, solid green silhouette -->
+  <!-- Simplified compressor mark: two cylinders + crankcase, cream silhouette on corporate blue -->
   <!-- Centred at (16, 17). Total mark: ~22w × 18h. -->
-  <g fill="#3FA85F">
+  <g fill="#F5F2EC">
     <!-- Crankcase (bottom block) -->
     <rect x="5" y="17" width="22" height="7" rx="1.2"/>
     <!-- Baseplate -->
