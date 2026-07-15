@@ -3,6 +3,7 @@ Allow: /
 Disallow: /_scrape/
 Disallow: /_kr_scrape/
 Disallow: /tmp/
+Disallow: /reports/
 
 # Search engines
 User-agent: Googlebot
