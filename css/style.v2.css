@@ -10,7 +10,7 @@
   /* Spectrum — these ARE the palette */
   --t-cold:     #0A1F3D;   /* −40°C glacier (temperature spectrum, NOT brand) */
   --t-mid:      #4FC3D9;   /* 0°C signal cyan */
-  --t-warm:     #E36A1E;   /* +25°C ember (CTA) */
+  --t-warm:     var(--t-warm);   /* +25°C ember (CTA) */
 
   /* Izhar Group sister-company brand blue.
      Matches the parent group's royal/cobalt blue used in their monogram
@@ -22,9 +22,9 @@
   --brand-blue-dark:   #062E69;   /* matches --brand-700 */
 
   /* Surface — bone white, never #fff */
-  --paper:      #F5F2EC;
-  --paper-2:    #ECE7DC;
-  --paper-3:    #E2DCCC;
+  --paper:      var(--paper);
+  --paper-2:    var(--paper-2);
+  --paper-3:    var(--paper-3);
 
   /* Radius system — Apple-like softness */
   --r-xs:  6px;   /* tags, chips, small badges */
@@ -34,9 +34,9 @@
   --r-xl:  28px;  /* large feature areas */
 
   /* Ink */
-  --ink:        #0E0F11;
-  --ink-2:      #2A2D33;
-  --muted:      #6E6F73;
+  --ink:        var(--ink);
+  --ink-2:      var(--ink-2);
+  --muted:      var(--muted);
   --line:       rgba(14,15,17,.10);
   --line-2:     rgba(14,15,17,.06);
 
@@ -270,13 +270,15 @@ h1, h2, h3, h4 {
   transition: all .2s ease;
   white-space: nowrap;
 }
-.btn-primary { background: var(--ink); color: var(--paper); }
-.btn-primary:hover { background: var(--t-warm); }
+/* Action hierarchy: brand-blue = primary brand action; ember (.btn-warm) = the
+   highest-intent "get a quote" action. */
+.btn-primary { background: var(--brand-500); color: #fff; }
+.btn-primary:hover { background: var(--brand-700); }
 .btn-warm { background: var(--t-warm); color: #fff; }
-.btn-warm:hover { background: var(--ink); }
-.btn-outline { color: var(--ink); border-color: var(--ink); }
-.btn-outline:hover { background: var(--ink); color: var(--paper); }
-.btn-ghost { color: var(--ink); }
+.btn-warm:hover { background: var(--brand-700); }
+.btn-outline { color: var(--brand-600); border-color: var(--brand-500); }
+.btn-outline:hover { background: var(--brand-500); color: #fff; border-color: var(--brand-500); }
+.btn-ghost { color: var(--brand-600); }
 .btn-ghost:hover { color: var(--t-warm); }
 .btn-sm { padding: 9px 16px; font-size: .85rem; }
 .btn-lg { padding: 17px 30px; font-size: 1rem; }
@@ -610,7 +612,7 @@ h1, h2, h3, h4 {
   background:
     radial-gradient(ellipse 80% 60% at 50% 0%, rgba(227,106,30,.10), transparent 60%),
     linear-gradient(180deg, #07101F 0%, #0A1F3D 100%);
-  color: #F5F2EC;
+  color: var(--paper);
   border-bottom: 1px solid #000;
   position: relative;
   overflow: hidden;
@@ -640,7 +642,7 @@ h1, h2, h3, h4 {
   margin: 20px auto 18px;
   max-width: 18ch;
   line-height: 1.05;
-  color: #F5F2EC;
+  color: var(--paper);
 }
 .hp-video-inner p {
   font-size: 1.08rem;
@@ -2580,7 +2582,7 @@ body.lc-open .lc-backdrop {
   font-size: clamp(1.7rem, 2.6vw, 2.3rem);
   font-weight: 500;
   letter-spacing: -.03em;
-  color: var(--ink);
+  color: var(--brand-700);
   margin: 56px 0 18px;
   line-height: 1.15;
 }
@@ -2588,7 +2590,7 @@ body.lc-open .lc-backdrop {
   font-size: 1.25rem;
   font-weight: 500;
   letter-spacing: -.02em;
-  color: var(--ink);
+  color: var(--brand-700);
   margin: 36px 0 10px;
 }
 .prose p { margin-bottom: 18px; }
@@ -5213,10 +5215,10 @@ body.lc-open .lc-backdrop {
 .csg-cat-meat      { color: #8B2A2A; }
 .csg-cat-poultry   { color: #B5651D; }
 .csg-cat-seafood   { color: #2E6B8A; }
-.csg-cat-dairy     { color: #6E6F73; }
+.csg-cat-dairy     { color: var(--muted); }
 .csg-cat-dry-goods { color: #7B5E3A; }
 .csg-cat-beverage  { color: #173E66; }
-.csg-cat-non-food  { color: #2A2D33; }
+.csg-cat-non-food  { color: var(--ink-2); }
 
 /* ============================================================
    COLD STORAGE GUIDE — additional responsive polish.
