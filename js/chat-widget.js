@@ -58,11 +58,14 @@
   // ----- styles (single inject) -----
   var css = '\
 .ifc-fab{position:fixed;bottom:20px;right:20px;z-index:9998;cursor:pointer;display:flex;align-items:stretch;gap:0;font-family:inherit}\
-.ifc-fab-pill{display:flex;align-items:center;background:#0A1F3D;color:#fff;padding:14px 18px 14px 22px;margin-right:-18px;border-radius:36px 0 0 36px;font:600 .92rem inherit;line-height:1.2;box-shadow:0 6px 20px rgba(10,31,61,.25);white-space:nowrap;border:0;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease,padding .2s ease;text-align:left}\
-.ifc-fab-pill:hover{transform:translateX(-2px);box-shadow:0 8px 28px rgba(10,31,61,.4)}\
+.ifc-fab-pill{display:flex;align-items:center;background:#0A1F3D;color:#fff;padding:14px 18px 14px 22px;margin-right:-18px;border-radius:36px 0 0 36px;font:600 .92rem inherit;line-height:1.2;box-shadow:0 6px 20px rgba(10,31,61,.25);white-space:nowrap;border:0;cursor:pointer;text-align:left;\
+  max-width:0;padding-left:0;padding-right:26px;opacity:0;overflow:hidden;pointer-events:none;\
+  transition:max-width .32s cubic-bezier(.2,.7,.2,1),opacity .24s ease,padding .32s cubic-bezier(.2,.7,.2,1)}\
+.ifc-fab:hover .ifc-fab-pill,.ifc-fab:focus-within .ifc-fab-pill{max-width:320px;padding-left:22px;opacity:1;pointer-events:auto}\
 .ifc-fab-pill strong{display:block;font-weight:700;letter-spacing:.01em}\
 .ifc-fab-pill span{display:block;font:500 .72rem/.9 var(--font-mono,"JetBrains Mono",ui-monospace,monospace);color:#FFB388;margin-top:3px;letter-spacing:.04em;text-transform:uppercase}\
 @media (max-width:640px){.ifc-fab-pill{display:none}}\
+@media (prefers-reduced-motion:reduce){.ifc-fab-pill{transition:opacity .2s ease}}\
 .ifc-fab-btn{width:72px;height:72px;border-radius:50%;background:#25D366;box-shadow:0 8px 28px rgba(37,211,102,.45),0 3px 10px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center;color:#fff;border:3px solid #fff;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease;position:relative;z-index:2;padding:0}\
 .ifc-fab-btn:hover{transform:scale(1.06);box-shadow:0 10px 34px rgba(37,211,102,.6)}\
 .ifc-fab-btn:focus-visible{outline:3px solid rgba(37,211,102,.5);outline-offset:3px}\
