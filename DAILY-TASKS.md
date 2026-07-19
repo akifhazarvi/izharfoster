@@ -8,6 +8,19 @@ Work top-to-bottom. Mark done with `[x]`. Each PR title must reference the GROWT
 
 ---
 
+## 2026-07-19 — Data-driven round (latest GSC/GA4, 18 Jun–15 Jul 28d)
+
+Latest pull: **607 clicks / 14,644 imp / 4.15% CTR / pos 7.2** (28d). `sandwich panel price` now pos 2.8 (17% CTR). Full working-vs-needs-work in the live growth report.
+
+- [x] **GP§14 — Panel Price Estimator: PUF/EPS/PIR material selector.** GSC showed 15+ distinct price queries (puf/eps/pu/4x8 panel price) all funnelling to one page with no material choice. Added core-material dropdown; multipliers from cross-validated PK research (Silver Steel, Golden Steel, Portaking): PUF ×0.85, EPS ×0.60 vs PIR. PUF 100mm → ~PKR 804–957/sq ft (matches market). Also fixed pre-existing bug: tool never passed `buildPDF` → methodology/PDF silently failed. Commit `165a51e`.
+- [x] **GP§6 — Pharma page (NOT rewritten).** Confirmed prior diagnosis: page already deep/well-schema'd; low visibility = new-URL authority/time, not content. Rewrite would regress a strong asset. Surgical only: refreshed schema `dateModified` + internal link to Panel Price tool. Commit `165a51e`.
+- [x] **Live growth report** — added §02 working/needs-work diagnosis + §11 data-driven tool/blog ideas. `/reports/growth-d9ed9f96` (noindex).
+- [ ] **Blogs (drafting):** "PUF vs EPS vs PIR — Price & Performance" + "How to Start a Cold Storage Business in Pakistan (Cost & ROI)" — serve the rising panel-price + cold-storage-business clusters.
+
+**Key finding — lead forms leak ~95%:** 82 form starts → 4 submits; 72 lead-intent → 4 leads. Biggest conversion problem on the site. Next round: audit the quote form UX.
+
+---
+
 ## 2026-06-20 (PR2) — City pages from GSC demand
 
 GSC city-query pull **overrode the CLAUDE.md city plan**: Multan (~1 imp, branded only) and Faisalabad (0 imp) have no organic demand — building them would be thin doorway pages. Built the two data-backed pages instead:
