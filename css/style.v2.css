@@ -7,24 +7,47 @@
    ========================================================================== */
 
 :root {
-  /* Spectrum — these ARE the palette */
-  --t-cold:     #0A1F3D;   /* −40°C glacier (temperature spectrum, NOT brand) */
-  --t-mid:      #4FC3D9;   /* 0°C signal cyan */
-  --t-warm:     var(--t-warm);   /* +25°C ember (CTA) */
+  /* ============================================================
+     IZHAR FOSTER — RECOMMENDED PALETTE
+     Brand = the logo's royal blue (#084296). Ember = action only.
+     Cyan = temperature/data signal. Paper = warm bone ground.
+     Neutrals are subtly blue-tinted so the whole page reads as one family.
+     ============================================================ */
 
-  /* Izhar Group sister-company brand blue.
-     Matches the parent group's royal/cobalt blue used in their monogram
-     (izharengineering.com / izhar.com). Use this on the monogram, the
-     footer brand mark, and any "we belong to Izhar Group" signal —
-     never for temperature/cold semantics, which stay on --t-cold. */
-  --brand-blue:        #084296;   /* sampled from the logo — matches --brand-500 */
-  --brand-blue-light:  #2360BF;
-  --brand-blue-dark:   #062E69;   /* matches --brand-700 */
+  /* BRAND BLUE — primary. Full tonal scale (from the logo, sampled). */
+  --brand-50:   #EEF3FA;   /* faint tint — hover fills, chips */
+  --brand-100:  #DBE5F2;   /* light tint — cards, wash */
+  --brand-200:  #B6C8E4;   /* light — eyebrows on dark */
+  --brand-300:  #7E9BCB;
+  --brand-500:  #084296;   /* THE logo blue — primary brand */
+  --brand-600:  #073A83;   /* hover / links */
+  --brand-700:  #0A2E60;   /* headings on paper */
+  --brand-ink:  #071B3A;   /* brand-tinted near-black — hero + footer grounds */
 
-  /* Surface — bone white, never #fff */
-  --paper:      var(--paper);
-  --paper-2:    var(--paper-2);
-  --paper-3:    var(--paper-3);
+  /* Legacy aliases (kept so existing refs resolve) */
+  --brand-blue:        var(--brand-500);
+  --brand-blue-light:  var(--brand-300);
+  --brand-blue-dark:   var(--brand-700);
+
+  /* EMBER — the single ACTION accent (buttons, quote CTA). Never decorative. */
+  --t-warm:     #E36A1E;
+  --ember-600:  #C6560F;   /* ember hover/darker */
+
+  /* CYAN — temperature / data signal only (chiller 0degC anchor, accents). */
+  --t-mid:      #4FC3D9;
+  --t-cold:     #0A1F3D;   /* deep glacier navy — temperature spectrum cold end */
+
+  /* SURFACE — warm bone, never pure #fff. */
+  --paper:      #F5F2EC;   /* primary ground */
+  --paper-2:    #ECE7DC;   /* secondary surface / cards */
+  --paper-3:    #E2DCCC;   /* tertiary / hairline fills */
+
+  /* INK — blue-tinted neutrals (chosen, not default grey). */
+  --ink:        #0E141F;   /* primary text — near-black, faint blue bias */
+  --ink-2:      #33404F;   /* secondary text */
+  --muted:      #6B7686;   /* tertiary text / hints — cool grey */
+  --line:       rgba(8,66,150,.14);   /* hairlines — brand-tinted */
+  --line-2:     rgba(8,66,150,.08);
 
   /* Radius system — Apple-like softness */
   --r-xs:  6px;   /* tags, chips, small badges */
@@ -32,13 +55,6 @@
   --r-md:  14px;  /* cards, panels, modals */
   --r-lg:  20px;  /* hero cards, feature blocks */
   --r-xl:  28px;  /* large feature areas */
-
-  /* Ink */
-  --ink:        var(--ink);
-  --ink-2:      var(--ink-2);
-  --muted:      var(--muted);
-  --line:       rgba(14,15,17,.10);
-  --line-2:     rgba(14,15,17,.06);
 
   /* Type */
   --font-display: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -6589,17 +6605,6 @@ body.lc-open .lc-backdrop {
   /* ---- Elevation ---- */
   --elev-1: 0 1px 2px rgba(14,15,17,.05);
   --elev-2: 0 4px 20px rgba(14,15,17,.07), 0 1px 3px rgba(14,15,17,.05);
-
-  /* ---- Brand blue (sampled from the Izhar Foster logo, #084296) ----
-     Blue is the PRIMARY brand color: hero grounds, headings, links, eyebrows,
-     key UI. Ember (--t-warm) is reserved for ACTIONS only (buttons/CTAs). */
-  --brand-50:  #EBF0F7;
-  --brand-100: #DAE3EF;
-  --brand-200: #B5C6E0;
-  --brand-500: #084296;   /* THE logo blue */
-  --brand-600: #073981;   /* hover / darker */
-  --brand-700: #062E69;   /* deep headings on paper */
-  --brand-ink: #041E44;   /* brand-tinted near-black for hero grounds */
 }
 
 /* ============================================================
