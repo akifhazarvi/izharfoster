@@ -3,7 +3,6 @@
   "currency": "PKR",
   "unit": "per_m2",
   "uncertainty_band_pct": 15,
-
   "panels": [
     {
       "thicknessMm": 50,
@@ -72,34 +71,101 @@
       "useCase": "Freezers and blast freezers (−25 to −40°C)"
     }
   ],
-
+  "material_multipliers": {
+    "$comment": "Multiplier vs the PIR baseline price bands. Derived from cross-validated Pakistan market data (Silver Steel Mills, Golden Steel Mill, Portaking, OLX, 2026). PIR = premium fire-rated baseline; PUF ~0.85x; EPS ~0.60x. EPS is economy/thermocol, lower fire + thermal performance.",
+    "pir": {
+      "multiplier": 1.0,
+      "label": "FireSafe PIR — B1 fire-rated, λ 0.022 (premium)",
+      "fire": "B1 / Class 0",
+      "lambda": 0.022,
+      "note": "Best fire + thermal performance. Izhar's core product."
+    },
+    "puf": {
+      "multiplier": 0.85,
+      "label": "PUF / PU — polyurethane core (mid-range)",
+      "fire": "B2/B3",
+      "lambda": 0.023,
+      "note": "Good thermal performance, lower fire class than PIR. Common for cold rooms."
+    },
+    "eps": {
+      "multiplier": 0.6,
+      "label": "EPS — expanded polystyrene / thermocol (economy)",
+      "fire": "E (combustible)",
+      "lambda": 0.036,
+      "note": "Lowest cost. Weaker thermal (thicker needed) and fire performance. Budget builds."
+    }
+  },
   "facing_multipliers": {
     "$comment": "Multiplier on base PKR/m² for facing gauge. Base assumes 0.5 mm pre-painted galvanised both faces.",
-    "light": { "label": "Light: 0.4 mm pre-painted GI both faces", "multiplier": 0.92 },
-    "standard": { "label": "Standard: 0.5 mm pre-painted GI both faces (default)", "multiplier": 1.00 },
-    "heavy": { "label": "Heavy: 0.6 mm pre-painted GI both faces", "multiplier": 1.10 },
-    "galvalume": { "label": "Galvalume: 0.5 mm Galvalume corrosion-resistant", "multiplier": 1.12 },
-    "food_grade": { "label": "Food-grade: 0.5 mm food-contact certified", "multiplier": 1.18 }
+    "light": {
+      "label": "Light: 0.4 mm pre-painted GI both faces",
+      "multiplier": 0.92
+    },
+    "standard": {
+      "label": "Standard: 0.5 mm pre-painted GI both faces (default)",
+      "multiplier": 1.0
+    },
+    "heavy": {
+      "label": "Heavy: 0.6 mm pre-painted GI both faces",
+      "multiplier": 1.1
+    },
+    "galvalume": {
+      "label": "Galvalume: 0.5 mm Galvalume corrosion-resistant",
+      "multiplier": 1.12
+    },
+    "food_grade": {
+      "label": "Food-grade: 0.5 mm food-contact certified",
+      "multiplier": 1.18
+    }
   },
-
   "length_uplifts": {
     "$comment": "Uplift on PKR/m² for non-standard panel lengths (longer = fewer site joints, but more wastage above 40 ft).",
-    "standard": { "label": "Up to 12 ft (3.66 m) — standard", "multiplier": 1.00 },
-    "long": { "label": "12–25 ft (3.66–7.62 m)", "multiplier": 1.04 },
-    "extra_long": { "label": "25–40 ft (7.62–12.19 m)", "multiplier": 1.08 },
-    "max": { "label": "40–50 ft (12.19–15.24 m) — eliminates site joints", "multiplier": 1.15 }
+    "standard": {
+      "label": "Up to 12 ft (3.66 m) — standard",
+      "multiplier": 1.0
+    },
+    "long": {
+      "label": "12–25 ft (3.66–7.62 m)",
+      "multiplier": 1.04
+    },
+    "extra_long": {
+      "label": "25–40 ft (7.62–12.19 m)",
+      "multiplier": 1.08
+    },
+    "max": {
+      "label": "40–50 ft (12.19–15.24 m) — eliminates site joints",
+      "multiplier": 1.15
+    }
   },
-
   "volume_discounts": {
     "$comment": "Discount tiers based on total order volume (m²). Indicative — actual discount confirmed at quote.",
     "tiers": [
-      { "minM2": 0,    "maxM2": 200,   "label": "Under 200 m² — small project", "discount": 0.00 },
-      { "minM2": 200,  "maxM2": 1000,  "label": "200–1,000 m² — mid project",   "discount": 0.03 },
-      { "minM2": 1000, "maxM2": 5000,  "label": "1,000–5,000 m² — large project","discount": 0.06 },
-      { "minM2": 5000, "maxM2": 999999,"label": "Over 5,000 m² — bulk",          "discount": 0.10 }
+      {
+        "minM2": 0,
+        "maxM2": 200,
+        "label": "Under 200 m² — small project",
+        "discount": 0.0
+      },
+      {
+        "minM2": 200,
+        "maxM2": 1000,
+        "label": "200–1,000 m² — mid project",
+        "discount": 0.03
+      },
+      {
+        "minM2": 1000,
+        "maxM2": 5000,
+        "label": "1,000–5,000 m² — large project",
+        "discount": 0.06
+      },
+      {
+        "minM2": 5000,
+        "maxM2": 999999,
+        "label": "Over 5,000 m² — bulk",
+        "discount": 0.1
+      }
     ]
   },
-
   "freight_pkr_per_m2": {
     "$comment": "Indicative freight from Lahore plant per m² of panel. Linear approximation. Real freight depends on truck count, route, and palletisation.",
     "lahore_local": 0,

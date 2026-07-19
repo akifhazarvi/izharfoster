@@ -11,6 +11,7 @@
   const $ = (id) => document.getElementById(id);
 
   const els = {
+    material: $('material'),
     thickness: $('thickness'),
     facing: $('facing'),
     length: $('length'),
@@ -48,6 +49,19 @@
   };
 
   const data = await getData('data-panel-prices');
+
+  // Populate material dropdown (PIR / PUF / EPS) — answers the puf/eps/pir price queries
+  if (els.material && data.material_multipliers) {
+    ['pir', 'puf', 'eps'].forEach(key => {
+      const m = data.material_multipliers[key];
+      if (!m) return;
+      const opt = document.createElement('option');
+      opt.value = key;
+      opt.textContent = m.label;
+      if (key === 'pir') opt.selected = true;
+      els.material.appendChild(opt);
+    });
+  }
 
   // Populate thickness dropdown — all 6 thicknesses, marked publishable vs project-priced
   data.panels.forEach(p => {
@@ -106,7 +120,7 @@
   bindSeg(els.qtyUnit);
 
   // Listeners on every input
-  ['thickness', 'facing', 'length', 'qty', 'city'].forEach(id => {
+  ['material', 'thickness', 'facing', 'length', 'qty', 'city'].forEach(id => {
     const el = $(id);
     if (el) el.addEventListener('input', compute);
     if (el) el.addEventListener('change', compute);
@@ -118,6 +132,9 @@
     const panel = data.panels.find(p => p.thicknessMm === thicknessMm);
     if (!panel) return;
 
+    const materialKey = (els.material && els.material.value) || 'pir';
+    const material = (data.material_multipliers && data.material_multipliers[materialKey]) || { multiplier: 1.0, label: 'FireSafe PIR', lambda: 0.022 };
+    const materialMult = material.multiplier;
     const facingKey = els.facing.value;
     const facingMult = data.facing_multipliers[facingKey].multiplier;
     const lengthKey = els.length.value;
@@ -137,9 +154,9 @@
     const freightPerM2 = data.freight_pkr_per_m2[cityKey] || 0;
 
     // Compute PKR/m² band
-    const minBase = panel.priceMin * facingMult * lengthMult * (1 - volumeDiscount);
-    const midBase = panel.priceMid * facingMult * lengthMult * (1 - volumeDiscount);
-    const maxBase = panel.priceMax * facingMult * lengthMult * (1 - volumeDiscount);
+    const minBase = panel.priceMin * materialMult * facingMult * lengthMult * (1 - volumeDiscount);
+    const midBase = panel.priceMid * materialMult * facingMult * lengthMult * (1 - volumeDiscount);
+    const maxBase = panel.priceMax * materialMult * facingMult * lengthMult * (1 - volumeDiscount);
 
     // Final per-m² band (incl freight)
     const minPerM2 = minBase + freightPerM2;
@@ -172,10 +189,11 @@
     els.lineQty.textContent = qtyUnit === 'sqft'
       ? `${fmt(qtyM2 * 10.764, 0)} sqft (${fmt(qtyM2, 0)} m²)`
       : `${fmt(qtyM2, 0)} m² (${fmt(qtyM2 * 10.764, 0)} sqft)`;
-    els.lineSpec.textContent = `${thicknessMm} mm FireSafe PIR · ${data.facing_multipliers[facingKey].label.split(':')[0]} facing · ${data.length_uplifts[lengthKey].label.split(' —')[0]}`;
+    const matName = materialKey.toUpperCase();
+    els.lineSpec.textContent = `${thicknessMm} mm ${matName} · ${data.facing_multipliers[facingKey].label.split(':')[0]} facing · ${data.length_uplifts[lengthKey].label.split(' —')[0]}`;
     els.lineU.textContent = `${panel.uValueSI.toFixed(2)} W/m²K`;
 
-    const subtotalMid = panel.priceMid * facingMult * lengthMult * qtyM2;
+    const subtotalMid = panel.priceMid * materialMult * facingMult * lengthMult * qtyM2;
     const discountAmt = subtotalMid * volumeDiscount;
     const freightAmt = freightPerM2 * qtyM2;
     const totalNet = subtotalMid - discountAmt + freightAmt;
@@ -202,7 +220,7 @@
       : 'Indicative band ±20%. Quote-confirmed for this thickness.';
 
     // Summary line for CTAs
-    const summary = `${thicknessMm} mm FireSafe PIR · ${data.facing_multipliers[facingKey].label.split(':')[0]} facing · ${fmt(qtyM2, 0)} m² · ${cities.find(c => c.value === cityKey)?.label || ''} → indicative Rs ${fmt(totalMin)} – ${fmt(totalMax)} (mid Rs ${fmt(totalMid)})`;
+    const summary = `${thicknessMm} mm ${matName} panel · ${data.facing_multipliers[facingKey].label.split(':')[0]} facing · ${fmt(qtyM2, 0)} m² · ${cities.find(c => c.value === cityKey)?.label || ''} → indicative Rs ${fmt(totalMin)} – ${fmt(totalMax)} (mid Rs ${fmt(totalMid)})`;
     els.summaryLine.textContent = summary;
 
     // CTA URLs
@@ -223,20 +241,22 @@
     // Show-the-math
     if (els.mathBody) {
       els.mathBody.innerHTML = `
-        <p><strong>Step 1 — Base PKR/m² for ${thicknessMm} mm FireSafe PIR (Q2 2026 market data):</strong><br>
+        <p><strong>Step 1 — Base PKR/m² for ${thicknessMm} mm (PIR baseline, 2026 market data):</strong><br>
         Min ${fmt(panel.priceMin)} · Mid ${fmt(panel.priceMid)} · Max ${fmt(panel.priceMax)}</p>
 
-        <p><strong>Step 2 — Facing multiplier (${facingKey}):</strong> × ${facingMult.toFixed(2)}</p>
-        <p><strong>Step 3 — Length multiplier (${lengthKey}):</strong> × ${lengthMult.toFixed(2)}</p>
+        <p><strong>Step 2 — Material multiplier (${matName}, λ ${material.lambda ?? '—'}):</strong> × ${materialMult.toFixed(2)} ${materialKey !== 'pir' ? `<span style="color:var(--ink-2)">— ${material.note || ''}</span>` : ''}</p>
 
-        <p><strong>Step 4 — Volume discount tier:</strong> ${tier?.label || '—'} ${volumeDiscount > 0 ? `(−${(volumeDiscount * 100).toFixed(0)}%)` : ''}</p>
+        <p><strong>Step 3 — Facing multiplier (${facingKey}):</strong> × ${facingMult.toFixed(2)}</p>
+        <p><strong>Step 4 — Length multiplier (${lengthKey}):</strong> × ${lengthMult.toFixed(2)}</p>
 
-        <p><strong>Step 5 — Freight from Lahore (${cityKey.replace(/_/g, ' ')}):</strong> + Rs ${freightPerM2}/m²</p>
+        <p><strong>Step 5 — Volume discount tier:</strong> ${tier?.label || '—'} ${volumeDiscount > 0 ? `(−${(volumeDiscount * 100).toFixed(0)}%)` : ''}</p>
 
-        <p><strong>Step 6 — Per-m² band after all factors:</strong><br>
+        <p><strong>Step 6 — Freight from Lahore (${cityKey.replace(/_/g, ' ')}):</strong> + Rs ${freightPerM2}/m²</p>
+
+        <p><strong>Step 7 — Per-m² band after all factors:</strong><br>
         Min Rs ${fmt(minPerM2)} · Mid Rs ${fmt(midPerM2)} · Max Rs ${fmt(maxPerM2)}</p>
 
-        <p><strong>Step 7 — Total for ${fmt(qtyM2, 0)} m²:</strong><br>
+        <p><strong>Step 8 — Total for ${fmt(qtyM2, 0)} m²:</strong><br>
         Rs ${fmt(totalMin)} – Rs ${fmt(totalMax)}</p>
 
         <p style="font-size:.75em;color:var(--ink-2);margin-top:1em;border-top:1px solid var(--paper-3);padding-top:.75em;">
@@ -247,6 +267,7 @@
 
     // URL state
     writeState({
+      m: materialKey,
       t: thicknessMm,
       f: facingKey,
       l: lengthKey,
@@ -258,6 +279,7 @@
 
   // Restore from URL
   const state = readState();
+  if (state.m && els.material) els.material.value = state.m;
   if (state.t) els.thickness.value = state.t;
   if (state.f) els.facing.value = state.f;
   if (state.l) els.length.value = state.l;
@@ -280,6 +302,7 @@
       toolId: 'panel-price',
       toolName: 'Sandwich Panel Price Estimator',
       getState: () => ({
+        material: els.material ? els.material.value : 'pir',
         thickness: parseInt(els.thickness.value),
         facing: els.facing.value,
         length: els.length.value,
@@ -287,7 +310,32 @@
         qtyUnit: getSeg(els.qtyUnit),
         city: els.city.value,
       }),
+      buildPDF: () => ({
+        projectName: `Sandwich panel price estimate — ${(els.material ? els.material.value : 'pir').toUpperCase()} ${els.thickness.value} mm`,
+        sections: [
+          { title: 'Specification', kv: [
+            ['Core material', (els.material ? els.material.value : 'pir').toUpperCase()],
+            ['Thickness', `${els.thickness.value} mm`],
+            ['Facing', els.facing.options[els.facing.selectedIndex]?.text || '—'],
+            ['Quantity', els.lineQty?.textContent || `${els.qty.value}`],
+            ['Delivery zone', els.city.options[els.city.selectedIndex]?.text || '—'],
+          ]},
+          { title: 'Indicative estimate', kv: [
+            ['Per m²', els.perM2Range?.textContent || '—'],
+            ['Per sq ft', els.perSqftRange?.textContent || '—'],
+            ['Order total (mid)', els.bigMid?.textContent || '—'],
+            ['Order total (range)', `${els.bigMin?.textContent || ''} – ${els.bigMax?.textContent || ''}`],
+          ]},
+        ],
+        math: els.mathBody?.innerText || '',
+        sources: [
+          'Indicative bands from cross-validated Pakistan market data (Silver Steel Mills, Golden Steel Mill, Portaking), 2026.',
+          'PIR baseline: BS EN 14509 aged λ 0.022 W/m·K, B1 fire class. Material multipliers: PUF ×0.85, EPS ×0.60.',
+          'Final price confirmed by quote — imported PU-chemical and steel-coil inputs drift quarter to quarter.',
+        ],
+      }),
       setState: (s) => {
+        if (s.material && els.material) els.material.value = s.material;
         if (s.thickness) els.thickness.value = s.thickness;
         if (s.facing) els.facing.value = s.facing;
         if (s.length) els.length.value = s.length;
