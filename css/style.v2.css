@@ -49,6 +49,7 @@
   --gutter: clamp(20px, 4vw, 56px);
 
   --rail: 72px;            /* spectrum rail width */
+
 }
 
 /* ============= Reset ============= */
@@ -2477,6 +2478,25 @@ body.lc-open .lc-backdrop {
   max-width: 56ch;
   line-height: 1.6;
   margin-top: 28px;
+}
+
+/* Blog/article hero — titles are long sentences, not 2-word service names.
+   The service-page H1 cap (5.4rem) turns a sentence into a billboard, so
+   scope a calmer, editorial size + rhythm for posts. */
+.page-hero.post-hero { padding-top: 84px; padding-bottom: 64px; }
+.page-hero.post-hero h1 {
+  font-size: clamp(1.9rem, 3.4vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -.03em;
+  max-width: 24ch;
+  margin-bottom: 18px;
+}
+.page-hero.post-hero .lead { font-size: 1.08rem; margin-top: 20px; }
+.page-hero.post-hero .breadcrumb { margin-bottom: 24px; }
+.page-hero.post-hero .post-meta { margin-top: 18px; }
+@media (max-width: 720px) {
+  .page-hero.post-hero { padding: 56px var(--gutter) 44px; }
+  .page-hero.post-hero h1 { font-size: clamp(1.7rem, 6.5vw, 2.2rem); }
 }
 .page-hero .aside {
   background: rgba(245,242,236,.04);
@@ -5662,7 +5682,6 @@ body.lc-open .lc-backdrop {
     padding: 12px 18px;
     font-size: .72rem;
   }
-}
 }
 
 /* ==========================================================================

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Izhar Foster — Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="css/style.v2.css">
+<link rel="stylesheet" href="css/system.css">
+<style>
+  body { background: var(--paper); color: var(--ink); font-family: var(--font-body); }
+  .sg-wrap { max-width: 1120px; margin: 0 auto; padding: 48px var(--gutter) 120px; }
+  .sg-title { font-family: var(--font-mono); font-size: var(--fs-mono); letter-spacing: var(--ls-mono); text-transform: uppercase; color: var(--t-warm); margin-bottom: 8px; }
+  .sg-h { font-size: var(--fs-h2); font-weight: 700; letter-spacing: var(--ls-head); margin: 64px 0 8px; }
+  .sg-note { color: var(--muted); font-size: var(--fs-sm); max-width: 60ch; margin-bottom: 24px; }
+  .sg-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--line-2); }
+  .sg-label { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--muted); width: 130px; flex-shrink: 0; }
+  .sg-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap: 12px; }
+  .sg-sw { border: 1px solid var(--line); border-radius: var(--r-sm); overflow: hidden; }
+  .sg-sw .chip { height: 64px; }
+  .sg-sw .cap { padding: 8px 10px; font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--ink-2); }
+  .sg-space { background: var(--t-warm); height: 14px; border-radius: 3px; }
+  .sg-card { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; margin-top: 16px; }
+</style>
+</head>
+<body>
+
+<!-- HERO PREVIEW · ARTICLE MODE (long title) -->
+<header class="ifx-hero ifx-hero--article">
+  <div class="ifx-hero__inner">
+    <nav class="ifx-hero__crumb"><a href="#">Home</a><span class="sep">/</span><a href="#">Blog</a><span class="sep">/</span><span>PUF vs EPS vs PIR Sandwich Panels — Price &amp; Performance in Pakistan (2026)</span></nav>
+    <span class="ifx-hero__eyebrow"><span class="dot"></span>Panels · all cores</span>
+    <h1>PUF vs EPS vs PIR Sandwich Panels — Price &amp; Performance in Pakistan (2026)</h1>
+    <p class="ifx-hero__meta">Published 2026-07-19 · Updated 2026-07-19 · By <a href="#">Muhammad Anwar</a>, GM Business Development</p>
+  </div>
+</header>
+
+<div class="sg-wrap">
+
+  <p class="sg-title" style="margin-top:40px">Living design system · component layer on locked tokens</p>
+  <h1 style="font-size:var(--fs-hero);line-height:var(--lh-tight);letter-spacing:var(--ls-hero);max-width:16ch">The design system, on one page.</h1>
+  <p class="sg-note" style="font-size:var(--fs-lead);margin-top:16px">Palette, fonts and the temperature rail stay locked. What's new is a governed component layer — one type scale, one spacing scale, and shared hero / prose / table / button rules — so every page reads as one system.</p>
+
+  <!-- TYPE SCALE -->
+  <h2 class="sg-h">Type scale</h2>
+  <p class="sg-note">One fluid ramp. Headings use Inter; every number uses JetBrains Mono.</p>
+  <div class="sg-row"><span class="sg-label">--fs-hero</span><span style="font-size:var(--fs-hero);font-weight:700;letter-spacing:var(--ls-hero);line-height:1">Engineered cold.</span></div>
+  <div class="sg-row"><span class="sg-label">--fs-h1</span><span style="font-size:var(--fs-h1);font-weight:700;letter-spacing:var(--ls-head)">Article headline</span></div>
+  <div class="sg-row"><span class="sg-label">--fs-h2</span><span style="font-size:var(--fs-h2);font-weight:700;letter-spacing:var(--ls-head)">Section heading</span></div>
+  <div class="sg-row"><span class="sg-label">--fs-h3</span><span style="font-size:var(--fs-h3);font-weight:600">Sub-heading</span></div>
+  <div class="sg-row"><span class="sg-label">--fs-lead</span><span style="font-size:var(--fs-lead)">Lead / intro paragraph</span></div>
+  <div class="sg-row"><span class="sg-label">--fs-base</span><span style="font-size:var(--fs-base)">Body text at a comfortable 17px reading size.</span></div>
+  <div class="sg-row"><span class="sg-label">--fs-sm</span><span style="font-size:var(--fs-sm)">Small / caption text</span></div>
+  <div class="sg-row"><span class="sg-label">--fs-mono</span><span class="mono" style="font-size:var(--fs-mono);letter-spacing:var(--ls-mono);text-transform:uppercase;color:var(--t-warm)">Eyebrow · mono label</span></div>
+  <div class="sg-row"><span class="sg-label">numerals</span><span class="mono" style="font-size:1.4rem">−40°C · PKR 1,275 · λ 0.022 · 1959</span></div>
+
+  <!-- COLOR -->
+  <h2 class="sg-h">Palette (locked)</h2>
+  <p class="sg-note">Ember is the only accent. Cyan is a data anchor, not decoration.</p>
+  <div class="sg-swatches">
+    <div class="sg-sw"><div class="chip" style="background:var(--ink)"></div><div class="cap">--ink · #0E0F11</div></div>
+    <div class="sg-sw"><div class="chip" style="background:var(--t-warm)"></div><div class="cap">--t-warm · #E36A1E</div></div>
+    <div class="sg-sw"><div class="chip" style="background:var(--t-mid)"></div><div class="cap">--t-mid · #4FC3D9</div></div>
+    <div class="sg-sw"><div class="chip" style="background:var(--t-cold)"></div><div class="cap">--t-cold · #0A1F3D</div></div>
+    <div class="sg-sw"><div class="chip" style="background:var(--paper)"></div><div class="cap">--paper · #F5F2EC</div></div>
+    <div class="sg-sw"><div class="chip" style="background:var(--paper-2)"></div><div class="cap">--paper-2 · #ECE7DC</div></div>
+  </div>
+
+  <!-- SPACING -->
+  <h2 class="sg-h">Spacing scale</h2>
+  <p class="sg-note">4px base. Section rhythm is one fluid value (--section-y) used everywhere.</p>
+  <div class="sg-row"><span class="sg-label">--sp-2 · 8</span><div class="sg-space" style="width:8px"></div></div>
+  <div class="sg-row"><span class="sg-label">--sp-4 · 16</span><div class="sg-space" style="width:16px"></div></div>
+  <div class="sg-row"><span class="sg-label">--sp-5 · 24</span><div class="sg-space" style="width:24px"></div></div>
+  <div class="sg-row"><span class="sg-label">--sp-6 · 32</span><div class="sg-space" style="width:32px"></div></div>
+  <div class="sg-row"><span class="sg-label">--sp-8 · 64</span><div class="sg-space" style="width:64px"></div></div>
+  <div class="sg-row"><span class="sg-label">--section-y</span><div class="sg-space" style="width:112px"></div><span class="sg-note" style="margin:0">clamp(56 → 112px)</span></div>
+
+  <!-- PROSE COMPONENT -->
+  <h2 class="sg-h">Prose (article body)</h2>
+  <p class="sg-note">Max 68ch line length, 1.62 line-height, consistent flow spacing.</p>
+  <div class="sg-card"><div style="padding:32px">
+    <article class="prose">
+      <h2>The short answer</h2>
+      <p>If you are choosing a sandwich panel core in Pakistan, the decision comes down to three materials: <strong>EPS</strong>, <strong>PUF/PU</strong>, and <strong>PIR</strong>. They look identical on the outside — the same steel facers, the same cam-lock joints — but they perform very differently, and their prices reflect that.</p>
+      <h3>Price by thickness</h3>
+      <p>Core material sets the baseline; thickness moves the invoice. PIR runs the highest, PUF ~0.85× and EPS ~0.60× at the same thickness. Price your exact spec in the <a href="#">Panel Price Calculator</a>.</p>
+      <div class="ifx-table-wrap">
+        <table>
+          <thead><tr><th>Core</th><th>PKR / sq ft</th><th>λ (W/m·K)</th><th>Fire class</th><th>Lifespan</th></tr></thead>
+          <tbody>
+            <tr><td>EPS <span style="color:var(--muted)">(thermocol)</span></td><td><span class="mono">280–650</span></td><td><span class="mono">~0.036</span></td><td>Class E</td><td><span class="mono">10–15</span> yrs</td></tr>
+            <tr><td>PUF / PU</td><td><span class="mono">450–950</span></td><td><span class="mono">~0.023</span></td><td>B2 / B3</td><td><span class="mono">15–20</span> yrs</td></tr>
+            <tr><td>PIR (FireSafe PIR)</td><td><span class="mono">550–1,100</span></td><td><span class="mono">0.022</span></td><td>B1</td><td><span class="mono">20–25+</span> yrs</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:24px"><a class="ifx-btn" href="#">Request a quote →</a></p>
+    </article>
+  </div></div>
+
+</div>
+
+<script>document.title = "Izhar Foster — Design System";</script>
+</body>
+</html>
