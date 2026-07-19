@@ -57,17 +57,17 @@
 
   // ----- styles (single inject) -----
   var css = '\
-.ifc-fab{position:fixed;bottom:20px;right:20px;z-index:9998;cursor:pointer;display:flex;align-items:stretch;gap:0;font-family:inherit}\
-.ifc-fab-pill{display:flex;align-items:center;background:#0A1F3D;color:#fff;padding:14px 18px 14px 22px;margin-right:-18px;border-radius:36px 0 0 36px;font:600 .92rem inherit;line-height:1.2;box-shadow:0 6px 20px rgba(10,31,61,.25);white-space:nowrap;border:0;cursor:pointer;text-align:left;\
-  max-width:0;padding-left:0;padding-right:26px;opacity:0;overflow:hidden;pointer-events:none;\
-  transition:max-width .32s cubic-bezier(.2,.7,.2,1),opacity .24s ease,padding .32s cubic-bezier(.2,.7,.2,1)}\
-.ifc-fab:hover .ifc-fab-pill,.ifc-fab:focus-within .ifc-fab-pill{max-width:320px;padding-left:22px;opacity:1;pointer-events:auto}\
-.ifc-fab-pill strong{display:block;font-weight:700;letter-spacing:.01em}\
-.ifc-fab-pill span{display:block;font:500 .72rem/.9 var(--font-mono,"JetBrains Mono",ui-monospace,monospace);color:#FFB388;margin-top:3px;letter-spacing:.04em;text-transform:uppercase}\
+.ifc-fab{position:fixed;bottom:22px;right:22px;z-index:9998;cursor:pointer;display:flex;align-items:center;gap:12px;font-family:inherit}\
+.ifc-fab-pill{display:flex;flex-direction:column;justify-content:center;align-items:flex-end;background:#0A1F3D;color:#fff;padding:11px 18px;border-radius:14px;line-height:1.15;box-shadow:0 8px 24px rgba(10,31,61,.22);white-space:nowrap;border:0;cursor:pointer;text-align:right;\
+  max-width:0;padding-left:0;padding-right:0;opacity:0;overflow:hidden;pointer-events:none;\
+  transition:max-width .34s cubic-bezier(.2,.7,.2,1),opacity .22s ease,padding .34s cubic-bezier(.2,.7,.2,1)}\
+.ifc-fab:hover .ifc-fab-pill,.ifc-fab:focus-within .ifc-fab-pill{max-width:280px;padding-left:18px;padding-right:18px;opacity:1;pointer-events:auto}\
+.ifc-fab-pill span{display:block;font:500 .64rem/1 var(--font-mono,"JetBrains Mono",ui-monospace,monospace);color:#F5924A;letter-spacing:.14em;text-transform:uppercase;margin-bottom:5px}\
+.ifc-fab-pill strong{display:block;font-weight:600;font-size:.94rem;letter-spacing:-.01em}\
 @media (max-width:640px){.ifc-fab-pill{display:none}}\
 @media (prefers-reduced-motion:reduce){.ifc-fab-pill{transition:opacity .2s ease}}\
-.ifc-fab-btn{width:72px;height:72px;border-radius:50%;background:#25D366;box-shadow:0 8px 28px rgba(37,211,102,.45),0 3px 10px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center;color:#fff;border:3px solid #fff;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease;position:relative;z-index:2;padding:0}\
-.ifc-fab-btn:hover{transform:scale(1.06);box-shadow:0 10px 34px rgba(37,211,102,.6)}\
+.ifc-fab-btn{width:60px;height:60px;border-radius:50%;background:#25D366;box-shadow:0 8px 24px rgba(37,211,102,.4),0 2px 8px rgba(0,0,0,.15);display:flex;align-items:center;justify-content:center;color:#fff;border:0;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease;position:relative;z-index:2;padding:0}\
+.ifc-fab-btn:hover{transform:scale(1.06);box-shadow:0 10px 30px rgba(37,211,102,.55)}\
 .ifc-fab-btn:focus-visible{outline:3px solid rgba(37,211,102,.5);outline-offset:3px}\
 .ifc-fab-btn::before{content:"";position:absolute;inset:-8px;border-radius:50%;border:2.5px solid #25D366;opacity:0;animation:ifc-pulse 2.4s ease-out infinite;z-index:-1}\
 @keyframes ifc-pulse{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.55);opacity:0}}\
@@ -146,7 +146,7 @@
   <strong>Get a sized quote &nbsp;&rarr;</strong>\
 </button>\
 <button class="ifc-fab-btn" id="ifc-fab-btn" aria-label="Open WhatsApp engineering chat" type="button">\
-  <svg width="38" height="38" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16.003 0C7.166 0 .003 7.163.003 16c0 2.808.729 5.55 2.116 7.964L.003 32l8.262-2.083C10.605 31.241 13.273 32 16.003 32c8.837 0 16-7.163 16-16S24.84 0 16.003 0zm0 29.333c-2.475 0-4.9-.665-7.012-1.928l-.503-.299-5.232 1.319 1.339-5.105-.328-.523A13.246 13.246 0 012.67 16c0-7.353 5.98-13.333 13.333-13.333S29.336 8.647 29.336 16 23.355 29.333 16.003 29.333zm7.349-9.99c-.403-.201-2.382-1.175-2.751-1.31-.369-.134-.638-.201-.906.202-.268.402-1.04 1.31-1.275 1.578-.235.268-.469.302-.872.101-.403-.201-1.702-.627-3.242-2-1.199-1.069-2.008-2.39-2.243-2.792-.235-.403-.025-.62.176-.821.181-.18.403-.469.604-.704.201-.235.268-.403.402-.671.134-.268.067-.503-.034-.704-.101-.201-.906-2.185-1.242-2.992-.327-.785-.66-.678-.906-.691l-.772-.014c-.268 0-.704.101-1.073.503-.369.402-1.41 1.378-1.41 3.361s1.444 3.9 1.645 4.168c.201.268 2.841 4.338 6.882 6.083.961.415 1.711.663 2.296.848.965.307 1.843.264 2.537.16.774-.116 2.382-.974 2.717-1.913.335-.939.335-1.745.235-1.913-.101-.168-.369-.268-.772-.469z"/></svg>\
+  <svg width="30" height="30" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16.003 0C7.166 0 .003 7.163.003 16c0 2.808.729 5.55 2.116 7.964L.003 32l8.262-2.083C10.605 31.241 13.273 32 16.003 32c8.837 0 16-7.163 16-16S24.84 0 16.003 0zm0 29.333c-2.475 0-4.9-.665-7.012-1.928l-.503-.299-5.232 1.319 1.339-5.105-.328-.523A13.246 13.246 0 012.67 16c0-7.353 5.98-13.333 13.333-13.333S29.336 8.647 29.336 16 23.355 29.333 16.003 29.333zm7.349-9.99c-.403-.201-2.382-1.175-2.751-1.31-.369-.134-.638-.201-.906.202-.268.402-1.04 1.31-1.275 1.578-.235.268-.469.302-.872.101-.403-.201-1.702-.627-3.242-2-1.199-1.069-2.008-2.39-2.243-2.792-.235-.403-.025-.62.176-.821.181-.18.403-.469.604-.704.201-.235.268-.403.402-.671.134-.268.067-.503-.034-.704-.101-.201-.906-2.185-1.242-2.992-.327-.785-.66-.678-.906-.691l-.772-.014c-.268 0-.704.101-1.073.503-.369.402-1.41 1.378-1.41 3.361s1.444 3.9 1.645 4.168c.201.268 2.841 4.338 6.882 6.083.961.415 1.711.663 2.296.848.965.307 1.843.264 2.537.16.774-.116 2.382-.974 2.717-1.913.335-.939.335-1.745.235-1.913-.101-.168-.369-.268-.772-.469z"/></svg>\
   <span class="ifc-fab-dot" aria-hidden="true"></span>\
 </button>';
 
