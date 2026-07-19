@@ -42,6 +42,17 @@
   /* ---- Elevation ---- */
   --elev-1: 0 1px 2px rgba(14,15,17,.05);
   --elev-2: 0 4px 20px rgba(14,15,17,.07), 0 1px 3px rgba(14,15,17,.05);
+
+  /* ---- Brand blue (sampled from the Izhar Foster logo, #084296) ----
+     Blue is the PRIMARY brand color: hero grounds, headings, links, eyebrows,
+     key UI. Ember (--t-warm) is reserved for ACTIONS only (buttons/CTAs). */
+  --brand-50:  #EBF0F7;
+  --brand-100: #DAE3EF;
+  --brand-200: #B5C6E0;
+  --brand-500: #084296;   /* THE logo blue */
+  --brand-600: #073981;   /* hover / darker */
+  --brand-700: #062E69;   /* deep headings on paper */
+  --brand-ink: #041E44;   /* brand-tinted near-black for hero grounds */
 }
 
 /* ============================================================
@@ -60,7 +71,7 @@
    ============================================================ */
 .ifx-hero {
   position: relative;
-  background: var(--ink);
+  background: var(--brand-ink);      /* brand-tinted ground, ties to the logo blue */
   color: var(--paper);
   padding-top: clamp(40px, 5vw, 64px);
   padding-bottom: clamp(48px, 6vw, 80px);
@@ -83,9 +94,9 @@
 .ifx-hero__eyebrow {
   display: inline-flex; align-items: center; gap: var(--sp-2);
   font-family: var(--font-mono); font-size: var(--fs-mono); letter-spacing: var(--ls-mono);
-  text-transform: uppercase; color: var(--t-mid); margin-bottom: var(--sp-4);
+  text-transform: uppercase; color: var(--brand-200); margin-bottom: var(--sp-4);
 }
-.ifx-hero__eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--t-warm); }
+.ifx-hero__eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--t-warm); } /* ember dot = the one action accent */
 .ifx-hero h1 {
   font-family: var(--font-display); font-weight: 700; color: var(--paper);
   letter-spacing: var(--ls-hero); text-wrap: balance; margin: 0;
@@ -120,19 +131,19 @@
 .ifx-prose p + p { margin-top: var(--sp-5); }
 .ifx-prose h2 {
   font-family: var(--font-display); font-weight: 700; font-size: var(--fs-h2);
-  line-height: var(--lh-heading); letter-spacing: var(--ls-head); color: var(--ink);
+  line-height: var(--lh-heading); letter-spacing: var(--ls-head); color: var(--brand-700);
   margin-top: var(--sp-9); margin-bottom: var(--sp-4); text-wrap: balance;
 }
 .ifx-prose h3 {
   font-family: var(--font-display); font-weight: 600; font-size: var(--fs-h3);
-  line-height: var(--lh-heading); letter-spacing: var(--ls-head); color: var(--ink);
+  line-height: var(--lh-heading); letter-spacing: var(--ls-head); color: var(--brand-700);
   margin-top: var(--sp-7); margin-bottom: var(--sp-3);
 }
 .ifx-prose h2:first-child, .ifx-prose h3:first-child { margin-top: 0; }
 .ifx-prose p { color: var(--ink-2); }
 .ifx-prose strong { color: var(--ink); font-weight: 600; }
-.ifx-prose a { color: var(--t-warm); text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
-.ifx-prose a:hover { text-decoration-thickness: 2px; }
+.ifx-prose a { color: var(--brand-600); text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
+.ifx-prose a:hover { color: var(--brand-700); text-decoration-thickness: 2px; }
 .ifx-prose ul, .ifx-prose ol { padding-left: 1.3em; }
 .ifx-prose li + li { margin-top: var(--sp-2); }
 .ifx-prose .mono, .ifx-prose .num { font-family: var(--font-mono); font-feature-settings: 'tnum','zero'; }
