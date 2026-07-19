@@ -17,9 +17,9 @@
      (izharengineering.com / izhar.com). Use this on the monogram, the
      footer brand mark, and any "we belong to Izhar Group" signal —
      never for temperature/cold semantics, which stay on --t-cold. */
-  --brand-blue:        #1E4FA8;
+  --brand-blue:        #084296;   /* sampled from the logo — matches --brand-500 */
   --brand-blue-light:  #2360BF;
-  --brand-blue-dark:   #163A7E;
+  --brand-blue-dark:   #062E69;   /* matches --brand-700 */
 
   /* Surface — bone white, never #fff */
   --paper:      #F5F2EC;
@@ -295,7 +295,7 @@ h1, h2, h3, h4 {
   display: flex;
   align-items: stretch;
   overflow: hidden;
-  background: var(--t-cold);
+  background: var(--brand-ink);
 }
 .hp-hero-img {
   position: absolute; inset: 0;
@@ -310,9 +310,9 @@ h1, h2, h3, h4 {
 .hp-hero-overlay {
   position: absolute; inset: 0;
   background: linear-gradient(95deg,
-    rgba(10,15,25,.82) 0%,
-    rgba(10,15,25,.62) 45%,
-    rgba(10,15,25,.30) 100%);
+    rgba(4,30,68,.86) 0%,
+    rgba(4,30,68,.64) 45%,
+    rgba(4,30,68,.28) 100%);
 }
 .hp-hero-content {
   position: relative;
@@ -443,7 +443,7 @@ h1, h2, h3, h4 {
 
 /* ③ CREDIBILITY BAND */
 .cred-band {
-  background: var(--ink);
+  background: var(--brand-ink);
   color: var(--paper);
   padding: 80px var(--gutter);
   position: relative;
@@ -1205,7 +1205,7 @@ h1, h2, h3, h4 {
 
 /* ============= Spec strip — under hero ============= */
 .specband {
-  background: var(--ink);
+  background: var(--brand-ink);
   color: var(--paper);
   padding: 32px var(--gutter);
 }
@@ -1888,7 +1888,7 @@ h1, h2, h3, h4 {
 
 /* ============= CTA banner ============= */
 .cta-banner {
-  background: var(--ink);
+  background: var(--brand-ink);
   color: var(--paper);
   padding: 120px var(--gutter);
   position: relative;
@@ -4828,7 +4828,7 @@ body.lc-open .lc-backdrop {
   outline-offset: 4px;
 }
 .dl-card-feature {
-  background: var(--ink);
+  background: var(--brand-ink);
   color: var(--paper);
   border-color: var(--ink);
 }
