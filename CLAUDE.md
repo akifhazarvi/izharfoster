@@ -6,6 +6,8 @@
 
 **Day-to-day work queue: [DAILY-TASKS.md](DAILY-TASKS.md)** — sequenced by impact÷effort, with done/not-done markers. Always update it when you ship a task.
 
+**Paid media: [GTM-SETUP.md](GTM-SETUP.md)** (Phase A — GTM container, Consent Mode v2, conversion actions, Enhanced Conversions, offline import) then **[ADS-PLAN.md](ADS-PLAN.md)** (Phase B — campaign structure, keywords, negatives, ad copy, budget, roadmap). Event taxonomy: [EVENTS.md](EVENTS.md). Tracking regression suite: `node _kr_scrape/verify-ads-tracking.mjs` (34 checks; needs `python3 -m http.server 8090`). **Run it after any change to `js/track.js` or `contact.html` — it includes a negative check that no PII reaches GA4/Vercel.**
+
 **Priority pillars (grow):** Cold Stores · PIR Sandwich Panels (FireSafe PIR) · Refrigeration Systems
 **Secondary:** CA Stores · Insulated Doors · Refrigerated Vehicles · CEA Greenhouses
 **Deprioritize (keep on site, low visibility):** Plant Factories · Smart Cabins · Prefabricated Steel Buildings (PEB)

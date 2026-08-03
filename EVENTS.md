@@ -156,6 +156,18 @@ Pre-existing tool with bespoke events on top of the generic `tool_*` set above:
 | `form_submit` | Successful submit (validation passed) | `form: 'quote'`, `industry`, `product`, `location` | track.js |
 | `form_submit_invalid` | Submit attempted but validation failed | `form: 'quote'` | track.js |
 | `lead_submitted` | Mirrors `form_submit` — unified lead signal | `channel: 'whatsapp_form'`, plus form data | track.js |
+| `generate_lead` | Successful submit — **dataLayer only, never sent to GA4 or Vercel** | `lead_product`, `lead_industry`, `lead_city`, `lead_capacity`, `click_ref`, `user_data{email_address, phone_number, address{first_name,last_name}}` | contact.html |
+
+**`generate_lead` is the Google Ads conversion event and is deliberately not part
+of the `track()` funnel.** It is pushed straight to `dataLayer` because it
+carries the visitor's email, E.164 phone and name for GTM to SHA-256 hash
+client-side (Enhanced Conversions for leads). `track()` mirrors to Vercel
+Analytics and GA4, and **neither may ever receive PII** — so the two paths stay
+separate. `gtag.js` ignores plain-object dataLayer pushes, so GA4 does not
+double-count it against `form_submit`. Wiring: [GTM-SETUP.md](GTM-SETUP.md) §A6.
+
+Related: `js/track.js` strips `?text=` from every tracked `wa.me` URL, because
+that query parameter contains the visitor's whole contact record.
 
 ---
 

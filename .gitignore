@@ -1,5 +1,8 @@
 _scrape/
 _kr_scrape/
+# Exception: verify-ads-tracking.mjs is force-added (git add -f) so the Google Ads
+# tracking regression suite survives a fresh clone. It needs Playwright from
+# _kr_scrape/node_modules, which stays ignored. .vercelignore excludes it from deploy.
 _scrape_coldstore/
 _audit/
 node_modules/

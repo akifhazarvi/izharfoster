@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta charset="UTF-8">
+  <!-- Consent Mode v2 defaults - MUST precede every Google tag on the page.
+       EEA/UK/CH default to denied; every other region (incl. PK) granted.
+       If a cookie banner is added later, call gtag('consent','update',{...}). -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',region:['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IS','IE','IT','LV','LI','LT','LU','MT','NL','NO','PL','PT','RO','SK','SI','ES','SE','GB','CH']});
+    gtag('consent','default',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});
+  </script>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WBNZLVC7');</script>
+  <!-- End Google Tag Manager -->
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-PLY0DZWNEM"></script>
   <script>
@@ -8,13 +21,17 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-PLY0DZWNEM');
+    // Google Ads destination on the SAME Google tag — one gtag.js load serves
+    // both, instead of a second <script> fetching the library again.
+    // Conversions themselves fire ONLY from GTM (GTM-WBNZLVC7). Never add
+    // gtag('event','conversion',...) here or each lead counts twice.
+    gtag('config', 'AW-18369062794');
   </script>
 
   <!-- Vercel Web Analytics -->
   <script defer src="/_vercel/insights/script.js"></script>
   <!-- Vercel Speed Insights -->
   <script defer src="/_vercel/speed-insights/script.js"></script>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="canonical" href="https://izharfoster.com/contact">
 <title>Contact — Cold Storage Quotes &amp; Service Across Pakistan | Izhar Foster</title>
@@ -147,6 +164,10 @@
 </script>
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WBNZLVC7"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 <div class="shell">
   <aside class="rail" aria-hidden="true">
     <span class="wm">−40°C → +25°C</span>
@@ -336,6 +357,20 @@
   }
   function line(label, v){ return v ? '• ' + label + ': ' + v + '\n' : ''; }
 
+  // Google requires E.164 for phone-based Enhanced Conversions matching.
+  // Pakistani buyers type 0321-5383544 / 03215383544 / +92 321 5383544 — all
+  // three have to normalise to +923215383544 or the match rate collapses.
+  function toE164(raw){
+    var s = String(raw || '').trim();
+    if (s.charAt(0) === '+') return '+' + s.slice(1).replace(/\D/g, '');
+    var d = s.replace(/\D/g, '');
+    if (!d) return '';
+    if (d.indexOf('0092') === 0) return '+' + d.slice(2);
+    if (d.indexOf('92') === 0 && d.length >= 12) return '+' + d;
+    if (d.charAt(0) === '0') return '+92' + d.slice(1);
+    return '+92' + d;
+  }
+
   form.addEventListener('submit', function(e){
     e.preventDefault();
     if (!form.checkValidity()) {
@@ -354,6 +389,38 @@
     var temp     = val('temperature');
     var notes    = val('notes');
 
+    // Enhanced Conversions for leads. GTM reads user_data off this event and
+    // SHA-256 hashes it in the browser before anything leaves the page, so
+    // Google never receives raw contact details. This deliberately sits on its
+    // own dataLayer event rather than the track() funnel: track() mirrors to
+    // Vercel Analytics and GA4, and neither should ever see PII. gtag.js
+    // ignores plain-object dataLayer pushes, so this drives the Google Ads
+    // conversion only — no double-count against the form_submit event that
+    // track.js already sends to GA4.
+    var clickRef = (window.IzharTrack && window.IzharTrack.clickRef && window.IzharTrack.clickRef()) || '';
+    var nameParts = name.split(/\s+/);
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'generate_lead',
+      lead_channel: 'whatsapp_form',
+      lead_product: product,
+      lead_industry: industry,
+      lead_city: location,
+      lead_capacity: capacity,
+      click_ref: clickRef,
+      user_data: {
+        email_address: email,
+        phone_number: toE164(phone),
+        address: {
+          first_name: nameParts[0] || '',
+          last_name: nameParts.slice(1).join(' ')
+        }
+      }
+    });
+    // This enquiry is now logged. Opening WhatsApp below would otherwise be
+    // counted a second time by the window.open hook in track.js.
+    if (window.IzharTrack && window.IzharTrack.markLead) window.IzharTrack.markLead();
+
     var msg = ''
       + 'Hi Izhar Foster — quote request from the website.\n\n'
       + '*Contact*\n'
@@ -370,6 +437,9 @@
     if (notes) msg += '\n*Notes*\n' + notes + '\n';
     msg += '\nPlease send back a sized concept and indicative budget. Thanks.';
     msg += '\n\n— Sent via izharfoster.com';
+    // Paid-click ref travels with the enquiry so a signed order can be
+    // imported back into Google Ads as an offline conversion.
+    if (clickRef) msg += '\nRef: ' + clickRef;
 
     var url = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(msg);
     var win = window.open(url, '_blank', 'noopener');

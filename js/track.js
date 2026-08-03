@@ -24,6 +24,114 @@
   var DEBUG = /[?&]debug_track=1/.test(location.search);
   window.dataLayer = window.dataLayer || [];
 
+  // -------------------------------------------------- Paid click IDs (Ads)
+  // gclid / gbraid / wbraid (Google Ads auto-tagging) and msclkid (Microsoft)
+  // arrive as URL params on the ad landing page. They are the only durable
+  // join key between a paid click and a closed deal, so we persist them for
+  // 90 days — the Google Ads offline-conversion import window. The short ref
+  // derived below gets stamped onto every WhatsApp message the visitor sends,
+  // which is how Sales ties a signed order back to the click that paid for it.
+  var CLICK_KEY = 'izhar_click_id';
+  var CLICK_TTL = 90 * 24 * 60 * 60 * 1000;
+  var CLICK_PARAMS = ['gclid', 'gbraid', 'wbraid', 'msclkid'];
+
+  function captureClickId() {
+    var url;
+    try { url = new URL(location.href); } catch (e) { return null; }
+    for (var i = 0; i < CLICK_PARAMS.length; i++) {
+      var v = url.searchParams.get(CLICK_PARAMS[i]);
+      if (!v) continue;
+      var rec = {
+        type: CLICK_PARAMS[i],
+        id: v,
+        ts: Date.now(),
+        landing: location.pathname,
+        campaign: url.searchParams.get('utm_campaign') || '',
+        term: url.searchParams.get('utm_term') || ''
+      };
+      try { localStorage.setItem(CLICK_KEY, JSON.stringify(rec)); } catch (e) {}
+      return rec;
+    }
+    return null;
+  }
+
+  function storedClickId() {
+    try {
+      var rec = JSON.parse(localStorage.getItem(CLICK_KEY) || 'null');
+      if (!rec || !rec.id) return null;
+      if (Date.now() - (rec.ts || 0) > CLICK_TTL) {
+        localStorage.removeItem(CLICK_KEY);
+        return null;
+      }
+      return rec;
+    } catch (e) { return null; }
+  }
+
+  var _click = captureClickId() || storedClickId();
+
+  // Human-pasteable ref. The last 12 characters are enough to locate the
+  // click in the Ads UI while keeping the WhatsApp message readable.
+  function clickRef() {
+    return _click ? 'IF-' + String(_click.id).slice(-12) : '';
+  }
+
+  // Appends the ref to a wa.me URL's prefilled text. Idempotent — the contact
+  // form writes its own Ref line, so re-stamping must not duplicate it.
+  function withRef(url) {
+    var ref = clickRef();
+    if (!ref) return url;
+    try {
+      var u = new URL(url, location.origin);
+      var text = u.searchParams.get('text') || '';
+      if (text.indexOf(ref) !== -1) return url;
+      u.searchParams.set('text', text + '\n\nRef: ' + ref);
+      return u.toString();
+    } catch (e) { return url; }
+  }
+
+  // In-place variant for anchors. Doing it here means all 77 pages of
+  // hard-coded wa.me links inherit the ref without touching the markup.
+  function stampWhatsAppRef(a) {
+    if (!clickRef() || a.getAttribute('data-ref-stamped')) return;
+    try {
+      a.href = withRef(a.href);
+      a.setAttribute('data-ref-stamped', '1');
+    } catch (e) { /* noop */ }
+  }
+
+  // A wa.me link carries its entire prefilled message in ?text=, and for the
+  // contact form that message IS the visitor's name, company, phone and email.
+  // Analytics only ever needs to know which number was contacted, so the
+  // message body is stripped before any event is tracked. Without this, one
+  // window.open() would post a full lead record to Vercel Analytics and GA4.
+  function safeHref(url) {
+    try {
+      var u = new URL(url, location.origin);
+      u.searchParams.delete('text');
+      return u.toString();
+    } catch (e) { return String(url).split('?')[0]; }
+  }
+
+  // ------------------------------------------------------ Lead de-duplication
+  // One physical action can legitimately trip several lead signals: submitting
+  // the quote form pushes generate_lead, then opens WhatsApp, which the
+  // window.open wrapper below would read as a second, separate WhatsApp lead.
+  // Google Ads would collapse those under Count: One, but GA4 would report two
+  // leads per enquiry. A short window keeps one action = one lead.
+  var LEAD_DEDUPE_MS = 2000;
+  var _lastLead = 0;
+
+  function emitLead(channel, extra) {
+    if (Date.now() - _lastLead < LEAD_DEDUPE_MS) return false;
+    _lastLead = Date.now();
+    track('lead_intent', Object.assign({ channel: channel }, extra || {}));
+    return true;
+  }
+
+  // Lets a caller that has already logged its own lead event (the contact form
+  // pushes generate_lead with hashed contact details) suppress the duplicate.
+  function markLead() { _lastLead = Date.now(); }
+
   function pageType() {
     var p = location.pathname.replace(/\/$/, '') || '/';
     if (p === '' || p === '/' || /\/index(\.html)?$/.test(p)) return 'home';
@@ -65,7 +173,14 @@
     }
   }
 
-  window.IzharTrack = { track: track, pageType: pageType };
+  window.IzharTrack = {
+    track: track,
+    pageType: pageType,
+    clickRef: clickRef,
+    clickId: function () { return _click; },
+    withRef: withRef,
+    markLead: markLead
+  };
 
   // -------------------------------------------------- Auto: lead-intent links
   // Delegated click handler — fires for every WhatsApp / phone / email link.
@@ -84,18 +199,19 @@
       : 'body';
 
     if (/^https?:\/\/(api\.)?wa\.me\//i.test(href) || /^https?:\/\/(www\.)?whatsapp\.com\//i.test(href)) {
-      track('whatsapp_click', { href: href, label: label, location: location_id });
-      track('lead_intent', { channel: 'whatsapp', location: location_id });
+      stampWhatsAppRef(a);
+      track('whatsapp_click', { href: safeHref(href), label: label, location: location_id });
+      emitLead('whatsapp', { location: location_id });
       return;
     }
     if (/^tel:/i.test(href)) {
       track('phone_click', { href: href, label: label, location: location_id });
-      track('lead_intent', { channel: 'phone', location: location_id });
+      emitLead('phone', { location: location_id });
       return;
     }
     if (/^mailto:/i.test(href)) {
       track('email_click', { href: href, label: label, location: location_id });
-      track('lead_intent', { channel: 'email', location: location_id });
+      emitLead('email', { location: location_id });
       return;
     }
     // "Get a quote" / contact / wizard / ROI calc CTA — top-of-funnel intent
@@ -110,6 +226,26 @@
       track('cta_quote_click', { href: href, label: label, location: location_id, destination: 'roi' });
     }
   }, { capture: true });
+
+  // ------------------------------------ Auto: programmatic WhatsApp hand-offs
+  // The concept wizard (js/tools/concept-wizard.js), the chat widget
+  // (js/chat-widget.js) and the contact form build a wa.me URL and call
+  // window.open() on it rather than clicking an anchor, so the delegated
+  // handler above never sees them — those leads went unlogged and unstamped.
+  // Wrapping open() catches every such path, current and future, in one place.
+  var _nativeOpen = window.open;
+  window.open = function (url) {
+    var args = Array.prototype.slice.call(arguments);
+    try {
+      if (typeof url === 'string' &&
+          (/^https?:\/\/(api\.)?wa\.me\//i.test(url) || /^https?:\/\/(www\.)?whatsapp\.com\//i.test(url))) {
+        args[0] = withRef(url);
+        track('whatsapp_click', { href: safeHref(url), label: '', location: 'window.open' });
+        emitLead('whatsapp', { location: 'window.open' });
+      }
+    } catch (e) { /* noop */ }
+    return _nativeOpen.apply(window, args);
+  };
 
   // --------------------------------------------- Auto: contact form milestones
   // form_start (first interaction) → form_submit (validation passed).
@@ -219,6 +355,28 @@
       var nav = (performance.getEntriesByType('navigation') || [])[0];
       if (nav && nav.redirectCount > 0) redirectedFromLegacy = true;
     } catch (e) {}
+
+    // 0. Paid click IDs beat everything, including UTMs. Google Ads
+    //    auto-tagging sends the visitor in with referrer google.com, which
+    //    every rule below would file as `google_organic` — quietly inflating
+    //    the SEO numbers with traffic we paid for. Check the click ID first.
+    var paidGoogle = url.searchParams.get('gclid') || url.searchParams.get('gbraid') || url.searchParams.get('wbraid');
+    if (paidGoogle) {
+      return {
+        source: 'google_ads',
+        medium: 'cpc',
+        campaign: url.searchParams.get('utm_campaign') || '',
+        referrer: ref
+      };
+    }
+    if (url.searchParams.get('msclkid')) {
+      return {
+        source: 'microsoft_ads',
+        medium: 'cpc',
+        campaign: url.searchParams.get('utm_campaign') || '',
+        referrer: ref
+      };
+    }
 
     // 1. UTM wins — explicit beats inferred.
     var utmSource = url.searchParams.get('utm_source');

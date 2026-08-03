@@ -1,10 +1,30 @@
 # Izhar Foster — Daily Task List
 
-**Last updated:** 2026-06-20
+**Last updated:** 2026-08-03
 **Score baseline:** 78/100 (ACTION-PLAN.md, 2026-05-02)
 **Canonical roadmap:** [GROWTH-PLAN.md](GROWTH-PLAN.md) | Resolved conflicts: [DECISIONS.md](DECISIONS.md)
 
 Work top-to-bottom. Mark done with `[x]`. Each PR title must reference the GROWTH-PLAN section it implements.
+
+---
+
+## 2026-08-03 — Google Ads + GTM conversion tracking (Phase A shipped)
+
+New docs: **[GTM-SETUP.md](GTM-SETUP.md)** (Phase A — tracking) and **[ADS-PLAN.md](ADS-PLAN.md)** (Phase B — campaigns/keywords/copy/budget). Regression suite: `node _kr_scrape/verify-ads-tracking.mjs` (34 checks, needs the :8090 server).
+
+- [x] **Consent Mode v2 on all 77 pages.** Defaults deny `ad_storage`/`ad_user_data`/`ad_personalization`/`analytics_storage` for EEA/UK/CH and grant everywhere else (incl. PK), and run *before* `gtag.js` and GTM. The loader shipped guarded (inert until a real container ID existed) so the site was deployable before the container was created; the real ID landed the same day and the guard was removed.
+- [x] **Fixed: `<meta charset>` was ~450 bytes deep on 76 pages**, sitting behind the gtag snippet. Adding tags above it would have pushed charset past the 1024-byte sniffing window and mojibake'd the site's `−18°C` / `m³` / `λ` glyphs. Charset hoisted to first-in-head; now at byte 40 everywhere.
+- [x] **Fixed: paid clicks were being attributed as organic.** Google auto-tagging lands visitors with `referrer: google.com`, so every `gclid` visit was filed `google_organic` — which would have inflated SEO numbers with paid traffic the moment ads went live. Click IDs now checked before all other rules → `google_ads / cpc`.
+- [x] **Click-ID capture + 90-day persistence** (`gclid`/`gbraid`/`wbraid`/`msclkid`) and a short `IF-<last12>` ref stamped into every WhatsApp hand-off — the join key for offline conversion import (GTM-SETUP §A12), which is the real unlock for a multi-week, multi-million-rupee sale.
+- [x] **All 4 lead channels now logged for Ads**: form (`generate_lead` with hashed email/E.164 phone/name for Enhanced Conversions), WhatsApp, phone, email (`lead_intent` + `channel`), de-duplicated in a 2s window so one enquiry ≠ three conversions.
+- [x] **Fixed gap: programmatic WhatsApp hand-offs were invisible.** `concept-wizard.js` and `chat-widget.js` call `window.open()` on a built `wa.me` URL instead of clicking an anchor, so the delegated handler never saw them — those leads went unlogged and unstamped. Wrapped `window.open` centrally so current and future call sites are covered.
+- [x] **Fixed PII leak I introduced mid-build.** The `window.open` hook logged the full `wa.me` URL, and for the contact form that URL's `?text=` body *is* the visitor's name, company, phone and email — so one submit posted a full lead record to Vercel Analytics and GA4. `?text=` is now stripped from every tracked URL. Caught by the regression suite's negative check, which is why that check exists.
+- [x] **GTM container `GTM-WBNZLVC7` installed** on all 77 pages — loader in `<head>` (after charset + consent defaults, before `gtag.js`) and `<noscript>` fallback after `<body>`. Note: the ID appears twice per page, so a blind find-and-replace on a future change would have re-triggered the old placeholder self-guard and left GTM silently inert — see GTM-SETUP §A3.
+- [x] **Google Ads conversion ID for Izhar Foster: `AW-18369062794`** (enter as `18369062794` in GTM). Differs from the school account's `18119617331`, so this is a separate account — currency/time zone still to be confirmed. The `AW-` gtag snippet is deliberately **not** hard-coded on the site; GTM loads its own gtag instance and a page-level copy would risk double-firing.
+- [ ] **Build the GTM tags/triggers** (§A5–A7 — Conversion Linker FIRST) and create the 8 conversion actions (§A4). Nothing fires until this is done: the container is live but empty.
+- [x] **Dedicated Izhar Foster Ads account created: `326-413-6797`**, conversion ID `AW-18369062794`. Currency + time zone still UNVERIFIED — API audit blocked by a 403 (Composio connection only reaches `6434503242`) and a 429 developer-token quota exhaustion (~19h). Manual check required; it is the irreversible setting.
+- [ ] ~~Create a dedicated Izhar Foster Ads account (PKR + Pakistan time, set at creation — both permanent).** The only account reachable is `643-450-3242`: USD, America/Phoenix, conversion actions named *London School Waris Mir Campus*, conv. ID `AW-18119617331`, GA4-linked to *London Education* `G-S3PMR30G31`. Sharing it would have Smart Bidding learn from a school's enrolments while bidding cold-storage keywords — conversion actions, audiences and negative lists are all account-scoped. Reverses the initial "use the existing account" call; see GTM-SETUP §A1.~~
+- [ ] **Form UX audit is now a paid-media blocker**, not just an organic one: 82 starts → 4 submits (2026-07-19). Paid landing pages lead with WhatsApp until it's fixed (ADS-PLAN §B7).
 
 ---
 
