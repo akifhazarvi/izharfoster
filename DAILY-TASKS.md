@@ -8,6 +8,25 @@ Work top-to-bottom. Mark done with `[x]`. Each PR title must reference the GROWT
 
 ---
 
+## 2026-08-04 — Conversion-leak fixes from live paid traffic
+
+First day of paid traffic (12 `google / cpc` sessions of 129 total). GA4 is on Asia/Karachi so this is a true Pakistani day. **Every guided lead path converted to zero:** 8 `cta_quote_click` → 5 `form_start` → **0** `form_submit`; 10 `chat_open` → 5 `chat_step` → **0** `chat_submit`; 1 `wizard_start` → 4 `wizard_step` → **0** `wizard_submit`. Only leads all day were 4 raw WhatsApp taps. One visitor fired **89 `cost_estimated`** events and contacted nobody — the hottest lead of the day, lost at the hand-off.
+
+- [x] **Contact form: 4 required fields → 2.** Was demanding name + company + phone + email before it would do anything. Now name + phone only; company and email optional and labelled so. Trade-off accepted: a lead without email weakens Enhanced Conversions matching, but EC is not wired yet and conversion rate was zero, so volume wins. Commit `ee930c4`.
+- [x] **Contact form had no non-WhatsApp exit.** The only hand-off was `window.open(wa.me)` — on desktop that is WhatsApp Web behind a QR/login wall, so desktop visitors without it could not submit **at all**. Added a "Send by email instead" button building a `mailto` with the same body. Both paths share `buildEnquiry()`, so email fires `generate_lead`, `markLead()` and the `Ref:` code identically, tagged `lead_channel: email_form`. Commit `ee930c4`.
+- [x] **`services/pir-sandwich-panels` — price intent above the fold.** Dominant query `sandwich panel price in pakistan` (2,411 imp); 12 mobile paid sessions at **100% bounce**. First screen at 390×844 was H1 + a spec paragraph (λ, ASTM E84, zero ODP, HCFC-141b) with **no visible CTA** — only the floating WhatsApp bubble. Calculator was 3,565px down (4.2 screens), first price 17,753px (21 screens), page 20,164px tall. Calculator link now at **388px**. Commit `2ef99e3`.
+- [x] **`services/cold-stores` — cost intent above the fold.** `cold storage cost in pakistan` is the best-converting query shape (5.8% CTR) but the cost calculator sat **12 screens down** (10,106px), first PKR figure 11.7 screens, first button 4.6 screens. Calculator CTA now at **514px**.
+- [x] **Fixed a contrast bug I introduced doing the above.** Used `.btn-outline`, whose `brand-600` text is for light backgrounds; on the dark navy hero it measured **1.58:1**, failing WCAG AA (3:1) and rendering the CTA nearly invisible. Switched to the existing `.btn-outline-light` → **15.32:1**. Swept 15 pages for the same fault: **zero** others — the 7 service pages using `.btn-outline` all place it on light sections correctly.
+- [x] **Regression suite → 45 checks** (was 38), adding: only 2 required fields, form submits on name+phone alone, phone still normalises to E.164, email button fires a tracked lead tagged `email_form`.
+- [ ] **~160px empty band above the breadcrumb** wastes 19% of the mobile fold on every service page. Fixing means touching shared hero padding in `style.v2.css` — too broad to change off one page's data, but worth a deliberate pass.
+- [ ] **Tap targets under 44px** (WCAG 2.5.5): breadcrumb `HOME` 36×18, social icons 33×33, "All channels" 96×17. Shared components.
+- [ ] **Bot traffic is making engagement metrics unreadable.** 54 of 129 sessions today were `(not set)` / `(data not available)`, and 60 sessions had an *empty* landing page — near-certainly bots. They drag engaged-sessions to ~0 and bounce to 100% across all sources including organic. Add the Vercel bot filter already queued in the GA4 follow-ups, or today's bounce figures cannot be trusted.
+- [ ] **Chat widget and concept wizard both converted 0 today** — same hand-off audit needed as the contact form got.
+
+**Audit-method note:** the first fold audit wrongly reported an auto-opening chat panel covering the viewport. The screenshot disproved it — the DOM query was catching the off-canvas consultant drawer, which reports a bounding rect while visually hidden. A second pass under-reported price depth because it skipped elements over 200 characters, which is exactly where long price paragraphs live. **Measure with a TreeWalker and confirm against a screenshot; rect-only visibility checks lie.**
+
+---
+
 ## 2026-08-03 — Google Ads + GTM conversion tracking (Phase A shipped)
 
 New docs: **[GTM-SETUP.md](GTM-SETUP.md)** (Phase A — tracking) and **[ADS-PLAN.md](ADS-PLAN.md)** (Phase B — campaigns/keywords/copy/budget). Regression suite: `node _kr_scrape/verify-ads-tracking.mjs` (34 checks, needs the :8090 server).
