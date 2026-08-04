@@ -248,11 +248,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <form id="quote-form" novalidate>
         <div class="form-row">
           <div class="form-group"><label for="n">Full name</label><input id="n" name="name" required></div>
-          <div class="form-group"><label for="c">Company</label><input id="c" name="company" required></div>
+          <div class="form-group"><label for="c">Company <small>(optional)</small></label><input id="c" name="company"></div>
         </div>
         <div class="form-row">
           <div class="form-group"><label for="p">Phone / WhatsApp</label><input id="p" name="phone" type="tel" required></div>
-          <div class="form-group"><label for="e">Email</label><input id="e" name="email" type="email" required></div>
+          <div class="form-group"><label for="e">Email <small>(optional)</small></label><input id="e" name="email" type="email"></div>
         </div>
         <div class="form-row">
           <div class="form-group"><label for="loc">Project location</label><input id="loc" name="location" placeholder="City / area"></div>
@@ -269,7 +269,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="form-group"><label for="t">Required temperature</label><input id="t" name="temperature" placeholder="e.g. −20°C / +2 to +8°C"></div>
         <div class="form-group"><label for="m">Project notes</label><textarea id="m" name="notes" placeholder="Anything else our engineers should know."></textarea></div>
         <button type="submit" class="btn btn-primary btn-lg">Send via WhatsApp <span class="arr">→</span></button>
-        <div class="note" id="form-note">Opens WhatsApp with your details prefilled. Engineering reply within 24 hours.</div>
+        <button type="button" id="send-email" class="btn btn-outline btn-lg">Send by email instead</button>
+        <div class="note" id="form-note">WhatsApp opens with your details prefilled — on desktop that needs WhatsApp Web or the app. No WhatsApp? Use email instead. Engineers reply within 24 hours.</div>
       </form>
     </div>
   </div>
@@ -371,18 +372,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     return '+92' + d;
   }
 
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
-    if (!form.checkValidity()) {
-      form.reportValidity();
-      return;
-    }
-
+  // Builds the enquiry text and logs the lead. Shared by both hand-off paths
+  // so an email submission is tracked identically to a WhatsApp one.
+  // WhatsApp renders *asterisks* as bold; email should not show them.
+  function buildEnquiry(channel) {
+    var bold = (channel === 'whatsapp_form') ? '*' : '';
     var name     = val('name');
     var company  = val('company');
     var phone    = val('phone');
     var email    = val('email');
-    var location = val('location');
+    var loc      = val('location');
     var industry = val('industry');
     var product  = val('product');
     var capacity = val('capacity');
@@ -390,22 +389,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var notes    = val('notes');
 
     // Enhanced Conversions for leads. GTM reads user_data off this event and
-    // SHA-256 hashes it in the browser before anything leaves the page, so
-    // Google never receives raw contact details. This deliberately sits on its
-    // own dataLayer event rather than the track() funnel: track() mirrors to
-    // Vercel Analytics and GA4, and neither should ever see PII. gtag.js
-    // ignores plain-object dataLayer pushes, so this drives the Google Ads
-    // conversion only — no double-count against the form_submit event that
-    // track.js already sends to GA4.
+    // SHA-256 hashes it in the browser, so Google never receives raw contact
+    // details. Deliberately on its own dataLayer event rather than the track()
+    // funnel: track() mirrors to Vercel Analytics and GA4, and neither should
+    // ever see PII. gtag.js ignores plain-object dataLayer pushes, so this
+    // drives the Google Ads conversion only — no double-count against the
+    // form_submit event that track.js already sends to GA4.
     var clickRef = (window.IzharTrack && window.IzharTrack.clickRef && window.IzharTrack.clickRef()) || '';
     var nameParts = name.split(/\s+/);
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       event: 'generate_lead',
-      lead_channel: 'whatsapp_form',
+      lead_channel: channel,
       lead_product: product,
       lead_industry: industry,
-      lead_city: location,
+      lead_city: loc,
       lead_capacity: capacity,
       click_ref: clickRef,
       user_data: {
@@ -417,39 +415,72 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         }
       }
     });
-    // This enquiry is now logged. Opening WhatsApp below would otherwise be
-    // counted a second time by the window.open hook in track.js.
+    // This enquiry is now logged. The hand-off below would otherwise be counted
+    // a second time by the window.open hook in track.js.
     if (window.IzharTrack && window.IzharTrack.markLead) window.IzharTrack.markLead();
 
     var msg = ''
       + 'Hi Izhar Foster — quote request from the website.\n\n'
-      + '*Contact*\n'
+      + bold + 'Contact' + bold + '\n'
       + line('Name', name)
       + line('Company', company)
       + line('Phone / WhatsApp', phone)
       + line('Email', email)
-      + '\n*Project*\n'
-      + line('Location', location)
+      + '\n' + bold + 'Project' + bold + '\n'
+      + line('Location', loc)
       + line('Industry', industry)
       + line('Product', product)
       + line('Capacity / size', capacity)
       + line('Temperature', temp);
-    if (notes) msg += '\n*Notes*\n' + notes + '\n';
+    if (notes) msg += '\n' + bold + 'Notes' + bold + '\n' + notes + '\n';
     msg += '\nPlease send back a sized concept and indicative budget. Thanks.';
     msg += '\n\n— Sent via izharfoster.com';
-    // Paid-click ref travels with the enquiry so a signed order can be
-    // imported back into Google Ads as an offline conversion.
+    // Paid-click ref travels with the enquiry so a signed order can be imported
+    // back into Google Ads as an offline conversion.
     if (clickRef) msg += '\nRef: ' + clickRef;
+    return msg;
+  }
+
+  function setNote(text) {
+    if (!note) return;
+    note.textContent = text;
+    note.style.color = 'var(--ink, #111)';
+  }
+
+  function handoff(channel) {
+    if (typeof form.checkValidity === 'function' && !form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    var msg = buildEnquiry(channel);
+
+    if (channel === 'email_form') {
+      // Every visitor has email. WhatsApp on desktop means WhatsApp Web plus a
+      // QR/login wall, which was the only route out of this form and a dead end
+      // for anyone without it.
+      var subject = 'Cold storage enquiry — ' + (val('company') || val('name') || 'website');
+      window.location.href = 'mailto:info@izharfoster.com'
+        + '?subject=' + encodeURIComponent(subject)
+        + '&body=' + encodeURIComponent(msg);
+      setNote('Your email app should open with the details filled in. If nothing happens, email info@izharfoster.com directly.');
+      return;
+    }
 
     var url = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(msg);
     var win = window.open(url, '_blank', 'noopener');
     if (!win) { window.location.href = url; }
+    setNote('WhatsApp opened in a new tab — tap Send to deliver your specs. Engineers reply within 24 hours.');
+  }
 
-    if (note) {
-      note.textContent = 'WhatsApp opened in a new tab — tap Send to deliver your specs. Engineers reply within 24 hours.';
-      note.style.color = 'var(--ink, #111)';
-    }
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    handoff('whatsapp_form');
   });
+
+  var emailBtn = document.getElementById('send-email');
+  if (emailBtn) {
+    emailBtn.addEventListener('click', function () { handoff('email_form'); });
+  }
 })();
 </script>
 </body></html>

@@ -150,6 +150,45 @@ check('form submit did NOT also log a duplicate lead_intent',
   leadsAfterForm === leadsBeforeForm, `${leadsBeforeForm} -> ${leadsAfterForm}`);
 
 // ---------------------------------------------------------------------------
+// 6b. Conversion-leak fixes: only name+phone required, and an email hand-off
+//     exists for anyone without WhatsApp (desktop = WhatsApp Web + QR wall).
+// ---------------------------------------------------------------------------
+const p5 = await ctx.newPage();
+await p5.goto(`${BASE}/contact.html`, { waitUntil: 'domcontentloaded' });
+await p5.waitForFunction(() => !!window.IzharTrack);
+
+const requiredCount = await p5.evaluate(() =>
+  document.querySelectorAll('#quote-form input[required], #quote-form textarea[required]').length);
+check('only 2 fields required (name + phone)', requiredCount === 2, `${requiredCount} required`);
+check('email fallback button present', await p5.locator('#send-email').count() === 1);
+
+// Minimal lead: name + phone ONLY. This used to fail validation on company+email.
+await p5.fill('#n', 'Bilal Sheikh');
+await p5.fill('#p', '0301-2223344');
+await p5.click('button[type="submit"]');
+await p5.waitForTimeout(400);
+const minimal = await p5.evaluate(() => (window.dataLayer || []).filter(e => e && e.event === 'generate_lead'));
+check('form submits with name+phone only', minimal.length === 1, `${minimal.length} leads`);
+check('minimal lead still normalises phone', minimal[0]?.user_data?.phone_number === '+923012223344',
+  `got "${minimal[0]?.user_data?.phone_number}"`);
+check('minimal lead channel is whatsapp_form', minimal[0]?.lead_channel === 'whatsapp_form',
+  `got "${minimal[0]?.lead_channel}"`);
+
+// Email hand-off fires its own tracked lead
+const p6 = await ctx.newPage();
+await p6.goto(`${BASE}/contact.html`, { waitUntil: 'domcontentloaded' });
+await p6.waitForFunction(() => !!window.IzharTrack);
+await p6.fill('#n', 'Sana Iqbal');
+await p6.fill('#p', '0345-1112233');
+await p6.evaluate(() => { window.__mailto = null; });
+await p6.click('#send-email');
+await p6.waitForTimeout(400);
+const emailLead = await p6.evaluate(() => (window.dataLayer || []).filter(e => e && e.event === 'generate_lead'));
+check('email button fires a tracked lead', emailLead.length === 1, `${emailLead.length} leads`);
+check('email lead tagged email_form', emailLead[0]?.lead_channel === 'email_form',
+  `got "${emailLead[0]?.lead_channel}"`);
+
+// ---------------------------------------------------------------------------
 // 7. The critical negative: no PII on the analytics funnel
 // ---------------------------------------------------------------------------
 const sent = JSON.stringify(await p2.evaluate(() => window.__sent));
