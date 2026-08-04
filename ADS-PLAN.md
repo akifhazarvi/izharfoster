@@ -42,7 +42,7 @@ and university assignments far more often than it means "build me a cold store."
 Naming convention: `GADS_[Type]_[Theme]_[Geo]`
 
 ```
-Izhar Foster (dedicated account per §A1 — PKR, Pakistan time, Expert Mode)
+Izhar Foster · 326-413-6797 (USD — see §A1)
 │
 ├── GADS_SEARCH_Brand_PK                    ← always on, cheap, defensive
 │   └── AG: Brand Exact
@@ -454,16 +454,17 @@ overwhelmingly mobile in Pakistan.
 
 ## §B8 — Budget and bidding
 
-**Check your account currency first** (GTM-SETUP §A1) — it is locked and
-everything below assumes PKR.
+**Account currency is USD** (`326-413-6797`). PKR figures below are the planning
+numbers; the USD column is what you actually type into Google Ads. Conversion at
+roughly PKR 280 = USD 1 — re-check the rate before committing real budget.
 
 ### Budget tiers
 
-| Tier | Monthly | Daily | Use when |
-|---|---|---|---|
-| **Lean** | PKR 90,000 | ~3,000 | Proving the channel works before committing |
-| **Standard (recommended)** | PKR 200,000 | ~6,600 | Enough volume to exit learning inside a month |
-| Aggressive | PKR 450,000 | ~15,000 | Only after Phase 3 shows a CPA you're happy to buy at |
+| Tier | Monthly PKR | **Monthly USD** | **Daily USD** | Use when |
+|---|---|---|---|---|
+| **Lean** | 90,000 | **$320** | ~$10.50 | Proving the channel works before committing |
+| **Standard (recommended)** | 200,000 | **$715** | ~$23.50 | Enough volume to exit learning inside a month |
+| Aggressive | 450,000 | **$1,600** | ~$53 | Only after Phase 3 shows a CPA you're happy to buy at |
 
 Below ~PKR 90,000/month across 7 campaigns each campaign is too thin to learn
 anything, and you will conclude "Google Ads doesn't work" from noise.

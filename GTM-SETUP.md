@@ -123,8 +123,8 @@ Once the account exists, verify before spending:
 |---|---|
 | Customer ID | **`326-413-6797`** (`3264136797`) |
 | Conversion tracking ID | **`AW-18369062794`** |
-| Currency | ⚠️ **UNVERIFIED — confirm manually** (must be PKR) |
-| Time zone | ⚠️ **UNVERIFIED — confirm manually** (must be GMT+05:00 Pakistan) |
+| Currency | **USD** — confirmed by owner 2026-08-03. Locked, and fine: it only changes the numbers you type. All conversion values in §A4 are USD |
+| Time zone | ⚠️ **STILL UNVERIFIED — confirm manually.** Must be GMT+05:00 Pakistan. Changeable once only |
 
 **Not auditable via API yet.** Two blockers:
 1. **403 `USER_PERMISSION_DENIED`** — the Composio `googleads` connection has no
@@ -205,16 +205,21 @@ Google Ads → **Goals → Conversions → Summary → + New conversion action �
 
 Create these. The **name must match exactly** — Phase A7 wires GTM to them by name.
 
-| # | Conversion action name | Category | Count | Value (PKR) | Primary? | Click window |
+> **Account currency is USD** (`326-413-6797`, confirmed 2026-08-03). All values
+> below are USD. They are *relative* placeholders — what matters is the ordering
+> (a form fill outranks an email click), not FX precision. Figures assume roughly
+> PKR 280 = USD 1; adjust if your rate differs materially.
+
+| # | Conversion action name | Category | Count | Value (USD) | Primary? | Click window |
 |---|---|---|---|---|---|---|
-| 1 | `IF – Lead (All Channels)` | Submit lead form | **One** | 9,000 | **Primary** | 90 days |
-| 2 | `IF – Lead · Form` | Submit lead form | One | 12,000 | Secondary | 90 days |
-| 3 | `IF – Lead · WhatsApp` | Contact | One | 9,000 | Secondary | 90 days |
-| 4 | `IF – Lead · Phone` | Phone call lead | One | 10,000 | Secondary | 90 days |
-| 5 | `IF – Lead · Email` | Contact | One | 6,000 | Secondary | 90 days |
-| 6 | `IF – Micro · Tool Result` | Other | One | 400 | Secondary | 30 days |
-| 7 | `IF – Micro · Deep Engagement` | Other | One | 200 | Secondary | 30 days |
-| 8 | `IF – Qualified Lead (Offline)` | Qualified lead | One | 60,000 | Secondary → Primary in Phase 4 | 90 days |
+| 1 | `IF – Lead (All Channels)` | Submit lead form | **One** | 30 | **Primary** | 90 days |
+| 2 | `IF – Lead · Form` | Submit lead form | One | 45 | Secondary | 90 days |
+| 3 | `IF – Lead · WhatsApp` | Contact | One | 30 | Secondary | 90 days |
+| 4 | `IF – Lead · Phone` | Phone call lead | One | 35 | Secondary | 90 days |
+| 5 | `IF – Lead · Email` | Contact | One | 20 | Secondary | 90 days |
+| 6 | `IF – Micro · Tool Result` | Other | One | 1.50 | Secondary | 30 days |
+| 7 | `IF – Micro · Deep Engagement` | Other | One | 0.75 | Secondary | 30 days |
+| 8 | `IF – Qualified Lead (Offline)` | Qualified lead | One | 200 | Secondary → Primary in Phase 4 | 90 days |
 
 **Why exactly one Primary.** Smart Bidding optimises to the Primary set only.
 Action #1 fires on *any* lead channel, so all your signal lands in one bucket —
@@ -235,6 +240,26 @@ discard your best conversions.
 **On the values:** these are deliberate *relative* placeholders so bidding can
 learn that a form fill beats an email click. Replace them with real economics as
 soon as you know your close rate — the formula is in ADS-PLAN.md §B9.
+
+### Conversion labels (fill in as created)
+
+Conversion ID is **`18369062794`** for every action; only the Label differs.
+
+| # | Action | Conversion Label |
+|---|---|---|
+| 1 | `IF – Lead (All Channels)` | `zvz9CLWf8dscEIrPhrdE` |
+| 2 | `IF – Lead · Form` | _pending_ |
+| 3 | `IF – Lead · WhatsApp` | _pending_ |
+| 4 | `IF – Lead · Phone` | _pending_ |
+| 5 | `IF – Lead · Email` | _pending_ |
+| 6 | `IF – Micro · Tool Result` | _pending_ |
+| 7 | `IF – Micro · Deep Engagement` | _pending_ |
+| 8 | `IF – Qualified Lead (Offline)` | _pending_ |
+
+> ⚠️ **Never install the event snippet Google offers.** It is generated as a
+> *page-load* conversion — `gtag('event','conversion', …)` with no trigger — so
+> pasting it on the site turns every pageview into a lead. Take only the ID and
+> Label; GTM fires the conversion on the correct dataLayer event.
 
 After saving each one, note its **Conversion ID** and **Conversion Label**
 (Conversions → click the action → *Tag setup → Use Google Tag Manager*). You
@@ -280,13 +305,13 @@ depend on the existing name.
 
 | Input | Output |
 |---|---|
-| `whatsapp` | `9000` |
-| `phone` | `10000` |
-| `email` | `6000` |
-| *Set Default Value* | `12000` |
+| `whatsapp` | `30` |
+| `phone` | `35` |
+| `email` | `20` |
+| *Set Default Value* | `45` |
 
 Use `{{Lookup – Lead Value}}` as the Conversion Value on the primary tag instead
-of a hard-coded `9000`. It works because `generate_lead` (the form) carries no
+of a hard-coded `30`. It works because `generate_lead` (the form) carries no
 `channel` key at all, so it falls through to the default — the highest value,
 which is correct: the form is the only channel that hands you a full contact
 record. One variable, and bidding learns which channel is worth more.
@@ -297,12 +322,30 @@ record. One variable, and bidding learns which channel is worth more.
 
 | Field | Value |
 |---|---|
-| Email | `{{dlv.user_data.email}}` |
-| Phone Number | `{{dlv.user_data.phone}}` |
-| First Name | `{{dlv.user_data.first_name}}` |
-| Last Name | `{{dlv.user_data.last_name}}` |
+| Email | `{{dlv.ud.email}}` |
+| Phone | `{{dlv.ud.phone}}` |
+| **Everything under "Name and address"** | **leave empty / Not set** |
 
 Name it `UPD – Lead`.
+
+> **Corrected 2026-08-03 — map Email and Phone only.** An earlier version of this
+> doc also mapped First Name and Surname. Don't. Google uses name **only in
+> combination with a complete address** (street + city + region + postcode +
+> country) for identity matching — on its own it matches nothing. Worse,
+> populating *any* address field makes GTM mark **Country** and **Postcode**
+> required, and the contact form collects neither, so the variable cannot be
+> saved. Symptom: red *"The value must not be empty."* on both.
+>
+> Do **not** invent values (`PK`, `54000`) to clear the error — Google hashes
+> whatever you supply and matches against it, so a guessed postcode makes the
+> block fail to match rather than help.
+>
+> Note the *project location* field is also wrong for City: it is where the cold
+> store is being built, not where the buyer lives.
+>
+> `contact.html` still pushes `first_name` / `last_name` in `user_data`. Harmless —
+> GTM ignores unmapped keys — and it leaves the data ready if the form ever
+> collects a full billing address.
 
 GTM SHA-256 hashes these **in the browser** before anything leaves the page.
 Google never receives raw contact details. `contact.html` already normalises the
@@ -387,8 +430,8 @@ cookies that later conversions are matched against.
 |---|---|
 | Conversion ID | `18369062794` |
 | Conversion Label | *(from Step A4, action #1)* |
-| Conversion Value | `9000` |
-| Currency Code | `PKR` *(or your account currency)* |
+| Conversion Value | `{{Lookup – Lead Value}}` |
+| Currency Code | `USD` |
 | Transaction ID | `{{dlv.click_ref}}` |
 | **Advanced → Include user-provided data** | `UPD – Lead` |
 | Trigger | `CE – Lead Any` |
@@ -397,6 +440,21 @@ Name: `Ads – Conv – Lead (All Channels)`.
 
 `Transaction ID` is what makes de-duplication work server-side: two events
 carrying the same ref collapse into one conversion.
+
+> **Known gap 2026-08-03 — `UPD – Lead` not yet attached.** The *Include
+> user-provided data from your website* field did not appear in the Google Ads
+> Conversion Tracking tag template. It renders conditionally — usually only once
+> the Conversion ID/Label are filled and Google Ads reports enhanced conversions
+> as enabled for the action (which can lag hours after switching it on).
+>
+> **Deliberately not blocking on it.** Enhanced conversions is worth ~+10%
+> measured conversions and applies to **form leads only** — WhatsApp, phone and
+> email taps have nothing to hash. The conversion itself, its value, currency,
+> Transaction ID dedupe and Linker attribution all work without it.
+>
+> Revisit after conversions are recording: re-open the tag, attach `UPD – Lead`,
+> republish. The variable and the `contact.html` dataLayer push are already built
+> and verified by the regression suite, so it is a one-field change.
 
 ### A7.3 The reporting conversions
 
