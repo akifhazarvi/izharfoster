@@ -124,7 +124,7 @@ Once the account exists, verify before spending:
 | Customer ID | **`326-413-6797`** (`3264136797`) |
 | Conversion tracking ID | **`AW-18369062794`** |
 | Currency | **USD** — confirmed by owner 2026-08-03. Locked, and fine: it only changes the numbers you type. All conversion values in §A4 are USD |
-| Time zone | ⚠️ **STILL UNVERIFIED — confirm manually.** Must be GMT+05:00 Pakistan. Changeable once only |
+| Time zone | ⚠️ **(GMT-04:00) Eastern Time** — confirmed 2026-08-03. 9h behind Pakistan in summer (EDT), 10h in winter (EST). **Recommended to change to GMT+05:00 Pakistan, but not a launch blocker** — see below. Changeable once only |
 
 **Not auditable via API yet.** Two blockers:
 1. **403 `USER_PERMISSION_DENIED`** — the Composio `googleads` connection has no

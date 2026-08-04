@@ -199,7 +199,7 @@ AG Islamabad:  "cold storage islamabad" "sandwich panel islamabad"
 | Locations | Pakistan. **Target by *Presence*, not "Presence or interest"** | The default setting shows your ads to anyone *interested in* Pakistan — including overseas researchers who will never buy |
 | Excluded | — | Do **not** exclude Gulf states: you have `services/cold-storage-saudi-arabia.html`. Run KSA/UAE as a **separate campaign** later so its budget and CPCs can't distort the PK numbers |
 | Languages | English **and** Urdu | Language targeting keys off the user's Google interface language; excluding Urdu drops real Pakistani buyers |
-| Ad schedule | All week at launch | Collect data first. Expect B2B weight Mon–Sat 09:00–19:00 PKT; bid-adjust from actual data in week 4 |
+| Ad schedule | **All hours, all week — do not daypart** | The account is locked to **(GMT-04:00) Eastern**, so schedules are entered in ET, not PKT, and DST shifts them an hour twice a year while Pakistan has no DST. Smart Bidding already adjusts by time-of-day from conversion data, so dayparting adds risk without adding much. If you ever must: PKT = ET + 9 (summer) / +10 (winter), so 09:00–19:00 PKT = 00:00–10:00 ET in summer |
 | Devices | All at launch | Mobile will dominate in PK. If mobile CVR trails badly, adjust — don't pre-emptively exclude |
 | Rotation | Optimise (default) | |
 
@@ -577,6 +577,13 @@ conversions still recording · disapproved ads.
 
 **Weekly:** CPA by campaign · search-terms mining · asset performance ratings ·
 budget-constrained warnings · Quality Score below 5.
+
+> **Reporting caveat — the account runs on Eastern time.** An "Ads day" spans
+> 09:00 PKT → 09:00 PKT (10:00 in winter). Daily figures will never line up with
+> GA4 if that property is on Pakistan time, so **compare 7-day and 28-day windows,
+> not single days.** For offline conversion uploads (§A12), log Pakistani local
+> time and append the offset explicitly — `2026-08-14 15:30:00+05:00` — which
+> Google accepts and which sidesteps the conversion entirely.
 
 **Monthly:** reallocate against 70/20/10 · kill/scale decisions · ad copy
 refresh · landing page CVR review · reconcile Ads conversions against actual
