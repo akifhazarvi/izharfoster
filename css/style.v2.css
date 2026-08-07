@@ -6742,3 +6742,32 @@ body.lc-open .lc-backdrop {
 @media (prefers-reduced-motion: reduce) {
   .ifx-btn, .ifx-btn:hover { transition: none; transform: none; }
 }
+
+/* ==========================================================================
+   Mobile header CTA — restored 2026-08-05
+   --------------------------------------------------------------------------
+   `.nav-cta .btn-primary` was display:none at both the 720px and 480px
+   breakpoints, on the reasoning that "the hamburger covers nav already". The
+   hamburger covers NAVIGATION; it does not cover the quote CTA. Combined with
+   `.nav-phone { display: none }` that left the mobile header with no
+   conversion affordance at all — and Aug 4 paid traffic was 83 of 86 sessions
+   on mobile (97%). Restored as a compact pill: arrow dropped and the logo
+   given a tighter cap so the row still fits 360px without wrapping.
+   Tap target stays >=44px per WCAG 2.5.5.
+   ========================================================================== */
+@media (max-width: 720px) {
+  .nav-cta .btn-primary {
+    display: inline-flex !important;
+    align-items: center;
+    min-height: 44px;
+    padding: 10px 14px;
+    font-size: .82rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .nav-cta .btn-primary .arr { display: none; }
+}
+@media (max-width: 480px) {
+  .brand-logo { max-width: 150px !important; }
+  .nav-cta .btn-primary { padding: 10px 12px; font-size: .78rem; }
+}
