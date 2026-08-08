@@ -494,7 +494,10 @@
     // Fire a one-shot session_start event with our enriched attribution.
     // Param names are prefixed so they never overwrite GA4 reserved
     // attribution params (source/medium/campaign) on this event.
-    track('session_start', {
+    // NOT `session_start` — that is a GA4 reserved automatic event name. Firing
+    // it as a custom event meant GA4 recorded two per session (its own plus
+    // ours), roughly doubling every session count in reporting.
+    track('izhar_session_start', {
       izhar_source: fresh.source,
       izhar_medium: fresh.medium,
       izhar_campaign: fresh.campaign,

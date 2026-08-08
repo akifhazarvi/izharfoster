@@ -29,7 +29,7 @@ Plus event-specific params listed below.
 
 | Stage | Primary event | Source | Goal % |
 |---|---|---|---|
-| **Acquisition** | `session_start` | track.js | — |
+| **Acquisition** | `izhar_session_start` | track.js | — |
 | **Engagement** | `engaged_session` (30s OR 50% scroll) | track.js | ≥35% of sessions |
 | **Top-of-funnel intent** | `cta_quote_click` / `cta_wizard_click` / `cta_roi_click` | track.js (auto) | ≥8% of engaged |
 | **Tool engagement** | `chat_open` / `wizard_start` / `roi_open` | per-tool | ≥30% of CTA clicks |
@@ -48,7 +48,7 @@ If completion <25% on any stage, that's the next iteration target.
 
 | Event | Trigger | Params | Owner |
 |---|---|---|---|
-| `session_start` | First page of session — fires once via `sessionStorage` guard | `izhar_source`, `izhar_medium`, `izhar_campaign`, `referrer_host`, `first_landing`, `redirect_count`, `via_legacy_redirect` | track.js |
+| `izhar_session_start` | First page of session — fires once via `sessionStorage` guard | `izhar_source`, `izhar_medium`, `izhar_campaign`, `referrer_host`, `first_landing`, `redirect_count`, `via_legacy_redirect` | track.js |
 
 **`izhar_source` values:** `google_organic`, `bing_organic`, `duckduckgo_organic`, `yandex_organic`, `yahoo_organic`, `ai_chatgpt`, `ai_perplexity`, `ai_claude`, `ai_copilot`, `ai_gemini`, `ai_you`, `ai_phind`, `ai_kagi`, `social_facebook`, `social_instagram`, `social_whatsapp`, `social_linkedin`, `social_twitter`, `social_youtube`, `social_tiktok`, `utm:<source>`, `referral:<host>`, `direct`, `direct_via_legacy_redirect`.
 
