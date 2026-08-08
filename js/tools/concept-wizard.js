@@ -104,6 +104,18 @@
     save();
   }
 
+  // Scrolls the wizard into a comfortable reading position, but ONLY when it
+  // is actually out of view. The previous unconditional scrollTo threw mobile
+  // users ~800px on every Next tap, because the page hero pushed the wizard
+  // below the fold and the browser had already scrolled to the tapped option.
+  function scrollToStep(){
+    var el = $('wizard');
+    if (!el) return;
+    var top = el.getBoundingClientRect().top;
+    if (top >= -20 && top <= 220) return;   // already comfortably visible
+    window.scrollTo({ top: el.offsetTop - 100, behavior: 'smooth' });
+  }
+
   // ----- step navigation -----
   function go(toStep){
     captureInputs();
@@ -112,7 +124,7 @@
       save();
       renderProgress();
       renderPanels();
-      window.scrollTo({ top: $('wizard').offsetTop - 100, behavior: 'smooth' });
+      scrollToStep();
       track('wizard_step', { step: toStep, sector: state.answers.sector });
     }
   }
@@ -219,7 +231,7 @@
     save();
     renderProgress();
     renderPanels();
-    window.scrollTo({ top: $('wizard').offsetTop - 100, behavior: 'smooth' });
+    scrollToStep();
   }
 
   // ----- analytics -----

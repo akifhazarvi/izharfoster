@@ -6771,3 +6771,27 @@ body.lc-open .lc-backdrop {
   .brand-logo { max-width: 150px !important; }
   .nav-cta .btn-primary { padding: 10px 12px; font-size: .78rem; }
 }
+
+/* ==========================================================================
+   Concept wizard — compress the hero on mobile, 2026-08-08
+   --------------------------------------------------------------------------
+   `.page-hero` rendered 726px tall on a 844px viewport, so #wizard began at
+   832px and the first answer option at 1,009px: you landed on a question with
+   no visible way to answer it. 613 users started the wizard and 1 finished.
+   Trimmed for phones so the first options are reachable without scrolling.
+   ========================================================================== */
+@media (max-width: 720px) {
+  body:has(#wizard) .page-hero { padding-top: 20px !important; padding-bottom: 20px !important; }
+  body:has(#wizard) .page-hero h1 { font-size: 1.45rem; line-height: 1.2; margin-bottom: 8px; }
+  body:has(#wizard) .page-hero .lead,
+  body:has(#wizard) .page-hero p { font-size: .92rem; line-height: 1.5; margin-bottom: 0; }
+  body:has(#wizard) .page-hero .breadcrumb { display: none; }
+  body:has(#wizard) .section { padding-top: 16px !important; }
+  /* The eyebrow chip already says "5 questions - ~60 seconds"; the lead
+     paragraph repeats it and costs ~100px of the only screen that matters. */
+  body:has(#wizard) .page-hero .lead { display: none; }
+  /* Tighten the step rail so question 1's options clear the fold on the
+     640-740px-tall Android screens that dominate Pakistani mobile traffic. */
+  body:has(#wizard) .wiz-progress,
+  body:has(#wizard) .wizard-progress { margin-bottom: 10px !important; }
+}
