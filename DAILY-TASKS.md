@@ -8,6 +8,24 @@ Work top-to-bottom. Mark done with `[x]`. Each PR title must reference the GROWT
 
 ---
 
+## 2026-08-10 — Traffic quality fixed; measurement now matches reality
+
+**The intervention worked.** Turning off PMax Final URL expansion + video enhancement collapsed the junk: Cross-network sessions went 1,343 (Aug 7) → 101 (Aug 8) → 58 (Aug 9), a ~95% drop.
+
+**The number that proves it.** Sales' own inquiry log (WhatsApp/email/call, kept in a spreadsheet, not in any dashboard) showed **6 WhatsApp inquiries for all of August** while Google Ads reported **177 conversions for Aug 5–7 alone** — >96% of recorded conversions never became a message. After the fix, `lead_intent` runs ~5.5/day against ~3.3 actual inquiries/day: same order of magnitude. Lead-intent rate fell from 20% of sessions to 3.6%, which is a plausible B2B figure where 20% was fiction.
+
+- [x] **Root cause was traffic quality, not measurement.** In May, with no ads running, 16 WhatsApp inquiries arrived — so a WhatsApp tap from organic traffic *does* become a message. The tap is only a bad signal on cheap Display/YouTube inventory, where a large floating green FAB gets fat-fingered. PMax at $5/day had found the cheapest impressions on the internet and Smart Bidding, told a tap was worth $30, got very good at buying accidental taps.
+- [x] **`.nav-cta .btn-primary` was `display:none` on mobile** at both breakpoints — no quote CTA and no phone in the header, for 97% of paid traffic. Restored as a compact 112×44 pill; verified no overflow at 360/390/430px. Commit `8d4084c`.
+- [x] **Concept wizard was unusable on a phone.** `.page-hero` was 726px of an 844px viewport, so the first answer option sat at 1,009px and every tap moved the page ~800px. Hero 726→244px, first option 1,009→543px, Next-tap jump −806→0px. First wizard completion since arrived the same day. Commit `56e5a5a`.
+- [x] **`session_start` was a GA4 reserved event name** fired as a custom event, roughly doubling every session figure in reporting. Renamed `izhar_session_start`. Commit `5c8444a`.
+- [ ] **Build the Search campaign** (ADS-PLAN §B2/B3) and pause `Campaign #1`. PMax cannot offer Maximize Clicks with a CPC cap, which is why buying data safely was impossible. $5/day on Search buys ~15–25 clicks from people typing `cold storage cost in pakistan`.
+- [ ] **Rename `Campaign #1`** → `GADS_PMAX_ColdChain_PK`.
+- [ ] **Keep the inquiry chart updated monthly.** It is the only scoreboard that measures something real, it exists nowhere in Google's tooling, and it is what caught a campaign that would otherwise have looked like a triumph and been scaled.
+
+**Lesson for future sessions:** three diagnoses this session were wrong — an auto-opening chat overlay (it was the off-canvas drawer reporting a rect while hidden), bot traffic (it was GA4 same-day processing lag), and the contact form as the main leak (it gets 1.1% of traffic; the wizard had 10×). Each was corrected only by looking at a number or screenshot not yet consulted. **Cross-check platform metrics against a source outside the platform before acting on them.**
+
+---
+
 ## 2026-08-04 — Conversion-leak fixes from live paid traffic
 
 First day of paid traffic (12 `google / cpc` sessions of 129 total). GA4 is on Asia/Karachi so this is a true Pakistani day. **Every guided lead path converted to zero:** 8 `cta_quote_click` → 5 `form_start` → **0** `form_submit`; 10 `chat_open` → 5 `chat_step` → **0** `chat_submit`; 1 `wizard_start` → 4 `wizard_step` → **0** `wizard_submit`. Only leads all day were 4 raw WhatsApp taps. One visitor fired **89 `cost_estimated`** events and contacted nobody — the hottest lead of the day, lost at the hand-off.
