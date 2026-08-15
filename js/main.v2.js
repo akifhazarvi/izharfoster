@@ -248,7 +248,11 @@
       const actions = document.createElement('div');
       actions.className = 'nav-mobile-actions';
       actions.innerHTML =
+        // Two call lines. .nav-phone is hidden below 1100px, so on mobile —
+        // which is 97% of paid traffic — this drawer is the only place a
+        // caller sees a number at all. Both belong here.
         '<a href="tel:+924235383543" class="call">Call · +92 42 3538 3543</a>' +
+        '<a href="tel:+923004842467" class="call">Sales · +92 300 4842467</a>' +
         '<a href="' + window.IzharWA.link('Hi Izhar Foster — sent via izharfoster.com') + '" target="_blank" rel="noopener" class="wa">WhatsApp our team</a>';
       menu.appendChild(actions);
     }

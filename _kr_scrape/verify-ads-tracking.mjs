@@ -160,7 +160,14 @@ await p5.waitForFunction(() => !!window.IzharTrack);
 const requiredCount = await p5.evaluate(() =>
   document.querySelectorAll('#quote-form input[required], #quote-form textarea[required]').length);
 check('only 2 fields required (name + phone)', requiredCount === 2, `${requiredCount} required`);
-check('email fallback button present', await p5.locator('#send-email').count() === 1);
+// The competing "Send by email instead" button was removed on request
+// (2026-08-15) — the form is now a single Send. The email escape hatch is a
+// plain mailto link in the note so desktop visitors without WhatsApp still
+// have a route out.
+check('single submit button, no competing email button',
+  await p5.locator('#send-email').count() === 0);
+check('email escape hatch still reachable in the note',
+  await p5.locator('#form-note a[href^="mailto:"]').count() === 1);
 
 // Minimal lead: name + phone ONLY. This used to fail validation on company+email.
 await p5.fill('#n', 'Bilal Sheikh');
@@ -174,19 +181,24 @@ check('minimal lead still normalises phone', minimal[0]?.user_data?.phone_number
 check('minimal lead channel is whatsapp_form', minimal[0]?.lead_channel === 'whatsapp_form',
   `got "${minimal[0]?.lead_channel}"`);
 
-// Email hand-off fires its own tracked lead
+// The email hand-off path stays wired in contact.html even though no button
+// calls it, so restoring the button is a one-line change. Assert the mailto
+// link in the note is tracked as an email lead intent.
 const p6 = await ctx.newPage();
 await p6.goto(`${BASE}/contact.html`, { waitUntil: 'domcontentloaded' });
 await p6.waitForFunction(() => !!window.IzharTrack);
-await p6.fill('#n', 'Sana Iqbal');
-await p6.fill('#p', '0345-1112233');
-await p6.evaluate(() => { window.__mailto = null; });
-await p6.click('#send-email');
+await p6.evaluate(() => {
+  const a = document.querySelector('#form-note a[href^="mailto:"]');
+  a.addEventListener('click', e => e.preventDefault(), true);
+  a.click();
+});
 await p6.waitForTimeout(400);
-const emailLead = await p6.evaluate(() => (window.dataLayer || []).filter(e => e && e.event === 'generate_lead'));
-check('email button fires a tracked lead', emailLead.length === 1, `${emailLead.length} leads`);
-check('email lead tagged email_form', emailLead[0]?.lead_channel === 'email_form',
-  `got "${emailLead[0]?.lead_channel}"`);
+const emailIntent = await p6.evaluate(() =>
+  (window.dataLayer || []).filter(e => e && e.event === 'lead_intent' && e.channel === 'email'));
+check('note mailto link still logs an email lead intent', emailIntent.length === 1,
+  `${emailIntent.length} intents`);
+check('handoff(email_form) still wired for restore',
+  (await p6.content()).includes("handoff('email_form')"));
 
 // ---------------------------------------------------------------------------
 // 7. The critical negative: no PII on the analytics funnel

@@ -6884,3 +6884,15 @@ body.lc-open .lc-backdrop {
     width: min(calc(100% + 420px), calc(100vw - 200px));
   }
 }
+
+/* Second sales line in the header (+92 300 4842467).
+   The nav bar has no room for another ~154px until roughly 1600px: measured
+   against index.html a second .nav-phone overflows the bar by 255px at 1280
+   and still 100px at 1440 — the two most common desktop widths. So it only
+   renders where it genuinely fits. Everywhere narrower the number is still
+   one tap away in the footer, the mobile nav drawer and the contact page,
+   and .nav-phone itself is already hidden below 1100px regardless. */
+.nav-phone-alt { display: none; }
+@media (min-width: 1600px) {
+  .nav-phone-alt { display: inline-flex; }
+}
