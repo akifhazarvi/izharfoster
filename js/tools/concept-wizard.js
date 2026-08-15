@@ -160,6 +160,7 @@
     'dairy-beverage':'Dairy & beverage',
     'ca':'Dates / CA storage',
     '3pl':'3PL / multi-temp warehouse',
+    'reefer':'Refrigerated vehicles',
     'industrial':'Industrial / process',
     'unsure':'Not sure / mixed'
   };
