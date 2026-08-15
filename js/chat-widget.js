@@ -15,7 +15,10 @@
   var path = location.pathname;
   if (/\/(concept-wizard|roi-payback)(\.html)?\/?$/.test(path)) return;
 
-  var WA = '923215383544';
+  // Two sales lines share the WhatsApp load — see waRouting() in js/main.v2.js.
+  // Read it per call rather than caching, so the widget always hands off to the
+  // line this visitor is assigned to. Falls back to line 1 if routing is absent.
+  function waNumber() { return (window.IzharWA && window.IzharWA.number()) || '923215383544'; }
   var SESSION_DISMISS_KEY = 'izhar_chat_dismissed_v1';
   var STATE_KEY = 'izhar_chat_state_v1';
 
@@ -134,6 +137,17 @@
     // Remove any existing .fab-wa pill (replaced)
     var oldPill = document.querySelector('.fab-wa');
     if (oldPill) oldPill.remove();
+
+    // Also remove the older live-chat FAB that main.v2.js builds. Both are
+    // 60x60 circles pinned to the bottom-right (.lc-root at 20px, .ifc-fab at
+    // 22px), so they sat on top of each other: the green WhatsApp button won on
+    // z-index, but .lc-trigger's ember rim and its .lc-trigger-pulse halo —
+    // orange, scaling to 1.6 — leaked out around it. That halo was the "weird
+    // orange background". One widget replaces the other; it must not survive.
+    // This runs only where the chat widget does, so the wizard and ROI pages
+    // (which return early above) keep the live-chat FAB as their only one.
+    var legacyChat = document.querySelector('.lc-root');
+    if (legacyChat) legacyChat.remove();
 
     document.head.appendChild(styleTag);
 
@@ -366,7 +380,7 @@
         '• Phone / WhatsApp: ' + state.answers.phone + '\n\n' +
         'Please send back a sized concept and an indicative budget within 24 hours.\n' +
         '— Sent via izharfoster.com chat (' + location.pathname + ')';
-      var url = 'https://wa.me/' + WA + '?text=' + encodeURIComponent(msg);
+      var url = 'https://wa.me/' + waNumber() + '?text=' + encodeURIComponent(msg);
       addBot('Got it. Tap below to open WhatsApp — your structured brief is pre-filled, just hit <strong>Send</strong>.', { delay: 600, then: function(){
         var body = $('ifc-body');
         var wrap = document.createElement('div');
@@ -399,7 +413,7 @@
         } else if (pick.v === 'wa-direct'){
           track('chat_step', { step: 'wa_direct' });
           var directMsg = 'Hi Izhar Foster — quick enquiry from your website (' + location.pathname + '). Could you call me back?';
-          window.open('https://wa.me/' + WA + '?text=' + encodeURIComponent(directMsg), '_blank', 'noopener');
+          window.open('https://wa.me/' + waNumber() + '?text=' + encodeURIComponent(directMsg), '_blank', 'noopener');
           addBot('Opening WhatsApp...', { delay: 300 });
         } else if (pick.v === 'wizard'){
           track('chat_step', { step: 'to_wizard' });

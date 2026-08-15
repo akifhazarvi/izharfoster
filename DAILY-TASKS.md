@@ -1,10 +1,45 @@
 # Izhar Foster — Daily Task List
 
-**Last updated:** 2026-08-03
+**Last updated:** 2026-08-15
 **Score baseline:** 78/100 (ACTION-PLAN.md, 2026-05-02)
 **Canonical roadmap:** [GROWTH-PLAN.md](GROWTH-PLAN.md) | Resolved conflicts: [DECISIONS.md](DECISIONS.md)
 
 Work top-to-bottom. Mark done with `[x]`. Each PR title must reference the GROWTH-PLAN section it implements.
+
+---
+
+## 2026-08-15 — Refrigerated Vehicles built out from the brochure; FAB fixed
+
+**The orange halo was two buttons, not one button.** `main.v2.js` builds an ember `.lc-trigger` at `bottom:20px/right:20px`; `chat-widget.js` builds the green WhatsApp `.ifc-fab` at 22px. The green one won on z-index, but `.lc-trigger`'s rim and its `.lc-trigger-pulse` halo — orange, animating to scale 1.6 — leaked out around it. The widget already stripped the legacy `.fab-wa` pill; it now removes `.lc-root` too. The wizard and ROI pages return early from the widget, so they keep the live-chat FAB as their only one.
+
+- [x] **Refrigerated Vehicles §The programme** — brochure pp.65–71 built out on `services/refrigerated-vehicles.html`: the one-scope positioning (p66), the Thermo King T-Series heat options in full (p67), how a body is built at Multan Road (pp.68–69), and all three **Zanotti selection tables** as real HTML (pp.70–71) — five families for small/medium, four for large/trailer, one for moving cold rooms, each with T<sub>c</sub>/T<sub>a</sub> body-volume envelopes.
+- [x] **8 photographs extracted** from the PDF to `images/vehicles/` (webp + jpg at 1000w/600w, plus a 1200×630 OG card). Script: `_kr_scrape/extract-vehicle-images.py`, idempotent. Brochure pages are flattened 72-dpi JPEGs, so **native detail caps at ~780 px** — every crop is down-scaled to at most its own render width and never upscaled, and display widths are capped to match.
+- [x] **Blog post** — [Sizing a Refrigerated Truck for a +40 °C Summer](blog/refrigerated-truck-sizing-pakistan-zanotti-thermo-king.html). Leads on the ambient derate (a quarter to a third of capacity between +30 °C and +40 °C), carries a worked 20 m³ example where the same body needs three different unit families, and covers the heating problem. Card added to `blog.html`, URL in `sitemap.xml`.
+- [x] **SEO** — BlogPosting + BreadcrumbList schema on the post; Service schema on the page now carries a 6-image array and `dateModified` 2026-08-15; OG image swapped off `og-default.jpg` onto the new card.
+- [x] **Fixed: the FAQ section was duplicated verbatim** on the vehicles page — the same six questions rendered twice in a row. One copy removed.
+- [x] **Corrected the T-Series claim.** The page said a flat "6,220 W heat capacity". The brochure is more specific: that is T-600R/T-800R heating *with the water heat kit*; T-1000R is 6,000 W (+46%); heater bars add 1,900 W on electric stand-by; no extra refrigerant charge either way. Updated in prose, accordion and schema together.
+- [x] **Verified.** `verify-wa-split.mjs` 38/38 (now includes a one-FAB-per-page check), `verify-ads-tracking.mjs` 45/45, JSON-LD parses on all three files, every image reference resolves, and no horizontal overflow at 375/390/720/900/1100/1280/1440/1920 px.
+
+**Partner-scope call.** Brochure p66 names **Songz (China)** alongside Zanotti and Thermo King for truck refrigeration, but [DECISIONS.md](DECISIONS.md) confirms Songz for **HVAC only** (brochure p.39). The page therefore names only Zanotti and Thermo King. If Songz does supply reefer units, DECISIONS.md needs updating first — then the page.
+
+**Still open:** the prose FAQ (h3s inside the article) and the FAQ accordion state the same six answers twice on the page. That is pre-existing and may be deliberate — prose for AI citation, accordion for UX — so it was left alone rather than rewritten unasked.
+
+---
+
+## 2026-08-15 — Second WhatsApp line; enquiries split 50/50
+
+**Why.** At Rs. 5,000/day the call volume outgrew one phone. Client asked for a second WhatsApp number, `+92 300 4842467`, with the load divided evenly. That number was already on the site as Kamran Anwar's direct line (`about.html`, and a `sales` ContactPoint in the contact schema) — it is now a WhatsApp destination too.
+
+- [x] **Runtime routing, not 77 edited files.** `waRouting()` at the top of `js/main.v2.js` assigns each visitor a line and rewrites every `wa.me` href — and, where the anchor prints the number as its own label, the visible text — before the page is interactive. The static HTML still ships line 1, so nothing regresses if JS fails.
+- [x] **Assignment is sticky per visitor, not per click.** A buyer who messaged line 1 last week reaches the same rep on the next visit; per-click randomisation would split one negotiation across two people. Sticky in `localStorage` under `izhar_wa_line`.
+- [x] **Every hand-off path routed, not just the anchors.** Chat widget, live-chat panel, mobile nav drawer, contact form, concept wizard, ROI calculator, panel-price tool and the shared tool chrome all read `window.IzharWA.number()`; each keeps a hard-coded line-1 fallback.
+- [x] **Contact page lists both lines side by side**, opted out of rotation via `data-wa-fixed`, with a matching pair of `ContactPoint` entries in the schema. It is the one place a buyer sees and picks between both numbers.
+- [x] **The split is auditable.** `whatsapp_click` and `lead_intent` now carry `wa_line` (`a`/`b`). Segment GA4 on it to confirm the divide rather than trusting it.
+- [x] **Verified.** `node _kr_scrape/verify-wa-split.mjs` — 32 checks (fairness over 80 fresh visitors, stickiness, DOM rewrite, contact-page opt-out, form hand-off, storage-blocked degradation). `verify-ads-tracking.mjs` still 45/45, including the no-PII check.
+
+**Re-balancing later** (e.g. one rep on leave) is a `weight` change in the `LINES` array in `js/main.v2.js` — no HTML touched. Force a line for testing with `?wa=a` / `?wa=b`.
+
+**Watch:** the split is a per-visitor coin flip with no server to keep a counter, so a single day can land 60/40 and still be working correctly. Judge it over a week, on `wa_line`, not on either rep's impression of how busy they were.
 
 ---
 
