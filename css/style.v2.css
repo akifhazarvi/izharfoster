@@ -6896,3 +6896,62 @@ body.lc-open .lc-backdrop {
 @media (min-width: 1600px) {
   .nav-phone-alt { display: inline-flex; }
 }
+
+/* ── Concept wizard above the fold, tablet and desktop ─────────────────────
+   The 2026-08-10 fold fix was scoped to max-width:720px, so every screen
+   above that kept the full 110/90 page-hero: measured 589px at 1280x800
+   (74% of the viewport) and 608px at 1440x900, pushing question one's first
+   answer to ~890px — below the fold, the exact failure that was fixed on
+   phones. The wizard is the conversion flow; question one has to be visible
+   without scrolling. Compresses the hero rather than hiding it: the lead
+   still explains what the tool does, it just stops billboarding. */
+@media (min-width: 721px) {
+  body:has(#wizard) .page-hero {
+    padding-top: 30px;
+    padding-bottom: 20px;
+  }
+  body:has(#wizard) .page-hero h1 {
+    font-size: clamp(1.65rem, 2.3vw, 2.25rem);
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+  body:has(#wizard) .page-hero .lead,
+  body:has(#wizard) .page-hero p {
+    font-size: 1rem;
+    line-height: 1.55;
+    margin-bottom: 0;
+    max-width: 64ch;
+  }
+  body:has(#wizard) .page-hero .breadcrumb { margin-bottom: 10px; }
+  body:has(#wizard) .page-hero .temp-badge { margin-bottom: 12px; }
+  body:has(#wizard) .section { padding-top: 14px !important; }
+  /* Close the gap between the question and its answers so the first row of
+     cards clears the fold on a 768-800px-tall laptop, not just its top edge. */
+  body:has(#wizard) .wiz-q-help { margin: 4px 0 12px !important; }
+  body:has(#wizard) .wiz-step-panel legend { margin-bottom: 4px; }
+}
+
+/* Short desktop viewports (1366x768 laptops, and any window that is not
+   full-height). Width alone does not describe the constraint here — the fold
+   is a height problem — so trim the hero further when vertical space is
+   actually scarce. Without this, row one of the answer cards clips by ~29px
+   at 768. */
+@media (min-width: 721px) and (max-height: 820px) {
+  body:has(#wizard) .page-hero { padding-top: 20px; padding-bottom: 14px; }
+  body:has(#wizard) .page-hero h1 {
+    font-size: clamp(1.4rem, 1.9vw, 1.8rem);
+    margin-bottom: 8px;
+  }
+  body:has(#wizard) .page-hero .lead,
+  body:has(#wizard) .page-hero p { font-size: .94rem; line-height: 1.5; }
+  body:has(#wizard) .page-hero .breadcrumb { display: none; }
+}
+
+/* Very short desktop windows (~700px and under — a resized or split window on
+   a laptop). Same call the phone layout already makes: the eyebrow chip
+   already says "5 questions · ~60 seconds", so the lead paragraph repeats it
+   and costs the height that question one needs. */
+@media (min-width: 721px) and (max-height: 740px) {
+  body:has(#wizard) .page-hero { padding-top: 14px; padding-bottom: 10px; }
+  body:has(#wizard) .page-hero .lead { display: none; }
+}
