@@ -2,6 +2,116 @@
 (function () {
   'use strict';
 
+  // ------------------------------------------------- WhatsApp lead routing
+  // Two sales lines share the WhatsApp load. Paid traffic pushed enquiry
+  // volume past what one phone can answer, so every wa.me link on the site is
+  // rewritten at runtime to the line this visitor is assigned to.
+  //
+  // The assignment is sticky per visitor (localStorage), not per click: a
+  // buyer who messaged line 1 last week must reach the same person on their
+  // next visit, or the thread splits across two reps mid-negotiation. With
+  // equal weights the split lands at ~50/50 across visitors — expect ordinary
+  // coin-flip variance on any single day, evening out over a week.
+  //
+  // To re-balance (say 70/30 while one rep is on leave) change `weight` only.
+  // No HTML touches: the static markup ships line 1 and this rewrites it.
+  // Force a line when testing with ?wa=a or ?wa=b — the choice then sticks.
+  (function waRouting() {
+    var LINES = [
+      { id: 'a', number: '923215383544', display: '+92 321 5383544', weight: 1 },
+      { id: 'b', number: '923004842467', display: '+92 300 4842467', weight: 1 }
+    ];
+    var SHIPPED = LINES[0];              // what the 77 static pages hard-code
+    var KEY = 'izhar_wa_line';
+
+    function byId(id) {
+      for (var i = 0; i < LINES.length; i++) if (LINES[i].id === id) return LINES[i];
+      return null;
+    }
+
+    function draw() {
+      var total = 0, i;
+      for (i = 0; i < LINES.length; i++) total += LINES[i].weight;
+      var r = Math.random() * total;
+      for (i = 0; i < LINES.length; i++) {
+        r -= LINES[i].weight;
+        if (r < 0) return LINES[i];
+      }
+      return SHIPPED;
+    }
+
+    function assign() {
+      var forced = byId((/[?&]wa=([a-z])/i.exec(location.search) || [])[1]);
+      if (forced) {
+        try { localStorage.setItem(KEY, forced.id); } catch (e) {}
+        return forced;
+      }
+      var stored = null;
+      try { stored = byId(localStorage.getItem(KEY)); } catch (e) {}
+      if (stored) return stored;
+      var line = draw();
+      try { localStorage.setItem(KEY, line.id); } catch (e) {}
+      return line;
+    }
+
+    var LINE = assign();
+
+    // Anchors carrying data-wa-fixed are opted out — the contact page lists
+    // both lines side by side on purpose and must not be rewritten.
+    function rewrite(a) {
+      if (!a || a.hasAttribute('data-wa-fixed')) return;
+      var href = a.getAttribute('href') || '';
+      var next = href.replace(/(wa\.me\/)\+?\d{6,15}/i, '$1' + LINE.number);
+      if (next !== href) a.setAttribute('href', next);
+      if (LINE.number !== SHIPPED.number) swapText(a);
+    }
+
+    // Only rewrites text nodes that literally print the shipped number, so
+    // labels like "WhatsApp our team" are left alone. Runs inside the anchor
+    // only — that covers the footer line and the contact-page channel row,
+    // both of which use the number as their own label.
+    function swapText(el) {
+      var walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
+      var n;
+      while ((n = walk.nextNode())) {
+        if (n.nodeValue.indexOf(SHIPPED.display) !== -1) {
+          n.nodeValue = n.nodeValue.split(SHIPPED.display).join(LINE.display);
+        }
+      }
+    }
+
+    function apply(root) {
+      var scope = root || document;
+      if (scope.nodeType === 1 && scope.matches('a[href*="wa.me/"]')) rewrite(scope);
+      var links = scope.querySelectorAll ? scope.querySelectorAll('a[href*="wa.me/"]') : [];
+      for (var i = 0; i < links.length; i++) rewrite(links[i]);
+    }
+
+    window.IzharWA = {
+      line: LINE.id,
+      number: function () { return LINE.number; },
+      display: function () { return LINE.display; },
+      link: function (text) {
+        return 'https://wa.me/' + LINE.number + (text ? '?text=' + encodeURIComponent(text) : '');
+      },
+      apply: apply
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function () { apply(); });
+    } else {
+      apply();
+    }
+
+    // Catch-all for links injected after the sweep. Capture phase, and this
+    // file runs before js/track.js, so the href is already correct by the time
+    // the tracker reads it — the analytics href matches the number dialled.
+    document.addEventListener('click', function (e) {
+      var a = e.target && e.target.closest && e.target.closest('a[href*="wa.me/"]');
+      if (a) rewrite(a);
+    }, true);
+  })();
+
   // Tracking is loaded directly via <script src="js/track.js" defer> on every
   // page (see vercel.json + page templates). Do not inject here — the prior
   // fallback double-loaded the script (~12 KB wasted per visit).
@@ -27,11 +137,11 @@
           <p>Engineering reply within 24 hours. Pick the channel that suits you.</p>
         </div>
         <div class="lc-options">
-          <a href="https://wa.me/923215383544?text=${encodeURIComponent("Hi Izhar Foster — I'd like to discuss a cold-chain project.\n\n— Sent via izharfoster.com")}" target="_blank" rel="noopener" class="lc-opt lc-opt-wa" data-track-section="live-chat-wa">
+          <a href="${window.IzharWA.link("Hi Izhar Foster — I'd like to discuss a cold-chain project.\n\n— Sent via izharfoster.com")}" target="_blank" rel="noopener" class="lc-opt lc-opt-wa" data-track-section="live-chat-wa">
             <span class="lc-opt-ico"><svg viewBox="0 0 32 32"><path d="M19.11 17.205c-.372 0-1.088 1.39-1.518 1.39a.63.63 0 0 1-.315-.1c-.802-.402-1.504-.817-2.163-1.4-.545-.489-1.09-1.07-1.52-1.652-.043-.067-.087-.124-.13-.198l-.13-.198a.602.602 0 0 1-.13-.272c0-.196.39-.35.532-.45a3.038 3.038 0 0 0 .7-.778c.097-.187.13-.418.066-.62-.064-.207-.49-1.235-.665-1.673-.176-.422-.422-.844-.99-.844-.27 0-.539-.063-.81-.063-.43 0-.879.095-1.219.41-.39.358-.81 1.057-.81 2.275 0 1.183.85 2.32 1.55 3.14 1.286 1.7 2.74 3.022 4.55 3.96.628.336 1.301.616 2.014.812.547.142 1.115.236 1.679.247.547 0 1.135-.246 1.5-.66.224-.272.32-.598.32-.953 0-.157-.063-.305-.13-.46-.16-.295-.694-.495-.69-.495z"/><path d="M16.005 2.07C8.351 2.07 2.137 8.276 2.137 15.93c0 2.45.624 4.853 1.808 6.969L2 30l7.272-1.91a13.96 13.96 0 0 0 6.733 1.722c7.654 0 13.868-6.215 13.868-13.882C29.873 8.275 23.659 2.07 16.005 2.07zm0 25.392a11.534 11.534 0 0 1-5.85-1.598l-.42-.252-4.366 1.146 1.166-4.27-.273-.443A11.477 11.477 0 0 1 4.512 15.93c0-6.34 5.156-11.49 11.493-11.49 6.337 0 11.493 5.15 11.493 11.49 0 6.34-5.156 11.532-11.493 11.532z"/></svg></span>
             <div class="lc-opt-body">
               <div class="lc-opt-title">Chat on WhatsApp</div>
-              <div class="lc-opt-sub">+92 321 5383544 · fastest reply</div>
+              <div class="lc-opt-sub">${window.IzharWA.display()} · fastest reply</div>
             </div>
             <span class="lc-opt-arrow">→</span>
           </a>
@@ -139,7 +249,7 @@
       actions.className = 'nav-mobile-actions';
       actions.innerHTML =
         '<a href="tel:+924235383543" class="call">Call · +92 42 3538 3543</a>' +
-        '<a href="https://wa.me/923215383544?text=Hi%20Izhar%20Foster%20%E2%80%94%20sent%20via%20izharfoster.com" target="_blank" rel="noopener" class="wa">WhatsApp our team</a>';
+        '<a href="' + window.IzharWA.link('Hi Izhar Foster — sent via izharfoster.com') + '" target="_blank" rel="noopener" class="wa">WhatsApp our team</a>';
       menu.appendChild(actions);
     }
     // Teleport the drawer to <body> on mobile so it escapes the header's stacking context.

@@ -4,7 +4,8 @@
    No frameworks. No backend. ±25% honesty band on outputs. */
 (function(){
   'use strict';
-  var WA = '923215383544';
+  // Two sales lines share the WhatsApp load — see waRouting() in js/main.v2.js.
+  function waNumber() { return (window.IzharWA && window.IzharWA.number()) || '923215383544'; }
   var BAND = 0.20; // capex ±20% per data file uncertainty_band_pct
   var CURRENCY_KEY = 'izhar_roi_currency_v1';
   var CITY_OVERRIDE_KEY = 'izhar_roi_currency_override_v1';
@@ -345,7 +346,7 @@
       '• Opex: ' + ref(r.opexMonthly) + '/month\n' +
       '• Payback: ' + fmtMonths(r.paybackMonths) + ' months\n\n' +
       'Please send back a sized concept and a precise quote.\n— Sent via izharfoster.com/tools/roi-payback';
-    a.href = 'https://wa.me/' + WA + '?text=' + encodeURIComponent(msg);
+    a.href = 'https://wa.me/' + waNumber() + '?text=' + encodeURIComponent(msg);
 
     // GA4 event when the CTA is clicked — route through IzharTrack so the event
     // inherits session attribution. Use removeEventListener guard to prevent

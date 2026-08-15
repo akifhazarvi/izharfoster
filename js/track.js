@@ -112,6 +112,13 @@
     } catch (e) { return String(url).split('?')[0]; }
   }
 
+  // Which of the two sales lines this visitor was routed to ('a' or 'b') — see
+  // waRouting() in js/main.v2.js. Stamped on every WhatsApp event so the split
+  // is auditable in GA4 without parsing hrefs. Never PII: it is a single letter.
+  function waLine() {
+    return (window.IzharWA && window.IzharWA.line) || '';
+  }
+
   // ------------------------------------------------------ Lead de-duplication
   // One physical action can legitimately trip several lead signals: submitting
   // the quote form pushes generate_lead, then opens WhatsApp, which the
@@ -200,8 +207,12 @@
 
     if (/^https?:\/\/(api\.)?wa\.me\//i.test(href) || /^https?:\/\/(www\.)?whatsapp\.com\//i.test(href)) {
       stampWhatsAppRef(a);
-      track('whatsapp_click', { href: safeHref(href), label: label, location: location_id });
-      emitLead('whatsapp', { location: location_id });
+      // Read the href off the element, not the captured `href` above: the
+      // routing layer in js/main.v2.js may have rewritten it to the visitor's
+      // assigned sales line, and analytics must report the number dialled.
+      var waHref = a.getAttribute('href') || href;
+      track('whatsapp_click', { href: safeHref(waHref), label: label, location: location_id, wa_line: waLine() });
+      emitLead('whatsapp', { location: location_id, wa_line: waLine() });
       return;
     }
     if (/^tel:/i.test(href)) {
@@ -240,8 +251,8 @@
       if (typeof url === 'string' &&
           (/^https?:\/\/(api\.)?wa\.me\//i.test(url) || /^https?:\/\/(www\.)?whatsapp\.com\//i.test(url))) {
         args[0] = withRef(url);
-        track('whatsapp_click', { href: safeHref(url), label: '', location: 'window.open' });
-        emitLead('whatsapp', { location: 'window.open' });
+        track('whatsapp_click', { href: safeHref(url), label: '', location: 'window.open', wa_line: waLine() });
+        emitLead('whatsapp', { location: 'window.open', wa_line: waLine() });
       }
     } catch (e) { /* noop */ }
     return _nativeOpen.apply(window, args);

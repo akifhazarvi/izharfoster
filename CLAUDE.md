@@ -8,6 +8,8 @@
 
 **Paid media: [GTM-SETUP.md](GTM-SETUP.md)** (Phase A — GTM container, Consent Mode v2, conversion actions, Enhanced Conversions, offline import) then **[ADS-PLAN.md](ADS-PLAN.md)** (Phase B — campaign structure, keywords, negatives, ad copy, budget, roadmap). Event taxonomy: [EVENTS.md](EVENTS.md). Tracking regression suite: `node _kr_scrape/verify-ads-tracking.mjs` (34 checks; needs `python3 -m http.server 8090`). **Run it after any change to `js/track.js` or `contact.html` — it includes a negative check that no PII reaches GA4/Vercel.**
 
+**WhatsApp lead routing:** two sales lines share the load — `923215383544` (line 1, what the static HTML ships) and `923004842467` (line 2). `waRouting()` at the top of `js/main.v2.js` assigns each visitor one line, sticky in `localStorage`, and rewrites every `wa.me` href + printed number at runtime. Anything that builds a WhatsApp URL must read `window.IzharWA.number()` with a line-1 fallback — never hard-code the number again. Anchors marked `data-wa-fixed` (the contact-page rows listing both lines) are exempt. Re-balance via `weight` in the `LINES` array; test with `?wa=a` / `?wa=b`. Regression suite: `node _kr_scrape/verify-wa-split.mjs` (32 checks; needs `python3 -m http.server 8090`).
+
 **Priority pillars (grow):** Cold Stores · PIR Sandwich Panels (FireSafe PIR) · Refrigeration Systems
 **Secondary:** CA Stores · Insulated Doors · Refrigerated Vehicles · CEA Greenhouses
 **Deprioritize (keep on site, low visibility):** Plant Factories · Smart Cabins · Prefabricated Steel Buildings (PEB)

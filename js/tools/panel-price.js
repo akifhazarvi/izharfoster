@@ -232,7 +232,7 @@
     if (els.ctaWa) {
       els.ctaWa.href = whatsappUrl
         ? whatsappUrl(summary)
-        : `https://wa.me/923215383544?text=${encodeURIComponent('Sandwich panel quote: ' + summary)}`;
+        : `https://wa.me/${(window.IzharWA && window.IzharWA.number()) || '923215383544'}?text=${encodeURIComponent('Sandwich panel quote: ' + summary)}`;
     }
     if (els.ctaEmail) {
       els.ctaEmail.href = `mailto:info@izharfoster.com?subject=${encodeURIComponent('Sandwich panel quote — ' + thicknessMm + ' mm')}&body=${encodeURIComponent(summary)}`;

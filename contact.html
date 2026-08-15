@@ -139,8 +139,16 @@
       {
         "@type": "ContactPoint",
         "contactType": "customer support",
-        "name": "WhatsApp",
+        "name": "WhatsApp · Line 1",
         "telephone": "+92-321-5383544",
+        "areaServed": "PK",
+        "availableLanguage": ["English", "Urdu"]
+      },
+      {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "name": "WhatsApp · Line 2",
+        "telephone": "+92-300-4842467",
         "areaServed": "PK",
         "availableLanguage": ["English", "Urdu"]
       }
@@ -213,7 +221,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p>Most buyers reach us first by WhatsApp or phone. The form on the right is for sending specs in writing.</p>
       <div class="contact-channels">
         <a href="tel:+924235383543"><span class="k">Phone · Lahore</span><span class="v">+92 42 3538 3543</span><span class="arrow">→</span></a>
-        <a href="https://wa.me/923215383544?text=Hi%20Izhar%20Foster%20%E2%80%94%20sent%20via%20izharfoster.com" target="_blank" rel="noopener"><span class="k">WhatsApp</span><span class="v">+92 321 5383544</span><span class="arrow">→</span></a>
+        <!-- Both WhatsApp lines are listed here on purpose, so data-wa-fixed opts
+             them out of the 50/50 rewrite in waRouting() (js/main.v2.js). Every
+             other wa.me link on the site rotates; this row is the one place a
+             buyer sees — and picks between — both numbers. -->
+        <a href="https://wa.me/923215383544?text=Hi%20Izhar%20Foster%20%E2%80%94%20sent%20via%20izharfoster.com" target="_blank" rel="noopener" data-wa-fixed><span class="k">WhatsApp · Line 1</span><span class="v">+92 321 5383544</span><span class="arrow">→</span></a>
+        <a href="https://wa.me/923004842467?text=Hi%20Izhar%20Foster%20%E2%80%94%20sent%20via%20izharfoster.com" target="_blank" rel="noopener" data-wa-fixed><span class="k">WhatsApp · Line 2</span><span class="v">+92 300 4842467</span><span class="arrow">→</span></a>
         <a href="mailto:info@izharfoster.com"><span class="k">Email</span><span class="v">info@izharfoster.com</span><span class="arrow">→</span></a>
       </div>
       <div class="contact-social">
@@ -350,7 +363,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   var form = document.getElementById('quote-form');
   if (!form) return;
   var note = document.getElementById('form-note');
-  var WA_NUMBER = '923215383544';
+  // Two sales lines share the WhatsApp load — see waRouting() in js/main.v2.js.
+  // Read per call so the form hands off to this visitor's assigned line.
+  function waNumber() { return (window.IzharWA && window.IzharWA.number()) || '923215383544'; }
 
   function val(name){
     var el = form.elements[name];
@@ -466,7 +481,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       return;
     }
 
-    var url = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(msg);
+    var url = 'https://wa.me/' + waNumber() + '?text=' + encodeURIComponent(msg);
     var win = window.open(url, '_blank', 'noopener');
     if (!win) { window.location.href = url; }
     setNote('WhatsApp opened in a new tab — tap Send to deliver your specs. Engineers reply within 24 hours.');

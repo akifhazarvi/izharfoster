@@ -84,7 +84,8 @@ const Izhar = (() => {
     return url.toString();
   }
   function whatsappUrl(message) {
-    const phone = '923215383544';
+    // Two sales lines share the WhatsApp load — see waRouting() in js/main.v2.js.
+    const phone = (window.IzharWA && window.IzharWA.number()) || '923215383544';
     const tagged = `${message}\n\n— Sent via izharfoster.com (${location.href})`;
     return `https://wa.me/${phone}?text=${encodeURIComponent(tagged)}`;
   }

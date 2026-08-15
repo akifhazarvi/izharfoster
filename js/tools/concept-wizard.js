@@ -4,7 +4,8 @@
    GA4 events: wizard_start, wizard_step, wizard_submit, wizard_abandon. */
 (function(){
   'use strict';
-  var WA = '923215383544';
+  // Two sales lines share the WhatsApp load — see waRouting() in js/main.v2.js.
+  function waNumber() { return (window.IzharWA && window.IzharWA.number()) || '923215383544'; }
   var STORAGE_KEY = 'izhar_wizard_v1';
   var TOTAL_STEPS = 5;
   var state = { step: 1, answers: {} };
@@ -216,7 +217,7 @@
     if (!validateStep5()) return;
     captureInputs();
     var msg = buildMessage();
-    var url = 'https://wa.me/' + WA + '?text=' + encodeURIComponent(msg);
+    var url = 'https://wa.me/' + waNumber() + '?text=' + encodeURIComponent(msg);
     track('wizard_submit', {
       sector: state.answers.sector,
       capacity_tier: state.answers.capacity_tier,
