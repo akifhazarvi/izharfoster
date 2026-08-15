@@ -6925,3 +6925,33 @@ body:has(#wizard) .page-hero h1 {
   border: 0;
 }
 body:has(#wizard) .section { padding-top: 18px !important; }
+
+/* ── Direct-answer block ──────────────────────────────────────────────────
+   A self-contained passage stating the answer in full, placed above the
+   article body. Serves two readers at once: a human deciding whether the
+   page is worth their time, and an AI engine looking for a quotable span it
+   can lift without surrounding context. Visually set apart so it reads as a
+   summary rather than the opening of the argument. */
+.answer-block {
+  margin: 24px 0 28px;
+  padding: 20px 24px;
+  background: var(--paper-2);
+  border-left: 3px solid var(--t-warm);
+  border-radius: 0 12px 12px 0;
+}
+.answer-block .answer-lead {
+  font-size: 1.02rem;
+  line-height: 1.6;
+  margin: 0 0 10px;
+  color: var(--ink);
+}
+.answer-block .answer-note {
+  font-size: .88rem;
+  line-height: 1.55;
+  margin: 0;
+  color: var(--ink-2);
+}
+@media (max-width: 720px) {
+  .answer-block { padding: 16px 18px; margin: 18px 0 22px; }
+  .answer-block .answer-lead { font-size: .96rem; }
+}

@@ -8,6 +8,27 @@ Work top-to-bottom. Mark done with `[x]`. Each PR title must reference the GROWT
 
 ---
 
+## 2026-08-15 — GSC/GA4 review, and the CTR + AI-citability fixes it pointed to
+
+**Ran the numbers rather than assuming.** GSC 28d (Jul 16–Aug 12): **650 clicks / 13,126 impressions / CTR 4.95% / pos 7.10**, against 607 / 14,644 / 4.15% / 7.18 prior — **+7.1% clicks on 10.4% fewer impressions**. The CTR thesis in GROWTH-PLAN §0 is working. Mobile ranks pos 5.28; **desktop pos 9.80** — the weaker half by a wide margin.
+
+**Correction to the 2026-08-10 entry.** That entry concluded paid traffic was junk. It is not, at least not now. Cross-network runs **74.2% engaged, 110s average, 2.14 pages/session**, converts to WhatsApp at **9.8% vs organic 6.0%**, and is **94.9% Pakistan**. `whatsapp_click` went from 1–6/day in late July to **296 / 277 / 300 on Aug 12–14**. The client's "more leads on WhatsApp" is corroborated by the data. Do not cut the campaign. The Singapore bot slice is now 108 sessions at 20s — 0.8%, noise.
+
+- [x] **Rewrote 6 titles and 4 descriptions** on the pages GSC showed ranking well and converting badly. Four titles were over 60 chars and being truncated; the cost page carried **no number** despite ranking 2nd–3rd for cost queries. All now ≤58 chars, query front-loaded, number included where intent is commercial.
+- [x] **Direct-answer block on the cost guide** — it ranked pos 2.3–3.0 for *cold storage cost in pakistan* / *cold storage investment cost in pakistan* and converted at **2.1–2.6%**, because the article opened on *"it depends on six things"* with the PKR figures 2,000 words down. Now a self-contained, quotable passage stating PKR 18,000–28,000/m³ chiller, 25,000–38,000 freezer, 35,000–55,000 blast, above the fold at 798px desktop / 637px mobile. Matches the FAQ schema that already held those numbers. **This is the AI-first play**: an engine can lift the passage without surrounding context.
+- [x] `llms.txt` last-verified refreshed to 2026-08-15.
+
+**The opportunity list, in order** (from GSC, not opinion):
+1. **Panel pricing is the organic engine** — `/services/pir-sandwich-panels` alone is **243 of 650 clicks (37%)**; with the cost guide it is **55% of all organic clicks**. Every click gainer this period was a panel-price or city variant (karachi 0→5, lahore 0→3, 4x8 8→12). **City-level panel-price pages are the clearest supported gap** — those cities already rank without dedicated pages.
+2. **Five rankings earning zero clicks**: *cold storage* (157 imp, pos 9.4), *sandwich panel* (183 imp, pos 5.3, 3 clicks), *cold storage for sale in pakistan* (126 imp, pos 7.3), *cold storage near me* (65 imp, pos 16.4), *blast freezer* (44 imp, pos 6.8). Plus `/about` 596 imp → 3 clicks and `/contact` 287 imp → **0**.
+3. **Brand slipped**: *izhar foster* 33 → 24 clicks at position 1.0 — rank unchanged, so something changed in SERP presentation. Worth a look.
+
+**Left alone deliberately:** the homepage title (CLAUDE.md marks the homepage approved — do not regress), and every `/services/` URL. Those 17 pages carry the rankings this whole entry describes.
+
+**Open:** the GA4 `/solutions` key-event anomaly — 6 sessions reporting 249 key events. Nothing should be built on key-event counts until that is explained.
+
+---
+
 ## 2026-08-15 — Client feedback round: Products wording, second call line, findability
 
 Client review of the morning's deploy. Five changes plus one reverted mistake.
