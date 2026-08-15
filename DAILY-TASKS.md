@@ -8,6 +8,28 @@ Work top-to-bottom. Mark done with `[x]`. Each PR title must reference the GROWT
 
 ---
 
+## 2026-08-15 — Cold-store first: the product page was invisible for its own category
+
+**Direction set by the client: "we want to be a CA store and cold store first company."** Sized both against 90 days of GSC before acting.
+
+**Cold store — supported by the data.** Real demand, and we already own the money end: *cold storage investment cost in pakistan* pos **2.3** (11.4% CTR), *cold storage price in pakistan* pos **2.0** (22.4%). The gap is the commercial head terms — *cold store manufacturers in pakistan* (137 imp, **pos 11**), *cold store in pakistan* (102 imp, pos 4.9), *cold store* (146 imp, pos 5.7), *cold storage near me* (180 imp, **pos 21.6, zero clicks**), *cold storage business in pakistan* (247 imp, pos 26 on the homepage).
+
+**CA store — cannot carry traffic, and saying so early avoids a wasted year.** Ninety days: *controlled atmosphere storage* **3 impressions**, *controlled atmosphere cold storage* 1, *ca cold storage* 2. `/services/ca-stores` 243 imp / 4 clicks / pos 11.1. **~560 impressions in three months, about six a day.** CA stays as a *credibility* asset — the only company in Pakistan capable of CA, HAC Agri 3,000-ton — that closes cold-store deals. **Judge it on deals, never on traffic.**
+
+**The finding that actually mattered.** `/services/cold-stores` — the dedicated product page — **did not appear in the top 12 pages for cold-store queries at all**, while the homepage absorbed 1,148 impressions of them. Where the product page did rank it sat at **position 72 (*cold storage near me*), 86 (*business in pakistan*), 86 (*in pakistan*), 96 (*in karachi*)**. Cause: the title targeted "Cold Store Manufacturers in Pakistan" but the **H1 carried no keyword at all** ("Cold stores engineered around your product — not a catalogue"), and the phrase "cold storage in Pakistan" appeared **zero times** on the page. Title said manufacturer, page said nothing, so Google picked the homepage.
+
+- [x] **H1 rewritten** to "Cold store manufacturers in Pakistan — engineered around your product, not a catalogue." Voice kept, phrase landed.
+- [x] **Entity/answer block added** — states plainly what the company is, the temperature and capacity range, the plant, the cities and the client sectors. Self-contained and quotable, same AI-first pattern as the cost guide.
+- [x] **`/cold-storage-near-me` internal links 3 → 66.** It had almost no link equity and ranked nowhere for its own term, while ten other pages fought over *cold storage near me*. Now in the footer product list site-wide.
+
+**Cannibalisation, measured, for whoever picks this up next:** *cold storage near me* is served by **10 pages** (best: /cold-storage-lahore at pos 11); *cold storage business in pakistan* by **17 pages**. The cost guide's six fragment URLs (#panels, #per-m3, #hidden, #overview, #operating, #refrigeration) hold **~1,000 impressions at zero clicks** between them. Assigning one page per query cluster is the next structural job.
+
+**Panels stay the acquisition engine.** 55% of organic clicks. Someone pricing sandwich panels in Pakistan is very often building a cold store — the job is to *route* that traffic into the cold-store funnel, not cut it.
+
+**Not touched:** the homepage (CLAUDE.md marks it approved) and all `/services/` URLs. The legacy `/uncategorized/ca-stores-...` URL GSC still reports was checked and already 301s correctly to the current post — no action needed.
+
+---
+
 ## 2026-08-15 — GSC/GA4 review, and the CTR + AI-citability fixes it pointed to
 
 **Ran the numbers rather than assuming.** GSC 28d (Jul 16–Aug 12): **650 clicks / 13,126 impressions / CTR 4.95% / pos 7.10**, against 607 / 14,644 / 4.15% / 7.18 prior — **+7.1% clicks on 10.4% fewer impressions**. The CTR thesis in GROWTH-PLAN §0 is working. Mobile ranks pos 5.28; **desktop pos 9.80** — the weaker half by a wide margin.
