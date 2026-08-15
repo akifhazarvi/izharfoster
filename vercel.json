@@ -657,16 +657,6 @@
       "source": "/steel-racks",
       "destination": "/services/cold-stores",
       "permanent": true
-    },
-    {
-      "source": "/solutions",
-      "destination": "/products",
-      "permanent": true
-    },
-    {
-      "source": "/solutions/:rest*",
-      "destination": "/products",
-      "permanent": true
     }
   ]
 }
