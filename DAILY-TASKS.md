@@ -8,6 +8,29 @@ Work top-to-bottom. Mark done with `[x]`. Each PR title must reference the GROWT
 
 ---
 
+## 2026-08-15 — Client feedback round: Products wording, second call line, findability
+
+Client review of the morning's deploy. Five changes plus one reverted mistake.
+
+- [x] **Refrigerated Vehicles was in no footer at all** — which is why the client's "could not find it as a new client" was correct, and why building the page out that morning changed nothing for a browsing visitor. Now in the footer product list on 66 pages, a card in the homepage product grid at **position 3** (first row, after Cold Stores and Pharmaceutical), and a card on the listing page. Commit `79f86a5`.
+- [x] **"Solutions" renamed to "Products"** in the nav, footer heading and breadcrumbs across 76 pages. The listing page `<title>` deliberately keeps *"Cold Storage Solutions Pakistan"* — that string is keyword targeting, not a nav label.
+- [x] **Reverted: the URL move that came with it.** `79f86a5` also moved `/solutions` → `/products` with 301s, and a `/services/` → `/products/` migration was staged behind it. The instruction was "don't change url — just in the UI". Both undone in `275c14a`; the `/services/` one never reached a commit. **Net: the wording changed, every URL is what it was.** `/products` now 404s and `/solutions` serves 200.
+- [x] **Second call line** (`+92 300 4842467`) beside the Lahore landline — footer on 78 pages, a `Phone · Sales` row on contact, and the mobile nav drawer. Desktop header only from **1600px**: measured, a second `.nav-phone` overflows the nav by 255px at 1280 and 100px at 1440, the two commonest desktop widths. The drawer is the one that matters — `.nav-phone` is hidden below 1100px, i.e. for 97% of paid traffic.
+- [x] **Contact form is a single `Send` button.** The competing "Send by email instead" button was removed on request. The email route survives as a plain mailto in the note so desktop visitors without WhatsApp are not stranded, and `handoff('email_form')` stays wired for a one-line restore. The tracking suite's three email-button checks were **rewritten to assert the new state** rather than left passing against markup that is gone.
+- [x] **about.html** — Izhar Foster moved to position **02**, directly after Izhar Engineering; group list renumbered.
+- [x] **Favicon recoloured to the corporate blue.** It was a navy `#0A1F3D` square with a **green** `#3FA85F` compressor — off-brand and, at 16px, low contrast. Now the blue square with a white mark. The blue is `#084595`, **sampled from the wordmark embedded in `images/logo.svg`** rather than taken from notes: the value recorded in memory (`#2160A8`) was stale and would have been visibly wrong. Regenerated `favicon-mark.svg`, `favicon-16/32.png` and `favicon.ico` via `_kr_scrape/render-favicon.mjs` (headless Chromium → PIL, re-runnable after any SVG edit).
+- [x] **New regression script:** `_kr_scrape/verify-call-lines.mjs` — header gating by width, footer presence, drawer contents, contact rows, tap targets.
+
+**Not touched, deliberately:** `apple-touch-icon.png` and `android-chrome-192/512.png` use a different design — wordmark on a light ground — and contain no corporate blue either. Recolouring them is a design decision, not a colour swap, so it was left for the client. `site.webmanifest` `theme_color` is still `#0A1F3D`, which sets the mobile browser chrome, not the icon.
+
+**Lesson.** Two of these — the missing footer link and the duplicated FAQ found earlier — were invisible from the code and obvious to anyone actually browsing the site. Building a page is not the same as making it reachable; check the nav and footer as part of shipping a page, not after a client says they cannot find it.
+
+**Open, awaiting the client:**
+- **"Industry"** — a one-word message with no context. `industries.html` exists but is not in the nav; could mean add it, rename it singular, or something else. Not guessed at.
+- **"It should not be solution or services"** — the nav now says Products, but the pages still live at `/services/<slug>`. Removing the word from the address bar is a 17-page URL migration on the top-ranking pages. Worth doing deliberately with 301s if the client wants it; explicitly **not** done today, since the instruction after the first attempt was to leave URLs alone.
+
+---
+
 ## 2026-08-15 — Refrigerated Vehicles built out from the brochure; FAB fixed
 
 **The orange halo was two buttons, not one button.** `main.v2.js` builds an ember `.lc-trigger` at `bottom:20px/right:20px`; `chat-widget.js` builds the green WhatsApp `.ifc-fab` at 22px. The green one won on z-index, but `.lc-trigger`'s rim and its `.lc-trigger-pulse` halo — orange, animating to scale 1.6 — leaked out around it. The widget already stripped the legacy `.fab-wa` pill; it now removes `.lc-root` too. The wizard and ROI pages return early from the widget, so they keep the live-chat FAB as their only one.
