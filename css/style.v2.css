@@ -6955,3 +6955,41 @@ body:has(#wizard) .section { padding-top: 18px !important; }
   .answer-block { padding: 16px 18px; margin: 18px 0 22px; }
   .answer-block .answer-lead { font-size: .96rem; }
 }
+
+/* ── In-content routing block ─────────────────────────────────────────────
+   Catches intent mid-article rather than at the footer. Used on the PIR
+   panels page, which carries 37% of organic clicks on panel-price queries
+   and previously offered no in-content path to the cold-store funnel.
+   Reads as an aside, not an ad: bordered, brand ground, no shouting. */
+.route-cta {
+  margin: 32px 0;
+  padding: 24px 26px;
+  background: linear-gradient(135deg, var(--paper-2) 0%, rgba(10, 31, 61, .045) 100%);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+.route-cta h3 {
+  margin: 0 0 12px;
+  font-size: 1.18rem;
+  letter-spacing: -.01em;
+  color: var(--ink);
+}
+.route-cta p {
+  margin: 0 0 12px;
+  font-size: .95rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+.route-cta p:last-of-type { margin-bottom: 18px; }
+.route-cta-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+@media (max-width: 720px) {
+  .route-cta { padding: 18px 18px; margin: 24px 0; }
+  .route-cta h3 { font-size: 1.06rem; }
+  /* Full-width taps — the two buttons must not end up 40px wide side by side. */
+  .route-cta-links { flex-direction: column; }
+  .route-cta-links .btn { width: 100%; justify-content: center; }
+}
