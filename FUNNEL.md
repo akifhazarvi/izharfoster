@@ -249,7 +249,7 @@ Tracked in `DAILY-TASKS.md`. Not built this PR because they're not the bottlenec
 
 ## 4.5 Tracking — the full event catalogue
 
-Source of truth: [EVENTS.md](EVENTS.md). 37 unique events covering the entire lead funnel, from `session_start` through every CTA / chat step / wizard step / ROI input / lead submission. Every event fires to **GA4** + **Vercel Analytics** + `dataLayer` via the unified `window.IzharTrack.track()` in [js/track.js](js/track.js).
+Source of truth: [EVENTS.md](EVENTS.md). 37 unique events covering the entire lead funnel, from `session_start` through every CTA / chat step / wizard step / ROI input / lead submission. Every event fires to **GA4** + `dataLayer` (GTM) via the unified `window.IzharTrack.track()` in [js/track.js](js/track.js). Vercel Analytics was removed 2026-08-16.
 
 The chat widget, wizard, and ROI calculator all route through `IzharTrack` so events inherit session attribution (AI-search detection, social in-app browsers, legacy-redirect tagging, UTM honoring). To debug live, append `?debug_track=1` to any URL — every event logs to console with the `[track]` prefix.
 

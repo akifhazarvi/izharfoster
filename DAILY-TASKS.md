@@ -1,10 +1,47 @@
 # Izhar Foster — Daily Task List
 
-**Last updated:** 2026-08-15
+**Last updated:** 2026-08-16
 **Score baseline:** 78/100 (ACTION-PLAN.md, 2026-05-02)
 **Canonical roadmap:** [GROWTH-PLAN.md](GROWTH-PLAN.md) | Resolved conflicts: [DECISIONS.md](DECISIONS.md)
 
 Work top-to-bottom. Mark done with `[x]`. Each PR title must reference the GROWTH-PLAN section it implements.
+
+---
+
+## 2026-08-16 — Vercel Analytics + Speed Insights removed entirely
+
+Client instruction: remove all Vercel events and disable Vercel Analytics. Both products stripped (Speed Insights confirmed in scope). **GA4 + GTM are untouched and remain the only analytics funnel** — all 46 regression checks pass.
+
+- [x] **78 HTML pages** — `/_vercel/insights/script.js` and `/_vercel/speed-insights/script.js` plus their comment lines removed (308 lines). Done over `git ls-files` so the gitignored `_scrape/` dumps were never touched.
+- [x] **`js/track.js`** — deleted the `window.va` / `window.si` queue stubs and the `va('event', …)` leg inside `track()`. The funnel is now dataLayer (GTM-WBNZLVC7) + `gtag` (GA4 G-PLY0DZWNEM) only.
+- [x] **`vercel.json` CSP** — dropped `va.vercel-scripts.com` from `script-src` and both `vitals.vercel-insights.com` / `vitals.vercel-analytics.com` from `connect-src`.
+- [x] **Docs corrected** — `EVENTS.md` (destinations, the numbered `track()` steps, the DevTools recipe) and `FUNNEL.md` no longer claim events reach Vercel. `CLAUDE.md` check count corrected 34 → 46.
+
+**The regression suite needed a real fix, not a green-washing.** It captured outbound payloads by stubbing `window.va` and reading `window.__sent`. With `va` gone that array is always empty, which would have made the **critical PII negative check pass vacuously** while `form_submit still reaches GA4` failed. Rewired to read `window.dataLayer`, then scoped to entries carrying `page_type` — the stamp `track()` puts on everything it emits. That deliberately excludes the Enhanced-Conversions `generate_lead` push from `contact.html`, which *does* carry raw `user_data` by design for GTM to SHA-256 in-browser. Asserting "no PII anywhere in dataLayer" would fail on that by design; asserting it on the `track()` funnel is what the check always meant. `form_submit still reaches GA4` runs off the same string, so the negative can no longer pass on an empty array.
+
+**Verified:** zero `_vercel` network requests and `window.va === undefined` on home, cold-stores and contact; the two `/_vercel/*` 404s that used to appear in local console are gone; 46/46 checks pass, exit 0.
+
+**⚠ Still to do in the Vercel dashboard — the repo change alone is not enough.** Web Analytics and Speed Insights are enabled as project integrations, and an enabled integration re-injects its script at build time. Turn both off under **Project → Analytics** and **Project → Speed Insights**, or the next deploy puts them back.
+
+---
+
+## 2026-08-16 — "Industrial & Commercial Cold Stores" put first (brochure pp.28–36)
+
+**Client feedback:** *"we are in the manufacturing of industrial/commercial/large cold stores. Those are not mentioned in website. It should be mentioned in the start."* He was right, and the gap was total — the word **"commercial" appeared zero times on the homepage**, "industrial" twice. The site described cold stores by *temperature* (chiller, freezer, blast) and never by *scale or refrigeration architecture*, which is how an industrial buyer actually specifies. Source: brochure pp.28–36, extracted as flattened page JPEGs (pypdf; the pages carry no text layer).
+
+**The taxonomy is p28's own, verbatim:** industrial cold warehouse on an **ammonia system** · commercial cold store on **rack technology** · medium-size cold store on a **CDU system**. Used as the spine everywhere below.
+
+- [x] **Homepage hero rewritten** (GROWTH-PLAN §13) — H1 `Engineered cold. Delivered on time.` → **`Industrial & commercial cold stores. Delivered on time.`** The old H1 carried zero keyword, which is the "impressions-rich, click-poor" diagnosis in one line. Subline now leads with `−40°C blast freezers to +25°C ambient · ammonia, glycol and CDU systems`. This is the hero rewrite GROWTH-PLAN §190 already specified. Value prop kept; approved design otherwise untouched.
+- [x] **Homepage `<title>`** → `Industrial & Commercial Cold Storage · PIR Panels | Izhar Foster`. **`Cold Storage` stays contiguous** so the pos-8.9 / 3,556-impression head term is prefixed, not broken. `og:*` and the `LocalBusiness` JSON-LD `description` restated to match — H1, snippet and entity now say one thing.
+- [x] **`services/cold-stores.html` — pp.29–36 built out.** New H2 *Industrial and commercial cold stores — three system architectures* with a citable answer-block (load, not floor area, sets the class: <200 kW CDU · 200–500 kW rack · >500 kW ammonia at Pakistan's 46–50 °C ambient), then H3s for **ammonia/glycol plant** (screw or piston, NH₃/R404A/R507/CO₂, glycol + alcohol intermediates, PLC supervision — p29), **Heatcraft rack systems** (−35 to 0 °C, all eight p31 feature bullets, 3–8 compressors, 3 suction groups, 320 hp), **CDU packs**, and **humidity / CO₂ / ethylene control** (p35 — Izhar introduced CO₂ evacuation, ethylene absorbers and hi-tech humidifiers to Pakistan).
+- [x] **Four named projects linked** from the new section — Sharaf 50 ft (p33), Emirates Logistics (p34), Gourmet Ice Cream (p30), Oye Hoye (p36). All four case-study pages already existed and were previously unlinked from the category page.
+- [x] **Page title → `Industrial & Commercial Cold Store Manufacturers in Pakistan`**, keeping the `Cold Store Manufacturers in Pakistan` exact phrase intact (GROWTH-PLAN §6 row 15 wanted "manufacturer" targeted — still is). Meta trimmed 220 → 156 chars so it stops truncating, and `Service` schema description rewritten around the three architectures.
+- [x] **FAQ #09 added** — *"What is the difference between industrial and commercial cold storage?"* — visible copy and `FAQPage` schema together (8 → 9 questions). Answers the query shape directly, which is what AI Overviews lift.
+- [x] **`llms.txt`** — the Cold Stores line described room temperatures only; now carries all three architectures with their kW bands, plus the atmosphere-control capability. The overview paragraph says "industrial and commercial cold stores".
+
+**Verified:** all JSON-LD parses on both pages (3 blocks home, 4 blocks cold-stores); no horizontal overflow at 1440/768/375; italic-gradient `<em>` tail not clipped on the longer H1; all six new internal links resolve to real files. Homepage "commercial" 0 → 10, "industrial" 2 → 11.
+
+**Claim published on the client's confirmation:** p28's *"the only company in Pakistan capable of meeting international standards and operating globally."* Flagged as an unverifiable superlative on a head-term page; client confirmed it is validated, so it ships.
 
 ---
 

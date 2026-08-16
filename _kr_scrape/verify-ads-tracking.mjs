@@ -19,14 +19,14 @@ const check = (name, cond, detail = '') =>
 const browser = await chromium.launch();
 const ctx = await browser.newContext();
 
-// Context-scoped so EVERY page gets it. Records what track() sends outward on
-// the Vercel path, and captures window.open targets without opening tabs.
+// Context-scoped so EVERY page gets it. Captures window.open targets without
+// opening tabs. NOTE: this used to stub window.va and read what track() sent
+// on the Vercel path. Vercel Web Analytics was removed 2026-08-16, so the
+// outbound funnel is dataLayer (GTM) + gtag (GA4) only — the PII negative
+// below now reads window.dataLayer directly, which is what actually leaves
+// the page. Do not reintroduce a window.va stub to "fix" a failing check.
 await ctx.addInitScript(() => {
-  window.__sent = [];
   window.__opened = [];
-  window.va = function () {
-    window.__sent.push([arguments[0], JSON.parse(JSON.stringify(arguments[1] || {}))]);
-  };
   window.open = (url) => { window.__opened.push(String(url)); return { closed: false }; };
 });
 
@@ -203,9 +203,16 @@ check('handoff(email_form) still wired for restore',
 // ---------------------------------------------------------------------------
 // 7. The critical negative: no PII on the analytics funnel
 // ---------------------------------------------------------------------------
-const sent = JSON.stringify(await p2.evaluate(() => window.__sent));
+// track() stamps page_type on every event it emits. The Enhanced-Conversions
+// push from contact.html deliberately does NOT go through track() and does
+// carry raw user_data — GTM SHA-256 hashes it in-browser before Google sees
+// it. So scope this negative to the track() funnel: asserting "no PII
+// anywhere in dataLayer" would fail on the EC payload by design.
+const dl = await p2.evaluate(() =>
+  (window.dataLayer || []).map(e => { try { return JSON.parse(JSON.stringify(e)); } catch (err) { return null; } }));
+const sent = JSON.stringify(dl.filter(e => e && typeof e === 'object' && e.page_type));
 const leak = sent.match(/Asad|FalconFoods|9876543|Mehmood/i);
-check('NO PII in the Vercel/GA4 track() payloads', leak === null, `leaked "${leak}"`);
+check('NO PII in the GA4/GTM track() payloads', leak === null, `leaked "${leak}"`);
 check('form_submit still reaches GA4 for funnel reporting', sent.includes('form_submit'));
 
 // ---------------------------------------------------------------------------

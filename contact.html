@@ -28,10 +28,6 @@
     gtag('config', 'AW-18369062794');
   </script>
 
-  <!-- Vercel Web Analytics -->
-  <script defer src="/_vercel/insights/script.js"></script>
-  <!-- Vercel Speed Insights -->
-  <script defer src="/_vercel/speed-insights/script.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="canonical" href="https://izharfoster.com/contact">
 <title>Contact Izhar Foster — Cold Storage Quotes, Pakistan</title>
@@ -415,8 +411,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     // Enhanced Conversions for leads. GTM reads user_data off this event and
     // SHA-256 hashes it in the browser, so Google never receives raw contact
     // details. Deliberately on its own dataLayer event rather than the track()
-    // funnel: track() mirrors to Vercel Analytics and GA4, and neither should
-    // ever see PII. gtag.js ignores plain-object dataLayer pushes, so this
+    // funnel: track() mirrors to GTM and GA4, and neither should ever see
+    // raw PII. gtag.js ignores plain-object dataLayer pushes, so this
     // drives the Google Ads conversion only — no double-count against the
     // form_submit event that track.js already sends to GA4.
     var clickRef = (window.IzharTrack && window.IzharTrack.clickRef && window.IzharTrack.clickRef()) || '';

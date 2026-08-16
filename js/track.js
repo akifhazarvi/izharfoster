@@ -1,26 +1,15 @@
-// Izhar Foster — custom lead-funnel events on top of Vercel Web Analytics.
-// Vercel auto-injects its own pageview script via the dashboard integration;
-// this file only adds custom events: lead intent (WhatsApp / phone / email),
-// form submission, and the tool funnel. Mirrors every event to dataLayer
-// for GA4 (G-PLY0DZWNEM) too. Pure-vanilla, no build step.
+// Izhar Foster — custom lead-funnel events for GA4 / GTM.
+// Adds named events for lead intent (WhatsApp / phone / email), form
+// submission, and the tool funnel. Every event goes to dataLayer (GTM
+// GTM-WBNZLVC7) and to gtag directly for GA4 (G-PLY0DZWNEM).
+// Vercel Web Analytics + Speed Insights were removed 2026-08-16 — do not
+// reintroduce window.va here. Pure-vanilla, no build step.
 (function () {
   'use strict';
 
-  // Vercel Analytics + Speed Insights are auto-injected by the Vercel build
-  // (Web Analytics integration is enabled in the dashboard). We only need the
-  // window.va queue stub so custom events queued before the CDN script loads
-  // are flushed once it arrives. Do NOT inject the CDN scripts here — that
-  // would double-count pageviews.
-  if (!window.va) {
-    window.va = function () { (window.vaq = window.vaq || []).push(arguments); };
-  }
-  if (!window.si) {
-    window.si = function () { (window.siq = window.siq || []).push(arguments); };
-  }
-
   // ------------------------------------------------------------- track() API
-  // Single funnel of named events. Sends to Vercel Analytics (window.va) AND
-  // to dataLayer (gtag/GTM-compatible) + a debug log when ?debug_track=1.
+  // Single funnel of named events. Sends to dataLayer (gtag/GTM-compatible)
+  // and to GA4 via gtag, + a debug log when ?debug_track=1.
   var DEBUG = /[?&]debug_track=1/.test(location.search);
   window.dataLayer = window.dataLayer || [];
 
@@ -160,9 +149,6 @@
       page_type: pageType(),
       ts: Date.now()
     }, props || {});
-
-    // Vercel Analytics custom event.
-    try { window.va('event', { name: event, data: payload }); } catch (e) { /* noop */ }
 
     // GTM dataLayer push (active if a tag manager is ever added).
     try { window.dataLayer.push(Object.assign({ event: event }, payload)); } catch (e) { /* noop */ }

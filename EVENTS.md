@@ -2,17 +2,16 @@
 
 **Last updated:** 2026-05-14
 **Source of truth:** this file. If an event is fired but not documented here, it's a bug.
-**Destinations:** every event fires to **GA4** (`G-PLY0DZWNEM`) + **Vercel Analytics** + `dataLayer` (GTM-ready) — see `js/track.js` for the unified `track()` function.
+**Destinations:** every event fires to **GA4** (`G-PLY0DZWNEM`) + `dataLayer` (**GTM-WBNZLVC7**) — see `js/track.js` for the unified `track()` function. Vercel Web Analytics and Speed Insights were removed on 2026-08-16; `window.va` is gone and must not be reintroduced.
 
 ## How the tracking works
 
 Every event flows through `window.IzharTrack.track(eventName, props)` in [js/track.js](js/track.js). It:
 
 1. Enriches the payload with `page`, `page_type`, `ts`, plus session attribution (`izhar_source`, `izhar_medium`, `izhar_campaign`).
-2. Pushes to **Vercel Analytics** via `window.va('event', ...)`.
-3. Pushes to **`dataLayer`** for any future GTM integration.
-4. Fires to **GA4** via `gtag('event', ...)`.
-5. Logs to console if URL has `?debug_track=1` (smoke-test mode).
+2. Pushes to **`dataLayer`** for GTM (`GTM-WBNZLVC7`).
+3. Fires to **GA4** via `gtag('event', ...)`.
+4. Logs to console if URL has `?debug_track=1` (smoke-test mode).
 
 **Tool-specific JS** (`chat-widget.js`, `concept-wizard.js`, `roi-payback.js`) routes through `IzharTrack.track()` so they inherit attribution. If `IzharTrack` isn't loaded yet (race condition), they fall back to raw `gtag('event')`.
 
@@ -156,13 +155,13 @@ Pre-existing tool with bespoke events on top of the generic `tool_*` set above:
 | `form_submit` | Successful submit (validation passed) | `form: 'quote'`, `industry`, `product`, `location` | track.js |
 | `form_submit_invalid` | Submit attempted but validation failed | `form: 'quote'` | track.js |
 | `lead_submitted` | Mirrors `form_submit` — unified lead signal | `channel: 'whatsapp_form'`, plus form data | track.js |
-| `generate_lead` | Successful submit — **dataLayer only, never sent to GA4 or Vercel** | `lead_product`, `lead_industry`, `lead_city`, `lead_capacity`, `click_ref`, `user_data{email_address, phone_number, address{first_name,last_name}}` | contact.html |
+| `generate_lead` | Successful submit — **dataLayer only, never sent to GA4** | `lead_product`, `lead_industry`, `lead_city`, `lead_capacity`, `click_ref`, `user_data{email_address, phone_number, address{first_name,last_name}}` | contact.html |
 
 **`generate_lead` is the Google Ads conversion event and is deliberately not part
 of the `track()` funnel.** It is pushed straight to `dataLayer` because it
 carries the visitor's email, E.164 phone and name for GTM to SHA-256 hash
-client-side (Enhanced Conversions for leads). `track()` mirrors to Vercel
-Analytics and GA4, and **neither may ever receive PII** — so the two paths stay
+client-side (Enhanced Conversions for leads). `track()` mirrors to GTM and
+GA4, and **neither may ever receive raw PII** — so the two paths stay
 separate. `gtag.js` ignores plain-object dataLayer pushes, so GA4 does not
 double-count it against `form_submit`. Wiring: [GTM-SETUP.md](GTM-SETUP.md) §A6.
 
@@ -177,7 +176,6 @@ that query parameter contains the visitor's whole contact record.
 
 **Spot-check in DevTools:**
 - Network tab → filter `collect` → you'll see GA4 measurement protocol calls.
-- Network tab → filter `vercel/analytics` → Vercel Analytics calls.
 - Console → `window.IzharTrack.track('test', { foo: 'bar' })` fires a manual event.
 
 **Common bugs to watch for:**
