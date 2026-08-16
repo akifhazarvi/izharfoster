@@ -8,6 +8,32 @@ Work top-to-bottom. Mark done with `[x]`. Each PR title must reference the GROWT
 
 ---
 
+## 2026-08-16 — "Industrial & Commercial Refrigeration": rename, rewrite, reorder, new CA page
+
+**Client (Faisal Mir), on the Cold Stores tile:** *"Please replace it with page 28 to 36 of brochure here with Heading 'Industrial & Commercial refrigeration'. We have 'Walk in Cooler' section to represent this. So remove this."* Then: rename everywhere, fix the product order, and *"complete rewrite of Cold Store according to brochure"* with a better thumbnail.
+
+- [x] **Renamed to "Industrial & Commercial Refrigeration"** — card label on home and `/solutions`, footer across 70 files (77 labels), plus the page's own `<title>`, `<h1>` and `Service` schema name.
+- [x] **Removed the duplicate he pointed at.** The card blurb ("Walk-in chillers, blast freezers, multi-zone ambient warehouses…") and the seven room-type H3s are gone, replaced by one pointer to the **Walk-in Cold Rooms** and **Blast Freezers** pages that already represent them.
+- [x] **Body completely rewritten from pp.28–36** — 1,058 words: ozone-friendly/FireSafe positioning (p28), ammonia-glycol plant with screw/piston, NH₃/R404A/R507/CO₂ and PLC supervision (p29), Heatcraft rack systems with all eight feature bullets and 320 hp (p31), CDU packs, turnkey applications (p32), humidity/CO₂/ethylene (p35), meat-poultry-seafood (p36), ice-bank for ice cream/dairy (p30), and five named projects.
+- [x] **Product order set exactly as instructed** (10 items) on the homepage grid, `/solutions`, the footer and the `ItemList` schema. "CA Stores" → **Controlled Atmospheric Stores**. All four "Solar assisted" references removed from Marine & Boat.
+- [x] **New page** `services/industrial-commercial-ca-stores.html` from brochure pp.58–64 — GAC 5000 analysis group, Swingtherm-BS with per-crop ethylene ppm, Intelligem IG for DCA/Swinglos, Fighter/Bravo/Swan nitrogen at 95–99%, HAC Agri 3,000-ton/20-room reference. In `sitemap.xml`, cross-linked from `/services/ca-stores`.
+- [x] **Imagery from the brochure.** The tile was a walk-in cooler door — the exact thing the page is no longer about. Now the Zanotti ammonia-glycol plant room (p29). Four page figures cropped from pp.29/31/32/34 into `images/refrigeration/` (704 KB). **Brochure pages are flattened 72-dpi JPEGs, so native detail caps at 637–740 px** — every asset is generated at 600 w plus its own native width and never upscaled, with `sizes` capped to match. Page hero uses the real high-res plant photo instead, since a 1320 px hero would have upscaled a brochure crop 2×.
+- [x] **`.prose-figs`** added as an alias on the existing `.reefer-figs` component rather than new CSS, so the figure pair is a tested layout.
+
+- [x] **Split into a hub and three system pages** — one 1,058-word page covering three different refrigeration architectures was the wrong shape. `/services/cold-stores` is now the hub carrying positioning, applications, projects and partners, with each architecture on its own page: **`/services/industrial-refrigeration-ammonia-glycol`** (p29), **`/services/commercial-refrigeration-rack-systems`** (p31) and **`/services/cdu-refrigeration-systems`** (p28). Hub links out with a load band for each (<200 kW CDU · 200–500 kW rack · >500 kW ammonia); every spoke links back and sideways. All three in `sitemap.xml`.
+- [x] **Title and hero rebuilt from the brochure** — title is now `Industrial & Commercial Refrigeration — FireSafe Cold Stores`, using p28's own phrase "FireSafe cold store"; hero is the p32 cold-store interior, cropped **below** the IZHAR watermark so the full 792 px native width survives (1.79:1 banner), with the container capped at 920 px so the upscale is 1.16× rather than 1.67×.
+- [x] **Caught three inheritance bugs in the cloned spokes.** They were generated off `ca-stores.html` and silently carried CA-store content: the visible FAQ block (*"How much shelf-life gain…"*, *"What gas levels do you target?"*), the matching `FAQPage` schema, an entire CA applications grid, and CA fields inside `Service` schema (`serviceType`, `audienceType`, and `additionalProperty` still listing O₂/CO₂ ranges and Fruit Control as the partner). All replaced with per-page equivalents — 4 real FAQs each in copy **and** schema. Left unfixed this would have published wrong FAQ rich results on three pages.
+
+**Known gap:** the three spokes run **291–335 words** each. Not duplicate and not doorway — each carries distinct brochure specifics, its own schema, image and FAQs — but light for pages expected to rank alone. Worth deepening with worked examples and per-crop application detail before treating them as ranking assets.
+
+**Mobile: products were two and a half screens down.** Measured on 390×844 the first product tile sat at **2,093 px (2.48 screens)** — hero 1,263 px, then 478 px of certification badges before a single product. Moved the cert strip below the grid, merged a heading-only section into the grid section, and cut the hero lead from 455 to 255 chars: now **1,442 px (1.71 screens)**. Also caught the heading claiming *"Six product lines"* above ten cards. The remaining 140 px top band is shared `.page-hero` padding across 17 pages — still the open item below, not changed off one page's feedback.
+
+**Verified:** 46/46 tracking checks pass · JSON-LD parses on every touched page · no horizontal overflow at 1440/768/390 · 11 footer links resolve at every directory depth · all card and figure images load, no 4xx · no JS errors.
+
+**⚠ SEO decision made against advice, recorded deliberately.** `/services/cold-stores` ranks **position 8.9 on 3,556 impressions** for the head term *"cold storage"*. Putting "Refrigeration" in its H1 and `<title>` removes that term from both, and risks overlap with `/services/refrigeration-systems`. Flagged twice; the client confirmed twice; implemented as instructed. The URL is unchanged, so it is fully reversible. **Watch this query in GSC over the next 4–6 weeks** — if it slides, the cheapest fix is restoring "Cold Store" to the `<title>` only, which is invisible on the site and where the ranking actually lives.
+
+---
+
 ## 2026-08-16 — Vercel Analytics + Speed Insights removed entirely
 
 Client instruction: remove all Vercel events and disable Vercel Analytics. Both products stripped (Speed Insights confirmed in scope). **GA4 + GTM are untouched and remain the only analytics funnel** — all 46 regression checks pass.

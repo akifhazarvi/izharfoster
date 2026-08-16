@@ -6855,19 +6855,24 @@ body.lc-open .lc-backdrop {
 
 /* Photo pairs. minmax(0, 1fr) — a bare 1fr lets a long caption widen the
    column past the grid and reintroduce horizontal scroll. */
-.reefer-figs {
+.reefer-figs,
+.prose-figs {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 18px;
   margin: 24px 0;
 }
 @media (min-width: 721px) {
-  .reefer-figs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .reefer-figs,
+  .prose-figs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-.reefer-figs figure { margin: 0; }
-.reefer-figs img { width: 100%; height: auto; border-radius: 12px; display: block; }
+.reefer-figs figure,
+.prose-figs figure { margin: 0; }
+.reefer-figs img,
+.prose-figs img { width: 100%; height: auto; border-radius: 12px; display: block; }
 .reefer-fig-cap,
-.reefer-figs figcaption {
+.reefer-figs figcaption,
+.prose-figs figcaption {
   font-size: .74rem;
   line-height: 1.45;
   color: var(--ink-2);
