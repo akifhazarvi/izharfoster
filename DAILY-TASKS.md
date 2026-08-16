@@ -8,6 +8,36 @@ Work top-to-bottom. Mark done with `[x]`. Each PR title must reference the GROWT
 
 ---
 
+## 2026-08-15 — Domain estate audit: five domains, one brand
+
+Client asked what to do with **izharfostercoldstore.com**. Audited it and found the estate is wider than two sites.
+
+| Domain | Status | What it is |
+|---|---|---|
+| **izharfoster.com** | Live (Vercel) | The real site — 79 pages, GSC-verified, ranking |
+| **izharfostercoldstore.com** | Live (WordPress/Hostinger) | 7 pages, agency-built, **empty homepage `<title>`** |
+| **fostercoldstoreandsandwichpanels.com** | **Dead** — DNS resolves nothing | Still in Google's index |
+| **fostercoolers.us** | Live | US-targeted, "Foster Refrigerators USA" branding |
+| **foostercooler.us** | Dead | Unverified property sitting in the GSC account |
+
+**The conflict is direct.** izharfostercoldstore.com's H1 is *"Pakistan's #1 Cold Store Manufacturer"* — the exact phrase `/services/cold-stores` was retargeted to win earlier today. Two of our own domains bidding for one slot, and the weaker one may be the one Google picks:
+
+- Homepage `<title>` **empty** — the strongest on-page signal, blank.
+- Titles bare elsewhere ("About Us", "Contact us"); `/products` titled "Projects".
+- 965-word homepage. WordPress defaults exposed: `/hello-world/`, `/category/uncategorized/`, `/author/redcreativeadsgmail-com/`.
+- **Brand facts contradict ours** — "50 years" vs our since-1959 (67 years); no mention of 1959, "largest" or sandwich panels.
+- Same `info@izharfoster.com`, **different phone** (+92 311 4385003). NAP conflict, which matters because GSC reports `/cold-storage-near-me` as *"URL is unknown to Google"*.
+
+- [x] **Wrote [MIGRATION-izharfostercoldstore.md](MIGRATION-izharfostercoldstore.md)** — page-by-page 301 map, ready-to-paste `.htaccess` for LiteSpeed, ordered runbook and test commands. **Every destination verified live (200)** before being written into a permanent redirect.
+
+**Two things whoever executes this must not skip:** verify the old domain in Search Console **before** redirecting (verification needs the live site, and Change of Address needs both properties), and **keep the domain renewed** — if it lapses the redirects die and the equity goes with them. Do not simply switch the site off; a hard delete discards the links a 301 would have passed on.
+
+**Not measured:** per-domain link equity. Ahrefs and Semrush are connected to the workspace but **not authorised**, so referring-domain counts could not be pulled. That number decides whether this is a tidy-up or a priority.
+
+**Flagged for legal, not SEO:** `fostercoolers.us` trades as "Foster Refrigerators USA". "Foster Refrigerator" is an established refrigeration brand internationally — worth confirming there is no trademark exposure before investing further in that name.
+
+---
+
 ## 2026-08-15 — Cold-store first: the product page was invisible for its own category
 
 **Direction set by the client: "we want to be a CA store and cold store first company."** Sized both against 90 days of GSC before acting.
