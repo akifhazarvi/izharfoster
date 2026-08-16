@@ -158,6 +158,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <h2>Where it sits</h2>
 <p>Rack systems suit roughly <strong>200 to 500&nbsp;kW</strong>. Above that, <a href="../services/industrial-refrigeration-ammonia-glycol">ammonia or ammonia-glycol</a> wins on lifetime cost; below it, a <a href="../services/cdu-refrigeration-systems">CDU pack</a> is more economical. All three are covered under <a href="../services/cold-stores">industrial &amp; commercial refrigeration</a>.</p>
 <div class="prose-figs"><figure><picture><source type="image/webp" srcset="../images/refrigeration/commercial-rack-system-600.webp 600w, ../images/refrigeration/commercial-rack-system-659.webp 659w" sizes="(max-width: 720px) 100vw, 520px"><source type="image/jpeg" srcset="../images/refrigeration/commercial-rack-system-600.jpg 600w, ../images/refrigeration/commercial-rack-system-659.jpg 659w" sizes="(max-width: 720px) 100vw, 520px"><img src="../images/refrigeration/commercial-rack-system-600.jpg" alt="Commercial refrigeration rack system by Heatcraft USA with microprocessor control panel" width="600" height="420" loading="lazy" decoding="async"></picture><figcaption>Rack system by Heatcraft, USA — parallel piped compressors under one microprocessor control.</figcaption></figure></div>
+
+<h2>Why staging is the whole argument</h2>
+<p>A cold store is sized for its worst hour and then spends almost none of its life there. Pull-down after a delivery, a hot afternoon with the dock doors working, a defrost cycle — those set the design load. The other 90% of the year the store is holding temperature against nothing more than transmission through the panels and a few door openings.</p>
+<p>A single large compressor meets that by cycling: running at full load, satisfying the thermostat, stopping, and starting again. Every start is an inrush, every stop loses the oil and refrigerant migration battle a little, and the average efficiency across a year is well below the figure on the datasheet. A rack meets it by <strong>staging</strong> — bringing 1 of 8 compressors on, then 2, then 3 — so the machine tracks the load instead of chopping at it. That is where the annual energy difference between a rack and a bank of condensing units actually comes from, and it is why the comparison should never be made at design load.</p>
+
+<h2>Choosing the condenser at Pakistani ambient</h2>
+<p>Racks pair with <strong>air-cooled, water-cooled or evaporative-cooled condensers</strong>, and the choice is a site decision more than a preference:</p>
+<ul>
+  <li><strong>Air-cooled</strong> — no water, lowest maintenance, but the most exposed to ambient. Capacity falls at roughly <strong>2.0% per Kelvin at medium temperature and 2.7% per Kelvin at low temperature</strong>, so a 46–50&nbsp;°C design day costs real capacity against a European rating.</li>
+  <li><strong>Evaporative</strong> — condenses far closer to wet-bulb than dry-bulb, which is a large advantage in a dry summer. Needs water treatment and a maintenance regime that will actually be followed.</li>
+  <li><strong>Water-cooled</strong> — best head pressure control where a cooling-tower or process-water loop already exists on site. Rarely worth building a water system for the cold store alone.</li>
+</ul>
+<p>Head pressure control matters as much as the selection. A rack that floats its head pressure down on a mild night recovers efficiency that a fixed-pressure system throws away for eight months of the year.</p>
+
+<h2>Mapping three suction groups</h2>
+<p>A rack controls <strong>up to three suction groups</strong>, and that is usually exactly what a commercial cold store needs: one group for chill rooms, one for frozen, and one for a dock or anteroom running at an intermediate temperature. Grouping rooms by evaporating temperature rather than by location is what keeps the compressors on the right suction — putting a chill room on a freezer group wastes energy on every hour it runs.</p>
+<p>Where a fourth temperature is genuinely required, it is usually cheaper to serve it with a dedicated <a href="../services/cdu-refrigeration-systems">CDU</a> than to add a second rack.</p>
+
+<h2>Run the numbers before you brief us</h2>
+<p>Our <a href="../tools/load-calculator">heat-load calculator</a> follows the ASHRAE Chapter&nbsp;24 five-component method with real design ambients for 12 Pakistani cities, and the <a href="../tools/condenser-sizing">condenser sizer</a> applies the derate figures above so you can see what a given selection is actually worth on your site in July. Free, and no email required.</p>
+
 </div>
     <aside class="aside">
       <h4>Specs at a glance</h4>
@@ -183,8 +204,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="container" style="max-width:1100px; text-align:center; padding:48px 24px; background:linear-gradient(135deg, var(--paper-2, #f5f2ec) 0%, rgba(10,31,61,.04) 100%); border-radius:16px; margin: 48px auto;">
     <span class="eyebrow">New · Tool 8</span>
     <h2 style="margin-top:8px">Want a rough cost estimate? Sales-engineer tool, ±20% band.</h2>
-    <p style="max-width:60ch; margin:16px auto; color:var(--ink-2)">Sales-engineer tool that combines sizing with cost output. Editable Izhar margin line. Pakistan-tuned across 12 cities and 24 commodities. Add CA-store equipment scope (nitrogen, ethylene removal, GAC analysis) to your cost estimate.</p>
-    <a href="../tools/cost-calculator#cmd=apple;sp=ca_store_apple;ca=1;mode=detailed" class="btn btn-primary btn-lg">Open the rough estimator <span class="arr">→</span></a>
+    <p style="max-width:60ch; margin:16px auto; color:var(--ink-2)">Sales-engineer tool that combines sizing with cost output. Editable Izhar margin line. Pakistan-tuned across 12 cities and 24 commodities — size a multi-room commercial store and see an indicative build cost before anyone quotes it.</p>
+    <a href="../tools/cost-calculator" class="btn btn-primary btn-lg">Open the rough estimator <span class="arr">→</span></a>
   </div>
 </section>
 

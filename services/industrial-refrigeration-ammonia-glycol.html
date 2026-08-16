@@ -151,6 +151,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <h2>Where it sits</h2>
 <p>Above roughly 500&nbsp;kW, ammonia or ammonia-glycol is the answer. Between 200 and 500&nbsp;kW the economics usually favour a <a href="../services/commercial-refrigeration-rack-systems">rack system</a>; below 200&nbsp;kW a <a href="../services/cdu-refrigeration-systems">CDU pack</a>. All three are covered under <a href="../services/cold-stores">industrial &amp; commercial refrigeration</a>.</p>
 <div class="prose-figs"><figure><picture><source type="image/webp" srcset="../images/refrigeration/industrial-ammonia-glycol-plant-600.webp 600w, ../images/refrigeration/industrial-ammonia-glycol-plant-684.webp 684w" sizes="(max-width: 720px) 100vw, 520px"><source type="image/jpeg" srcset="../images/refrigeration/industrial-ammonia-glycol-plant-600.jpg 600w, ../images/refrigeration/industrial-ammonia-glycol-plant-684.jpg 684w" sizes="(max-width: 720px) 100vw, 520px"><img src="../images/refrigeration/industrial-ammonia-glycol-plant-600.jpg" alt="Industrial ammonia glycol refrigeration plant room with stainless-steel plate evaporators" width="600" height="420" loading="lazy" decoding="async"></picture><figcaption>Zanotti plant at HAC Agri — stainless-steel plate evaporators for glycol-solution cooling.</figcaption></figure></div>
+
+<h2>Sizing the plant for a 46–50&nbsp;°C ambient</h2>
+<p>Most published condenser capacities are quoted at European design ambients. Pakistan does not run at those, and the gap is not a rounding error. Our condenser sizing applies a measured <strong>ambient derate of 2.0% per Kelvin for medium temperature and 2.7% per Kelvin for low temperature</strong>, with a hard floor at 60% of nameplate. On a Multan summer design day, a low-temperature condenser selected at a European ambient can be delivering little more than half the capacity on its label — which is how a plant that passed its factory test fails to hold −25&nbsp;°C in June.</p>
+<p>The same applies to the load side. A freezer at −25&nbsp;°C carries an infiltration buoyancy factor of <strong>1.45</strong> against 1.0 for a cooler, rising to 1.55 at −30&nbsp;°C and below: colder rooms pull air harder through every door opening, so door discipline and curtain choice move the load more than most operators expect. A strip curtain, correctly fitted, is worth a <strong>0.10 protection factor</strong> — a 90% reduction in infiltration — against 0.50 for an air curtain.</p>
+
+<h2>The glycol circuit</h2>
+<p>An indirect design buys safety and charge reduction, and pays for it in two places. First, the secondary loop adds an approach temperature: the plant has to make glycol colder than the room needs, so the compressors run at a lower suction than a direct-expansion system would. Second, the glycol pumps consume power continuously whether the compressors are loaded or not.</p>
+<p>Both are designable. Pump power comes down with correct pipe sizing and variable-speed pumping; the approach comes down with correctly selected plate evaporators — the reason the HAC Agri plant uses <strong>stainless-steel plate evaporators for glycol-solution cooling</strong> rather than a shell-and-tube compromise. Glycol concentration is set by the lowest circuit temperature with a margin, not by habit: over-concentrating raises viscosity, which raises pump power for no thermal benefit.</p>
+
+<h2>Where the ammonia charge sits</h2>
+<p>The engineering point of indirect is inventory. In a direct-expansion ammonia system the refrigerant travels to every evaporator in every room, so the charge is distributed through occupied space. In an indirect glycol design the ammonia is confined to the plant room — a single space that can be ventilated, gas-detected, alarmed and access-controlled as one problem rather than twenty. The circulating fluid in the building is glycol, which is not a hazard to product or people.</p>
+<p>That is why indirect is the standard choice on occupied food and logistics sites, and why it is usually the design that gets approved without argument.</p>
+
+<h2>Run the numbers before you brief us</h2>
+<p>You do not have to take any of this on trust. Our <a href="../tools/load-calculator">cold room heat-load calculator</a> runs the full ASHRAE Chapter&nbsp;24 five-component method — transmission, infiltration, product pull-down, internal gains and safety factor — with 12 Pakistani cities and their real design ambients. The <a href="../tools/condenser-sizing">condenser sizer</a> applies the derate above so you can see what a nameplate is worth on your site in July, and the <a href="../tools/refrigerant-charge">refrigerant charge estimator</a> uses NIST saturated-liquid densities. All free, no email required.</p>
+
 </div>
     <aside class="aside">
       <h4>Specs at a glance</h4>
@@ -176,8 +192,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="container" style="max-width:1100px; text-align:center; padding:48px 24px; background:linear-gradient(135deg, var(--paper-2, #f5f2ec) 0%, rgba(10,31,61,.04) 100%); border-radius:16px; margin: 48px auto;">
     <span class="eyebrow">New · Tool 8</span>
     <h2 style="margin-top:8px">Want a rough cost estimate? Sales-engineer tool, ±20% band.</h2>
-    <p style="max-width:60ch; margin:16px auto; color:var(--ink-2)">Sales-engineer tool that combines sizing with cost output. Editable Izhar margin line. Pakistan-tuned across 12 cities and 24 commodities. Add CA-store equipment scope (nitrogen, ethylene removal, GAC analysis) to your cost estimate.</p>
-    <a href="../tools/cost-calculator#cmd=apple;sp=ca_store_apple;ca=1;mode=detailed" class="btn btn-primary btn-lg">Open the rough estimator <span class="arr">→</span></a>
+    <p style="max-width:60ch; margin:16px auto; color:var(--ink-2)">Sales-engineer tool that combines sizing with cost output. Editable Izhar margin line. Pakistan-tuned across 12 cities and 24 commodities — size an industrial store and see an indicative build cost before anyone quotes it.</p>
+    <a href="../tools/cost-calculator" class="btn btn-primary btn-lg">Open the rough estimator <span class="arr">→</span></a>
   </div>
 </section>
 
