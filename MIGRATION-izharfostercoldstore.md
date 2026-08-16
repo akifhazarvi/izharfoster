@@ -52,6 +52,51 @@ Vercel issues `308` rather than `301`. Both are permanent and both pass ranking
 signals; `308` additionally preserves the HTTP method. Google treats them the
 same for consolidation.
 
+## Route A — the exact DNS change
+
+Checked 2026-08-15. **`izharfostercoldstore.com` has no MX records**, so there
+is no email on the domain and the DNS change cannot break mail. (The lone TXT
+record is a hosting verification hash, not SPF.)
+
+| | Now (Hostinger) | Change to (Vercel) |
+|---|---|---|
+| Nameservers | `ns1.dns-parking.com`, `ns2.dns-parking.com` | **leave as-is** — no need to move DNS hosting |
+| `@` (apex) | `A → 151.106.96.216` | `A → 76.76.21.21` |
+| `www` | `A → 151.106.96.216` | **delete the A record**, add `CNAME → cname.vercel-dns.com` |
+
+`76.76.21.21` and `cname.vercel-dns.com` are the values izharfoster.com already
+uses, so they are known-good for this project — but use whatever Vercel prints
+when you add the domain, in case it has changed.
+
+**Order:**
+
+1. **Verify the domain in Search Console first** — use the **DNS TXT** method,
+   not the HTML-file method. A TXT record survives the migration; an HTML file
+   stops being reachable the moment the redirects go live, and verification
+   would lapse.
+2. **Export/back up anything you want off the WordPress site.** Once DNS moves,
+   that site is gone from this address.
+3. In Hostinger → **Domains → DNS / Nameservers**, lower the TTL on the two
+   records to 300 s and wait for the old TTL to expire. This makes the cutover
+   minutes rather than hours. Optional but cheap.
+4. **Vercel → izharfoster project → Settings → Domains → Add**
+   `izharfostercoldstore.com`, then `www.izharfostercoldstore.com`.
+   Vercel will show "Invalid Configuration" until DNS propagates — expected.
+5. Change the two DNS records as per the table.
+6. Wait for propagation, then test:
+   ```bash
+   dig +short izharfostercoldstore.com A          # expect 76.76.21.21
+   curl -s -o /dev/null -w "%{http_code} -> %{redirect_url}\n" \
+     https://izharfostercoldstore.com/about-us     # expect 308 -> /about
+   ```
+7. **Search Console → Settings → Change of Address**, old property →
+   izharfoster.com.
+8. Once traffic has settled, cancel the Hostinger hosting plan — but **keep the
+   domain registered**. If it lapses the redirects die and the equity with it.
+
+Vercel issues TLS certificates automatically once DNS resolves; there is
+nothing to configure for HTTPS.
+
 ## Why consolidate at all
 
 
