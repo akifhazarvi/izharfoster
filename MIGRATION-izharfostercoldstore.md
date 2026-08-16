@@ -1,8 +1,59 @@
 # Domain consolidation — izharfostercoldstore.com → izharfoster.com
 
-**Status:** ready to apply · **Prepared:** 2026-08-15 · **Owner:** Akif
+**Status:** Route A pre-wired and deployed · **Prepared:** 2026-08-15 · **Owner:** Akif
 
-## Why
+> **Two routes. Route A is recommended and is already built.**
+>
+> **Route A — move the domain to Vercel (recommended).** Point the DNS at
+> Vercel, add the domain to the izharfoster project, and the edge does the
+> redirecting. The host-scoped rules are already live in `vercel.json`, so this
+> becomes a DNS change and one dashboard step — no `.htaccess`, no Hostinger,
+> and the WordPress install goes away entirely. That last part matters: an
+> unmaintained WordPress + Elementor site with an exposed author archive is a
+> security surface as well as an SEO liability.
+>
+> **Route B — leave it on Hostinger and redirect via `.htaccess`.** Keeps
+> WordPress alive and running. Use only if the DNS cannot be moved.
+>
+> **Not a route:** transferring the domain *registration* to another registrar
+> or account. That is billing admin. The WordPress site keeps serving and keeps
+> competing for our terms. It changes nothing for Google.
+
+## Route A — the steps
+
+1. **Verify `izharfostercoldstore.com` in Search Console first**, while the old
+   site is still live. Verification needs the live site, and Change of Address
+   needs both properties verified. Skip this and the option is gone.
+2. In the domain's DNS, point the apex and `www` at Vercel
+   (Vercel prints the exact A / CNAME target when you add the domain).
+3. **Vercel → izharfoster project → Settings → Domains → Add**
+   `izharfostercoldstore.com` and `www.izharfostercoldstore.com`.
+   Add them as normal domains — do **not** use Vercel's "Redirect to" option,
+   because that would send every path to the homepage and throw away the
+   page-by-page map below.
+4. The rules in `vercel.json` take over automatically. They are scoped with a
+   `has` host condition, so they can only ever fire for the old domain and
+   cannot affect izharfoster.com.
+5. **Test** — expect a `308` and the mapped destination:
+   ```bash
+   for p in / /about-us /products /contact-us /ammonia-refrigeration \
+            /freon-refrigeration-systems /refrigeration-2 /hello-world; do
+     curl -s -o /dev/null -w "%{http_code} $p -> %{redirect_url}\n" \
+       "https://izharfostercoldstore.com$p"
+   done
+   ```
+6. **Search Console → Settings → Change of Address**, old property →
+   izharfoster.com.
+7. **Keep the domain registered and renewed.** If it lapses the redirects die
+   and the equity goes with them.
+8. Once traffic has settled, decommission the Hostinger WordPress install.
+
+Vercel issues `308` rather than `301`. Both are permanent and both pass ranking
+signals; `308` additionally preserves the HTTP method. Google treats them the
+same for consolidation.
+
+## Why consolidate at all
+
 
 `izharfostercoldstore.com` is a 7-page WordPress/Elementor site on Hostinger
 (LiteSpeed) that competes directly with the main site for the term we are
@@ -24,7 +75,7 @@ one Google may pick. Consolidation is the ranking fix, not a tidy-up.
 **Do not simply switch the site off.** A hard delete discards whatever links
 and citations the domain holds. A 301 passes them to izharfoster.com.
 
-## Redirect map
+## Redirect map (applies to both routes)
 
 Every destination verified live (HTTP 200) on 2026-08-15.
 
@@ -40,7 +91,7 @@ Every destination verified live (HTTP 200) on 2026-08-15.
 | `/hello-world/`, `/category/*`, `/author/*`, feeds | `/` |
 | anything else | `/` |
 
-## The file
+## Route B — the `.htaccess` file (only if the DNS cannot move)
 
 Paste into `.htaccess` in the **web root of izharfostercoldstore.com**
 (`public_html/`), **above** the `# BEGIN WordPress` block. LiteSpeed reads
@@ -80,7 +131,7 @@ RewriteRule ^(.*)$                          https://izharfoster.com/ [R=301,L]
 # ── end consolidation ──────────────────────────────────────────────────────
 ```
 
-## Order of operations
+## Route B — order of operations
 
 1. **Back up** the WordPress site first (Hostinger → Files → Backups). The
    redirect is reversible by deleting the block, but back up anyway.

@@ -667,6 +667,270 @@
       "source": "/products/:rest*",
       "destination": "/solutions",
       "permanent": true
+    },
+    {
+      "source": "/about-us",
+      "has": [
+        {
+          "type": "host",
+          "value": "izharfostercoldstore.com"
+        }
+      ],
+      "destination": "https://izharfoster.com/about",
+      "permanent": true
+    },
+    {
+      "source": "/products",
+      "has": [
+        {
+          "type": "host",
+          "value": "izharfostercoldstore.com"
+        }
+      ],
+      "destination": "https://izharfoster.com/solutions",
+      "permanent": true
+    },
+    {
+      "source": "/contact-us",
+      "has": [
+        {
+          "type": "host",
+          "value": "izharfostercoldstore.com"
+        }
+      ],
+      "destination": "https://izharfoster.com/contact",
+      "permanent": true
+    },
+    {
+      "source": "/ammonia-refrigeration",
+      "has": [
+        {
+          "type": "host",
+          "value": "izharfostercoldstore.com"
+        }
+      ],
+      "destination": "https://izharfoster.com/services/refrigeration-systems",
+      "permanent": true
+    },
+    {
+      "source": "/freon-refrigeration-systems",
+      "has": [
+        {
+          "type": "host",
+          "value": "izharfostercoldstore.com"
+        }
+      ],
+      "destination": "https://izharfoster.com/services/refrigeration-systems",
+      "permanent": true
+    },
+    {
+      "source": "/refrigeration-2",
+      "has": [
+        {
+          "type": "host",
+          "value": "izharfostercoldstore.com"
+        }
+      ],
+      "destination": "https://izharfoster.com/services/refrigeration-systems",
+      "permanent": true
+    },
+    {
+      "source": "/hello-world",
+      "has": [
+        {
+          "type": "host",
+          "value": "izharfostercoldstore.com"
+        }
+      ],
+      "destination": "https://izharfoster.com/",
+      "permanent": true
+    },
+    {
+      "source": "/category/:rest*",
+      "has": [
+        {
+          "type": "host",
+          "value": "izharfostercoldstore.com"
+        }
+      ],
+      "destination": "https://izharfoster.com/",
+      "permanent": true
+    },
+    {
+      "source": "/author/:rest*",
+      "has": [
+        {
+          "type": "host",
+          "value": "izharfostercoldstore.com"
+        }
+      ],
+      "destination": "https://izharfoster.com/",
+      "permanent": true
+    },
+    {
+      "source": "/feed",
+      "has": [
+        {
+          "type": "host",
+          "value": "izharfostercoldstore.com"
+        }
+      ],
+      "destination": "https://izharfoster.com/",
+      "permanent": true
+    },
+    {
+      "source": "/comments/feed",
+      "has": [
+        {
+          "type": "host",
+          "value": "izharfostercoldstore.com"
+        }
+      ],
+      "destination": "https://izharfoster.com/",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "izharfostercoldstore.com"
+        }
+      ],
+      "destination": "https://izharfoster.com/",
+      "permanent": true
+    },
+    {
+      "source": "/about-us",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.izharfostercoldstore.com"
+        }
+      ],
+      "destination": "https://izharfoster.com/about",
+      "permanent": true
+    },
+    {
+      "source": "/products",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.izharfostercoldstore.com"
+        }
+      ],
+      "destination": "https://izharfoster.com/solutions",
+      "permanent": true
+    },
+    {
+      "source": "/contact-us",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.izharfostercoldstore.com"
+        }
+      ],
+      "destination": "https://izharfoster.com/contact",
+      "permanent": true
+    },
+    {
+      "source": "/ammonia-refrigeration",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.izharfostercoldstore.com"
+        }
+      ],
+      "destination": "https://izharfoster.com/services/refrigeration-systems",
+      "permanent": true
+    },
+    {
+      "source": "/freon-refrigeration-systems",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.izharfostercoldstore.com"
+        }
+      ],
+      "destination": "https://izharfoster.com/services/refrigeration-systems",
+      "permanent": true
+    },
+    {
+      "source": "/refrigeration-2",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.izharfostercoldstore.com"
+        }
+      ],
+      "destination": "https://izharfoster.com/services/refrigeration-systems",
+      "permanent": true
+    },
+    {
+      "source": "/hello-world",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.izharfostercoldstore.com"
+        }
+      ],
+      "destination": "https://izharfoster.com/",
+      "permanent": true
+    },
+    {
+      "source": "/category/:rest*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.izharfostercoldstore.com"
+        }
+      ],
+      "destination": "https://izharfoster.com/",
+      "permanent": true
+    },
+    {
+      "source": "/author/:rest*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.izharfostercoldstore.com"
+        }
+      ],
+      "destination": "https://izharfoster.com/",
+      "permanent": true
+    },
+    {
+      "source": "/feed",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.izharfostercoldstore.com"
+        }
+      ],
+      "destination": "https://izharfoster.com/",
+      "permanent": true
+    },
+    {
+      "source": "/comments/feed",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.izharfostercoldstore.com"
+        }
+      ],
+      "destination": "https://izharfoster.com/",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.izharfostercoldstore.com"
+        }
+      ],
+      "destination": "https://izharfoster.com/",
+      "permanent": true
     }
   ]
 }
