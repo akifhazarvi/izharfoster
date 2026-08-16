@@ -220,9 +220,30 @@ These are the recipes for the recurring task types in this repo. Each is the low
    projects/bar.html) — limit 200 lines if needed.
 2. Read DECISIONS.md only for the specific fact you need (offset/limit).
 3. Write the new file with the same structure, schema block, and footer.
-4. Add the URL to sitemap.xml (Edit, single line append before </urlset>).
-5. Update DAILY-TASKS.md to mark [x] with the commit hash.
+4. SCRUB THE INHERITED BLOCKS — see the checklist below. Non-optional.
+5. Add the URL to sitemap.xml (Edit, single line append before </urlset>).
+6. Update DAILY-TASKS.md to mark [x] with the commit hash.
 ```
+
+**⚠ Cloning a service page carries hidden page-specific content.** On
+2026-08-16 three refrigeration pages cloned from `services/ca-stores.html`
+shipped with the CA page's FAQs ("How much shelf-life gain can I expect?"),
+its `FAQPage` schema, a whole CA applications grid, CA fields inside `Service`
+schema (`serviceType`, `audienceType`, `additionalProperty` listing O₂/CO₂
+ranges and Fruit Control as the partner), and a Tool 8 CTA deep-linking the
+cost calculator to `#cmd=apple;sp=ca_store_apple;ca=1`. Two separate rounds of
+fixes. The visible copy looked right, which is exactly why it survived review.
+
+After cloning ANY service page, grep the new file for these and rewrite each:
+
+| Grep for | Why |
+|---|---|
+| `application/ld+json` | `Service` name/description/`serviceType`/`category`, **`audienceType`**, **`additionalProperty`**, and the whole `FAQPage` block are all page-specific |
+| `faq-item` | visible FAQ copy must match the new `FAQPage` schema — they are two places, both wrong after a clone |
+| `class="eyebrow"` | section headings ("Applications", "Related industries") often carry the donor page's subject |
+| `tools/cost-calculator#` | deep links preset the calculator to the donor's commodity/scope |
+| `<link rel="canonical"`, `og:url`, breadcrumb `item` | must point at the new URL, not the donor |
+| the donor's subject noun | e.g. `grep -ci "controlled atmosphere"` — expect only deliberate mentions |
 
 #### D. "GSC-driven content rewrite" (striking-distance fix)
 
