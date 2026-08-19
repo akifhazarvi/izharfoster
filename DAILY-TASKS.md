@@ -1,10 +1,77 @@
 # Izhar Foster — Daily Task List
 
-**Last updated:** 2026-08-16
+**Last updated:** 2026-08-17
 **Score baseline:** 78/100 (ACTION-PLAN.md, 2026-05-02)
 **Canonical roadmap:** [GROWTH-PLAN.md](GROWTH-PLAN.md) | Resolved conflicts: [DECISIONS.md](DECISIONS.md)
 
 Work top-to-bottom. Mark done with `[x]`. Each PR title must reference the GROWTH-PLAN section it implements.
+
+---
+
+## 2026-08-17 — PMax killed, Search rebuilt in two campaigns; the conversion signal is the real bug
+
+**Trigger.** Faisal reported 20 inquiries over two days, of which **3 were qualified** — the rest were "Hi / Sok / 🌹🌹🌹" from PMax traffic. PMax paused the same day.
+
+### Root cause found (GA4 20 Jul – 16 Aug)
+
+- [x] **GA4 recorded 18,073 conversions against 17,758 Cross-network sessions.** More conversions than sessions is impossible with real leads — micro-events are flagged as key events. By volume the culprits are `izhar_session_start` (16,716), `engaged_session` (15,433), `chat_open` (14,473), `cta_quote_click` (13,405). Google Ads was bidding against this, so PMax correctly concluded the cheapest click was the best click.
+- [x] **Quantified the gap.** `lead_intent` fired 3,022 times in 28 days; sales logged ≈300 inquiries/month. **Roughly 9 in 10 button taps never became a conversation.**
+- [x] **PMax was 96% of all traffic** — 17,758 of 19,406 sessions. Organic was 771. The April→August inquiry chart is therefore almost entirely PMax, and 85% of it was junk.
+
+### Shipped
+
+- [x] **`services/cold-stores.html` H1 rewritten** — `Industrial & commercial <em>refrigeration</em>` → `Industrial & commercial <em>cold stores</em> — refrigeration engineered around your product`. Two defects in one edit: ads promise "Industrial Cold Stores" and Google's landing-page-experience score reads the H1; and `cold store manufacturers in pakistan` has fallen to **pos 18.6** (from 4.7 pre-redesign) while the H1 contained no instance of "cold store". Refrigeration positioning from 2026-08-16 preserved, `<title>` untouched.
+- [x] **Campaign A live** — `GADS_SEARCH_ColdStore_PK`, $10/day, 23 exact/phrase keywords → `/services/cold-stores`, 15 headlines, 4 descriptions, 4 sitelinks, Clicks bidding with a $0.22 CPC cap.
+- [x] **Seven negative keyword lists built** as shared lists — crypto/cloud, jobs/research, rental-intent, consumer food, other geos, freebie, and a new **consumer refrigeration + resellers** list written against the observed junk (fridge, AC, repair, dealer, franchise, subsidy).
+- [x] **Runbook published** as a shareable artifact for Faisal — findings, both campaign specs, settings table, negatives, launch sequence, KPI targets.
+
+### Key decisions
+
+- [x] **Two campaigns, not one.** A shared budget starves cold stores — panels have higher volume and cheaper clicks, so Google routes everything there.
+- [x] **Budget split set by organic asymmetry, not pillar order.** `/services/pir-sandwich-panels` earns **228** organic clicks/28d; `/services/cold-stores` earns **10**. A 23× gap. Paid is the only channel reaching the cold-store buyer, so cold stores takes the larger share.
+- [x] **Do not bid on terms already ranked 1–3 organically.** `pir sandwich panel` (1.6), `puf panel price in pakistan` (1.6), `4x8 sandwich panel price in pakistan` (1.4), `sandwich panel price in pakistan` (2.8). Organic CTRs of 17–21% at those positions prove the SERP isn't ad-crowded, so there's nothing to defend. Added as **exact-match campaign negatives** in Campaign B instead.
+- [x] **AI Max left off**, along with text customisation, final URL expansion and branded-search broadening — each is a mechanism for turning tight keywords back into PMax-style reach.
+
+### Still open — UI-only, cannot be done from the repo
+
+- [ ] **GA4 → Admin → Events → Key events: unmark everything except `generate_lead` and `lead_intent`.** Blocks the week-4 switch to Maximise conversions — there is nothing trustworthy to optimise toward until this is done. **Highest-value single action in this list.**
+- [ ] **Google Ads → Goals → Conversions:** make `IF – Lead · Form` the sole Primary; demote `IF – Lead (All Channels)` to Secondary.
+- [ ] **Tools → Recommendations → ⚙ Auto-apply: turn everything off** (account level) — left on, Google silently re-adds broad-match keywords.
+- [ ] **Campaign B** — `GADS_SEARCH_PIRPanel_PK`, $5/day, 18 keywords → `/services/pir-sandwich-panels`, plus the 12 exact-match negatives protecting organic #1s.
+- [ ] **Vercel/Singapore bot filter** in GA4 — still pending from [project_ga4_admin_followups]. Singapore 201, US 109, China 40, Brazil 33, Vietnam 32, all direct at ~30% engagement, all inflating reported sessions.
+
+### Backlog raised by the same data pull
+
+- [ ] **Recover the two redesign casualties.** `cold store manufacturers in pakistan` pos **18.6** (was 4.7), `cold storage business in pakistan` pos **20.5** (was 5.4). Flagged in the July growth report and still unhealed. The H1 fix above is the first move on the former. Cheaper than buying the same traffic in Campaign A.
+- [ ] **Organic has plateaued and the lever has moved.** Clicks 591 → 608 (+2.9%), impressions 13,520 → 12,431 (**−8.1%**), CTR 4.37% → 4.89%, position 6.99 → 7.32. CTR work is landing but impressions are falling faster. **The growth lever is now impressions, not CTR** — a genuine change from the GROWTH-PLAN §6 diagnosis and worth reflecting there.
+- [ ] **Pharma is the strongest untapped vertical.** `/services/pharmaceutical-cold-storage` sits at pos 7.1 with only 2.36% CTR on 424 impressions. Earns its own campaign at week 8 — ahead of dairy, meat or agri.
+- [ ] **Never run potato/onion on paid.** Those queries are overwhelmingly rental intent in Pakistan. Keep the page ranking organically; the intent is already in negative list 3.
+
+### Corrected
+
+- [x] **The `#hidden` anchor is not a defect.** Six anchor fragments of the cost guide draw 1,226 impressions at pos ~3.7 with zero clicks, and I flagged `#hidden` as possibly exposing concealed content. It is `<h2 id="hidden">Hidden costs that wreck cold-storage budgets</h2>` — a legitimate section with a jump link. Zero-click fragment rows are normal GSC reporting; the clicks attribute to the parent URL. No action needed.
+
+### Review points
+
+- **Daily, weeks 1–3:** Insights → Search terms → sort by cost → negate the irrelevant. Expect 20–40 in week one. Do not judge lead quality yet.
+- **Week 4:** if terms are clean and form leads are recording, switch both campaigns to Maximise conversions.
+- **~1 September:** re-measure organic — that is when the 15–16 Aug page rebuilds surface in GSC.
+- **Tell Faisal now:** fewer inquiries in September is the plan working. Baseline qualified rate was 15%; target is >65%.
+
+---
+
+## 2026-08-18 — Walk-in card duplication fixed; "Build your own walk-in" tool shipped
+
+**Client, comparing against `fostercoolers.us/quote-builder`:** *"There is duplication of walk in cooler and blast freezer. In walk in cooler section if you can use the same details of 'build your own walk in without price' for Izhar Foster. That will be something new for Pakistani client."*
+
+- [x] **Duplication was real and literal** — Walk-in Cold Rooms and Blast Freezers shipped the **same photograph** (`product-compact-blast-1000.jpg`) on both the homepage and `/solutions`. Walk-in now uses a brochure-sourced photo of an actual walk-in box with door, hinges and cam-lock latch (p38, 530 px native). Audited every card: all eleven images are now unique. Also fixed a stale `og:image` on the refrigeration page still pointing at the old walk-in shot.
+- [x] **`tools/walkin-builder.html` + `js/tools/walkin-builder.js`** — four steps mirroring Foster's flow (temperature → dimensions → options → engineering data) but **deliberately without pricing**. Foster shows "+$540 sliding door"; we show heat load, compressor duty, annual energy, panel U-value and a printable spec sheet. That is the differentiator for this market, not a weaker version of it: a walk-in is quoted on site conditions, power supply and access, and a headline number set against those misleads.
+- [x] Metric-first with foot presets (6×8 → 16×20 ft), six Pakistani design ambients up to Jacobabad 50 °C, PIR 60–150 mm at λ 0.022, and door protection as a first-class input — because it is the cheapest kilowatt available. Wired into `_shared.js` chrome for save/open/print, with WhatsApp hand-off carrying the full spec.
+- [x] Linked from `tools.html` (now 9 calculators), `sitemap.xml`, and a prominent block on `services/walk-in-cold-rooms.html`.
+
+**Two bugs caught in test, both of which would have shipped silently.** `wireToolChrome` threw (`opts.buildPDF is not a function`) *before* the first `render()`, so the page loaded showing dashes until you clicked something — fixed by rendering first and wrapping optional chrome in try/catch, so broken chrome can never take a calculator down again. And infiltration computed at **1% of load on a freezer**, which is nonsense; the lumped enthalpy fudge was replaced with the standard mass-flow form (ACH24 × V × ρ × Δh, buoyancy applied separately per this repo's convention). Infiltration now moves **6% → 37%** when door protection is removed on a 16×20 ft freezer — which is both correct and the best sales argument on the page.
+
+**Stated limitation, on the page not just here:** the builder sizes the *holding* load — envelope, infiltration, internal gains. It does **not** include product pull-down, which dominates if warm product is loaded daily. The page says so and points at `tools/load-calculator` for the full ASHRAE Ch. 24 five-component calculation.
 
 ---
 
