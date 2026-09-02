@@ -257,28 +257,47 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <h3>Request a quote</h3>
       <p class="sub">Engineering reply · 24 hours</p>
       <form id="quote-form" novalidate>
-        <div class="form-row">
-          <div class="form-group"><label for="n">Full name</label><input id="n" name="name" required></div>
-          <div class="form-group"><label for="c">Company <small>(optional)</small></label><input id="c" name="company"></div>
-        </div>
-        <div class="form-row">
-          <div class="form-group"><label for="p">Phone / WhatsApp</label><input id="p" name="phone" type="tel" required></div>
-          <div class="form-group"><label for="e">Email <small>(optional)</small></label><input id="e" name="email" type="email"></div>
-        </div>
-        <div class="form-row">
-          <div class="form-group"><label for="loc">Project location</label><input id="loc" name="location" placeholder="City / area"></div>
-          <div class="form-group"><label for="ind">Industry</label>
-            <select id="ind" name="industry"><option>Pharma</option><option>Dairy</option><option>Meat &amp; Poultry</option><option>Fruits &amp; Vegetables</option><option>Seafood</option><option>Logistics</option><option>Retail / Food service</option><option>Other</option></select>
+        <!-- Three fields, not ten. GA4 18 Aug–1 Sep 2026: 54 mobile form_starts
+             produced 3 form_submits (5.6%). Everything below the fold here is a
+             question a sales engineer asks in the first two minutes of the call
+             anyway, so it moved behind an optional disclosure. The fields still
+             exist in the DOM and still post — <details> hides, it does not remove
+             — so the handoff() serialiser below is unchanged. Both `required`
+             fields stay visible: a required field inside a closed <details>
+             fails validation invisibly. -->
+        <div class="form-group"><label for="n">Full name</label><input id="n" name="name" autocomplete="name" required></div>
+        <div class="form-group"><label for="p">Phone / WhatsApp</label><input id="p" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="0300 1234567" required></div>
+        <div class="form-group"><label for="m">What do you need?</label><textarea id="m" name="notes" placeholder="e.g. 500 m³ cold store at −20 °C near Multan — or just name the product you're storing and we'll size it."></textarea></div>
+
+        <details class="form-more" id="form-more">
+          <summary>Add project details <small>— optional, gets you a sharper number</small></summary>
+          <div class="form-more-body">
+            <div class="form-row">
+              <div class="form-group"><label for="c">Company</label><input id="c" name="company" autocomplete="organization"></div>
+              <div class="form-group"><label for="e">Email</label><input id="e" name="email" type="email" inputmode="email" autocomplete="email"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label for="loc">Project location</label><input id="loc" name="location" placeholder="City / area"></div>
+              <div class="form-group"><label for="ind">Industry</label>
+                <select id="ind" name="industry"><option>Pharma</option><option>Dairy</option><option>Meat &amp; Poultry</option><option>Fruits &amp; Vegetables</option><option>Seafood</option><option>Logistics</option><option>Retail / Food service</option><option>Other</option></select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label for="prod">Product</label>
+                <select id="prod" name="product"><option>Cold Store</option><option>PIR Sandwich Panels</option><option>Refrigeration System</option><option>CA Store</option><option>Prefab Structure</option><option>Insulated Doors</option><option>Full turnkey</option></select>
+              </div>
+              <div class="form-group"><label for="cap">Capacity / size</label><input id="cap" name="capacity" placeholder="e.g. 500 m³"></div>
+            </div>
+            <div class="form-group"><label for="t">Required temperature</label><input id="t" name="temperature" placeholder="e.g. −20°C / +2 to +8°C"></div>
           </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group"><label for="prod">Product</label>
-            <select id="prod" name="product"><option>Cold Store</option><option>PIR Sandwich Panels</option><option>Refrigeration System</option><option>CA Store</option><option>Prefab Structure</option><option>Insulated Doors</option><option>Full turnkey</option></select>
-          </div>
-          <div class="form-group"><label for="cap">Capacity / size</label><input id="cap" name="capacity" placeholder="e.g. 500 m³"></div>
-        </div>
-        <div class="form-group"><label for="t">Required temperature</label><input id="t" name="temperature" placeholder="e.g. −20°C / +2 to +8°C"></div>
-        <div class="form-group"><label for="m">Project notes</label><textarea id="m" name="notes" placeholder="Anything else our engineers should know."></textarea></div>
+        </details>
+        <script>
+          /* Desktop keeps the full form open — sessions there run 572 s and the
+             intent is research, so the extra fields cost nothing. Phones get it
+             collapsed. Runs inline, before paint, so there is no layout shift. */
+          (function(){var d=document.getElementById('form-more');
+            if(d&&window.matchMedia('(min-width:721px)').matches)d.open=true;})();
+        </script>
         <button type="submit" class="btn btn-primary btn-lg">Send <span class="arr">→</span></button>
         <!-- The competing "Send by email instead" button was removed on request.
              The email route stays reachable as a plain link in the note below so

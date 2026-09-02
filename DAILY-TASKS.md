@@ -1,10 +1,30 @@
 # Izhar Foster — Daily Task List
 
-**Last updated:** 2026-08-17
+**Last updated:** 2026-09-02
 **Score baseline:** 78/100 (ACTION-PLAN.md, 2026-05-02)
 **Canonical roadmap:** [GROWTH-PLAN.md](GROWTH-PLAN.md) | Resolved conflicts: [DECISIONS.md](DECISIONS.md)
 
 Work top-to-bottom. Mark done with `[x]`. Each PR title must reference the GROWTH-PLAN section it implements.
+
+---
+
+## 2026-09-02 — Mobile conversion furniture rebuilt from the GA4 funnel (GP§13) — `8091a5a`
+
+**Data trigger.** Clean post-PMax window (18 Aug – 1 Sep, 15 d) shows mobile is the *strong* half of the audience and the one that cannot convert: 607 mobile sessions, 30.1% bounce vs desktop's 42.7%, 65% of all organic clicks at position 5.40 vs desktop's 11.03 — and **3 form submissions**. Four independent contact routes all completed between 1.6% and 5.6%: chat 5/101, form 3/54, wizard 1/21, calculator 3/186. That is one systemic pattern, not four coincidences — every path to contact was a multi-step form. Meanwhile `whatsapp_click` beats `form_submit` **19:1** on mobile.
+
+- [x] **Mobile action bar `.mact`** (`js/main.v2.js` + `css/style.v2.css`, ≤720 px). Fixed bottom row — **WhatsApp · Call · Get quote** — on all 83 pages that load `main.v2.js`, built at runtime so no HTML sweep was needed. WhatsApp takes 1.5fr of the grid and the real `#25D366`; the message is pre-filled with the page's own H1 so sales opens with context instead of a cold "hi". Number resolves through `window.IzharWA.link()` per the two-line routing rule, with a line-1 fallback. Call routes to the documented sales mobile `+923004842467` — deliberately *not* the routed WA line, which is not listed as a phone anywhere on the site. 48 px targets, `env(safe-area-inset-bottom)`, `data-track-section="mobile-bar"` so the bar's contribution is measurable against the old FAB.
+- [x] **The bar replaces the FABs below 720 px, it does not join them.** `.ifc-fab`, `.ifc-panel`, `.lc-root`, `.lc-backdrop` and `.fab-wa` are hidden with `!important` (the chat widget injects its CSS into `<head>` *after* the stylesheet, so it wins any tie). Two things pinned bottom-right on a 390 px screen is exactly how a WhatsApp-green circle labelled "Open WhatsApp engineering chat" ended up intercepting WhatsApp intent into a five-step form. **Desktop is untouched** — the chat widget still owns ≥721 px, where sessions run 572 s and behave like research.
+- [x] **Contact form cut 10 visible fields → 3** (`contact.html`). Name, phone, and "What do you need?" with a placeholder that does the work of the seven dropped fields. Company, email, location, industry, product, capacity and temperature moved into `<details class="form-more">` — closed on phones, opened on desktop by a 2-line inline script that runs before paint (no CLS). **`<details>` hides, it does not remove**, so all ten fields still post and `handoff()` is unchanged; both `required` fields stay visible, because a required field inside a closed `<details>` fails validation invisibly. Added `autocomplete`/`inputmode` on every field — autofill is a free conversion win on mobile.
+- [x] **Tool result CTAs flipped on mobile** (`css/style.v2.css`, ≤720 px). All 9 calculators led with "Request a quote" (→ the form that completes at 5.6%) and demoted WhatsApp to an outline button. Reversed via ID selectors — `#cta-wa` (1,0,0) already outranks `.btn.btn-primary` (0,2,0), so no `!important`. `#cta-wa` already carries the computed spec (`whatsappUrl(longSummary)`), so the tap hands sales the full calculation. Covers both container variants (`.calc-cta-pair` on 8 tools, `.lead-cta-row` on cost-calculator), and therefore also the `.calc-result-sheet`, which *moves* the real CTA pair into itself rather than cloning it.
+- [x] **Bar yields to whatever legitimately owns the bottom** — open nav, `.calc-result-sheet`, `.calc-modal.is-open`. On calculator pages the 140 px result sheet already carries its own WhatsApp CTA *with the number in it*, so the bar correctly stands down there rather than stacking two bottom bars.
+
+**Verified.** New suite `_kr_scrape/_verify-mact.mjs` — **90/90** across 8 pages at 390×844 plus desktop 1440 regression (bar hidden, chat FAB alive, form open with all 10 fields). `verify-ads-tracking.mjs` **46/46** (mandatory — `contact.html` changed; PII negative check still passes non-vacuously). `verify-wa-split.mjs` **38/38**. No horizontal overflow, no JS errors, footer clears the bar on every page.
+
+**Two test bugs caught, not code bugs.** `getBoundingClientRect()` reports non-zero sizes for elements inside a closed `<details>` because Chromium hides it via `::details-content { content-visibility: hidden }`, which lays out lazily rather than removing the box — `checkVisibility({contentVisibilityAuto:true})` is the correct API and confirms exactly 3 visible fields. And the bar "failing" to sit flush on `/tools/panel-price` was the yield rule working as designed.
+
+**Still open — UI-only, and still the highest-value action in this repo's backlog.** See the GA4 key-event item below: `cta_quote_click` (78) and `tool_calculated` (19) are *still* key events while `form_submit` (11), `lead_submitted` (10), `chat_submit` (73), `wizard_submit` (17) and `cost_lead` (17) are **not**, and `generate_lead` **fires zero times**. Every fix above increases WhatsApp and form volume; none of it reaches Google Ads as a conversion signal until that table is inverted.
+
+**Google Ads API is still unreadable.** `LIST_ACCESSIBLE_CUSTOMERS` returns only `6434503242` (USD / America-Phoenix, one paused "Campaign #1", not Izhar) and `3264136797`, which 403s with `USER_PERMISSION_DENIED` on every query including metrics-free ones. `LIST_SUB_ACCOUNTS` returns empty for both. The signature — listed as accessible but refused on read — is a client account reachable only via a manager, and Composio does not send the `login-customer-id` header. Fix is to add the connected Google identity as a **direct** user on the Izhar Ads account, then reconnect.
 
 ---
 

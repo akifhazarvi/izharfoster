@@ -682,4 +682,53 @@
       section.removeAttribute('data-method-collapsed');
     });
   })();
+
+  // --- Mobile action bar (≤720 px) -----------------------------------------
+  // Mobile is 59% of sessions and 65% of organic clicks at position 5.4, and it
+  // bounces LESS than desktop (30% vs 43%) — but 607 mobile sessions produced 3
+  // form submissions (GA4, 18 Aug–1 Sep 2026). Every route to contact was a
+  // multi-step form: chat 5/101, form 3/54, wizard 1/21, calculator 3/186.
+  //
+  // Meanwhile whatsapp_click beats form_submit 19:1 on mobile. So the phone
+  // gets a permanent one-tap WhatsApp instead of a floating green circle that
+  // opens a five-step interrogation. Desktop keeps the chat widget untouched —
+  // desktop sessions run 572 s and behave like research, not enquiry.
+  (function buildMobileActionBar() {
+    if (document.querySelector('.mact')) return;
+    // The wizard and ROI calculator ARE the conversion flow; don't stack on them.
+    if (/\/(concept-wizard|roi-payback)(\.html)?\/?$/.test(location.pathname)) return;
+
+    const inSub = /\/(services|blog|tools|projects)\//.test(location.pathname);
+    const quoteHref = (inSub ? '../' : '') + 'contact.html';
+
+    // Carry the page subject into the message so sales opens with context and
+    // the buyer never has to restate what they were reading. Falls back to the
+    // line-1 number if waRouting hasn't initialised (it runs earlier in this file).
+    const h1 = document.querySelector('h1');
+    const subject = ((h1 && h1.textContent) || document.title || '')
+      .replace(/\s+/g, ' ').trim().slice(0, 72);
+    const msg = 'Hi Izhar Foster — I\'m enquiring about: ' + subject +
+                '\n\n— Sent from izharfoster.com';
+    const waHref = window.IzharWA
+      ? window.IzharWA.link(msg)
+      : 'https://wa.me/923215383544?text=' + encodeURIComponent(msg);
+
+    const ICO_WA = '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16.003 0C7.166 0 .003 7.163.003 16c0 2.808.729 5.55 2.116 7.964L.003 32l8.262-2.083C10.605 31.241 13.273 32 16.003 32c8.837 0 16-7.163 16-16S24.84 0 16.003 0zm0 29.333c-2.475 0-4.9-.665-7.012-1.928l-.503-.299-5.232 1.319 1.339-5.105-.328-.523A13.246 13.246 0 012.67 16c0-7.353 5.98-13.333 13.333-13.333S29.336 8.647 29.336 16 23.355 29.333 16.003 29.333zm7.349-9.99c-.403-.201-2.382-1.175-2.751-1.31-.369-.134-.638-.201-.906.202-.268.402-1.04 1.31-1.275 1.578-.235.268-.469.302-.872.101-.403-.201-1.702-.627-3.242-2-1.199-1.069-2.008-2.39-2.243-2.792-.235-.403-.025-.62.176-.821.181-.18.403-.469.604-.704.201-.235.268-.403.402-.671.134-.268.067-.503-.034-.704-.101-.201-.906-2.185-1.242-2.992-.327-.785-.66-.678-.906-.691l-.772-.014c-.268 0-.704.101-1.073.503-.369.402-1.41 1.378-1.41 3.361s1.444 3.9 1.645 4.168c.201.268 2.841 4.338 6.882 6.083.961.415 1.711.663 2.296.848.965.307 1.843.264 2.537.16.774-.116 2.382-.974 2.717-1.913.335-.939.335-1.745.235-1.913-.101-.168-.369-.268-.772-.469z"/></svg>';
+    const ICO_TEL = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1V20a1 1 0 01-1 1C10.85 21 3 13.15 3 3.5a1 1 0 011-1H7.5a1 1 0 011 1c0 1.24.2 2.45.57 3.57a1 1 0 01-.24 1.02l-2.21 2.2z"/></svg>';
+    const ICO_DOC = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 7V3.5L18.5 9H13zM8 13h8v2H8v-2zm0 4h8v2H8v-2z"/></svg>';
+
+    const bar = document.createElement('nav');
+    bar.className = 'mact';
+    bar.setAttribute('aria-label', 'Contact Izhar Foster');
+    bar.setAttribute('data-track-section', 'mobile-bar');
+    bar.innerHTML =
+      '<a class="mact-btn mact-wa" href="' + waHref + '" target="_blank" rel="noopener">' +
+        ICO_WA + '<span>WhatsApp</span></a>' +
+      '<a class="mact-btn" href="tel:+923004842467">' +
+        ICO_TEL + '<span>Call</span></a>' +
+      '<a class="mact-btn" href="' + quoteHref + '">' +
+        ICO_DOC + '<span>Get quote</span></a>';
+
+    document.body.appendChild(bar);
+  })();
 })();
