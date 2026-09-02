@@ -1,0 +1,542 @@
+/* ==========================================================================
+   IZHAR FOSTER — WALK-IN BUILDER 3D CONFIGURATOR
+   Page-scoped. Loaded only by tools/walkin-builder.html, after style.v2.css.
+   Follows the precedent set by consultant.css rather than growing the 5,800-line
+   main sheet for one page.
+
+   Everything here is CSS 3D transforms — no WebGL, no canvas, no library.
+   Tokens come from style.v2.css :root; nothing is redefined.
+   ========================================================================== */
+
+.r3d {
+  --r3d-h: 420px;
+  position: sticky;
+  top: 88px;                       /* .site-header is 76px + breathing room */
+  z-index: 5;
+  margin: 0 0 28px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background:
+    radial-gradient(120% 90% at 50% 8%, #FFFFFF 0%, var(--paper) 46%, var(--paper-2) 100%);
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(8, 66, 150, .04), 0 12px 32px -18px rgba(8, 66, 150, .22);
+}
+
+/* ---------- stage ---------- */
+
+.r3d-stage {
+  position: relative;
+  height: var(--r3d-h);
+  perspective: 1600px;
+  perspective-origin: 50% 44%;
+  cursor: grab;
+  /* Vertical swipes must keep scrolling the page; the JS claims only
+     horizontal drags, so pan-y stays available to the browser. */
+  touch-action: pan-y;
+  outline: none;
+}
+.r3d-stage:active { cursor: grabbing; }
+.r3d-stage:focus-visible { box-shadow: inset 0 0 0 2px var(--brand-500); }
+
+.r3d-world {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform-style: preserve-3d;
+  transform: rotateX(16deg) rotateY(-34deg);
+  transition: transform .5s cubic-bezier(.22, .61, .36, 1);
+}
+.r3d-room {
+  position: absolute;
+  transform-style: preserve-3d;
+}
+
+/* ---------- faces ---------- */
+
+/* Every face is centred on its own middle by negative margins that JS sets
+   alongside width/height. Doing it in margins rather than the `translate`
+   property matters: `translate` composes AFTER `transform`, so it would shift
+   the face in the parent's space after rotation instead of centring it before.
+   Margins move the box before any transform runs, which is what we need. */
+.r3d-face {
+  position: absolute;
+  left: 0; top: 0;
+  transform-origin: 50% 50%;
+  transition:
+    transform .28s cubic-bezier(.22, .61, .36, 1),
+    opacity .22s linear;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.r3d-reduced .r3d-face,
+.r3d-reduced .r3d-world { transition: none; }
+
+/* Slab — the concrete the box lands on. */
+.r3d-slab {
+  background:
+    repeating-linear-gradient(90deg, rgba(8,66,150,.05) 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(0deg, rgba(8,66,150,.05) 0 1px, transparent 1px 34px),
+    linear-gradient(160deg, #DED8C8, #CFC8B6);
+  border: 1px solid rgba(8, 66, 150, .16);
+  border-radius: 2px;
+  box-shadow: 0 0 44px rgba(8, 66, 150, .1) inset;
+}
+
+/* Floor. Inner face carries the panel joint grid. */
+.r3d-floor-in {
+  background:
+    repeating-linear-gradient(90deg, rgba(10,31,61,.16) 0 1px, transparent 1px var(--mod)),
+    repeating-linear-gradient(0deg, rgba(10,31,61,.10) 0 1px, transparent 1px var(--mod)),
+    linear-gradient(150deg, #E7E2D5, #D9D3C2);
+  backface-visibility: visible;
+}
+.r3d-floor-out {
+  background: linear-gradient(150deg, #C9C2AF, #B9B2A0);
+  backface-visibility: visible;
+}
+
+/* Ceiling. Inner reads cool because it is inside the cold envelope. */
+.r3d-ceil-in {
+  background: linear-gradient(150deg, #DCE9EF, #C9DDE6);
+  backface-visibility: visible;
+}
+.r3d-ceil-out {
+  background:
+    repeating-linear-gradient(90deg, rgba(8,66,150,.13) 0 1px, transparent 1px var(--mod)),
+    linear-gradient(150deg, #EFEBE0, #DFD9C9);
+  backface-visibility: visible;
+}
+
+/* Walls. Outer skin = painted steel facing; the repeating gradient is the
+   cam-lock joint every module width, which is the detail that makes the
+   render read as panels rather than a solid block. */
+.r3d-wall {
+  background-color: var(--paper-2);
+}
+.r3d-wall.r3d-out {
+  background-image:
+    repeating-linear-gradient(90deg,
+      rgba(8,66,150,.20) 0 1px,
+      rgba(255,255,255,.30) 1px 3px,
+      transparent 3px var(--mod)),
+    linear-gradient(178deg, #F7F4EE 0%, #E8E3D7 62%, #DCD6C6 100%);
+  box-shadow: inset 0 0 0 1px rgba(8, 66, 150, .10);
+}
+.r3d-wall.r3d-in {
+  background-image:
+    repeating-linear-gradient(90deg,
+      rgba(10,31,61,.16) 0 1px,
+      transparent 1px var(--mod)),
+    linear-gradient(178deg, #EAF3F7 0%, #D8E8F0 100%);
+  box-shadow: inset 0 0 0 1px rgba(10, 31, 61, .08);
+}
+
+/* Fake directional light: the two walls that face the "sun" sit brighter.
+   Cheap, and it stops the box reading as a flat net. */
+.r3d-w-left.r3d-out  { filter: brightness(.93); }
+.r3d-w-back.r3d-out  { filter: brightness(.88); }
+.r3d-w-right.r3d-out { filter: brightness(1.02); }
+
+/* Door opening reveals — where the panel thickness shows. */
+.r3d-reveal {
+  background: linear-gradient(90deg, #C4BDA9, #ADA694);
+  backface-visibility: visible;
+}
+
+.r3d-doorframe {
+  background: linear-gradient(180deg, #C9C2AF, #A9A290);
+  border-radius: 2px;
+  box-shadow: inset 0 0 0 1px rgba(10, 31, 61, .22);
+}
+
+/* Door leaf. The wrapper is placed at the hinge edge so the leaf can swing
+   around it without the position transform interfering. */
+.r3d-leafwrap {
+  position: absolute;
+  left: 0; top: 0;
+  transform-style: preserve-3d;
+  transition: transform .28s cubic-bezier(.22, .61, .36, 1), opacity .22s linear;
+}
+.r3d-leaf {
+  position: absolute;
+  left: 0; top: 0;
+  transform-origin: 0% 50%;
+  transition: transform .6s cubic-bezier(.22, .61, .36, 1);
+  background: linear-gradient(168deg, #F2EEE6 0%, #DCD6C6 100%);
+  border: 1px solid rgba(10, 31, 61, .26);
+  border-radius: 2px;
+  box-shadow: inset -6px 0 14px -8px rgba(10, 31, 61, .3);
+}
+.r3d-leaf-glass {
+  background: linear-gradient(168deg, rgba(214,235,244,.86), rgba(168,206,224,.78));
+  border-color: rgba(10, 31, 61, .38);
+}
+.r3d-leaf-handle {
+  position: absolute;
+  right: 8%; top: 46%;
+  width: 14%; max-width: 16px; height: 5px;
+  border-radius: 3px;
+  background: var(--t-warm);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, .12);
+}
+
+/* Evaporator — inside, cold side. */
+.r3d-evap {
+  background: linear-gradient(180deg, #E8EEF3, #C6D6E0);
+  box-shadow: inset 0 0 0 1px rgba(10, 31, 61, .22);
+}
+.r3d-evap-n {
+  background:
+    repeating-linear-gradient(90deg, rgba(10,31,61,.35) 0 2px, transparent 2px 6px),
+    linear-gradient(180deg, #DCE7EE, #B9CCD9);
+}
+/* Condensing unit — outside, warm side, so it carries the ember accent. */
+.r3d-cdu {
+  background: linear-gradient(180deg, #4A5462, #333B47);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .3);
+}
+.r3d-cdu-n {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(227,106,30,.85) 0 14%, transparent 15%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.10) 0 2px, transparent 2px 7px),
+    linear-gradient(180deg, #4A5462, #2C333E);
+}
+.r3d-pipe {
+  background: linear-gradient(90deg, #8E9AA6, #6F7A86);
+  backface-visibility: visible;
+}
+
+/* ---------- HUD ---------- */
+
+.r3d-hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.r3d-chips {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  align-self: flex-start;
+}
+.r3d-chip {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  letter-spacing: .04em;
+  padding: 4px 8px;
+  border-radius: var(--r-xs);
+  background: rgba(255, 255, 255, .86);
+  border: 1px solid var(--line);
+  color: var(--ink-2);
+  backdrop-filter: blur(6px);
+  white-space: nowrap;
+}
+.r3d-chip-temp {
+  background: var(--brand-ink);
+  border-color: var(--brand-ink);
+  color: #EAF3F7;
+  font-weight: 600;
+}
+.r3d-chip-warm { color: var(--t-warm); border-color: rgba(227, 106, 30, .4); }
+
+.r3d-hint {
+  align-self: flex-end;
+  font-family: var(--font-mono);
+  font-size: .64rem;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: rgba(255, 255, 255, .7);
+  padding: 3px 7px;
+  border-radius: var(--r-xs);
+}
+
+/* ---------- controls ---------- */
+
+.r3d-ui {
+  position: relative;
+  z-index: 3;
+  border-top: 1px solid var(--line-2);
+  background: rgba(255, 255, 255, .72);
+  backdrop-filter: blur(8px);
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.r3d-seg {
+  display: inline-flex;
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  overflow: hidden;
+  background: var(--paper);
+}
+.r3d-seg button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: .78rem;
+  font-weight: 500;
+  color: var(--ink-2);
+  padding: 0 12px;
+  min-height: 44px;              /* WCAG 2.5.5 */
+  cursor: pointer;
+  white-space: nowrap;
+}
+.r3d-seg button + button { border-left: 1px solid var(--line-2); }
+.r3d-seg button[aria-pressed="true"] {
+  background: var(--brand-500);
+  color: #fff;
+  font-weight: 600;
+}
+.r3d-btn {
+  appearance: none;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--line);
+  background: var(--paper);
+  font: inherit;
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.r3d-btn:hover { border-color: var(--brand-500); color: var(--brand-600); }
+.r3d-btn-play {
+  background: var(--t-warm);
+  border-color: var(--t-warm);
+  color: #fff;
+}
+.r3d-btn-play:hover { background: var(--ember-600); border-color: var(--ember-600); color: #fff; }
+.r3d.is-playing .r3d-btn-play::before { content: '❙❙ '; }
+.r3d-spacer { flex: 1 1 auto; min-width: 0; }
+
+/* ---------- build stepper ---------- */
+
+.r3d-step {
+  border-top: 1px solid var(--line-2);
+  padding: 12px;
+  background: var(--paper);
+}
+.r3d-steptrack {
+  height: 3px;
+  background: var(--paper-3);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.r3d-stepbar {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--t-mid), var(--brand-500));
+  transition: width .3s ease;
+}
+.r3d-steprow {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.r3d-stepidx {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  color: var(--t-warm);
+  font-weight: 600;
+}
+.r3d-stepname {
+  font-weight: 650;
+  font-size: .95rem;
+  color: var(--ink);
+}
+.r3d-stepnote {
+  margin: 6px 0 0;
+  font-size: .84rem;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+.r3d-stepnav { display: flex; gap: 6px; margin-left: auto; }
+.r3d-stepnav button {
+  appearance: none;
+  width: 44px; height: 44px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 1rem;
+  cursor: pointer;
+}
+.r3d-stepnav button:hover { border-color: var(--brand-500); color: var(--brand-600); }
+
+/* Fallback when the browser cannot do 3D at all. */
+.r3d.is-unsupported .r3d-stage,
+.r3d.is-unsupported .r3d-ui { display: none; }
+.r3d-fallback { display: none; padding: 18px; font-size: .9rem; color: var(--ink-2); }
+.r3d.is-unsupported .r3d-fallback { display: block; }
+
+/* Collapsed — small phones need the screen back. */
+.r3d.is-collapsed .r3d-stage,
+.r3d.is-collapsed .r3d-step,
+.r3d.is-collapsed .r3d-hud { display: none; }
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 1100px) {
+  .r3d { --r3d-h: 360px; }
+}
+
+@media (max-width: 900px) {
+  .r3d { --r3d-h: 320px; top: 84px; }
+}
+
+/* Phones. The viewer goes full-bleed and sticks under the 64px header so it
+   stays on screen while the user works down the form — that is the whole
+   point of the thing. .calc-grid is `display:block` here, so the negative
+   margins bleed to the viewport edge. */
+@media (max-width: 720px) {
+  .r3d {
+    --r3d-h: min(38vh, 300px);
+    top: 64px;
+    margin-left: calc(var(--mb-x) * -1);
+    margin-right: calc(var(--mb-x) * -1);
+    margin-bottom: 20px;
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+  }
+  .r3d-stepnote { display: none; }          /* the caption lives in the step list below */
+  .r3d-hint { display: none; }
+  .r3d-ui { padding: 8px 10px; gap: 6px; }
+  .r3d-seg button { padding: 0 10px; font-size: .74rem; }
+  .r3d-btn { padding: 0 12px; font-size: .74rem; }
+}
+
+@media (max-width: 480px) {
+  .r3d { --r3d-h: min(34vh, 250px); }
+  .r3d-chip { font-size: .62rem; padding: 3px 6px; }
+  /* Only the two chips that matter at this width. */
+  .r3d-chip-hide-sm { display: none; }
+}
+
+/* ---------- mobile CTA rescue ----------
+   style.v2.css hides .calc-aside entirely at <=720px and main.v2.js moves only
+   .calc-result into the bottom sheet, so the quote and WhatsApp buttons in the
+   aside are invisible on phones. This block ships a duplicate CTA inside the
+   form that only exists at mobile widths. */
+.wib-mobile-cta { display: none; }
+@media (max-width: 720px) {
+  .wib-mobile-cta {
+    display: grid;
+    gap: 10px;
+    margin: 24px 0 8px;
+    padding: 18px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    background: var(--paper-2);
+  }
+  .wib-mobile-cta .btn { width: 100%; justify-content: center; }
+  .wib-mobile-cta-note {
+    font-size: .78rem;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+}
+
+/* ---------- build step list (text mirror of the 3D sequence) ----------
+   The animation is the hook; this list is what Google and a screen reader
+   actually read, and it is where the engineering detail lives. */
+.wib-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: wibstep;
+  display: grid;
+  gap: 0;
+}
+.wib-steps li {
+  counter-increment: wibstep;
+  position: relative;
+  padding: 14px 0 14px 46px;
+  border-top: 1px solid var(--line-2);
+}
+.wib-steps li:first-child { border-top: 0; }
+.wib-steps li::before {
+  content: counter(wibstep);
+  position: absolute;
+  left: 0; top: 14px;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: .76rem;
+  font-weight: 600;
+  color: var(--brand-600);
+  background: var(--brand-50);
+  border: 1px solid rgba(8, 66, 150, .18);
+}
+.wib-steps h3 {
+  margin: 0 0 4px;
+  font-size: .97rem;
+  font-weight: 650;
+  color: var(--ink);
+}
+.wib-steps p {
+  margin: 0;
+  font-size: .88rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+.wib-steps button {
+  appearance: none;
+  margin-top: 8px;
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: var(--r-xs);
+  border: 1px solid var(--line);
+  background: transparent;
+  font: inherit;
+  font-size: .76rem;
+  font-weight: 600;
+  color: var(--brand-600);
+  cursor: pointer;
+}
+.wib-steps button:hover { background: var(--brand-50); border-color: var(--brand-500); }
+.wib-steps li[aria-current="true"]::before {
+  background: var(--brand-500);
+  color: #fff;
+  border-color: var(--brand-500);
+}
+
+/* Panel schedule table — the real procurement output. */
+.wib-schedule {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .86rem;
+  margin-top: 10px;
+}
+.wib-schedule th,
+.wib-schedule td {
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line-2);
+}
+.wib-schedule th {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+.wib-schedule td:last-child,
+.wib-schedule th:last-child { text-align: right; font-family: var(--font-mono); }
+.wib-schedule-wrap { overflow-x: auto; }

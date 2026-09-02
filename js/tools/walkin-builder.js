@@ -18,7 +18,8 @@
 
   var state = {
     temp: 'chiller', preset: '2.4,3.0',
-    w: 2.4, l: 3.0, h: 2.4
+    w: 2.4, l: 3.0, h: 2.4,
+    doorPos: 'front', module: 1.15
   };
 
   function roomC() { return state.temp === 'chiller' ? 4 : -22; }
@@ -42,6 +43,31 @@
     state.door = $('wib-door').value;
     state.ref = $('wib-ref').value;
     state.loc = $('wib-loc').value;
+    state.doorPos = $('wib-doorpos') ? $('wib-doorpos').value : state.doorPos;
+    state.module = $('wib-module') ? parseFloat($('wib-module').value) || 1.15 : state.module;
+  }
+
+  /* Panel schedule. Wall panels are vertical and run full height, so the count
+     per wall is the span divided by the module width, rounded up — the last
+     panel on each run is cut to suit. This is the number a buyer actually
+     needs, and it is why the module width is an input rather than a constant:
+     it is confirmed per order, not a fixed Izhar spec. */
+  function schedule() {
+    var m = state.module;
+    var nW = Math.max(1, Math.ceil(state.w / m));
+    var nL = Math.max(1, Math.ceil(state.l / m));
+    var wallArea = 2 * (state.w + state.l) * state.h;
+    var ceilPanels = Math.max(1, Math.ceil(state.w / m));
+    return {
+      module: m,
+      perWidthWall: nW, perLengthWall: nL,
+      wallPanels: 2 * nW + 2 * nL,
+      ceilPanels: ceilPanels,
+      floorPanels: (state.floor === 'insulated') ? ceilPanels : 0,
+      wallArea: wallArea,
+      ceilArea: state.w * state.l,
+      totalArea: wallArea + state.w * state.l + ((state.floor === 'insulated') ? state.w * state.l : 0)
+    };
   }
 
   function compute() {
@@ -118,6 +144,9 @@
          ? 'Screed on grade: ground settles near 18 °C and acts as a sink. Acceptable for chiller duty; not for a freezer.'
          : 'Insulated floor on grade, against an 18 °C soil boundary.');
 
+    renderSchedule();
+    push3D();
+
     var spec = specText(r);
     $('wib-spec').textContent = 'Spec: ' + spec.short;
     var wa = (window.Izhar && Izhar.whatsappUrl)
@@ -125,6 +154,42 @@
       : 'https://wa.me/923215383544?text=' + encodeURIComponent(spec.full);
     $('wib-wa').setAttribute('href', wa);
     if (window.Izhar && Izhar.writeState) Izhar.writeState({ tool: 'walkin-builder', state: state, result: r });
+  }
+
+  /* Hand the current configuration to the 3D viewer. Kept to one call site so
+     the geometry can never drift from the numbers in the result panel. */
+  function push3D() {
+    if (!window.IzharRoom3D) return;
+    IzharRoom3D.update({
+      w: state.w, l: state.l, h: state.h,
+      panel: state.panel, module: state.module,
+      doorPos: state.doorPos, doorType: state.door,
+      temp: state.temp, loc: state.loc, ref: state.ref, floor: state.floor
+    });
+  }
+
+  function renderSchedule() {
+    var body = $('wib-sched-body');
+    if (!body) return;
+    var s = schedule();
+    var mm = Math.round(state.module * 1000);
+    var rows = [
+      ['Wall panels — ' + state.w + ' m walls (×2)', s.perWidthWall + ' × ' + mm + ' mm', s.perWidthWall * 2],
+      ['Wall panels — ' + state.l + ' m walls (×2)', s.perLengthWall + ' × ' + mm + ' mm', s.perLengthWall * 2],
+      ['Ceiling panels', s.ceilPanels + ' × ' + mm + ' mm', s.ceilPanels],
+      ['Floor panels', s.floorPanels ? (s.floorPanels + ' × ' + mm + ' mm') : 'none — slab/screed', s.floorPanels]
+    ];
+    body.innerHTML = rows.map(function (r) {
+      return '<tr><th scope="row">' + r[0] + '</th><td>' + r[1] + '</td><td>' + r[2] + '</td></tr>';
+    }).join('') +
+      '<tr><th scope="row"><strong>Total panel area</strong></th><td>envelope</td><td><strong>' +
+      fmt(s.totalArea, 1) + ' m²</strong></td></tr>';
+
+    var note = $('wib-sched-note');
+    if (note) {
+      note.textContent = 'Counts assume ' + mm + ' mm module width with the last panel on each ' +
+        'run cut to suit. Module width is confirmed per order — change it above to match your quote.';
+    }
   }
 
   function specText(r) {

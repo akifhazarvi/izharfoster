@@ -8,6 +8,22 @@ Work top-to-bottom. Mark done with `[x]`. Each PR title must reference the GROWT
 
 ---
 
+## 2026-09-02 — Google Ads keyword cleanup built from the search-terms export
+
+**Trigger.** Client applied Google's recommended keywords manually; broad match entered both Search campaigns. Export (26 Aug – 1 Sep, 322 itemised terms) confirms the damage.
+
+- [x] **Diagnosis from real spend data, not GA4 inference.** Account $59.85/7d, 100% Search, **PMax $0.00 — the pause held**. CTR 11.30% at $0.27 CPC, so the ads are fine; the problem is what they buy. **137 broad terms took $8.06 = 32% of itemised spend for 1 conversion.** Only **14 of 322** terms had any negative applied.
+- [x] **Quantified the invisible half.** "Other search terms" (not itemised by Google) is **$34.98 of $59.85 = 58% of spend**. You cannot negate what Google will not name, so match-type tightening is the only lever that reaches it — a second, independent reason to remove broad.
+- [x] **[ADS-NEGATIVES.md](ADS-NEGATIVES.md) published** — keyword removal procedure + 6 paste-ready shared negative lists, each built only from terms that actually served in the window. **$9.65 = 39% of itemised spend recoverable**, 288 of 910 impressions.
+- [x] **Found a junk vertical nobody had named: retail display refrigeration.** Varioline, Caravell, AHT, `pepsi chiller`, `3 door chiller` — 21 terms, $1.24. These buyers want a display cabinet or bottle cooler, not a walk-in cold room. Not covered by any of the seven 17 Aug lists.
+- [x] **Flagged that lists may exist but not be attached** — 308/322 terms showing no negative applied is the signature of shared lists created and never linked to the campaigns.
+- [x] **Two decisions handed back, not assumed:** (1) own-brand `izhar` terms — recommend negativing, since the site ranks #1 organically for all of them and paid is buying owned traffic; (2) **EPS** — 17 terms, $1.07, and `eps sandwich panel price in pakistan` was the 5th-largest spender, but the site's own blog argues *against* EPS on fire performance. Commercial call, not a data one.
+- [x] **Corrected my own earlier attribution.** I had blamed auto-apply recommendations for the broad match. The client applied them manually. Auto-apply should still be switched off as a guard, but it was not the cause — recorded so the runbook does not carry a wrong root cause.
+
+**Still the ceiling:** the export's 22 conversions at $2.76 are `cta_quote_click` and `tool_calculated`, not leads. Every Ads conversion figure is a tap count until GA4 key events are inverted. Expect reported conversions to fall sharply when that is fixed — that is the fix working.
+
+---
+
 ## 2026-09-02 — Mobile conversion furniture rebuilt from the GA4 funnel (GP§13) — `8091a5a`
 
 **Data trigger.** Clean post-PMax window (18 Aug – 1 Sep, 15 d) shows mobile is the *strong* half of the audience and the one that cannot convert: 607 mobile sessions, 30.1% bounce vs desktop's 42.7%, 65% of all organic clicks at position 5.40 vs desktop's 11.03 — and **3 form submissions**. Four independent contact routes all completed between 1.6% and 5.6%: chat 5/101, form 3/54, wizard 1/21, calculator 3/186. That is one systemic pattern, not four coincidences — every path to contact was a multi-step form. Meanwhile `whatsapp_click` beats `form_submit` **19:1** on mobile.
