@@ -325,3 +325,141 @@ conversions. Switching earlier hands Smart Bidding a signal it cannot yet model.
 Expect reported conversions to **fall sharply** the day this goes live: you move from
 counting ~22 taps/week (`cta_quote_click`, `tool_calculated`) to counting real contacts.
 That is the fix working. Tell Faisal before he sees the chart.
+
+---
+
+# THE ONE LIST — consolidated, paste-ready
+
+Single shared negative list. **Tools → Shared library → Negative keyword lists → +**,
+name it `IF – Master Negatives`, paste the block below, then **attach it to both campaigns**.
+
+Google Ads reads the punctuation: `"quoted"` = phrase negative, `[bracketed]` = exact negative.
+Paste exactly as written — the exact ones MUST stay bracketed or they will block your real keywords.
+
+```
+"roof sheet"
+"roofing sheet"
+"roofing sheets"
+"cladding"
+"cement sheet"
+"cement board"
+"fibre sheet"
+"fiber sheet"
+"fibre sheets"
+"fiber sheets"
+"fibre glass"
+"fiber glass"
+"fiberglass"
+"fibreglass"
+"upvc"
+"pvc"
+"polycarbonate"
+"corrugated"
+"alucobond"
+"composite panel"
+"dadex"
+"aluzinc"
+"standing seam"
+"plastic sheet"
+"plastic roof"
+"gi sheet"
+"steel sheet"
+"steel roof"
+"tr garder"
+"jumbo lawn"
+"jumbo loan"
+"heat protection roof"
+"heat resistant sheet"
+"solar chips"
+"waterproof"
+"waterproofing"
+"thermopore"
+"thermocol"
+"jumbolon"
+"glasswool"
+"glass wool"
+"xps"
+"penoplex"
+"nbr"
+"insulation board"
+"insulation hard foam"
+"membrane"
+"dpc"
+"roofgrip"
+"mhk"
+"varioline"
+"veroline"
+"caravell"
+"intercool"
+"aht"
+"pepsi chiller"
+"display chiller"
+"deep freezer"
+"door chiller"
+"3 door"
+"2 door"
+"single door"
+"haier"
+"united insulation"
+"gondal"
+"dubond"
+"dlx bond"
+"speed panel"
+"pakistan insulation"
+"eps solutions"
+"olx"
+"second hand"
+"reefer container"
+"container for sale"
+"cold storage for sale"
+"cold store for sale"
+"construction companies"
+"construction company"
+"types of modular"
+"how to make"
+"wall panel online"
+"kitchen"
+"acoustic"
+"carbon fiber"
+"partition"
+[panel]
+[panels]
+[roof]
+[building]
+[construction]
+[sheet]
+```
+
+**89 negatives. Covers $9.65 of $24.88 itemised spend (39%) and 288 of 910 impressions.**
+
+## Two optional additions — your call, not mine
+
+Add these to the same list only if you agree:
+
+```
+"izhar"
+"eps"
+```
+
+- **`"izhar"`** — `izhar roof`, `izhar steel`, `izhar engineering lahore` are people searching for
+  *you*, and you rank #1 organically for all of them. Paid is buying traffic you already own
+  ($0.63/week). Recommend adding. Reverse only if a competitor starts bidding on your name.
+- **`"eps"`** — only if you do **not** manufacture EPS panels. `eps sandwich panel price in
+  pakistan` was the 5th-largest spender ($0.69). If you *do* sell EPS, leave it out and fix the
+  PIR page instead, which currently argues against EPS and so cannot convert those clicks.
+
+## Deliberately NOT negatived — these are real products
+
+Do not add these, however junk-adjacent they look in the search terms report:
+
+| Term | Why it stays |
+|---|---|
+| `iqf` | `services/blast-freezers.html` sells **IQF tunnels −35 to −40 °C**. `iqf machine price` and `iqf freezer price` are buyers. |
+| `commercial chiller` | `services/commercial-refrigeration-rack-systems.html` exists. Too close to a real product to block. |
+| `walk in`, `cold room`, `blast freezer`, `chiller for cold room` | Core products. |
+| `near me` | Good local intent — the city landing pages target it. |
+| `for sale` (bare phrase) | Blocks `walk in freezer for sale`, which may be a genuine buyer. Only the two specific `cold storage/store for sale` variants are negatived above. |
+
+**An earlier draft of this file wrongly listed `iqf` and `commercial chiller` as junk.** Corrected
+2026-09-02 after checking them against the service pages. If you already pasted an older version,
+remove those two entries.
