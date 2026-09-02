@@ -167,6 +167,44 @@
     return (side === 'left' || side === 'right') ? l : w;
   }
 
+  function opposite(side) {
+    return { front: 'back', back: 'front', left: 'right', right: 'left' }[side];
+  }
+
+  /* Which wall the condensing unit sits on. Never the door wall — on site it
+     keeps the unit out of the traffic and away from the warm air the door
+     dumps. Of the two walls the default camera can see (front and right at
+     yaw −34°), pick whichever is not carrying the door, so the unit is
+     actually in shot rather than hidden round the back. */
+  function cduSide() {
+    return (st.doorPos === 'right') ? 'front' : 'right';
+  }
+
+  function cduBox(w, l, h, tp, S) {
+    var side = cduSide();
+    var n = NORMAL[side];
+    var onSideWall = (side === 'left' || side === 'right');
+    var mono = (st.ref === 'mono');
+
+    var cw = Math.min(wallSpan(side, w, l) * 0.42, 1.0 * S);
+    var ch = Math.min(h * 0.30, 0.7 * S);
+    var cd = Math.min(0.5 * S, 0.5 * S);
+    /* A monoblock hangs on the wall head; a split/remote unit stands off it. */
+    var gap = mono ? 0 : 0.8 * S;
+    var dist = tp + gap + cd / 2;
+
+    return {
+      x: n[0] * ((w / 2) + (n[0] ? dist : 0)),
+      y: mono ? (-h / 2 + ch / 2 + tp) : (h / 2 - ch / 2),
+      z: n[2] * ((l / 2) + (n[2] ? dist : 0)),
+      /* Depth follows the wall normal, width runs along the wall. */
+      sx: onSideWall ? cd : cw,
+      sy: ch,
+      sz: onSideWall ? cw : cd,
+      gap: gap
+    };
+  }
+
   /* Centre a face on its own middle, then place it. */
   function place(p, transform, wpx, hpx) {
     p.base = transform;
@@ -272,16 +310,19 @@
         placeBoxFace(p, k.split('|')[1], ex2, -h / 2 + eh / 2 + 3, ez, ew, eh, ed);
 
       } else if (k.indexOf('cdu|') === 0) {
-        var cw = Math.min(w * 0.42, 1.0 * S), ch = Math.min(h * 0.30, 0.7 * S), cd = Math.min(0.5 * S, l * 0.3);
-        var mono = (st.ref === 'mono');
-        var cy = mono ? (-h / 2 + ch / 2 + tp) : (h / 2 - ch / 2);
-        var off = mono ? (tp + cd / 2) : (tp + cd / 2 + 0.8 * S);
-        placeBoxFace(p, k.split('|')[1], 0, cy, l / 2 + off, cw, ch, cd);
+        var c = cduBox(w, l, h, tp, S);
+        placeBoxFace(p, k.split('|')[1], c.x, c.y, c.z, c.sx, c.sy, c.sz);
 
       } else if (k === 'pipe') {
-        var run = (st.ref === 'mono') ? (tp + 3) : (0.8 * S + tp);
-        place(p, 'translate3d(' + (w * 0.26) + 'px,' + (-h / 2 + 0.35 * S) + 'px,' +
-                 (l / 2 + run / 2) + 'px) rotateX(90deg)', Math.max(3, tp * 0.5), Math.max(4, run));
+        /* Runs along the outside of the CDU wall, at high level, from the
+           shell out to the unit — so the two read as one system. */
+        var c2 = cduBox(w, l, h, tp, S);
+        var n = NORMAL[cduSide()];
+        var gap = Math.max(4, c2.gap);
+        place(p, 'translate3d(' + (n[0] * (w / 2 + tp + gap / 2)) + 'px,' +
+                 (-h / 2 + 0.4 * S) + 'px,' + (n[2] * (l / 2 + tp + gap / 2)) + 'px)' +
+                 (n[0] ? ' rotateY(90deg)' : '') + ' rotateX(90deg)',
+             Math.max(4, tp * 0.6), gap);
       }
     });
 
@@ -294,27 +335,43 @@
      four lines of maths are correct on all four sides. */
   function placeWall(p, side, skin, strip, d) {
     var span = wallSpan(side, d.w, d.l);
-    var z = (skin === 'out') ? d.tp : 0;
+    /* Front and back outer skins run past the side walls by one panel
+       thickness so the corners lap instead of leaving a gap that shows the
+       cold interior colour as a sliver. Side walls butt into them, as panels
+       actually do. */
+    var out = (skin === 'out');
+    if (out && (side === 'front' || side === 'back')) span += 2 * d.tp;
+    var z = out ? d.tp : 0;
     /* The inner skin must face into the room, hence the flip. */
-    var facing = (skin === 'in') ? ' rotateY(180deg)' : '';
+    var facing = out ? '' : ' rotateY(180deg)';
     var base = wallBase(side, d.w, d.l);
 
+    /* Outer skins also run one thickness past the wall head and the floor, so
+       they lap the ceiling and floor panels. Without this the gap between the
+       wall top and the ceiling plane shows the cold interior colour as a thin
+       blue line along every top edge. Inner skins stay at the true clear
+       height, because that is the volume the numbers are calculated on. */
+    var ext = out ? d.tp : 0;
+    var hFull = d.h + 2 * ext;
+
     if (strip === 'full') {
-      place(p, base + ' translate3d(0,0,' + z + 'px)' + facing, span, d.h);
+      place(p, base + ' translate3d(0,0,' + z + 'px)' + facing, span, hFull);
       return;
     }
     if (strip === 'top') {
       /* Above the opening: from the wall head down to the lintel. */
-      place(p, base + ' translate3d(0,' + (-d.dH / 2) + 'px,' + z + 'px)' + facing,
-            span, d.h - d.dH);
+      var ht = d.h + ext - d.dH;
+      place(p, base + ' translate3d(0,' + (-(ext + d.dH) / 2) + 'px,' + z + 'px)' + facing,
+            span, ht);
       return;
     }
     /* Side jambs, floor to lintel, one each side of the opening. */
     var jw = (span - d.dW) / 2;
     var sgn = (strip === 'jambL') ? -1 : 1;
     var x = sgn * (d.dW + span) / 4;
-    place(p, base + ' translate3d(' + x + 'px,' + (d.h / 2 - d.dH / 2) + 'px,' + z + 'px)' + facing,
-          jw, d.dH);
+    place(p, base + ' translate3d(' + x + 'px,' +
+             (d.h / 2 - d.dH / 2 + ext / 2) + 'px,' + z + 'px)' + facing,
+          jw, d.dH + ext);
   }
 
   /* The three surfaces inside the opening, which is where panel thickness
@@ -337,12 +394,21 @@
   function applyVisibility(expl, S) {
     var cut = (view.mode === 'cutaway');
 
+    /* In cutaway the door only makes sense while its wall is still standing.
+       A wall is "near" — and therefore culled by backface-visibility — when its
+       outward normal turns to face the camera, which for the four vertical
+       walls depends on yaw alone. */
+    var yr = view.yaw * Math.PI / 180;
+    var doorN = NORMAL[st.doorPos];
+    var doorWallNear = (-doorN[0] * Math.sin(yr) + doorN[2] * Math.cos(yr)) > 0;
+
     parts.forEach(function (p) {
       var shown = view.step >= p.step;
       var outerSkin = /\|out\|/.test(p.kind) || p.kind === 'ceil-out' || p.kind === 'floor-out';
       /* Cutaway drops the outer skins and the ceiling; each remaining wall then
          faces inward, so backface-visibility hides the near ones by itself. */
       if (cut && (outerSkin || p.kind === 'ceil-in')) shown = false;
+      if (cut && doorWallNear && (p.kind === 'doorframe' || p.kind === 'leaf')) shown = false;
 
       var tr = p.base;
       if (shown && expl) {
