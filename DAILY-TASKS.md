@@ -8,6 +8,37 @@ Work top-to-bottom. Mark done with `[x]`. Each PR title must reference the GROWT
 
 ---
 
+## 2026-09-02 — GP§14: 3D cold room configurator, cold room guide, logo repair
+
+- [x] **`js/tools/walkin-builder-3d.js` + `css/walkin-builder.css`** — live 3D configurator on `/tools/walkin-builder`, matching the visual layer on `fostercoolers.us/quote-builder` (which runs Three.js) but **without WebGL**. Assembled / cutaway / exploded modes, an eight-stage **build animation** their tool does not have, drag-to-orbit, and a panel schedule. 35 faces, zero dependencies.
+- [x] **CSS 3D, not `model-viewer`.** The repo already has `IzharViz` (procedural glTF → base64 → Blob URL per change). Rejected for this: it re-encodes on every keystroke, which stutters on mid-range Android, and model-viewer + three.js is ~300 KB before first paint. CSS transforms update in-frame, keep labels as DOM text, and make the assembly sequence a class toggle.
+- [x] **Cutaway falls out of `backface-visibility`.** Every wall is built as two skins — outer facing out, inner facing in. Hiding the outer skins leaves each wall facing into the room, so the two nearest the camera cull themselves as you orbit. No per-frame visibility maths.
+- [x] **Viewer lives in `.calc-form`, not `.calc-aside`.** `style.v2.css` sets `.calc-aside{display:none}` at ≤720px and `main.v2.js` lifts only `.calc-result` into the bottom sheet — a viewer in the aside would vanish on phones. Sticky in both layouts.
+
+### Three pre-existing defects found and fixed on that page
+
+- [x] **Methodology block was the A2L calculator's text** — "The A2L minimum room area calculator determines the smallest floor area…" on the walk-in builder. Exactly the clone hazard CLAUDE.md §C warns about; the visible copy above it looked right, which is why it survived review. Rewritten to the actual ASHRAE Ch. 24 method.
+- [x] **Print PDF produced an empty report.** `buildPDF()` returned `{title, subtitle, rows, note}`; `generatePDF()` in `_shared.js` consumes `{sections, math, sources}`. Everything was silently dropped — and because `sources` was empty, `appendMethodologyPanel()` bailed, so the Methodology & citations panel never injected either. Both now work.
+- [x] **Mobile had no CTA at all.** With `.calc-aside` hidden, the "Send this spec to engineering" and WhatsApp buttons never rendered on a phone. Added a mobile-only CTA inside the form, mirroring both hrefs (WhatsApp via `Izhar.whatsappUrl`, so line routing holds).
+
+### Logo and colour
+
+- [x] **`images/logo.svg` was a 191 KB SVG wrapper around a base64 PNG** — not a vector at all, on 81 pages. Re-encoded the embedded PNG to a 32-colour palette at unchanged 680×160: **191,347 → 14,503 bytes (−92.4%)**, visually identical. Filename kept, so no HTML changed. Note for future work: there is still no true vector logo in the repo; `logo-light.svg` is a *different* design (460×130, different tagline), not a colour variant.
+- [x] **Logo was invisible on the mobile tool header.** At ≤720px `body.has-dark-header` turns the header navy and recolours the hamburger, phone and CTA — but not the logo, which is a solid brand-blue plaque. Added `filter: brightness(0) invert(1)`, which flattens the plaque to white and lets the navy read through the knockout lettering. Verified by render.
+- [x] **`--brand-500` corrected `#084296` → `#084595`**, sampled from the logo. Three different blues were in circulation (`#2160A8` in memory, `#084595` in DAILY-TASKS, `#084296` in the token). `#084595` is the real one.
+
+### New guide — GSC-driven
+
+- [x] **`blog/cold-room-design-build-guide-pakistan.html`** (2,786 words, 12 H2s, 3 tables, 4 JSON-LD blocks: Article + **HowTo** + FAQPage + Breadcrumb, all parse). Targets the `cold room` cluster, chosen from a live GSC pull (2026-06-01 → 08-30, `https://izharfoster.com/`).
+- [x] **Why that cluster.** `/tools/walkin-builder` returned **no GSC rows at all** (shipped 08-18, not yet ranking) and `/services/walk-in-cold-rooms` has only 298 imp / 6 clicks. Meanwhile `cold room manufacturer` (pos 2), `cold room panels manufacturer` (pos 1.2), `cold room specialist` (pos 1), `cold room wall material` (pos 1), `cold room contractors` (pos 1), `cold room installation cost` (pos 2) all rank well on almost no volume — the site ranks for the cluster but no page owns it. H2s and the FAQ are written directly onto those queries.
+- [x] Linked from `tools.html`, `services/walk-in-cold-rooms.html`, `blog.html` (lead card), the tool page's build-stage list, and `sitemap.xml`. Tool card renamed **"3D Cold Room Builder"**; WebApplication `featureList` updated.
+
+**Verification:** `verify-wa-split.mjs` 38/38, `verify-ads-tracking.mjs` all pass, no console errors and no horizontal overflow at 1440 and 390, all 22 internal links on the guide resolve.
+
+**Not done:** no true vector rebuild of the logo (needs the original artwork or a tracing pass — the current file is still a raster inside an SVG). Guide has no bespoke OG image; it uses `og-default.jpg`.
+
+---
+
 ## 2026-09-02 — Google Ads keyword cleanup built from the search-terms export
 
 **Trigger.** Client applied Google's recommended keywords manually; broad match entered both Search campaigns. Export (26 Aug – 1 Sep, 322 itemised terms) confirms the damage.
