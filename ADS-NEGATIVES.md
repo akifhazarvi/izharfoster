@@ -268,3 +268,60 @@ Set the daily budgets explicitly rather than letting delivery decide.
 - **Weekly:** re-export the search-terms report and re-run this analysis.
 - **Do not switch to Maximise conversions** until Step 4 is done and clean `form_submit` /
   `whatsapp_click` conversions have been recording for at least 14 days.
+
+---
+
+# Appendix — GA4 → Google Ads conversion import
+
+When importing GA4 key events as Google Ads conversion actions
+(Goals → Conversions → New conversion action → Google Analytics 4 → Select events),
+set the **category** on each. Category is not cosmetic: Google groups Sales vs Leads
+categories differently in reporting and in Smart Bidding's value model.
+
+| GA4 key event | Category | Primary / Secondary | Count | 28-day vol |
+|---|---|---|---|---|
+| `whatsapp_click` | **Contact** | **PRIMARY** | One | 68 |
+| `phone_click` | **Contact** | Secondary | One | 11 |
+| `chat_submit` | **Contact** | Secondary | One | 73 |
+| `form_submit` | **Submit lead form** | Secondary | One | 11 |
+| `lead_submitted` | **Submit lead form** | Secondary | One | 10 |
+| `tool_quote_whatsapp` | **Request quote** | Secondary | One | 20 |
+| `tool_email_quote` | **Request quote** | Secondary | One | 21 |
+| `cost_lead` | **Request quote** | Secondary | One | 17 |
+| `wizard_submit` | **Request quote** | Secondary | One | 17 |
+
+**Do NOT import `lead_intent`.** It is an umbrella event — `js/track.js` fires it via
+`emitLead()` alongside every `whatsapp_click`, `phone_click` and `email_click`
+(80 ≈ 68 + 11 + 3). Importing it double-counts every contact tap. Best practice is to
+also unmark it as a key event in GA4; not importing it is sufficient to keep it out of
+bidding.
+
+**Do NOT import `email_click`** (3 in 28 days) — same double-count, negligible volume.
+
+## Why only one Primary
+
+Smart Bidding optimises toward **Primary** actions only; Secondary actions are recorded
+for reporting but not bid on. `whatsapp_click` is the right single primary:
+
+- **Volume.** ~130/month. Smart Bidding needs roughly 30/month minimum to learn, ideally 50+.
+  No completion event on its own clears that bar — `form_submit` is 11 per 28 days.
+- **It is a real lead in this market.** On mobile it outperforms `form_submit` 19:1.
+- **The site is now built around it** — the mobile action bar (GP§13, `1bf2ebe`) makes
+  one-tap WhatsApp the primary path on every page below 720 px.
+
+The eight Secondary actions still report, so you can see which routes produce
+qualified conversations without letting the low-volume ones destabilise bidding.
+
+## Count setting: "One", not "Every"
+
+Lead actions should count **one conversion per ad click**. A visitor who taps WhatsApp,
+comes back, and taps again is one lead, not two. "Every" is for e-commerce purchases.
+
+## Before switching to Maximise conversions
+
+Wait until **whatsapp_click has 14 days of clean data** as Primary — roughly 60+ recorded
+conversions. Switching earlier hands Smart Bidding a signal it cannot yet model.
+
+Expect reported conversions to **fall sharply** the day this goes live: you move from
+counting ~22 taps/week (`cta_quote_click`, `tool_calculated`) to counting real contacts.
+That is the fix working. Tell Faisal before he sees the chart.

@@ -151,8 +151,13 @@
     $('wib-spec').textContent = 'Spec: ' + spec.short;
     var wa = (window.Izhar && Izhar.whatsappUrl)
       ? Izhar.whatsappUrl(spec.full)
-      : 'https://wa.me/923215383544?text=' + encodeURIComponent(spec.full);
-    $('wib-wa').setAttribute('href', wa);
+      : 'https://wa.me/' + ((window.IzharWA && IzharWA.number()) || '923215383544') +
+        '?text=' + encodeURIComponent(spec.full);
+    /* Both copies: the aside one for desktop, the in-form one for mobile,
+       where the aside is hidden outright. */
+    ['wib-wa', 'wib-wa-m'].forEach(function (id) {
+      if ($(id)) $(id).setAttribute('href', wa);
+    });
     if (window.Izhar && Izhar.writeState) Izhar.writeState({ tool: 'walkin-builder', state: state, result: r });
   }
 
@@ -236,11 +241,20 @@
       $('wib-w').value = p[0];
       $('wib-l').value = p[1];
     });
-    ['wib-w','wib-l','wib-h','wib-city','wib-panel','wib-curtain','wib-floor','wib-door','wib-ref','wib-loc']
+    ['wib-w','wib-l','wib-h','wib-city','wib-panel','wib-curtain','wib-floor','wib-door',
+     'wib-ref','wib-loc','wib-doorpos','wib-module']
       .forEach(function (id) {
         var el = $(id);
         if (el) el.addEventListener('input', render);
       });
+
+    /* Mount the 3D viewer before the first render so push3D() has something to
+       talk to. It degrades to a static note if the browser cannot do preserve-3d. */
+    var viz = document.getElementById('wib-3d');
+    if (viz && window.IzharRoom3D) {
+      try { IzharRoom3D.mount(viz); }
+      catch (e) { if (window.console) console.warn('[walkin-builder] 3D unavailable:', e); }
+    }
 
     render();   // paint before anything optional can fail
 
@@ -251,28 +265,67 @@
           toolName: 'Walk-in Builder',
           title: 'Build your own walk-in',
           subtitle: 'Configured spec sheet — no pricing',
+          /* generatePDF() in _shared.js consumes { sections, math, sources }.
+             The previous shape here ({ title, subtitle, rows, note }) was
+             silently dropped, so Print PDF produced an empty report and the
+             methodology panel never injected — it bails when sources is empty. */
           buildPDF: function () {
             var r = compute();
+            var s = schedule();
+            var protection = state.curtain === 1 ? 'none'
+                           : state.curtain === 0.5 ? 'air curtain' : 'strip curtain';
             return {
-              title: 'Walk-in cold room — configured spec',
-              subtitle: specText(r).short,
-              rows: [
-                ['Type', state.temp === 'chiller' ? 'Chiller +2/+5 °C' : state.temp === 'freezer' ? 'Freezer −18/−25 °C' : 'Dual-zone'],
-                ['Internal dimensions', state.w + ' × ' + state.l + ' × ' + state.h + ' m'],
-                ['Internal volume', fmt(r.vol, 1) + ' m³'],
-                ['Panel', (state.panel * 1000) + ' mm PIR · U ' + r.U.toFixed(3) + ' W/m²K · λ 0.022'],
-                ['Door', state.door + ' · ' + (state.curtain === 1 ? 'no protection' : state.curtain === 0.5 ? 'air curtain' : 'strip curtain')],
-                ['Floor', state.floor],
-                ['Refrigeration', state.ref + ' · ' + state.loc],
-                ['Design ambient', state.amb + ' °C'],
-                ['Transmission load', fmt(r.qTrans) + ' W'],
-                ['Infiltration load', fmt(r.qInf) + ' W'],
-                ['Internal load', fmt(r.qInt) + ' W'],
-                ['Total refrigeration duty', fmt(r.total / 1000, 2) + ' kW'],
-                ['Compressor duty (18 h/day)', fmt(r.comp / 1000, 2) + ' kW'],
-                ['Estimated annual energy', fmt(r.kwh) + ' kWh/yr']
+              projectName: specText(r).short,
+              sections: [
+                { title: 'Configuration', kv: [
+                  ['Type', state.temp === 'chiller' ? 'Chiller +2/+5 °C' : state.temp === 'freezer' ? 'Freezer −18/−25 °C' : 'Dual-zone'],
+                  ['Internal dimensions', state.w + ' × ' + state.l + ' × ' + state.h + ' m'],
+                  ['Internal volume', fmt(r.vol, 1) + ' m³'],
+                  ['Floor area', fmt(r.floorA, 1) + ' m²'],
+                  ['Panel', (state.panel * 1000) + ' mm FireSafe PIR · U ' + r.U.toFixed(3) + ' W/m²K · λ 0.022 W/m·K'],
+                  ['Door', state.door + ' on the ' + state.doorPos + ' wall · protection: ' + protection],
+                  ['Floor build-up', state.floor],
+                  ['Refrigeration', state.ref + ' · ' + state.loc],
+                  ['Design ambient', state.amb + ' °C']
+                ]},
+                { title: 'Panel schedule (indicative)', kv: [
+                  ['Module width assumed', Math.round(state.module * 1000) + ' mm'],
+                  ['Wall panels', s.wallPanels + ' (' + s.perWidthWall + ' per ' + state.w + ' m wall, ' + s.perLengthWall + ' per ' + state.l + ' m wall)'],
+                  ['Ceiling panels', String(s.ceilPanels)],
+                  ['Floor panels', s.floorPanels ? String(s.floorPanels) : 'none — slab / screed'],
+                  ['Total panel area', fmt(s.totalArea, 1) + ' m²']
+                ]},
+                { title: 'Heat load', kv: [
+                  ['Transmission', fmt(r.qTrans) + ' W'],
+                  ['Infiltration', fmt(r.qInf) + ' W'],
+                  ['Internal (lights, fans, people)', fmt(r.qInt) + ' W'],
+                  ['Total refrigeration duty', fmt(r.total / 1000, 2) + ' kW'],
+                  ['Compressor duty at 18 h/day', fmt(r.comp / 1000, 2) + ' kW'],
+                  ['Estimated annual energy', fmt(r.kwh) + ' kWh/yr']
+                ]},
+                { title: 'Scope note', html:
+                  '<p>This is the <strong>holding</strong> load — envelope, infiltration and internal gains. ' +
+                  'It does <strong>not</strong> include product pull-down, which dominates if warm product is ' +
+                  'loaded daily. For the full ASHRAE Chapter 24 five-component calculation including pull-down, ' +
+                  'use the cold room heat load calculator at izharfoster.com/tools/load-calculator.</p>' +
+                  '<p>No price is quoted here on purpose: a walk-in is priced on site conditions, power supply ' +
+                  'and access, and a headline figure set against those misleads.</p>' }
               ],
-              note: 'Indicative sizing for budgeting and layout. No price is quoted: a walk-in depends on site conditions, power supply and access. Detailed sizing: izharfoster.com/tools/load-calculator'
+              math:
+                'U = λ / t = 0.022 / ' + state.panel.toFixed(3) + ' = ' + r.U.toFixed(3) + ' W/m²K\n' +
+                'Q_transmission = ' + fmt(r.qTrans) + ' W   (walls + ceiling against ambient; floor per boundary rule)\n' +
+                'Q_infiltration = ACH24 · V · ρ · Δh · F_m · F_protection = ' + fmt(r.qInf) + ' W\n' +
+                '    F_protection = ' + state.curtain + ' (' + protection + ')\n' +
+                'Q_internal = ' + fmt(r.qInt) + ' W   (6 W/m² lighting + 12% fan + occupancy allowance)\n' +
+                'Q_total = (ΣQ) × 1.10 safety = ' + fmt(r.total) + ' W = ' + fmt(r.total / 1000, 2) + ' kW\n' +
+                'Compressor = Q_total × 24 / 18 = ' + fmt(r.comp / 1000, 2) + ' kW',
+              sources: [
+                'ASHRAE Handbook — Refrigeration, Chapter 24 (Refrigerated-Facility Load Calculations): transmission, infiltration and internal load method; door-protection F-factors (strip curtain 0.10, air curtain 0.50).',
+                'BS EN 14509: factory-made double-skin metal-faced insulating panels — aged thermal conductivity. λ 0.022 W/m·K used throughout.',
+                'ASHRAE Handbook — Refrigeration, Chapter 35: condenser capacity and ambient derate (MT 2.0 %/K, LT 2.7 %/K).',
+                'Infiltration buoyancy factor F_m by room temperature: 1.0 cooler, 1.20 at −10 °C, 1.45 at −25 °C, 1.55 at or below −30 °C.',
+                'Floor boundary: on-grade and insulated-slab floors against an 18 °C soil sink; above-grade/suspended floors against ambient air.'
+              ]
             };
           },
           serialize: function () { return state; },

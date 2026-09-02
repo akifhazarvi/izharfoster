@@ -30,12 +30,12 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="canonical" href="https://izharfoster.com/tools/walkin-builder">
-<title>Build Your Own Walk-In Cold Room — Free Configurator | Izhar Foster</title>
-<meta name="description" content="Configure a walk-in chiller or freezer in four steps — size, panel, door, floor, refrigeration — and get the heat load, compressor duty and a spec sheet. Free, no price gate, no email required.">
-<meta property="og:title" content="Build Your Own Walk-In Cold Room | Izhar Foster">
+<title>Cold Room Builder — Design a Walk-In Cold Room in 3D | Izhar Foster</title>
+<meta name="description" content="Free 3D cold room builder. Set size, PIR panel thickness, door and refrigeration, watch the room build itself step by step, and get heat load, compressor duty and a panel schedule. No price gate, no email required.">
+<meta property="og:title" content="Cold Room Builder — Design a Walk-In Cold Room in 3D | Izhar Foster">
 <meta property="og:url" content="https://izharfoster.com/tools/walkin-builder">
 <meta property="og:locale" content="en_PK">
-<meta property="og:description" content="Pick temperature, size and options. Get heat load, compressor duty, annual energy and a downloadable spec sheet — free, and without an email gate.">
+<meta property="og:description" content="Configure a walk-in chiller or freezer and watch it assemble in 3D — slab, floor, wall panels, ceiling, door, evaporator, condensing unit. Get heat load, compressor duty and a panel schedule free.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://izharfoster.com/images/og-default.jpg">
 <meta property="og:image:type" content="image/jpeg">
@@ -54,6 +54,7 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"></noscript>
 <link rel="stylesheet" href="../css/style.v2.css">
+<link rel="stylesheet" href="../css/walkin-builder.css">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Walk-In Cold Room Builder", "url": "https://izharfoster.com/tools/walkin-builder", "applicationCategory": "EngineeringApplication", "operatingSystem": "Any (browser-based)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "PKR"}, "provider": {"@id": "https://izharfoster.com#organization"}, "description": "Configure a walk-in chiller or freezer — temperature, dimensions, panel thickness, door, floor, refrigeration and location — and get transmission, infiltration and internal heat load, total refrigeration duty, compressor sizing and estimated annual energy. Runs entirely in the browser. No pricing shown and no email required.", "featureList": ["Chiller, freezer and dual-zone presets", "Metric and foot dimension presets", "PIR panel thickness 60–150 mm at λ 0.022 W/m·K", "ASHRAE-based transmission, infiltration and internal load split", "Compressor duty and annual energy estimate", "Printable spec sheet", "Save and reopen as .json"]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://izharfoster.com/"}, {"@type": "ListItem", "position": 2, "name": "Tools", "item": "https://izharfoster.com/tools"}, {"@type": "ListItem", "position": 3, "name": "Walk-In Builder", "item": "https://izharfoster.com/tools/walkin-builder"}]}</script>
 </head>
@@ -113,6 +114,53 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="calc-grid">
   <form class="calc-form" id="wib-form" novalidate>
 
+    <!-- 3D configurator. Deliberately inside .calc-form, not .calc-aside:
+         style.v2.css hides the aside entirely at <=720px, so a viewer placed
+         there would vanish on exactly the devices it matters most on. Sticky
+         in both layouts, so it stays on screen while the form is worked. -->
+    <div class="r3d" id="wib-3d">
+      <div class="r3d-stage" tabindex="0" role="img"
+           aria-label="Three-dimensional preview of the configured cold room.">
+        <div class="r3d-hud" aria-hidden="true">
+          <div class="r3d-chips">
+            <span class="r3d-chip r3d-chip-temp" data-r3d="temp">+4 °C</span>
+            <span class="r3d-chip" data-r3d="dims">—</span>
+            <span class="r3d-chip r3d-chip-hide-sm" data-r3d="dimsft">—</span>
+            <span class="r3d-chip r3d-chip-hide-sm" data-r3d="panel">—</span>
+            <span class="r3d-chip r3d-chip-warm r3d-chip-hide-sm" data-r3d="count">—</span>
+          </div>
+          <span class="r3d-hint">Drag sideways to rotate</span>
+        </div>
+      </div>
+
+      <div class="r3d-ui">
+        <div class="r3d-seg" role="group" aria-label="View mode">
+          <button type="button" data-r3d-mode="assembled" aria-pressed="true">Assembled</button>
+          <button type="button" data-r3d-mode="cutaway" aria-pressed="false">Cutaway</button>
+          <button type="button" data-r3d-mode="exploded" aria-pressed="false">Exploded</button>
+        </div>
+        <span class="r3d-spacer"></span>
+        <button type="button" class="r3d-btn r3d-btn-play" data-r3d-act="play">Watch it build</button>
+        <button type="button" class="r3d-btn" data-r3d-act="reset" aria-label="Reset view">Reset</button>
+      </div>
+
+      <div class="r3d-step">
+        <div class="r3d-steptrack"><div class="r3d-stepbar" data-r3d="stepbar"></div></div>
+        <div class="r3d-steprow">
+          <span class="r3d-stepidx" data-r3d="stepidx">8 / 8</span>
+          <span class="r3d-stepname" data-r3d="stepname">Commissioned</span>
+          <span class="r3d-stepnav">
+            <button type="button" data-r3d-act="prev" aria-label="Previous build stage">&larr;</button>
+            <button type="button" data-r3d-act="next" aria-label="Next build stage">&rarr;</button>
+          </span>
+        </div>
+        <p class="r3d-stepnote" data-r3d="stepnote">&mdash;</p>
+      </div>
+
+      <p class="r3d-fallback">Your browser cannot render the 3D preview. Every number in
+        this tool still works &mdash; the preview is illustrative only.</p>
+    </div>
+
     <section class="calc-section">
       <div class="calc-section-head"><div><span class="calc-eyebrow">Step 1</span>
         <h2>Temperature</h2></div></div>
@@ -166,12 +214,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </select>
           <div class="calc-field-hint">FireSafe PIR, λ 0.022 W/m·K aged (BS EN 14509). U-value shown in the result.</div></div>
 
+        <div class="calc-field"><label class="calc-field-label" for="wib-module">Panel module width</label>
+          <select class="calc-select" id="wib-module">
+            <option value="1.00">1000 mm</option>
+            <option value="1.15" selected>1150 mm</option>
+            <option value="1.20">1200 mm</option>
+          </select>
+          <div class="calc-field-hint">Drives the joint spacing shown in the preview and the panel
+            counts below. Module width is confirmed per order — set it to match your quote.</div></div>
+
         <div class="calc-field"><label class="calc-field-label" for="wib-door">Door</label>
           <select class="calc-select" id="wib-door">
             <option value="hinged">Hinged — standard</option>
             <option value="sliding">Sliding — tight space / high traffic</option>
             <option value="glass">Glass display door</option>
           </select></div>
+
+        <div class="calc-field"><label class="calc-field-label" for="wib-doorpos">Door wall</label>
+          <select class="calc-select" id="wib-doorpos">
+            <option value="front" selected>Front — on a length wall</option>
+            <option value="back">Back — on the opposite length wall</option>
+            <option value="left">Left — on a width wall</option>
+            <option value="right">Right — on the opposite width wall</option>
+          </select>
+          <div class="calc-field-hint">Moves the opening in the preview and puts the evaporator on
+            the opposite wall, clear of the door throw.</div></div>
 
         <div class="calc-field"><label class="calc-field-label" for="wib-curtain">Door protection</label>
           <select class="calc-select" id="wib-curtain">
@@ -188,6 +255,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <option value="suspended">Above grade / suspended slab</option>
           </select>
           <div class="calc-field-hint" id="wib-floor-hint">—</div></div>
+        <div class="calc-field"><span class="calc-field-label">Panel schedule</span>
+          <div class="wib-schedule-wrap">
+            <table class="wib-schedule">
+              <thead><tr><th scope="col">Item</th><th scope="col">Make-up</th><th scope="col">Qty</th></tr></thead>
+              <tbody id="wib-sched-body"></tbody>
+            </table>
+          </div>
+          <div class="calc-field-hint" id="wib-sched-note"></div></div>
 
         <div class="calc-field"><label class="calc-field-label" for="wib-ref">Refrigeration</label>
           <select class="calc-select" id="wib-ref">
@@ -203,6 +278,54 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </select></div>
       </div>
     </section>
+
+    <section class="calc-section">
+      <div class="calc-section-head"><div><span class="calc-eyebrow">How a cold room is built</span>
+        <h2>The eight stages, in order</h2></div></div>
+      <div class="calc-section-body">
+        <p class="calc-field-hint" style="margin-bottom:14px">Press a stage to jump the 3D preview to it,
+          or use <strong>Watch it build</strong> above to play the whole sequence. This is the order a
+          cam-lock panel box actually goes up on site.</p>
+        <ol class="wib-steps">
+          <li><h3>Site &amp; slab</h3><p>Level slab, power and drainage set out. The slab wants to be flat
+            to about ±3 mm per metre — panel joints will not pull tight on a wavy floor, and every gap you
+            leave is a permanent heat leak.</p><button type="button" data-r3d-step="0">Show stage 1</button></li>
+          <li><h3>Floor panels</h3><p>Insulated floor panels laid on the slab with joints staggered and
+            sealed. On grade the floor sees an 18 °C soil boundary rather than ambient, which is why a floor
+            panel matters far more on a freezer than on a chiller.</p><button type="button" data-r3d-step="1">Show stage 2</button></li>
+          <li><h3>Wall panels</h3><p>Wall panels stood on the floor perimeter and drawn together on
+            cam-locks. FireSafe PIR core, λ 0.022 W/m·K aged to BS EN 14509. Corners go up first so the box
+            is square before the runs close.</p><button type="button" data-r3d-step="2">Show stage 3</button></li>
+          <li><h3>Ceiling panels</h3><p>Ceiling panels dropped in and locked to the wall heads. Past roughly
+            4 m of clear span they are hung from the building steel rather than self-spanning.</p><button type="button" data-r3d-step="3">Show stage 4</button></li>
+          <li><h3>Door &amp; hardware</h3><p>Door frame, leaf, hinges and inside safety release fitted. Any
+            freezer door needs heater tape in the frame, or the gasket freezes to the jamb and the leaf tears
+            on opening.</p><button type="button" data-r3d-step="4">Show stage 5</button></li>
+          <li><h3>Evaporator</h3><p>Evaporator mounted clear of the door throw so its air pattern is not
+            fighting the infiltration it is meant to handle. Condensate drain trapped, and trace-heated on
+            low temp.</p><button type="button" data-r3d-step="5">Show stage 6</button></li>
+          <li><h3>Condensing unit</h3><p>Condensing unit sited in free, shaded air, then pipework, electrics
+            and controls run back. In a Pakistani summer a unit in direct sun loses capacity exactly when you
+            need it most.</p><button type="button" data-r3d-step="6">Show stage 7</button></li>
+          <li><h3>Commissioned</h3><p>Pressure test, evacuate, charge, set superheat, then pull the room down
+            and hold it. Handover with the temperature log already running.</p><button type="button" data-r3d-step="7">Show stage 8</button></li>
+        </ol>
+        <p class="calc-field-hint" style="margin-top:16px">Want the detail behind each stage — panel
+          selection, door protection, floor build-ups and what drives the price?
+          Read the <a href="../blog/cold-room-design-build-guide-pakistan">cold room design and build
+          guide</a>.</p>
+      </div>
+    </section>
+
+    <!-- Mobile-only CTA. At <=720px style.v2.css hides .calc-aside outright and
+         main.v2.js lifts only .calc-result into the bottom sheet, so the quote
+         and WhatsApp buttons in the aside never render on a phone. -->
+    <div class="wib-mobile-cta">
+      <a class="btn btn-primary" id="wib-quote-m" href="../contact">Send this spec to engineering <span class="arr">→</span></a>
+      <a class="btn btn-outline" id="wib-wa-m" href="#" target="_blank" rel="noopener">WhatsApp the spec</a>
+      <p class="wib-mobile-cta-note"><strong>No price is shown here on purpose</strong> — a walk-in is
+        quoted on site conditions, power supply and access. You get the engineering first.</p>
+    </div>
   </form>
 
   <aside class="calc-aside">
@@ -249,9 +372,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <section class="section section-soft" aria-label="Methodology">
       <div class="container" style="max-width:860px;margin:0 auto;padding:2.5rem 1.5rem;">
-        <h2 style="font-size:1.25rem;font-weight:700;margin-bottom:1rem;">How this calculator works</h2>
-        <p>The A2L minimum room area calculator determines the smallest floor area (m²) of a machinery room or occupied space that satisfies the flammable-gas concentration limit for mildly flammable (A2L) refrigerants under <strong>IEC 60335-2-89:2019</strong>. The method: (1) identify the leakable charge from the entered system charge (kg) — IEC defines leakable charge as the full system charge for field-assembled systems; (2) divide by the LFL<sub>room</sub> concentration limit for the selected refrigerant (in kg/m³, from IEC 60335-2-89 Annex T); (3) divide by the entered room height to get minimum floor area. ASHRAE 15 occupancy classes A (low-density public), B (high-density public), and C (machine room / restricted access) apply different LFL fractions — typically 25 %, 50 %, and not-limited respectively. Supported refrigerants: R-32, R-454A, R-454B, R-454C, R-455A with correct LFL and molecular weight values per ASHRAE 34-2022. This tool is a pre-design screening check; the final safety assessment must be made by a suitably qualified engineer per EN 378-1 or local DRAP/NEPRA requirements.</p>
-        <p style="margin-top:.75rem;font-size:.875rem;color:var(--muted);">References: IEC 60335-2-89:2019 §7.4 and Annex T; ASHRAE Standard 34-2022; EN 378-1:2016+A1:2021; ASHRAE 15-2019.</p>
+        <h2 style="font-size:1.25rem;font-weight:700;margin-bottom:1rem;">How this cold room builder works</h2>
+        <p>The builder sizes the <strong>holding load</strong> of a walk-in cold room using the method in
+          <strong>ASHRAE Handbook — Refrigeration, Chapter 24</strong>. Three components are summed.
+          <strong>Transmission</strong> is U·A·ΔT over the walls, ceiling and floor, where U is derived from
+          the selected panel thickness at an aged conductivity of λ 0.022 W/m·K per <strong>BS EN 14509</strong>.
+          The floor is treated separately by boundary: on-grade and insulated-slab floors sit against an
+          18 °C soil sink, while an above-grade or suspended floor sees ambient air and becomes a real load.
+          <strong>Infiltration</strong> uses the mass-flow form — air changes per 24 hours falling with room
+          volume, multiplied by the ambient-to-room enthalpy difference, a buoyancy factor F<sub>m</sub>
+          (1.0 for a cooler rising to 1.55 at or below −30 °C) and a door-protection factor F
+          (strip curtain 0.10, air curtain 0.50, none 1.0). <strong>Internal</strong> gains cover lighting at
+          6 W/m², a 12 % fan allowance and an occupancy allowance. The sum carries a 10 % safety margin;
+          compressor duty is then the total scaled to an 18-hour running day, and annual energy applies a
+          temperature-appropriate COP derated for the selected design ambient.</p>
+        <p style="margin-top:.75rem;">The panel schedule divides each wall span by the selected module width
+          and rounds up, with the last panel on each run cut to suit. Module width is a per-order decision,
+          which is why it is an input here rather than a fixed figure. <strong>No price is quoted</strong>:
+          a walk-in is priced on site conditions, power supply and access. Note also that this is the holding
+          load only — it excludes product pull-down, which dominates if warm product is loaded daily. For the
+          full five-component calculation including pull-down, use the
+          <a href="../tools/load-calculator">cold room heat load calculator</a>.</p>
+        <p style="margin-top:.75rem;font-size:.875rem;color:var(--muted);">References: ASHRAE Handbook — Refrigeration, Chapter 24 (Refrigerated-Facility Load Calculations) and Chapter 35 (Condensers); BS EN 14509 (factory-made double-skin metal-faced insulating panels, aged λ); ASHRAE Handbook — Fundamentals, Chapter 18.</p>
       </div>
     </section>
 
@@ -295,6 +437,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script src="/js/chat-widget.js" defer></script>
 <script src="../js/track.js" defer></script>
 <script src="../js/tools/_shared.js" defer></script>
+<script src="../js/tools/walkin-builder-3d.js" defer></script>
 <script src="../js/tools/walkin-builder.js" defer></script>
 <script>document.getElementById('y').textContent=new Date().getFullYear();</script>
 </body></html>

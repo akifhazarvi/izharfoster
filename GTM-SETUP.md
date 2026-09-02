@@ -620,6 +620,83 @@ this account.
 
 ---
 
+## Step A14 — Tag Diagnostics: "Tag quality: Urgent" (CSP + domains)
+
+Google Ads → **Goals → Conversions → Diagnostics** (or Admin → Tag quality) can show
+three action items at once. All three were raised on **2026-09-02** and traced to
+two root causes. Code side is fixed; two steps are UI-only.
+
+### A14.1 "Your website's security settings are blocking measurement" — FIXED in code
+
+Cause: `vercel.json`'s `Content-Security-Policy` listed only
+`www.googletagmanager.com` + `www.google-analytics.com`. A Google tag with an
+`AW-` destination also pulls the **Google Ads conversion library** from
+`www.googleadservices.com` and the remarketing/conversion endpoints on
+`googleads.g.doubleclick.net` / `td.doubleclick.net` — all three were blocked by
+`default-src 'self'`. `frame-src` also omitted `www.googletagmanager.com`, which
+blocked the GTM `<noscript>` iframe — the only iframe the site ships.
+
+The policy now carries the full Google tag-platform allowlist:
+
+| Directive | Hosts added |
+|---|---|
+| `script-src` | `https://*.googletagmanager.com` (replaces the `www.` literal), `https://*.google-analytics.com`, `https://www.googleadservices.com`, `https://googleads.g.doubleclick.net`, `https://td.doubleclick.net`, `https://tagmanager.google.com` |
+| `frame-src` | `'self'`, `https://www.googletagmanager.com`, `https://td.doubleclick.net`, `https://bid.g.doubleclick.net` |
+| `connect-src` | `https://*.google-analytics.com`, `https://*.analytics.google.com`, `https://*.googletagmanager.com`, `https://td.doubleclick.net`, `https://www.google.com` |
+| `style-src` | `https://tagmanager.google.com` (GTM Preview mode injects a stylesheet) |
+
+`img-src` already had a blanket `https:`, so conversion pixels were never blocked.
+`tagmanager.google.com` in `script-src` + `style-src` is what makes **GTM Preview
+mode** (Step A9) work on the live domain — without it Preview loads blank.
+
+> **Rule:** anything added to the GTM container that loads a new third-party host
+> needs its host added here first, or it fails silently in production and
+> Diagnostics goes red again. Verify after deploy:
+> `curl -sI https://izharfoster.com/ | grep -i content-security-policy`
+
+### A14.2 "Additional domains detected for configuration" — FIXED in code + 1 UI step
+
+Cause: `izharfoster.vercel.app` (Vercel's auto-assigned production alias) served
+the **entire site at HTTP 200** with the same GTM container, GA4 stream and Ads
+tag on it. Google saw the tag on a second domain. It was also a duplicate-content
+liability. (`www.izharfoster.com` was already fine — 308 → apex.)
+
+Fixed in `vercel.json`:
+- a host-conditioned **308 redirect** `izharfoster.vercel.app/*` → `https://izharfoster.com/*`, placed first in the `redirects` array (Vercel matches in order). Preview deploys use `izharfoster-<hash>-*.vercel.app`, which does not match this exact host, so previews still serve normally.
+- an `X-Robots-Tag: noindex, nofollow` header on **any** `*.vercel.app` host, so preview deployments can never be indexed either.
+
+**UI step:** in Google Ads → Tag quality → *Configure your domains*, keep
+`izharfoster.com` and **remove / decline `izharfoster.vercel.app`**. Do not add it
+— the redirect means the tag will never fire there again.
+
+### A14.3 "Some of your pages are not tagged" — no code change needed
+
+Every one of the site's real pages carries the tag. A repo-wide check finds only
+three untagged files, all deliberate:
+
+| File | Why it stays untagged |
+|---|---|
+| `google95a5502f4d29f0e5.html` | Search Console verification stub — must contain only the token |
+| `styleguide.html` | internal design system, `noindex,nofollow`, not in `sitemap.xml` |
+| `reports/growth-*.html` | client reports — `noindex` header + `Disallow: /reports/` in `robots.txt` |
+
+Re-run the check any time this item reappears:
+
+```bash
+for f in $(find . -name '*.html' -not -path './_*'); do
+  grep -qE 'googletagmanager|js/track|gtag' "$f" || echo "UNTAGGED: $f"
+done
+# expect only the three files above
+```
+
+The warning was almost certainly a side-effect of A14.1 (the Ads library was
+blocked, so the crawler could not confirm a working tag) plus A14.2 (the
+vercel.app duplicate). **Re-check Diagnostics 24–48 h after this deploy before
+doing anything else** — Tag quality is computed on a lag and will not clear
+instantly.
+
+---
+
 ## Appendix — event → conversion map
 
 Full definitions in [EVENTS.md](EVENTS.md).
