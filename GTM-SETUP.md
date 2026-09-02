@@ -665,9 +665,10 @@ Fixed in `vercel.json`:
 - a host-conditioned **308 redirect** `izharfoster.vercel.app/*` → `https://izharfoster.com/*`, placed first in the `redirects` array (Vercel matches in order). Preview deploys use `izharfoster-<hash>-*.vercel.app`, which does not match this exact host, so previews still serve normally.
 - an `X-Robots-Tag: noindex, nofollow` header on **any** `*.vercel.app` host, so preview deployments can never be indexed either.
 
-**UI step:** in Google Ads → Tag quality → *Configure your domains*, keep
-`izharfoster.com` and **remove / decline `izharfoster.vercel.app`**. Do not add it
-— the redirect means the tag will never fire there again.
+**UI step — ✅ DONE 2026-09-02.** In Google Ads → Tag quality → *Configure your
+domains*, `izharfoster.com` was kept and `izharfoster.vercel.app` declined. Do not
+re-add it if Ads suggests it again — the 308 above means the tag can never fire
+there, so any future suggestion is stale detection, not a new problem.
 
 ### A14.3 "Some of your pages are not tagged" — no code change needed
 
