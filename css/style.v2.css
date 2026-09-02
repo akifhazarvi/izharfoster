@@ -19,7 +19,7 @@
   --brand-100:  #DBE5F2;   /* light tint — cards, wash */
   --brand-200:  #B6C8E4;   /* light — eyebrows on dark */
   --brand-300:  #7E9BCB;
-  --brand-500:  #084296;   /* THE logo blue — primary brand */
+  --brand-500:  #084595;   /* THE logo blue — sampled from images/logo.svg (2026-09-02) */
   --brand-600:  #073A83;   /* hover / links */
   --brand-700:  #0A2E60;   /* headings on paper */
   --brand-ink:  #071B3A;   /* brand-tinted near-black — hero + footer grounds */
@@ -6189,6 +6189,14 @@ body.lc-open .lc-backdrop {
     border-bottom-color: transparent !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
+  }
+  /* Logo: the mark is a solid brand-blue plaque with knocked-out white
+     lettering, so on the dark instrument header it all but disappears.
+     brightness(0) invert(1) flattens the plaque to white and lets the navy
+     read through the knockout — the shapes survive exactly, and it needs no
+     second asset or markup change across the 81 pages that embed the logo. */
+  body.has-dark-header .brand-logo {
+    filter: brightness(0) invert(1);
   }
   /* Hamburger lines: paper-coloured on dark bg */
   body.has-dark-header .menu-toggle {
