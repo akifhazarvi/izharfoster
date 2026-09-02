@@ -463,3 +463,152 @@ Do not add these, however junk-adjacent they look in the search terms report:
 **An earlier draft of this file wrongly listed `iqf` and `commercial chiller` as junk.** Corrected
 2026-09-02 after checking them against the service pages. If you already pasted an older version,
 remove those two entries.
+
+---
+
+# BY CAMPAIGN — two lists
+
+Checked against the export: the junk sets do **not overlap**. 50 patterns appeared only in
+`PIR & PUF Panels`, 11 only in `Izhar foster Ad group Cold store`, 0 in both.
+
+> **Recommendation: attach BOTH lists to BOTH campaigns anyway.** Negatives cost nothing to
+> carry, and "hasn't appeared yet" is not "won't appear" — once broad match is removed, what
+> serves will change. Split them only if you want per-campaign reporting clarity.
+
+## List 1 — `IF – Panels Junk` → attach to **PIR & PUF Panels**
+
+```
+"roof sheet"
+"roofing sheet"
+"roofing sheets"
+"cladding"
+"cement sheet"
+"cement board"
+"fibre sheet"
+"fiber sheet"
+"fibre sheets"
+"fiber sheets"
+"fibre glass"
+"fiber glass"
+"fiberglass"
+"fibreglass"
+"upvc"
+"pvc"
+"polycarbonate"
+"corrugated"
+"alucobond"
+"composite panel"
+"dadex"
+"aluzinc"
+"standing seam"
+"plastic sheet"
+"plastic roof"
+"gi sheet"
+"steel sheet"
+"steel roof"
+"tr garder"
+"jumbo lawn"
+"jumbo loan"
+"heat protection roof"
+"heat resistant sheet"
+"solar chips"
+"waterproof"
+"waterproofing"
+"thermopore"
+"thermocol"
+"jumbolon"
+"glasswool"
+"glass wool"
+"xps"
+"penoplex"
+"nbr"
+"insulation board"
+"insulation hard foam"
+"membrane"
+"dpc"
+"roofgrip"
+"mhk"
+"united insulation"
+"gondal"
+"dubond"
+"dlx bond"
+"speed panel"
+"pakistan insulation"
+"eps solutions"
+"wall panel online"
+"types of modular"
+"construction companies"
+"construction company"
+"kitchen"
+"acoustic"
+"carbon fiber"
+"partition"
+[panel]
+[panels]
+[roof]
+[building]
+[construction]
+[sheet]
+```
+*71 entries. Covers ~$7.3 of the $18.12 this campaign spent.*
+
+## List 2 — `IF – Coldchain Junk` → attach to **Izhar foster Ad group Cold store**
+
+```
+"varioline"
+"veroline"
+"caravell"
+"intercool"
+"aht"
+"pepsi chiller"
+"display chiller"
+"deep freezer"
+"door chiller"
+"3 door"
+"2 door"
+"single door"
+"haier"
+"reefer container"
+"container for sale"
+"cold storage for sale"
+"cold store for sale"
+"how to make"
+```
+*18 entries. Covers ~$2.3 of the $6.76 this campaign spent — a third of it.*
+
+## List 3 — `IF – Shared Junk` → attach to **both**
+
+```
+"olx"
+"second hand"
+```
+
+## Organic protection → **PIR & PUF Panels** campaign negatives (exact)
+
+The 17 Aug rule: don't buy clicks on terms already ranking 1–3 organically. These positions are
+from GSC, 5 Aug – 1 Sep:
+
+```
+[sandwich panel price per square meter]
+[cold storage rate]
+[puf sheet price]
+[roof sandwich panel price in pakistan]
+[puf sheet price in pakistan]
+[sandwich panels price]
+[cold storage price in pakistan]
+[sandwich panel roof in pakistan]
+[cold storage manufacturers in lahore]
+[cold storage warehouse cost]
+[prefab structure in pakistan]
+```
+*Positions 1.0 – 2.9 with 17–21% organic CTR. The SERP is not ad-crowded on these; there is
+nothing to defend.*
+
+## Campaign separation — deliberately NOT doing this
+
+Cold-intent terms served by the PIR campaign totalled **$0.27 across 2 terms**, and the larger of
+them is `sandwich panel for cold storage` — a legitimate panel query. Panel-intent terms served by
+the Cold Store campaign: **$0.00**.
+
+Adding `"cold storage"` as a PIR campaign negative would block that legitimate term to save
+27 cents. Not worth it. Revisit only if the leak grows after broad match is removed.
