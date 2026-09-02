@@ -216,6 +216,48 @@
     return { short: short, full: full };
   }
 
+  /* Four panes, one visible at a time. Keeping the form short is the point:
+     the model stays on screen, so the controls have to fit beside it rather
+     than run past it. */
+  function wireTabs() {
+    var tabs = [].slice.call(document.querySelectorAll('[data-wib-tab]'));
+    var panes = [].slice.call(document.querySelectorAll('[data-wib-pane]'));
+    if (!tabs.length) return;
+    var body = document.querySelector('.wib-body');
+    var prev = document.querySelector('[data-wib-nav="prev"]');
+    var next = document.querySelector('[data-wib-nav="next"]');
+    var at = 0;
+
+    function show(i) {
+      at = Math.max(0, Math.min(tabs.length - 1, i));
+      tabs.forEach(function (t, n) { t.setAttribute('aria-selected', String(n === at)); });
+      panes.forEach(function (p, n) { p.hidden = (n !== at); p.classList.toggle('is-active', n === at); });
+      if (prev) prev.disabled = (at === 0);
+      if (next) {
+        next.disabled = (at === tabs.length - 1);
+        next.textContent = (at === tabs.length - 2) ? 'See result' : 'Next';
+      }
+      if (body) body.scrollTop = 0;
+    }
+
+    tabs.forEach(function (t) {
+      t.addEventListener('click', function () { show(+t.dataset.wibTab); });
+    });
+    if (prev) prev.addEventListener('click', function () { show(at - 1); });
+    if (next) next.addEventListener('click', function () { show(at + 1); });
+
+    /* Left/right arrows move between steps when a tab has focus. */
+    document.querySelector('.wib-tabs').addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      e.preventDefault();
+      var i = at + (e.key === 'ArrowRight' ? 1 : -1);
+      show(i);
+      if (tabs[at]) tabs[at].focus();
+    });
+
+    show(0);
+  }
+
   function wireTiles(gid, onPick) {
     var box = $(gid);
     if (!box) return;
@@ -247,6 +289,8 @@
         var el = $(id);
         if (el) el.addEventListener('input', render);
       });
+
+    wireTabs();
 
     /* Mount the 3D viewer before the first render so push3D() has something to
        talk to. It degrades to a static note if the browser cannot do preserve-3d. */

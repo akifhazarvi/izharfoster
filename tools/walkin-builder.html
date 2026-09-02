@@ -111,264 +111,261 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </div>
 
-    <div class="calc-grid">
-  <form class="calc-form" id="wib-form" novalidate>
+    <!-- Configurator app shell. Fixed height, two panes, nothing sticky.
+         The earlier build made the 3D viewer `position: sticky` inside the
+         form, which meant the form scrolled underneath it and left roughly a
+         200px slot to work in on a phone — fields were sliced at the boundary.
+         Here the model and the controls are siblings in a bounded grid, so
+         they are visible at the same time and neither can scroll behind the
+         other. Only the step pane scrolls, within its own box. -->
+    <div class="wib-app">
 
-    <!-- 3D configurator. Deliberately inside .calc-form, not .calc-aside:
-         style.v2.css hides the aside entirely at <=720px, so a viewer placed
-         there would vanish on exactly the devices it matters most on. Sticky
-         in both layouts, so it stays on screen while the form is worked. -->
-    <div class="r3d" id="wib-3d">
-      <div class="r3d-stage" tabindex="0" role="img"
-           aria-label="Three-dimensional preview of the configured cold room.">
-        <div class="r3d-hud" aria-hidden="true">
-          <div class="r3d-chips">
-            <span class="r3d-chip r3d-chip-temp" data-r3d="temp">+4 °C</span>
-            <span class="r3d-chip" data-r3d="dims">—</span>
-            <span class="r3d-chip r3d-chip-hide-sm" data-r3d="dimsft">—</span>
-            <span class="r3d-chip r3d-chip-hide-sm" data-r3d="panel">—</span>
-            <span class="r3d-chip r3d-chip-warm r3d-chip-hide-sm" data-r3d="count">—</span>
+      <div class="wib-viz">
+        <div class="r3d" id="wib-3d">
+          <div class="r3d-stage" tabindex="0" role="img"
+               aria-label="Three-dimensional preview of the configured cold room.">
+            <div class="r3d-hud" aria-hidden="true">
+              <div class="r3d-chips">
+                <span class="r3d-chip r3d-chip-temp" data-r3d="temp">+4 °C</span>
+                <span class="r3d-chip" data-r3d="dims">—</span>
+                <span class="r3d-chip r3d-chip-hide-sm" data-r3d="dimsft">—</span>
+                <span class="r3d-chip r3d-chip-hide-sm" data-r3d="panel">—</span>
+                <span class="r3d-chip r3d-chip-warm r3d-chip-hide-sm" data-r3d="count">—</span>
+              </div>
+              <span class="r3d-hint">Drag sideways to rotate</span>
+            </div>
           </div>
-          <span class="r3d-hint">Drag sideways to rotate</span>
-        </div>
-      </div>
 
-      <div class="r3d-ui">
-        <div class="r3d-seg" role="group" aria-label="View mode">
-          <button type="button" data-r3d-mode="assembled" aria-pressed="true">Assembled</button>
-          <button type="button" data-r3d-mode="cutaway" aria-pressed="false">Cutaway</button>
-          <button type="button" data-r3d-mode="exploded" aria-pressed="false">Exploded</button>
-        </div>
-        <span class="r3d-spacer"></span>
-        <button type="button" class="r3d-btn r3d-btn-play" data-r3d-act="play">Watch it build</button>
-        <button type="button" class="r3d-btn" data-r3d-act="reset" aria-label="Reset view">Reset</button>
-      </div>
-
-      <div class="r3d-step">
-        <div class="r3d-steptrack"><div class="r3d-stepbar" data-r3d="stepbar"></div></div>
-        <div class="r3d-steprow">
-          <span class="r3d-stepidx" data-r3d="stepidx">8 / 8</span>
-          <span class="r3d-stepname" data-r3d="stepname">Commissioned</span>
-          <span class="r3d-stepnav">
-            <button type="button" data-r3d-act="prev" aria-label="Previous build stage">&larr;</button>
-            <button type="button" data-r3d-act="next" aria-label="Next build stage">&rarr;</button>
-          </span>
-        </div>
-        <p class="r3d-stepnote" data-r3d="stepnote">&mdash;</p>
-      </div>
-
-      <p class="r3d-fallback">Your browser cannot render the 3D preview. Every number in
-        this tool still works &mdash; the preview is illustrative only.</p>
-    </div>
-
-    <section class="calc-section">
-      <div class="calc-section-head"><div><span class="calc-eyebrow">Step 1</span>
-        <h2>Temperature</h2></div></div>
-      <div class="calc-section-body">
-        <div class="calc-field"><span class="calc-field-label">What will the room hold?</span>
-        <div class="calc-radio-tiles" id="wib-temp"><span class="calc-radio-tile is-active" data-v="chiller"><span>Chiller</span><span>+2 to +5 °C · produce, dairy, prep</span></span><span class="calc-radio-tile" data-v="freezer"><span>Freezer</span><span>−18 to −25 °C · frozen storage</span></span><span class="calc-radio-tile" data-v="dual"><span>Dual-zone</span><span>Chiller + freezer in one shell</span></span></div>
-        </div>
-        <div class="calc-field">
-          <label class="calc-field-label" for="wib-city">Design ambient</label>
-          <select class="calc-select" id="wib-city">
-            <option value="45">Lahore — 45 °C summer design</option>
-            <option value="42">Islamabad — 42 °C</option>
-            <option value="41">Karachi — 41 °C</option>
-            <option value="48">Multan — 48 °C</option>
-            <option value="46">Faisalabad — 46 °C</option>
-            <option value="50">Jacobabad — 50 °C</option>
-          </select>
-          <div class="calc-field-hint">Summer design dry-bulb. This drives transmission and condenser derate.</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="calc-section">
-      <div class="calc-section-head"><div><span class="calc-eyebrow">Step 2</span>
-        <h2>Dimensions</h2></div></div>
-      <div class="calc-section-body">
-        <div class="calc-field"><span class="calc-field-label">Common sizes (internal, feet)</span>
-        <div class="calc-radio-tiles" id="wib-preset"><span class="calc-radio-tile is-active" data-v="1.8,2.4"><span>6 × 8 ft</span><span>Single room, small kitchen</span></span><span class="calc-radio-tile" data-v="2.4,3.0"><span>8 × 10 ft</span><span>Restaurant / bakery</span></span><span class="calc-radio-tile" data-v="3.0,3.6"><span>10 × 12 ft</span><span>Meat shop / pharmacy</span></span><span class="calc-radio-tile" data-v="3.6,4.8"><span>12 × 16 ft</span><span>Small food warehouse</span></span><span class="calc-radio-tile" data-v="4.8,6.0"><span>16 × 20 ft</span><span>Depot / processing</span></span><span class="calc-radio-tile" data-v="custom"><span>Custom</span><span>Enter your own</span></span></div>
-        </div>
-        <div class="calc-field"><label class="calc-field-label" for="wib-w">Width</label>
-          <div class="calc-num-with-unit"><input class="calc-num" type="number" id="wib-w" min="1.2" max="30" step="0.1" value="2.4"><span class="calc-num-unit">m</span></div></div>
-        <div class="calc-field"><label class="calc-field-label" for="wib-l">Length</label>
-          <div class="calc-num-with-unit"><input class="calc-num" type="number" id="wib-l" min="1.2" max="60" step="0.1" value="3.0"><span class="calc-num-unit">m</span></div></div>
-        <div class="calc-field"><label class="calc-field-label" for="wib-h">Clear height</label>
-          <div class="calc-num-with-unit"><input class="calc-num" type="number" id="wib-h" min="2" max="12" step="0.1" value="2.4"><span class="calc-num-unit">m</span></div>
-          <div class="calc-field-hint" id="wib-dims-ft">—</div></div>
-      </div>
-    </section>
-
-    <section class="calc-section">
-      <div class="calc-section-head"><div><span class="calc-eyebrow">Step 3</span>
-        <h2>Options</h2></div></div>
-      <div class="calc-section-body">
-        <div class="calc-field"><label class="calc-field-label" for="wib-panel">Panel thickness</label>
-          <select class="calc-select" id="wib-panel">
-            <option value="0.060">60 mm — chiller duty</option>
-            <option value="0.080">80 mm — chiller / mild freezer</option>
-            <option value="0.100" selected>100 mm — freezer standard</option>
-            <option value="0.125">125 mm — low temp</option>
-            <option value="0.150">150 mm — blast / −30 °C and below</option>
-          </select>
-          <div class="calc-field-hint">FireSafe PIR, λ 0.022 W/m·K aged (BS EN 14509). U-value shown in the result.</div></div>
-
-        <div class="calc-field"><label class="calc-field-label" for="wib-module">Panel module width</label>
-          <select class="calc-select" id="wib-module">
-            <option value="1.00">1000 mm</option>
-            <option value="1.15" selected>1150 mm</option>
-            <option value="1.20">1200 mm</option>
-          </select>
-          <div class="calc-field-hint">Drives the joint spacing shown in the preview and the panel
-            counts below. Module width is confirmed per order — set it to match your quote.</div></div>
-
-        <div class="calc-field"><label class="calc-field-label" for="wib-door">Door</label>
-          <select class="calc-select" id="wib-door">
-            <option value="hinged">Hinged — standard</option>
-            <option value="sliding">Sliding — tight space / high traffic</option>
-            <option value="glass">Glass display door</option>
-          </select></div>
-
-        <div class="calc-field"><label class="calc-field-label" for="wib-doorpos">Door wall</label>
-          <select class="calc-select" id="wib-doorpos">
-            <option value="front" selected>Front — on a length wall</option>
-            <option value="back">Back — on the opposite length wall</option>
-            <option value="left">Left — on a width wall</option>
-            <option value="right">Right — on the opposite width wall</option>
-          </select>
-          <div class="calc-field-hint">Moves the opening in the preview and puts the evaporator on
-            the opposite wall, clear of the door throw.</div></div>
-
-        <div class="calc-field"><label class="calc-field-label" for="wib-curtain">Door protection</label>
-          <select class="calc-select" id="wib-curtain">
-            <option value="0.10">Strip curtain — 90% infiltration reduction</option>
-            <option value="0.50">Air curtain — 50% reduction</option>
-            <option value="1">None</option>
-          </select>
-          <div class="calc-field-hint">The cheapest kilowatt you will ever save. F-factor per ASHRAE Ref. Ch. 24.</div></div>
-
-        <div class="calc-field"><label class="calc-field-label" for="wib-floor">Floor</label>
-          <select class="calc-select" id="wib-floor">
-            <option value="insulated">Insulated floor — on grade</option>
-            <option value="screed">No floor panel — screed on grade</option>
-            <option value="suspended">Above grade / suspended slab</option>
-          </select>
-          <div class="calc-field-hint" id="wib-floor-hint">—</div></div>
-        <div class="calc-field"><span class="calc-field-label">Panel schedule</span>
-          <div class="wib-schedule-wrap">
-            <table class="wib-schedule">
-              <thead><tr><th scope="col">Item</th><th scope="col">Make-up</th><th scope="col">Qty</th></tr></thead>
-              <tbody id="wib-sched-body"></tbody>
-            </table>
+          <div class="r3d-ui">
+            <div class="r3d-seg" role="group" aria-label="View mode">
+              <button type="button" data-r3d-mode="assembled" aria-pressed="true"><span class="wib-lg">Assembled</span><span class="wib-sm">Solid</span></button>
+              <button type="button" data-r3d-mode="cutaway" aria-pressed="false"><span class="wib-lg">Cutaway</span><span class="wib-sm">Cut</span></button>
+              <button type="button" data-r3d-mode="exploded" aria-pressed="false"><span class="wib-lg">Exploded</span><span class="wib-sm">Apart</span></button>
+            </div>
+            <span class="r3d-spacer"></span>
+            <button type="button" class="r3d-btn r3d-btn-play" data-r3d-act="play"><span class="wib-lg">Watch it build</span><span class="wib-sm">Build</span></button>
+            <button type="button" class="r3d-btn r3d-btn-reset" data-r3d-act="reset" aria-label="Reset view">Reset</button>
           </div>
-          <div class="calc-field-hint" id="wib-sched-note"></div></div>
 
-        <div class="calc-field"><label class="calc-field-label" for="wib-ref">Refrigeration</label>
-          <select class="calc-select" id="wib-ref">
-            <option value="mono">Monoblock — plug-in, wall mounted</option>
-            <option value="split" selected>Split — indoor evaporator, outdoor CDU</option>
-            <option value="remote">Remote CDU / plant deck</option>
-          </select></div>
+          <div class="r3d-step">
+            <div class="r3d-steptrack"><div class="r3d-stepbar" data-r3d="stepbar"></div></div>
+            <div class="r3d-steprow">
+              <span class="r3d-stepidx" data-r3d="stepidx">8 / 8</span>
+              <span class="r3d-stepname" data-r3d="stepname">Commissioned</span>
+              <span class="r3d-stepnav">
+                <button type="button" data-r3d-act="prev" aria-label="Previous build stage">&larr;</button>
+                <button type="button" data-r3d-act="next" aria-label="Next build stage">&rarr;</button>
+              </span>
+            </div>
+            <p class="r3d-stepnote" data-r3d="stepnote">&mdash;</p>
+          </div>
 
-        <div class="calc-field"><label class="calc-field-label" for="wib-loc">Location</label>
-          <select class="calc-select" id="wib-loc">
-            <option value="indoor" selected>Indoor — inside a building</option>
-            <option value="outdoor">Outdoor — exposed to sun</option>
-          </select></div>
+          <p class="r3d-fallback">Your browser cannot render the 3D preview. Every number in
+            this tool still works &mdash; the preview is illustrative only.</p>
+        </div>
       </div>
-    </section>
 
-    <section class="calc-section">
-      <div class="calc-section-head"><div><span class="calc-eyebrow">How a cold room is built</span>
-        <h2>The eight stages, in order</h2></div></div>
-      <div class="calc-section-body">
-        <p class="calc-field-hint" style="margin-bottom:14px">Press a stage to jump the 3D preview to it,
-          or use <strong>Watch it build</strong> above to play the whole sequence. This is the order a
-          cam-lock panel box actually goes up on site.</p>
-        <ol class="wib-steps">
-          <li><h3>Site &amp; slab</h3><p>Level slab, power and drainage set out. The slab wants to be flat
-            to about ±3 mm per metre — panel joints will not pull tight on a wavy floor, and every gap you
-            leave is a permanent heat leak.</p><button type="button" data-r3d-step="0">Show stage 1</button></li>
-          <li><h3>Floor panels</h3><p>Insulated floor panels laid on the slab with joints staggered and
-            sealed. On grade the floor sees an 18 °C soil boundary rather than ambient, which is why a floor
-            panel matters far more on a freezer than on a chiller.</p><button type="button" data-r3d-step="1">Show stage 2</button></li>
-          <li><h3>Wall panels</h3><p>Wall panels stood on the floor perimeter and drawn together on
-            cam-locks. FireSafe PIR core, λ 0.022 W/m·K aged to BS EN 14509. Corners go up first so the box
-            is square before the runs close.</p><button type="button" data-r3d-step="2">Show stage 3</button></li>
-          <li><h3>Ceiling panels</h3><p>Ceiling panels dropped in and locked to the wall heads. Past roughly
-            4 m of clear span they are hung from the building steel rather than self-spanning.</p><button type="button" data-r3d-step="3">Show stage 4</button></li>
-          <li><h3>Door &amp; hardware</h3><p>Door frame, leaf, hinges and inside safety release fitted. Any
-            freezer door needs heater tape in the frame, or the gasket freezes to the jamb and the leaf tears
-            on opening.</p><button type="button" data-r3d-step="4">Show stage 5</button></li>
-          <li><h3>Evaporator</h3><p>Evaporator mounted clear of the door throw so its air pattern is not
-            fighting the infiltration it is meant to handle. Condensate drain trapped, and trace-heated on
-            low temp.</p><button type="button" data-r3d-step="5">Show stage 6</button></li>
-          <li><h3>Condensing unit</h3><p>Condensing unit sited in free, shaded air, then pipework, electrics
-            and controls run back. In a Pakistani summer a unit in direct sun loses capacity exactly when you
-            need it most.</p><button type="button" data-r3d-step="6">Show stage 7</button></li>
-          <li><h3>Commissioned</h3><p>Pressure test, evacuate, charge, set superheat, then pull the room down
-            and hold it. Handover with the temperature log already running.</p><button type="button" data-r3d-step="7">Show stage 8</button></li>
-        </ol>
-        <p class="calc-field-hint" style="margin-top:16px">Want the detail behind each stage — panel
-          selection, door protection, floor build-ups and what drives the price?
-          Read the <a href="../blog/cold-room-design-build-guide-pakistan">cold room design and build
-          guide</a>.</p>
-      </div>
-    </section>
+      <form class="wib-panel" id="wib-form" novalidate>
+        <nav class="wib-tabs" role="tablist" aria-label="Configuration steps">
+          <button type="button" role="tab" data-wib-tab="0" aria-selected="true" id="wibtab0" aria-controls="wibpane0"><b>1</b>Temp</button>
+          <button type="button" role="tab" data-wib-tab="1" aria-selected="false" id="wibtab1" aria-controls="wibpane1"><b>2</b>Size</button>
+          <button type="button" role="tab" data-wib-tab="2" aria-selected="false" id="wibtab2" aria-controls="wibpane2"><b>3</b>Options</button>
+          <button type="button" role="tab" data-wib-tab="3" aria-selected="false" id="wibtab3" aria-controls="wibpane3"><b>4</b>Result</button>
+        </nav>
 
-    <!-- Mobile-only CTA. At <=720px style.v2.css hides .calc-aside outright and
-         main.v2.js lifts only .calc-result into the bottom sheet, so the quote
-         and WhatsApp buttons in the aside never render on a phone. -->
-    <div class="wib-mobile-cta">
-      <a class="btn btn-primary" id="wib-quote-m" href="../contact">Send this spec to engineering <span class="arr">→</span></a>
-      <a class="btn btn-outline" id="wib-wa-m" href="#" target="_blank" rel="noopener">WhatsApp the spec</a>
-      <p class="wib-mobile-cta-note"><strong>No price is shown here on purpose</strong> — a walk-in is
-        quoted on site conditions, power supply and access. You get the engineering first.</p>
-    </div>
-  </form>
+        <div class="wib-body">
 
-  <aside class="calc-aside">
-    <div class="calc-result" id="result">
-      <div class="calc-result-head"><span class="calc-eyebrow">Step 4 · Engineering data</span></div>
-      <div class="calc-result-big" id="wib-load">—</div>
-      <div class="calc-result-sub" id="wib-load-sub">total refrigeration duty</div>
+          <section class="wib-pane is-active" data-wib-pane="0" id="wibpane0" role="tabpanel" aria-labelledby="wibtab0">
+            <h2 class="wib-pane-h">What will the room hold?</h2>
+            <div class="calc-field">
+              <div class="calc-radio-tiles" id="wib-temp"><span class="calc-radio-tile is-active" data-v="chiller"><span>Chiller</span><span>+2 to +5 °C · produce, dairy, prep</span></span><span class="calc-radio-tile" data-v="freezer"><span>Freezer</span><span>−18 to −25 °C · frozen storage</span></span><span class="calc-radio-tile" data-v="dual"><span>Dual-zone</span><span>Chiller + freezer in one shell</span></span></div>
+            </div>
+            <div class="calc-field">
+              <label class="calc-field-label" for="wib-city">Design ambient</label>
+              <select class="calc-select" id="wib-city">
+                <option value="45">Lahore — 45 °C summer design</option>
+                <option value="42">Islamabad — 42 °C</option>
+                <option value="41">Karachi — 41 °C</option>
+                <option value="48">Multan — 48 °C</option>
+                <option value="46">Faisalabad — 46 °C</option>
+                <option value="50">Jacobabad — 50 °C</option>
+              </select>
+              <div class="calc-field-hint">Summer design dry-bulb. This drives transmission and condenser derate.</div>
+            </div>
+          </section>
+
+          <section class="wib-pane" data-wib-pane="1" id="wibpane1" role="tabpanel" aria-labelledby="wibtab1" hidden>
+            <h2 class="wib-pane-h">How big is it?</h2>
+            <div class="calc-field"><span class="calc-field-label">Common sizes (internal, feet)</span>
+              <div class="calc-radio-tiles wib-tiles-sm" id="wib-preset"><span class="calc-radio-tile is-active" data-v="1.8,2.4"><span>6 × 8 ft</span><span>Single room, small kitchen</span></span><span class="calc-radio-tile" data-v="2.4,3.0"><span>8 × 10 ft</span><span>Restaurant / bakery</span></span><span class="calc-radio-tile" data-v="3.0,3.6"><span>10 × 12 ft</span><span>Meat shop / pharmacy</span></span><span class="calc-radio-tile" data-v="3.6,4.8"><span>12 × 16 ft</span><span>Small food warehouse</span></span><span class="calc-radio-tile" data-v="4.8,6.0"><span>16 × 20 ft</span><span>Depot / processing</span></span><span class="calc-radio-tile" data-v="custom"><span>Custom</span><span>Enter your own</span></span></div>
+            </div>
+            <div class="wib-dims">
+              <div class="calc-field"><label class="calc-field-label" for="wib-w">Width</label>
+                <div class="calc-num-with-unit"><input class="calc-num" type="number" id="wib-w" min="1.2" max="30" step="0.1" value="2.4"><span class="calc-num-unit">m</span></div></div>
+              <div class="calc-field"><label class="calc-field-label" for="wib-l">Length</label>
+                <div class="calc-num-with-unit"><input class="calc-num" type="number" id="wib-l" min="1.2" max="60" step="0.1" value="3.0"><span class="calc-num-unit">m</span></div></div>
+              <div class="calc-field"><label class="calc-field-label" for="wib-h">Clear height</label>
+                <div class="calc-num-with-unit"><input class="calc-num" type="number" id="wib-h" min="2" max="12" step="0.1" value="2.4"><span class="calc-num-unit">m</span></div></div>
+            </div>
+            <div class="calc-field-hint" id="wib-dims-ft">—</div>
+          </section>
+
+          <section class="wib-pane" data-wib-pane="2" id="wibpane2" role="tabpanel" aria-labelledby="wibtab2" hidden>
+            <h2 class="wib-pane-h">Panel, door, floor, plant</h2>
+            <div class="calc-field"><label class="calc-field-label" for="wib-panel">Panel thickness</label>
+              <select class="calc-select" id="wib-panel">
+                <option value="0.060">60 mm — chiller duty</option>
+                <option value="0.080">80 mm — chiller / mild freezer</option>
+                <option value="0.100" selected>100 mm — freezer standard</option>
+                <option value="0.125">125 mm — low temp</option>
+                <option value="0.150">150 mm — blast / −30 °C and below</option>
+              </select>
+              <div class="calc-field-hint">FireSafe PIR, λ 0.022 W/m·K aged (BS EN 14509).</div></div>
+
+            <div class="calc-field"><label class="calc-field-label" for="wib-module">Panel module width</label>
+              <select class="calc-select" id="wib-module">
+                <option value="1.00">1000 mm</option>
+                <option value="1.15" selected>1150 mm</option>
+                <option value="1.20">1200 mm</option>
+              </select>
+              <div class="calc-field-hint">Sets the joint spacing in the preview and the panel counts. Confirmed per order.</div></div>
+
+            <div class="calc-field"><label class="calc-field-label" for="wib-door">Door</label>
+              <select class="calc-select" id="wib-door">
+                <option value="hinged">Hinged — standard</option>
+                <option value="sliding">Sliding — tight space / high traffic</option>
+                <option value="glass">Glass display door</option>
+              </select></div>
+
+            <div class="calc-field"><label class="calc-field-label" for="wib-doorpos">Door wall</label>
+              <select class="calc-select" id="wib-doorpos">
+                <option value="front" selected>Front — on a length wall</option>
+                <option value="back">Back — on the opposite length wall</option>
+                <option value="left">Left — on a width wall</option>
+                <option value="right">Right — on the opposite width wall</option>
+              </select>
+              <div class="calc-field-hint">Moves the opening in the preview; the evaporator follows to the opposite wall.</div></div>
+
+            <div class="calc-field"><label class="calc-field-label" for="wib-curtain">Door protection</label>
+              <select class="calc-select" id="wib-curtain">
+                <option value="0.10">Strip curtain — 90% infiltration reduction</option>
+                <option value="0.50">Air curtain — 50% reduction</option>
+                <option value="1">None</option>
+              </select>
+              <div class="calc-field-hint">The cheapest kilowatt you will ever save. F-factor per ASHRAE Ref. Ch. 24.</div></div>
+
+            <div class="calc-field"><label class="calc-field-label" for="wib-floor">Floor</label>
+              <select class="calc-select" id="wib-floor">
+                <option value="insulated">Insulated floor — on grade</option>
+                <option value="screed">No floor panel — screed on grade</option>
+                <option value="suspended">Above grade / suspended slab</option>
+              </select>
+              <div class="calc-field-hint" id="wib-floor-hint">—</div></div>
+
+            <div class="calc-field"><label class="calc-field-label" for="wib-ref">Refrigeration</label>
+              <select class="calc-select" id="wib-ref">
+                <option value="mono">Monoblock — plug-in, wall mounted</option>
+                <option value="split" selected>Split — indoor evaporator, outdoor CDU</option>
+                <option value="remote">Remote CDU / plant deck</option>
+              </select></div>
+
+            <div class="calc-field"><label class="calc-field-label" for="wib-loc">Location</label>
+              <select class="calc-select" id="wib-loc">
+                <option value="indoor" selected>Indoor — inside a building</option>
+                <option value="outdoor">Outdoor — exposed to sun</option>
+              </select></div>
+          </section>
+
+          <section class="wib-pane" data-wib-pane="3" id="wibpane3" role="tabpanel" aria-labelledby="wibtab3" hidden>
+            <h2 class="wib-pane-h">Engineering data</h2>
+            <div class="wib-metrics">
+              <div class="wib-metric"><span class="wib-metric-l">Internal volume</span><span class="wib-metric-v" id="wib-vol">—</span><span class="wib-metric-s" id="wib-area">—</span></div>
+              <div class="wib-metric"><span class="wib-metric-l">Compressor duty</span><span class="wib-metric-v" id="wib-comp">—</span><span class="wib-metric-s" id="wib-comp-note">18 h/day run time</span></div>
+              <div class="wib-metric"><span class="wib-metric-l">Annual energy</span><span class="wib-metric-v" id="wib-kwh">—</span><span class="wib-metric-s">Indicative — tariff, door discipline, maintenance</span></div>
+              <div class="wib-metric"><span class="wib-metric-l">Panel U-value</span><span class="wib-metric-v" id="wib-u">—</span><span class="wib-metric-s">FireSafe PIR · λ 0.022 W/m·K</span></div>
+            </div>
+
+            <div class="calc-field"><span class="calc-field-label">Load breakdown</span>
+              <div class="calc-field-hint" id="wib-split">—</div></div>
+
+            <div class="calc-field"><span class="calc-field-label">Panel schedule</span>
+              <div class="wib-schedule-wrap">
+                <table class="wib-schedule">
+                  <thead><tr><th scope="col">Item</th><th scope="col">Make-up</th><th scope="col">Qty</th></tr></thead>
+                  <tbody id="wib-sched-body"></tbody>
+                </table>
+              </div>
+              <div class="calc-field-hint" id="wib-sched-note"></div></div>
+
+            <div class="calc-field-hint" id="wib-spec"></div>
+
+            <div class="calc-cta-pair">
+              <a class="btn btn-primary" id="wib-quote" href="../contact">Send this spec to engineering <span class="arr">→</span></a>
+              <a class="btn btn-outline" id="wib-wa" href="#" target="_blank" rel="noopener">WhatsApp the spec</a>
+            </div>
+            <details class="wib-note">
+              <summary>Why there is no price, and what this number covers</summary>
+              <p><strong>No price is shown here on purpose</strong> — a walk-in is quoted on site
+                conditions, power supply and access, and a headline figure set against those misleads.
+                You get the engineering first.</p>
+              <p><strong>Sizing basis:</strong> this is the <em>holding</em> load — envelope,
+                infiltration and internal gains. It does <strong>not</strong> include product
+                pull-down, which dominates if you load warm product daily. For the full ASHRAE
+                Chapter&nbsp;24 five-component calculation including pull-down, use the
+                <a href="../tools/load-calculator">cold room heat load calculator</a>.</p>
+            </details>
+          </section>
+        </div>
+
+        <div class="wib-bar">
+          <div class="wib-bar-num">
+            <strong id="wib-load">—</strong>
+            <span id="wib-load-sub">total refrigeration duty</span>
+          </div>
+          <div class="wib-bar-nav">
+            <button type="button" class="wib-nav-btn" data-wib-nav="prev">Back</button>
+            <button type="button" class="wib-nav-btn wib-nav-next" data-wib-nav="next">Next</button>
+          </div>
+        </div>
+      </form>
     </div>
 
-    <div class="calc-cost">
-      <div class="calc-cost-label">Internal volume</div>
-      <div class="calc-cost-value" id="wib-vol">—</div>
-      <div class="calc-cost-tariff" id="wib-area">—</div>
-    </div>
-    <div class="calc-cost">
-      <div class="calc-cost-label">Compressor duty at −10 °C SST</div>
-      <div class="calc-cost-value" id="wib-comp">—</div>
-      <div class="calc-cost-tariff" id="wib-comp-note">18 h/day run time</div>
-    </div>
-    <div class="calc-cost">
-      <div class="calc-cost-label">Estimated annual energy</div>
-      <div class="calc-cost-value" id="wib-kwh">—</div>
-      <div class="calc-cost-tariff">Indicative — depends on tariff, door discipline and maintenance</div>
-    </div>
-    <div class="calc-cost">
-      <div class="calc-cost-label">Panel U-value</div>
-      <div class="calc-cost-value" id="wib-u">—</div>
-      <div class="calc-cost-tariff">FireSafe PIR · λ 0.022 W/m·K</div>
-    </div>
-
-    <div id="options">
-      <div class="calc-cost-label" style="margin-top:18px">Load breakdown</div>
-      <div class="calc-field-hint" id="wib-split">—</div>
-      <div class="calc-field-hint" id="wib-spec" style="margin-top:14px"></div>
-    </div>
-
-    <div class="calc-cta-pair">
-      <a class="btn btn-primary" id="wib-quote" href="../contact">Send this spec to engineering <span class="arr">→</span></a>
-      <a class="btn btn-outline" id="wib-wa" href="#" target="_blank" rel="noopener">WhatsApp the spec</a>
-    </div>
-    <div class="calc-field-hint" style="margin-top:10px"><strong>No price is shown here on purpose</strong> — a walk-in is quoted on site conditions, power supply and access, and a headline figure set against those misleads. You get the engineering first.</div><div class="calc-field-hint" style="margin-top:8px"><strong>Sizing basis:</strong> this is the <em>holding</em> load — envelope, infiltration and internal gains. It does <strong>not</strong> include product pull-down, which dominates if you load warm product daily. For the full ASHRAE Chapter&nbsp;24 five-component calculation including pull-down, use the <a href="../tools/load-calculator">cold room heat load calculator</a>.</div>
-  </aside>
-</div>
+<section class="section" aria-label="How a cold room is built">
+  <div class="container" style="max-width:860px;margin:0 auto;padding:2.5rem 1.5rem;">
+    <span class="calc-eyebrow">How a cold room is built</span>
+    <h2 style="font-size:1.35rem;font-weight:700;margin:8px 0 6px;">The eight stages, in order</h2>
+    <p class="calc-field-hint" style="margin-bottom:16px">Press a stage to jump the 3D preview to it, or
+      use <strong>Watch it build</strong> on the model to play the whole sequence. This is the order a
+      cam-lock panel box actually goes up on site.</p>
+    <ol class="wib-steps">
+      <li><h3>Site &amp; slab</h3><p>Level slab, power and drainage set out. The slab wants to be flat
+        to about ±3 mm per metre — panel joints will not pull tight on a wavy floor, and every gap you
+        leave is a permanent heat leak.</p><button type="button" data-r3d-step="0">Show stage 1</button></li>
+      <li><h3>Floor panels</h3><p>Insulated floor panels laid on the slab with joints staggered and
+        sealed. On grade the floor sees an 18 °C soil boundary rather than ambient, which is why a floor
+        panel matters far more on a freezer than on a chiller.</p><button type="button" data-r3d-step="1">Show stage 2</button></li>
+      <li><h3>Wall panels</h3><p>Wall panels stood on the floor perimeter and drawn together on
+        cam-locks. FireSafe PIR core, λ 0.022 W/m·K aged to BS EN 14509. Corners go up first so the box
+        is square before the runs close.</p><button type="button" data-r3d-step="2">Show stage 3</button></li>
+      <li><h3>Ceiling panels</h3><p>Ceiling panels dropped in and locked to the wall heads. Past roughly
+        4 m of clear span they are hung from the building steel rather than self-spanning.</p><button type="button" data-r3d-step="3">Show stage 4</button></li>
+      <li><h3>Door &amp; hardware</h3><p>Door frame, leaf, hinges and inside safety release fitted. Any
+        freezer door needs heater tape in the frame, or the gasket freezes to the jamb and the leaf tears
+        on opening.</p><button type="button" data-r3d-step="4">Show stage 5</button></li>
+      <li><h3>Evaporator</h3><p>Evaporator mounted clear of the door throw so its air pattern is not
+        fighting the infiltration it is meant to handle. Condensate drain trapped, and trace-heated on
+        low temp.</p><button type="button" data-r3d-step="5">Show stage 6</button></li>
+      <li><h3>Condensing unit</h3><p>Condensing unit sited in free, shaded air, then pipework, electrics
+        and controls run back. In a Pakistani summer a unit in direct sun loses capacity exactly when you
+        need it most.</p><button type="button" data-r3d-step="6">Show stage 7</button></li>
+      <li><h3>Commissioned</h3><p>Pressure test, evacuate, charge, set superheat, then pull the room down
+        and hold it. Handover with the temperature log already running.</p><button type="button" data-r3d-step="7">Show stage 8</button></li>
+    </ol>
+    <p class="calc-field-hint" style="margin-top:16px">Want the detail behind each stage — panel
+      selection, door protection, floor build-ups and what drives the price? Read the
+      <a href="../blog/cold-room-design-build-guide-pakistan">cold room design and build guide</a>.</p>
+  </div>
+</section>
 
 <section class="section section-soft" aria-label="Methodology">
       <div class="container" style="max-width:860px;margin:0 auto;padding:2.5rem 1.5rem;">

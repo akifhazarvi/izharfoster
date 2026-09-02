@@ -8,12 +8,207 @@
    Tokens come from style.v2.css :root; nothing is redefined.
    ========================================================================== */
 
+/* ==========================================================================
+   APP SHELL — two panes, bounded height, nothing sticky.
+
+   The first build made the 3D viewer `position: sticky` inside the form. That
+   is what "content scrolls behind the model" was: the form slid underneath a
+   447px sticky block, and with a 64px header and the bottom result sheet the
+   usable form area on a 844px phone was about 200px, so fields were sliced at
+   the boundary.
+
+   Here the model and the controls are siblings in a fixed-height grid. Neither
+   can overlap the other, both are visible at once, and the only thing that
+   scrolls is the step pane, inside its own box.
+   ========================================================================== */
+
+.wib-app {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 20px var(--gutter) 40px;
+  display: grid;
+  /* Model gets the room; controls get a comfortable fixed column. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
+  gap: 20px;
+  height: clamp(560px, calc(100dvh - 150px), 820px);
+  box-sizing: border-box;
+  /* The header is sticky, so anchor scrolling must stop clear of it or the
+     step tabs end up underneath it. This has to match the header height at
+     each breakpoint exactly: overshoot and the bottom of the shell (with the
+     live kW and the Next button) is pushed off the bottom of the screen. */
+  scroll-margin-top: 78px;
+}
+/* min-height:0 is what actually lets a grid child scroll internally instead of
+   stretching its parent — without it .wib-body would grow and the page would
+   scroll again. */
+.wib-viz, .wib-panel { min-height: 0; min-width: 0; }
+
+.wib-panel {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--paper);
+  overflow: hidden;
+}
+
+/* ---- step tabs ---- */
+.wib-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-bottom: 1px solid var(--line);
+  background: var(--paper-2);
+  flex: 0 0 auto;
+}
+.wib-tabs button {
+  appearance: none;
+  border: 0;
+  border-right: 1px solid var(--line-2);
+  background: transparent;
+  font: inherit;
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--muted);
+  min-height: 48px;
+  padding: 0 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.wib-tabs button:last-child { border-right: 0; }
+.wib-tabs button b {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  width: 19px; height: 19px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--paper-3);
+  color: var(--ink-2);
+  flex: 0 0 auto;
+}
+.wib-tabs button[aria-selected="true"] {
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: inset 0 -2px 0 var(--brand-500);
+}
+.wib-tabs button[aria-selected="true"] b { background: var(--brand-500); color: #fff; }
+
+/* ---- the one scrolling region on the page ---- */
+.wib-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;      /* don't chain to the page at the ends */
+  padding: 16px 18px 20px;
+}
+/* !important is load-bearing: the mobile density rules below set an explicit
+   `display` on individual panes by attribute selector, which has the same
+   specificity as this rule and comes later — without it a "hidden" pane keeps
+   rendering and inflates the scroll height of whichever pane is actually open. */
+.wib-pane[hidden] { display: none !important; }
+.wib-pane-h {
+  font-size: 1rem;
+  font-weight: 650;
+  margin: 0 0 14px;
+  color: var(--ink);
+}
+/* The base .calc-field is a 200px right-aligned label beside its control —
+   sized for the old 720px form column. In a 420px side panel that reads as a
+   broken right-aligned column, so stack it. */
+.wib-pane .calc-field {
+  display: block;
+  margin-bottom: 16px;
+}
+.wib-pane .calc-field:last-child { margin-bottom: 0; }
+.wib-pane .calc-field-label {
+  display: block;
+  text-align: left;
+  margin-bottom: 6px;
+}
+.wib-pane .calc-field-hint { margin-top: 6px; }
+.wib-pane .calc-select,
+.wib-pane .calc-num-with-unit { width: 100%; }
+
+/* Width / length / height sit on one row — three short numbers do not each
+   deserve a full-width block. */
+.wib-dims { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.wib-dims .calc-field { margin-bottom: 0; }
+
+.wib-metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 16px; }
+.wib-metric {
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-sm);
+  background: var(--paper-2);
+  padding: 10px 12px;
+  display: flex; flex-direction: column; gap: 2px;
+  min-width: 0;
+}
+.wib-metric-l { font-family: var(--font-mono); font-size: .64rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.wib-metric-v { font-family: var(--font-mono); font-size: 1.02rem; font-weight: 600; color: var(--ink); }
+.wib-metric-s { font-size: .7rem; color: var(--muted); line-height: 1.4; }
+
+/* Caveats that matter but should not push the CTAs off the pane. */
+.wib-note {
+  margin-top: 12px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-sm);
+  background: var(--paper-2);
+  padding: 10px 12px;
+}
+.wib-note summary {
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.wib-note p { font-size: .78rem; line-height: 1.55; color: var(--ink-2); margin: 10px 0 0; }
+
+/* ---- persistent action bar: the live number never leaves the screen ---- */
+.wib-bar {
+  flex: 0 0 auto;
+  border-top: 1px solid var(--line);
+  background: var(--paper-2);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.wib-bar-num { display: flex; flex-direction: column; min-width: 0; }
+.wib-bar-num strong {
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--t-warm);
+  line-height: 1.1;
+}
+.wib-bar-num span { font-size: .68rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wib-bar-nav { display: flex; gap: 8px; margin-left: auto; flex: 0 0 auto; }
+.wib-nav-btn {
+  appearance: none;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--line);
+  background: var(--paper);
+  font: inherit; font-size: .82rem; font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+}
+.wib-nav-btn:disabled { opacity: .38; cursor: default; }
+.wib-nav-next { background: var(--brand-500); border-color: var(--brand-500); color: #fff; }
+.wib-nav-next:hover:not(:disabled) { background: var(--brand-600); border-color: var(--brand-600); }
+
+/* ---- the viewer, now a plain bounded block ---- */
 .r3d {
-  --r3d-h: 420px;
-  position: sticky;
-  top: 88px;                       /* .site-header is 76px + breathing room */
-  z-index: 5;
-  margin: 0 0 28px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   border: 1px solid var(--line);
   border-radius: var(--r-md);
   background:
@@ -21,12 +216,14 @@
   overflow: hidden;
   box-shadow: 0 1px 2px rgba(8, 66, 150, .04), 0 12px 32px -18px rgba(8, 66, 150, .22);
 }
+.wib-sm { display: none; }
 
 /* ---------- stage ---------- */
 
 .r3d-stage {
   position: relative;
-  height: var(--r3d-h);
+  flex: 1 1 auto;                  /* takes whatever the chrome below leaves */
+  min-height: 0;
   perspective: 1600px;
   perspective-origin: 50% 44%;
   cursor: grab;
@@ -211,6 +408,9 @@
 .r3d-hud {
   position: absolute;
   inset: 0;
+  /* The world is appended to the stage by JS, so it comes after the HUD in DOM
+     order and would paint over the chips without this. */
+  z-index: 2;
   pointer-events: none;
   padding: 12px;
   display: flex;
@@ -390,64 +590,129 @@
 /* ---------- responsive ---------- */
 
 @media (max-width: 1100px) {
-  .r3d { --r3d-h: 360px; }
+  .wib-app { grid-template-columns: minmax(0, 1fr) minmax(0, 370px); gap: 16px; }
 }
 
+/* Tablet and phone: stack into model-on-top, controls-below. Still one bounded
+   box — the model is pinned by the grid row, not by `sticky`, so the panel can
+   never slide under it. */
 @media (max-width: 900px) {
-  .r3d { --r3d-h: 320px; top: 84px; }
+  .wib-app {
+    grid-template-columns: minmax(0, 1fr);
+    /* Model takes a fixed slice; the panel takes the rest and scrolls inside. */
+    grid-template-rows: minmax(200px, 38%) minmax(0, 1fr);
+    gap: 12px;
+    height: calc(100dvh - 76px);
+    scroll-margin-top: 78px;
+    padding: 12px var(--gutter) 20px;
+  }
+  .r3d-stepnote { display: none; }   /* the caption lives in the stage list below */
 }
 
-/* Phones. The viewer goes full-bleed and sticks under the 64px header so it
-   stays on screen while the user works down the form — that is the whole
-   point of the thing. .calc-grid is `display:block` here, so the negative
-   margins bleed to the viewport edge. */
 @media (max-width: 720px) {
-  .r3d {
-    --r3d-h: min(38vh, 300px);
-    top: 64px;
-    margin-left: calc(var(--mb-x) * -1);
-    margin-right: calc(var(--mb-x) * -1);
-    margin-bottom: 20px;
-    border-left: 0;
-    border-right: 0;
-    border-radius: 0;
+  .wib-app {
+    /* 64px sticky .site-header at the top, plus the 66px fixed .mact bar
+       (WhatsApp / Call / Get quote) pinned to the bottom on phones. Without
+       the second term the shell's own action bar — the live kW and Next —
+       sits underneath .mact and is unreachable. */
+    height: calc(100dvh - 64px - 66px - env(safe-area-inset-bottom, 0px));
+    scroll-margin-top: 66px;
+    gap: 10px;
+    padding: 10px var(--mb-x) 14px;
+    grid-template-rows: minmax(200px, 41%) minmax(0, 1fr);
   }
-  .r3d-stepnote { display: none; }          /* the caption lives in the step list below */
   .r3d-hint { display: none; }
-  .r3d-ui { padding: 8px 10px; gap: 6px; }
-  .r3d-seg button { padding: 0 10px; font-size: .74rem; }
-  .r3d-btn { padding: 0 12px; font-size: .74rem; }
+  .wib-lg { display: none; }
+  .wib-sm { display: inline; }
+
+  /* On a phone the mode row and the stage row together ate ~115px of a ~257px
+     viewer, leaving the model about 100px tall — technically correct and
+     useless. The mode row stays in flow (so it never covers the model) and the
+     build-stage row is reduced to a progress line plus a counter pinned to the
+     top edge, where the fit already leaves margin. Stage roughly doubles. */
+  .r3d { position: relative; }
+  .r3d-ui {
+    padding: 5px 8px;
+    gap: 6px;
+    flex: 0 0 auto;
+  }
+  .r3d-seg button { padding: 0 9px; font-size: .72rem; min-height: 38px; }
+  .r3d-btn { padding: 0 11px; font-size: .72rem; min-height: 38px; }
+
+  .r3d-step {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 3;
+    border-top: 0;
+    background: transparent;
+    padding: 0;
+    pointer-events: none;              /* drags pass through to the model */
+  }
+  .r3d-steptrack { margin: 0; border-radius: 0; height: 3px; }
+  .r3d-steprow { justify-content: flex-end; gap: 6px; padding: 6px 8px 0; }
+  .r3d-stepname { display: none; }     /* named in the stage list below the app */
+  .r3d-stepidx {
+    background: rgba(245, 242, 236, .92);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .r3d-stepnav { pointer-events: auto; margin-left: 0; }
+  .r3d-stepnav button { width: 36px; height: 36px; background: rgba(245, 242, 236, .92); }
+  .wib-body { padding: 14px var(--mb-x) 18px; }
+  .wib-tabs button { font-size: .72rem; gap: 5px; min-height: 46px; }
+  .wib-bar-num strong { font-size: 1.25rem; }
+
+  /* Density pass. Each step should fit the pane rather than force a scroll —
+     the whole point of splitting into steps was to stop the long form. Two
+     columns roughly halves each pane's height. */
+  .wib-pane .calc-radio-tiles {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .wib-pane .calc-radio-tile { padding: 9px 10px; min-height: 0; }
+  .wib-pane .calc-radio-tile span:first-child { font-size: .84rem; }
+  .wib-pane .calc-radio-tile span:last-child { font-size: .68rem; line-height: 1.35; }
+
+  /* Options: pair the selects up. */
+  .wib-pane[data-wib-pane="2"] {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .wib-pane[data-wib-pane="2"] .wib-pane-h { grid-column: 1 / -1; }
+  .wib-pane[data-wib-pane="2"] .calc-field { margin-bottom: 0; min-width: 0; }
+  .wib-pane[data-wib-pane="2"] .calc-field-hint { font-size: .68rem; line-height: 1.4; }
+
+  .wib-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .wib-metric { padding: 8px 10px; }
+  .wib-metric-v { font-size: .92rem; }
+  /* Full-width CTAs read better than a squeezed pair on a phone. */
+  .calc-cta-pair { display: grid; gap: 8px; }
+  .calc-cta-pair .btn { width: 100%; justify-content: center; }
+
+  /* This page's titlebar is pure overhead on a phone — the app shell below
+     carries the title's job. Trim it so the shell starts near the fold. */
+  .calc-titlebar { padding-top: 14px !important; padding-bottom: 12px !important; }
+  .calc-titlebar .calc-eyebrow { display: none; }
+  .calc-title { font-size: 1.25rem !important; margin-bottom: 8px !important; }
 }
 
 @media (max-width: 480px) {
-  .r3d { --r3d-h: min(34vh, 250px); }
+  .wib-app { grid-template-rows: minmax(180px, 40%) minmax(0, 1fr); }
   .r3d-chip { font-size: .62rem; padding: 3px 6px; }
-  /* Only the two chips that matter at this width. */
-  .r3d-chip-hide-sm { display: none; }
+  .r3d-chip-hide-sm { display: none; }      /* only the two chips that matter */
+  .r3d-btn-reset { display: none; }         /* double-tap-free; Reset lives in the stage nav */
+  .wib-tabs button b { display: none; }     /* labels alone at this width */
+  .wib-dims { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .wib-dims .calc-field-label { font-size: .66rem; }
 }
 
-/* ---------- mobile CTA rescue ----------
-   style.v2.css hides .calc-aside entirely at <=720px and main.v2.js moves only
-   .calc-result into the bottom sheet, so the quote and WhatsApp buttons in the
-   aside are invisible on phones. This block ships a duplicate CTA inside the
-   form that only exists at mobile widths. */
-.wib-mobile-cta { display: none; }
-@media (max-width: 720px) {
-  .wib-mobile-cta {
-    display: grid;
-    gap: 10px;
-    margin: 24px 0 8px;
-    padding: 18px;
-    border: 1px solid var(--line);
-    border-radius: var(--r-md);
-    background: var(--paper-2);
-  }
-  .wib-mobile-cta .btn { width: 100%; justify-content: center; }
-  .wib-mobile-cta-note {
-    font-size: .78rem;
-    color: var(--muted);
-    line-height: 1.55;
-  }
+/* Short landscape phones: the fixed-height shell would squeeze to nothing, so
+   let the page scroll normally instead of trapping everything in 380px. */
+@media (max-height: 520px) {
+  .wib-app { height: auto; grid-template-rows: 300px auto; }
+  .wib-body { overflow-y: visible; }
 }
 
 /* ---------- build step list (text mirror of the 3D sequence) ----------

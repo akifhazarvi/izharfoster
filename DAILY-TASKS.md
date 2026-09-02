@@ -27,6 +27,37 @@ Work top-to-bottom. Mark done with `[x]`. Each PR title must reference the GROWT
 - [x] **Logo was invisible on the mobile tool header.** At ≤720px `body.has-dark-header` turns the header navy and recolours the hamburger, phone and CTA — but not the logo, which is a solid brand-blue plaque. Added `filter: brightness(0) invert(1)`, which flattens the plaque to white and lets the navy read through the knockout lettering. Verified by render.
 - [x] **`--brand-500` corrected `#084296` → `#084595`**, sampled from the logo. Three different blues were in circulation (`#2160A8` in memory, `#084595` in DAILY-TASKS, `#084296` in the token). `#084595` is the real one.
 
+### Layout rebuilt — the model and the controls now share the screen
+
+- [x] **Reported: "content is scrolling behind the 3D model".** Reproduced and it
+  was worse than a z-index issue. The viewer was `position: sticky` inside the
+  form, so the form slid underneath a 447px block; with the 64px header and the
+  fixed `.mact` bar the usable form area on a 390×844 phone was about 200px and
+  fields were sliced at the boundary.
+- [x] **Sticky removed entirely.** `.wib-app` is now a bounded grid — two columns
+  on desktop (model left, controls right), stacked on mobile (model top,
+  controls below). The panes are siblings, so neither can overlap the other and
+  the only thing that scrolls is the step pane inside its own box.
+- [x] **Four-step panel** (Temp / Size / Options / Result) with a persistent
+  action bar carrying the live kW and Back/Next, so the headline number never
+  leaves the screen. Options and Result panes go two-column on mobile.
+- [x] **`.calc-result` dropped from this page**, which stops `wireCalcResultSheet`
+  in `main.v2.js` building the bottom sheet — the shell's own bar replaces it,
+  and the duplicated kW readout is gone.
+- [x] **Reserved room for `.mact`** (66px, fixed, ≤720px). Without it the shell's
+  action bar sat underneath the site's WhatsApp/Call/Get-quote bar.
+- [x] **Model roughly doubled on mobile** (~100px → ~164px tall). The mode row
+  stays in flow so it never covers the model; the build-stage row is reduced to
+  a progress line plus a counter pinned to the top edge.
+
+Three bugs found while doing it: a `.wib-pane[data-wib-pane="2"]{display:grid}`
+rule outranked `.wib-pane[hidden]{display:none}` (same specificity, later in the
+file), so a "hidden" pane kept rendering and inflated every other pane's scroll
+height; `Math.max(140, box.height - 24)` in the fit solved against a box taller
+than the stage actually was and clipped the model on short screens; and the
+stage is a flex child whose height is not settled at mount, so a one-shot
+measurement left a stale scale — now observed with `ResizeObserver`.
+
 ### New guide — GSC-driven
 
 - [x] **`blog/cold-room-design-build-guide-pakistan.html`** (2,786 words, 12 H2s, 3 tables, 4 JSON-LD blocks: Article + **HowTo** + FAQPage + Breadcrumb, all parse). Targets the `cold room` cluster, chosen from a live GSC pull (2026-06-01 → 08-30, `https://izharfoster.com/`).

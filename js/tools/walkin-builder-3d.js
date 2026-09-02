@@ -232,8 +232,11 @@
     if (!room || !SUPPORTED) return;
 
     var box = stage.getBoundingClientRect();
-    var availW = Math.max(160, box.width - 24);
-    var availH = Math.max(140, box.height - 24);
+    /* These floors must stay well below any real stage size. An earlier 140px
+       floor on the height meant that on a short stage the fit solved against a
+       box taller than the one it had, and the model overflowed and clipped. */
+    var availW = Math.max(80, box.width - 20);
+    var availH = Math.max(60, box.height - 20);
 
     var W = st.w, L = st.l, H = st.h, t = st.panel;
     var yaw = view.yaw * Math.PI / 180, pitch = view.pitch * Math.PI / 180;
@@ -639,10 +642,22 @@
     paintStep();
 
     var raf;
-    window.addEventListener('resize', function () {
+    var refit = function () {
       if (raf) return;
       raf = requestAnimationFrame(function () { raf = null; layout(); });
-    }, { passive: true });
+    };
+    window.addEventListener('resize', refit, { passive: true });
+
+    /* The stage is a flex child, so its height is not settled at mount time and
+       does not change on window resize alone — switching step panes or opening
+       a <details> can resize it too. Measuring once left the model scaled to a
+       stale box and clipped at the top. Observe the element instead. */
+    if (window.ResizeObserver) {
+      var ro = new ResizeObserver(refit);
+      ro.observe(stage);
+    } else {
+      setTimeout(layout, 120);   // one late pass for browsers without RO
+    }
   }
 
   window.IzharRoom3D = {
