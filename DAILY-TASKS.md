@@ -58,6 +58,24 @@ than the stage actually was and clipped the model on short screens; and the
 stage is a flex child whose height is not settled at mount, so a one-shot
 measurement left a stale scale — now observed with `ResizeObserver`.
 
+### Cache-busting — CSS could ship against a stale copy
+
+- [x] **The builder rendered unstyled after deploy.** Not a deploy failure: live
+  `walkin-builder.css` was byte-identical to the repo. The browser was holding
+  the previous copy. Real bug for every returning visitor, because the two
+  assets are cached on very different terms — HTML is
+  `max-age=0, must-revalidate` while CSS is `max-age=86400,
+  stale-while-revalidate=604800`. New markup, week-old styles.
+- [x] **`?v=20260902` appended to every `style.v2.css` and `walkin-builder.css`
+  link across 85 pages**, matching the `?v=2` convention the favicons use.
+  `style.v2.css` needed it too — it carries the `--brand-500` correction and the
+  dark-header logo filter, which would otherwise not apply to returning users.
+
+> **⚠ Bump the `?v=` string whenever either stylesheet changes**, or the same
+> failure recurs. The durable alternative is a `vercel.json` header rule serving
+> CSS with a short `max-age` and letting `stale-while-revalidate` handle it —
+> not done, so the manual bump stands.
+
 ### New guide — GSC-driven
 
 - [x] **`blog/cold-room-design-build-guide-pakistan.html`** (2,786 words, 12 H2s, 3 tables, 4 JSON-LD blocks: Article + **HowTo** + FAQPage + Breadcrumb, all parse). Targets the `cold room` cluster, chosen from a live GSC pull (2026-06-01 → 08-30, `https://izharfoster.com/`).
