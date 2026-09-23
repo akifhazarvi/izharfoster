@@ -1,10 +1,25 @@
 # Izhar Foster — Daily Task List
 
-**Last updated:** 2026-09-02
+**Last updated:** 2026-09-23
 **Score baseline:** 78/100 (ACTION-PLAN.md, 2026-05-02)
 **Canonical roadmap:** [GROWTH-PLAN.md](GROWTH-PLAN.md) | Resolved conflicts: [DECISIONS.md](DECISIONS.md)
 
 Work top-to-bottom. Mark done with `[x]`. Each PR title must reference the GROWTH-PLAN section it implements.
+
+---
+
+## 2026-09-23 — GP§13: desktop WhatsApp goes to WhatsApp; calculator + header leaks fixed
+
+Full data and reasoning: [PERFORMANCE-REPORT-2026-09.md](PERFORMANCE-REPORT-2026-09.md) (28d GSC + GA4, 26 Aug – 22 Sep).
+
+- [x] **Ads "−72% conversions" diagnosed.** The previous period was PMax "Campaign #1" bot traffic (20.8k sessions, 22.3k key events), which ended 18 Aug. The 118 current conversions match GA4 paid `lead_intent` (117): about $2.28 per real lead tap.
+- [x] **Desktop green WhatsApp FAB → direct `wa.me`** with the page subject. It used to open the bot: 22 opens → 0 briefs. The bot (pill) now lists WhatsApp first and no longer asks for a phone number. `js/chat-widget.js`
+- [x] **WhatsApp button in the mobile calculator result sheet**, mirroring the tool's `#cta-wa`/`#wib-wa` (it carries the estimate). The sheet hides `.mact`, so calculator pages had no WhatsApp in view. `js/main.v2.js`
+- [x] **Header CTA clipped at ≤1440 px** (off-screen entirely at 1024). Links tightened; landline hidden below 1400.
+- [x] `#job-open` / `#job-save` hidden ≤720 px.
+- [x] `?v=20260923` on `style.v2.css`, `main.v2.js`, `chat-widget.js` (85 pages). **`main.v2.js` is served immutable for 1 year by `vercel.json` — bump its `?v=` on every change, same as the CSS.**
+- [ ] UI-only: remove PMax Campaign #1; Search Partners/Display off; GA4 key events → `lead_intent` + `generate_lead` only; Ads API access for 326-413-6797.
+- [ ] Test: bid down/pause exact "sandwich panel price" terms for 2 weeks. The PIR & PUF Search campaign (100→425 sessions) looks like it is taking clicks from organic (PIR page 224→116 clicks at pos ~4).
 
 ---
 

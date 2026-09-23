@@ -7220,3 +7220,42 @@ body:has(#wizard) .section { padding-top: 18px !important; }
     font-weight: 500;
   }
 }
+
+/* ── Header fits its CTA on laptop widths (2026-09) ────────────────────────
+   Measured 2026-09-23: .nav-cta (landline + "Request quote") is 317px wide
+   and flex-shrink:0, and .nav-center never wraps, so the button ran off the
+   right edge at every width up to 1440px — at 1024 it was entirely off-screen.
+   1280/1366 are the commonest desktop widths in GA4. Tighten the links and let
+   the landline go first; the quote button is the one that must stay. */
+@media (max-width: 1440px) {
+  .nav { gap: 16px; }
+  .nav-center { gap: 0; }
+  .nav-center a { padding: 9px 10px; font-size: .88rem; }
+  .brand-logo { height: 52px; max-width: 230px; }
+}
+@media (max-width: 1400px) {
+  .nav-cta .nav-phone { display: none; }
+}
+@media (max-width: 1180px) {
+  .nav-center a { padding: 9px 7px; font-size: .84rem; }
+  .brand-logo { height: 46px; max-width: 200px; }
+}
+
+/* Calculator result sheet: one-tap WhatsApp next to the headline number. */
+.calc-result-sheet-wa {
+  display: inline-flex; align-items: center; gap: 6px;
+  flex-shrink: 0;
+  min-height: 44px; padding: 0 14px;
+  border-radius: 999px;
+  background: #25D366; color: #04240F;      /* 8.9:1, same as .mact-wa */
+  font-weight: 700; font-size: .82rem;
+  text-decoration: none;
+}
+.calc-result-sheet-wa svg { width: 18px; height: 18px; }
+.calc-result-sheet-wa:active { background: #1FB955; }
+
+/* Save/Open .json is engineer chrome — on a phone it only pushes the price
+   shopper's first input below the fold. Print PDF stays. */
+@media (max-width: 720px) {
+  #job-open, #job-save { display: none; }
+}

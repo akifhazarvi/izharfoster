@@ -590,7 +590,30 @@
       chevron.innerHTML = '&#8679;'; /* ⇧ */
       chevron.setAttribute('aria-hidden', 'true');
 
+      /* One-tap WhatsApp in the collapsed sheet. The sheet hides the mobile
+         action bar (.mact), so before this the only WhatsApp on a calculator
+         page sat below the chart and breakdown inside the expanded sheet:
+         ~85 mobile price calculations -> 7 WhatsApp taps in 28 days. The href
+         mirrors the tool's own #cta-wa, which carries the estimate summary. */
+      const waEl = document.createElement('a');
+      waEl.className = 'calc-result-sheet-wa';
+      waEl.target = '_blank';
+      waEl.rel = 'noopener';
+      waEl.setAttribute('aria-label', 'Send this estimate on WhatsApp');
+      waEl.innerHTML = '<svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16 0C7.2 0 0 7.2 0 16c0 2.8.7 5.5 2.1 8L0 32l8.3-2.1c2.3 1.3 5 2.1 7.7 2.1 8.8 0 16-7.2 16-16S24.8 0 16 0zm7.3 22.6c-.3.9-1.9 1.8-2.7 1.9-.7.1-1.6.1-2.5-.2-.6-.2-1.3-.4-2.3-.8-4-1.7-6.7-5.8-6.9-6.1-.2-.3-1.6-2.2-1.6-4.2s1-2.9 1.4-3.4c.4-.4.8-.5 1.1-.5h.8c.2 0 .6-.1.9.7.3.8 1.2 2.8 1.2 3 .1.2.2.4 0 .7-.1.3-.2.4-.4.7l-.6.7c-.2.2-.4.4-.2.8.2.4 1 1.7 2.2 2.8 1.5 1.4 2.8 1.8 3.2 2 .4.2.6.2.9-.1.2-.3 1-1.2 1.3-1.6.3-.4.5-.3.9-.2.4.1 2.3 1.1 2.8 1.3.4.2.7.3.8.5 0 .2 0 1-.3 1.9z"/></svg><span>WhatsApp</span>';
+      function syncWa() {
+        const src = resultEl.querySelector('#cta-wa, #wib-wa');
+        const h = src && src.getAttribute('href');
+        const fallback = (window.IzharWA ? window.IzharWA.link('Hi Izhar Foster — I\'d like a quote for: ' + (document.querySelector('h1')?.textContent || document.title).trim().slice(0, 72)) : 'https://wa.me/923215383544');
+        waEl.href = (h && /wa\.me/.test(h)) ? h : fallback;
+      }
+      syncWa();
+      waEl.addEventListener('pointerdown', syncWa);
+      waEl.addEventListener('click', (e) => { syncWa(); e.stopPropagation(); });
+      sheet._syncWa = syncWa;
+
       handleEl.appendChild(left);
+      handleEl.appendChild(waEl);
       handleEl.appendChild(chevron);
 
       const inner = document.createElement('div');
@@ -624,6 +647,7 @@
       const sub = resultEl.querySelector('#sub-num, .calc-result-sub');
       if (bigNum) numEl.textContent = bigNum.textContent || '—';
       if (sub) subEl.textContent = sub.textContent || '';
+      if (sheet && sheet._syncWa) sheet._syncWa();
     }
 
     function applyLayout() {
@@ -633,7 +657,7 @@
         /* Watch for result updates (any DOM mutation inside result) */
         if (!sheet._observer) {
           const obs = new MutationObserver(syncNum);
-          obs.observe(resultEl, { childList: true, subtree: true, characterData: true });
+          obs.observe(resultEl, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['href'] });
           sheet._observer = obs;
         }
       } else {

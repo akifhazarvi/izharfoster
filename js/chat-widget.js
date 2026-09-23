@@ -19,6 +19,16 @@
   // Read it per call rather than caching, so the widget always hands off to the
   // line this visitor is assigned to. Falls back to line 1 if routing is absent.
   function waNumber() { return (window.IzharWA && window.IzharWA.number()) || '923215383544'; }
+  // The green WhatsApp icon goes straight to WhatsApp — same message shape as
+  // the mobile action bar (main.v2.js), so sales opens with the page subject.
+  // Until 2026-09 it opened this bot instead: 22 desktop opens -> 0 briefs sent
+  // in 28 days, while visitors who reached a real wa.me link converted.
+  function directWaUrl() {
+    var h1 = document.querySelector('h1');
+    var subject = ((h1 && h1.textContent) || document.title || '').replace(/\s+/g, ' ').trim().slice(0, 72);
+    return 'https://wa.me/' + waNumber() + '?text=' + encodeURIComponent(
+      'Hi Izhar Foster — I\'m enquiring about: ' + subject + '\n\n— Sent from izharfoster.com');
+  }
   var SESSION_DISMISS_KEY = 'izhar_chat_dismissed_v1';
   var STATE_KEY = 'izhar_chat_state_v1';
 
@@ -159,10 +169,10 @@
   <span>Engineering desk</span>\
   <strong>Get a sized quote &nbsp;&rarr;</strong>\
 </button>\
-<button class="ifc-fab-btn" id="ifc-fab-btn" aria-label="Open WhatsApp engineering chat" type="button">\
+<a class="ifc-fab-btn" id="ifc-fab-btn" aria-label="Chat with us on WhatsApp" href="https://wa.me/923215383544" target="_blank" rel="noopener">\
   <svg width="30" height="30" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16.003 0C7.166 0 .003 7.163.003 16c0 2.808.729 5.55 2.116 7.964L.003 32l8.262-2.083C10.605 31.241 13.273 32 16.003 32c8.837 0 16-7.163 16-16S24.84 0 16.003 0zm0 29.333c-2.475 0-4.9-.665-7.012-1.928l-.503-.299-5.232 1.319 1.339-5.105-.328-.523A13.246 13.246 0 012.67 16c0-7.353 5.98-13.333 13.333-13.333S29.336 8.647 29.336 16 23.355 29.333 16.003 29.333zm7.349-9.99c-.403-.201-2.382-1.175-2.751-1.31-.369-.134-.638-.201-.906.202-.268.402-1.04 1.31-1.275 1.578-.235.268-.469.302-.872.101-.403-.201-1.702-.627-3.242-2-1.199-1.069-2.008-2.39-2.243-2.792-.235-.403-.025-.62.176-.821.181-.18.403-.469.604-.704.201-.235.268-.403.402-.671.134-.268.067-.503-.034-.704-.101-.201-.906-2.185-1.242-2.992-.327-.785-.66-.678-.906-.691l-.772-.014c-.268 0-.704.101-1.073.503-.369.402-1.41 1.378-1.41 3.361s1.444 3.9 1.645 4.168c.201.268 2.841 4.338 6.882 6.083.961.415 1.711.663 2.296.848.965.307 1.843.264 2.537.16.774-.116 2.382-.974 2.717-1.913.335-.939.335-1.745.235-1.913-.101-.168-.369-.268-.772-.469z"/></svg>\
   <span class="ifc-fab-dot" aria-hidden="true"></span>\
-</button>';
+</a>';
 
     var panel = document.createElement('div');
     panel.className = 'ifc-panel';
@@ -173,7 +183,7 @@
 <div class="ifc-head">\
   <div class="ifc-head-meta">\
     <div class="ifc-head-avatar">IF</div>\
-    <div class="ifc-head-text"><strong>Engineering desk</strong><span>Online &middot; replies in 24h</span></div>\
+    <div class="ifc-head-text"><strong>Engineering desk</strong><span>Online &middot; usually replies same day</span></div>\
   </div>\
   <button class="ifc-close" id="ifc-close" aria-label="Close chat" type="button">&times;</button>\
 </div>\
@@ -341,19 +351,7 @@
                   addChips(cityOptions, function(pick){
                     state.answers.city = pick.v;
                     persist();
-                    track('chat_step', { step: 'phone', city: pick.v });
-                    state.step = 'phone';
-                    setTimeout(function(){
-                      addBot('Last one. <strong>What\'s your WhatsApp number?</strong> An engineer will reply with a sized concept and indicative budget within 24 hours.', { typing: true, delay: 800, then: function(){
-                        showInput('+92 / +966 / +971 ...', function(v){
-                          return v && v.length >= 7 && /[0-9]/.test(v);
-                        }, function(phone){
-                          state.answers.phone = phone;
-                          persist();
-                          handoff();
-                        });
-                      }});
-                    }, 200);
+                    handoff();
                   });
                 }});
               }, 200);
@@ -376,8 +374,6 @@
         '• Sector: ' + state.answers.sectorLabel + '\n' +
         '• Capacity: ' + state.answers.capacityLabel + '\n' +
         '• Location: ' + state.answers.city + '\n\n' +
-        '*Contact*\n' +
-        '• Phone / WhatsApp: ' + state.answers.phone + '\n\n' +
         'Please send back a sized concept and an indicative budget within 24 hours.\n' +
         '— Sent via izharfoster.com chat (' + location.pathname + ')';
       var url = 'https://wa.me/' + waNumber() + '?text=' + encodeURIComponent(msg);
@@ -404,16 +400,15 @@
     body.innerHTML = '';
     addBot('Hi — Izhar Foster engineering desk. <strong>How can we help?</strong>', { delay: 0, then: function(){
       addChips([
-        { label:'Quick chat — 60 seconds', v:'chat' },
-        { label:'WhatsApp now — skip the bot', v:'wa-direct' },
+        { label:'WhatsApp now', v:'wa-direct' },
+        { label:'Quick brief — 3 taps', v:'chat' },
         { label:'Full wizard (5 questions)', v:'wizard' }
       ], function(pick){
         if (pick.v === 'chat'){
           startScript();
         } else if (pick.v === 'wa-direct'){
           track('chat_step', { step: 'wa_direct' });
-          var directMsg = 'Hi Izhar Foster — quick enquiry from your website (' + location.pathname + '). Could you call me back?';
-          window.open('https://wa.me/' + waNumber() + '?text=' + encodeURIComponent(directMsg), '_blank', 'noopener');
+          window.open(directWaUrl(), '_blank', 'noopener');
           addBot('Opening WhatsApp...', { delay: 300 });
         } else if (pick.v === 'wizard'){
           track('chat_step', { step: 'to_wizard' });
@@ -474,7 +469,10 @@
 
   function wireEvents(){
     function toggle(){ if (state.open) close(); else open(); }
-    $('ifc-fab-btn').addEventListener('click', toggle);
+    var waBtn = $('ifc-fab-btn');
+    function refreshWa(){ waBtn.href = directWaUrl(); }
+    refreshWa();
+    ['pointerdown','focus','mouseenter'].forEach(function(ev){ waBtn.addEventListener(ev, refreshWa); });
     var pill = $('ifc-fab-pill');
     if (pill) pill.addEventListener('click', toggle);
     $('ifc-close').addEventListener('click', close);
