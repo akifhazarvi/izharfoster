@@ -77,6 +77,14 @@ check('rapid second WhatsApp click de-duplicated', dedupeLeads.length === 1, `${
 // ---------------------------------------------------------------------------
 // 4. Phone + email lead channels (fresh page, past the dedupe window)
 // ---------------------------------------------------------------------------
+// The contact form saves to the private Sheet via /api/leads before it counts
+// a lead. The local static server has no API, so confirm the save here.
+await ctx.route('**/api/leads', async r => {
+  const body = JSON.parse(r.request().postData());
+  globalThis.__lastLeadPost = body;
+  await r.fulfill({ status: 200, contentType: 'application/json',
+    body: JSON.stringify({ ok: true, saved: true, lead_id: body.lead_id }) });
+});
 const p2 = await ctx.newPage();
 await p2.goto(`${BASE}/contact.html`, { waitUntil: 'domcontentloaded' });
 await p2.waitForFunction(() => !!window.IzharTrack);
@@ -130,7 +138,7 @@ await p2.selectOption('#ind', 'Pharma');
 await p2.selectOption('#prod', 'Cold Store');
 await p2.fill('#cap', '1200 m3');
 await p2.click('button[type="submit"]');
-await p2.waitForTimeout(500);
+await p2.waitForFunction(() => (window.dataLayer || []).some(e => e && e.event === 'generate_lead'));
 
 const gl = await p2.evaluate(() => (window.dataLayer || []).filter(e => e && e.event === 'generate_lead'));
 check('generate_lead fired exactly once', gl.length === 1, `fired ${gl.length}x`);
@@ -144,7 +152,12 @@ check('name split into first/last for matching',
 check('lead_product segmented', lead.lead_product === 'Cold Store', `got "${lead.lead_product}"`);
 check('lead_industry segmented', lead.lead_industry === 'Pharma', `got "${lead.lead_industry}"`);
 check('lead_city segmented', lead.lead_city === 'Multan', `got "${lead.lead_city}"`);
-check('click_ref attached to the lead', lead.click_ref === EXPECTED_REF, `got "${lead.click_ref}"`);
+check('transaction id (click_ref) is the saved lead id', /^[0-9a-f-]{36}$/.test(lead.click_ref || '') && lead.click_ref === lead.lead_id,
+  `got "${lead.click_ref}"`);
+check('full click id saved with the Sheet row', !!globalThis.__lastLeadPost?.click_id && EXPECTED_REF.endsWith(globalThis.__lastLeadPost.click_id.slice(-12)),
+  `got "${globalThis.__lastLeadPost?.click_id}"`);
+check('lead_received fired after the confirmed save',
+  await p2.evaluate(() => (window.dataLayer || []).some(e => e && e.event === 'lead_received')));
 const leadsAfterForm = (await leads(p2)).length;
 check('form submit did NOT also log a duplicate lead_intent',
   leadsAfterForm === leadsBeforeForm, `${leadsBeforeForm} -> ${leadsAfterForm}`);
@@ -164,21 +177,22 @@ check('only 2 fields required (name + phone)', requiredCount === 2, `${requiredC
 // (2026-08-15) — the form is now a single Send. The email escape hatch is a
 // plain mailto link in the note so desktop visitors without WhatsApp still
 // have a route out.
-check('single submit button, no competing email button',
-  await p5.locator('#send-email').count() === 0);
-check('email escape hatch still reachable in the note',
-  await p5.locator('#form-note a[href^="mailto:"]').count() === 1);
+check('callback and WhatsApp offered side by side',
+  await p5.locator('.form-actions button[type="submit"]').count() === 1 &&
+  await p5.locator('.form-actions #form-whatsapp').count() === 1);
+check('email escape hatch still reachable under the form',
+  await p5.locator('#form-email[href^="mailto:"]').count() === 1);
 
 // Minimal lead: name + phone ONLY. This used to fail validation on company+email.
 await p5.fill('#n', 'Bilal Sheikh');
 await p5.fill('#p', '0301-2223344');
 await p5.click('button[type="submit"]');
-await p5.waitForTimeout(400);
+await p5.waitForFunction(() => (window.dataLayer || []).some(e => e && e.event === 'generate_lead'));
 const minimal = await p5.evaluate(() => (window.dataLayer || []).filter(e => e && e.event === 'generate_lead'));
 check('form submits with name+phone only', minimal.length === 1, `${minimal.length} leads`);
 check('minimal lead still normalises phone', minimal[0]?.user_data?.phone_number === '+923012223344',
   `got "${minimal[0]?.user_data?.phone_number}"`);
-check('minimal lead channel is whatsapp_form', minimal[0]?.lead_channel === 'whatsapp_form',
+check('minimal lead channel is website_form', minimal[0]?.lead_channel === 'website_form',
   `got "${minimal[0]?.lead_channel}"`);
 
 // The email hand-off path stays wired in contact.html even though no button
@@ -188,17 +202,15 @@ const p6 = await ctx.newPage();
 await p6.goto(`${BASE}/contact.html`, { waitUntil: 'domcontentloaded' });
 await p6.waitForFunction(() => !!window.IzharTrack);
 await p6.evaluate(() => {
-  const a = document.querySelector('#form-note a[href^="mailto:"]');
+  const a = document.querySelector('#form-email');
   a.addEventListener('click', e => e.preventDefault(), true);
   a.click();
 });
 await p6.waitForTimeout(400);
 const emailIntent = await p6.evaluate(() =>
   (window.dataLayer || []).filter(e => e && e.event === 'lead_intent' && e.channel === 'email'));
-check('note mailto link still logs an email lead intent', emailIntent.length === 1,
+check('email link still logs an email lead intent', emailIntent.length === 1,
   `${emailIntent.length} intents`);
-check('handoff(email_form) still wired for restore',
-  (await p6.content()).includes("handoff('email_form')"));
 
 // ---------------------------------------------------------------------------
 // 7. The critical negative: no PII on the analytics funnel
@@ -218,11 +230,18 @@ check('form_submit still reaches GA4 for funnel reporting', sent.includes('form_
 // ---------------------------------------------------------------------------
 // 8. WhatsApp hand-off carries the ref for offline conversion import
 // ---------------------------------------------------------------------------
-const formUrl = (await p2.evaluate(() => window.__opened)).find(u => /Falcon|quote/i.test(decodeURIComponent(u)));
-check('form opens WhatsApp', !!formUrl);
+// After a saved request the green button offers the same details on WhatsApp.
+const formUrl = await p2.evaluate(() => {
+  const a = document.getElementById('form-whatsapp');
+  a.addEventListener('click', e => e.preventDefault());
+  a.click();
+  return new URL(a.href).searchParams.get('text') || '';
+});
+const waText = formUrl;
+check('WhatsApp button carries the saved request', /Falcon/.test(waText) && /Website lead: /.test(waText));
 check('WhatsApp message contains exactly one Ref line',
-  formUrl && (decodeURIComponent(formUrl).match(/Ref: /g) || []).length === 1,
-  formUrl ? JSON.stringify(decodeURIComponent(formUrl).match(/Ref: \S+/g) || []) : '');
+  formUrl && (waText.match(/Ref: /g) || []).length === 1,
+  formUrl ? JSON.stringify(waText.match(/Ref: \S+/g) || []) : '');
 
 // ---------------------------------------------------------------------------
 // 9. Consent Mode v2 + GTM loader hygiene

@@ -269,6 +269,9 @@
       });
     } catch (err) { /* noop */ }
     track('form_submit', Object.assign({ form: 'quote' }, data));
+    // On a saving form the submit is only an attempt: contact-lead.js emits
+    // lead_received and the Ads generate_lead AFTER the Sheet confirms a save.
+    if (f.dataset.persistLead === 'true') return;
     track('lead_submitted', Object.assign({ channel: 'whatsapp_form' }, data));
   }, { capture: true });
 

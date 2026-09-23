@@ -1,10 +1,22 @@
 # Izhar Foster — Daily Task List
 
-**Last updated:** 2026-09-23
+**Last updated:** 2026-09-24
 **Score baseline:** 78/100 (ACTION-PLAN.md, 2026-05-02)
 **Canonical roadmap:** [GROWTH-PLAN.md](GROWTH-PLAN.md) | Resolved conflicts: [DECISIONS.md](DECISIONS.md)
 
 Work top-to-bottom. Mark done with `[x]`. Each PR title must reference the GROWTH-PLAN section it implements.
+
+---
+
+## 2026-09-24 — GP§13: contact form saves to a Google Sheet; WhatsApp always beside it; calculator double-counts removed
+
+- [x] **Lead inbox:** `contact.html` → `js/contact-lead.js` → `/api/leads` (`api/leads.js`, HMAC-signed) → Apps Script (`integrations/google-sheets/Code.gs`) → private *Website Leads* tab. The row includes the full click ID for offline import. Setup: [GOOGLE-SHEETS-LEADS.md](GOOGLE-SHEETS-LEADS.md). Built from the other agent's draft; finished, tested, documented.
+- [x] **"Request a callback" and a full-size green "WhatsApp now" side by side**, always. WhatsApp carries whatever has been typed, plus the lead ref after a save.
+- [x] **No lead is lost if saving fails** (including now, before the Sheet is wired). The form opens WhatsApp with the details filled in and promotes the green button.
+- [x] `generate_lead` fires only after the Sheet confirms. Enhanced Conversions `user_data` restored (the draft had dropped it). Transaction ID = lead UUID. `form_submit` is kept for the GA4 funnel. New `lead_received`.
+- [x] **Calculator double-counting removed:** the cost calculator and ROI calculator fired their own `lead_intent` on top of track.js, so one WhatsApp tap counted as 2 Ads conversions, and "Request a quote" navigation counted as a lead. They now emit `cost_lead` / `roi_whatsapp_click` for reporting only.
+- [x] Suites updated to the new contract: verify-ads-tracking 47/47 (mocks a confirmed save), verify-wa-split 38/38 (covers the fallback).
+- [ ] **Owner:** GOOGLE-SHEETS-LEADS.md steps 1–6 (Apps Script paste, secret, deploy, two Vercel env vars). GA4: mark `lead_received` as a key event.
 
 ---
 

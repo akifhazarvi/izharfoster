@@ -490,13 +490,13 @@
   function trackLead(channel, r) {
     if (!window.IzharTrack || !window.IzharTrack.track) return;
     const payload = Object.assign({ channel }, costEventPayload(r || {}));
-    window.IzharTrack.track('lead_intent', payload);
     window.IzharTrack.track('cost_lead', payload);
   }
-  // Also fire lead_intent when the user clicks the Quote / WhatsApp CTAs —
-  // the global delegated listener in track.js fires lead_intent based on
-  // href patterns, but it doesn't carry the calculator state. We add a
-  // calculator-aware event so deal size + tier travel with the conversion.
+  // cost_lead carries the calculator state (deal size, tier) for reporting.
+  // It is deliberately NOT a lead_intent: the WhatsApp tap already emits one
+  // (de-duplicated) from track.js, and a click on "Request a quote" only
+  // navigates to the form — the lead counts when the Sheet saves it. Firing
+  // lead_intent here double-counted the Ads conversion (2026-09-23).
   document.addEventListener('click', (e) => {
     const t = e.target;
     if (!t || !t.closest) return;

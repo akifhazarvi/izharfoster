@@ -714,5 +714,10 @@
       "destination": "/",
       "permanent": true
     }
-  ]
+  ],
+  "functions": {
+    "api/leads.js": {
+      "maxDuration": 30
+    }
+  }
 }

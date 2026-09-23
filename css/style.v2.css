@@ -7259,3 +7259,21 @@ body:has(#wizard) .section { padding-top: 18px !important; }
 @media (max-width: 720px) {
   #job-open, #job-save { display: none; }
 }
+
+/* Contact form: callback and WhatsApp side by side, always (2026-09-23). */
+.form-card .form-actions {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px; margin-top: 8px;
+}
+.form-card .form-actions button[type="submit"] { margin-top: 0; }
+.form-card .form-wa {
+  justify-content: center; gap: 8px;
+  background: #25D366; border: 1px solid #25D366; color: #04240F;  /* 8.9:1 */
+  font-weight: 700; text-decoration: none;
+}
+.form-card .form-wa small { font-weight: 500; font-size: .72em; opacity: .8; }
+.form-card .form-wa:hover { background: #1FB955; border-color: #1FB955; }
+.form-card .form-wa.is-primary { box-shadow: 0 0 0 4px rgba(37,211,102,.28); }
+@media (max-width: 480px) {
+  .form-card .form-actions { grid-template-columns: minmax(0, 1fr); }
+}

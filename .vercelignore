@@ -44,3 +44,10 @@ _scrape_coldstore/
 .env
 .env.local
 .env.*.local
+
+# Lead integration setup and tests are not public assets
+integrations/
+tests/
+GOOGLE-SHEETS-LEADS.md
+CONVERSION-AUDIT-*.md
+_audit/

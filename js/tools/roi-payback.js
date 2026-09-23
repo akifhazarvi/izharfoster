@@ -365,7 +365,7 @@
           loss_monthly_pkr: Math.round(r.lossMonthly),
           lead_intent: 'whatsapp_roi_handoff' // mirror the lead_intent convention used in track.js
         });
-        track('lead_intent', { channel: 'whatsapp', source: 'roi_calculator' });
+        // No lead_intent here: track.js emits one (de-duplicated) for this wa.me tap.
       });
     }
   }

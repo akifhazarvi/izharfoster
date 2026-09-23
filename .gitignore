@@ -12,3 +12,8 @@ Thumbs.db
 *.bak
 screenshots/
 izhargroup_logo.jpeg
+
+# Lead capture credentials stay local
+.env
+.env.local
+.env.*.local
