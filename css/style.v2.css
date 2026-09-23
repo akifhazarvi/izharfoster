@@ -7277,3 +7277,74 @@ body:has(#wizard) .section { padding-top: 18px !important; }
 @media (max-width: 480px) {
   .form-card .form-actions { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* ── Contact nudge (main.v2.js buildNudge) ─────────────────────────────── */
+.nudge {
+  position: fixed; z-index: 9990;
+  left: 96px; right: 104px; bottom: 22px;           /* clear of rail + WhatsApp FAB */
+  max-width: 820px; margin: 0 auto;
+  display: flex; align-items: center; gap: 16px;
+  padding: 14px 44px 14px 20px;
+  background: var(--t-cold, #0A1F3D); color: #fff;
+  border-radius: 14px;
+  box-shadow: 0 14px 40px -10px rgba(10,31,61,.45);
+  transform: translateY(140%); opacity: 0;
+  transition: transform .35s cubic-bezier(.2,.8,.2,1), opacity .25s ease;
+}
+.nudge.is-in { transform: none; opacity: 1; }
+.nudge-copy { min-width: 0; flex: 1 1 auto; line-height: 1.3; }
+.nudge-copy strong { display: block; font-size: .98rem; font-weight: 650; letter-spacing: -.01em; }
+.nudge-copy span { display: block; font-size: .82rem; color: rgba(255,255,255,.78); margin-top: 2px; }
+.nudge-actions { display: flex; gap: 8px; flex-shrink: 0; }
+.nudge-wa, .nudge-quote {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px; padding: 0 16px; border-radius: 999px;
+  font-size: .86rem; font-weight: 700; text-decoration: none; white-space: nowrap;
+}
+.nudge-wa { background: #25D366; color: #04240F; }            /* 8.9:1 */
+.nudge-wa:hover { background: #1FB955; }
+.nudge-quote { border: 1px solid rgba(255,255,255,.4); color: #fff; }
+.nudge-quote:hover { background: rgba(255,255,255,.1); }
+.nudge-close {
+  position: absolute; top: 6px; right: 6px;
+  width: 32px; height: 32px; border: 0; border-radius: 50%;
+  background: transparent; color: rgba(255,255,255,.7);
+  font-size: 1.3rem; line-height: 1; cursor: pointer;
+}
+.nudge-close:hover { color: #fff; background: rgba(255,255,255,.1); }
+@media (max-width: 1100px) { .nudge { left: 76px; } }
+@media (max-width: 960px) { .nudge-copy span { display: none; } }
+@media (max-width: 720px) {
+  /* Slim strip docked on top of the mobile action bar. */
+  .nudge {
+    left: 8px; right: 8px; bottom: calc(74px + env(safe-area-inset-bottom, 0px));
+    padding: 10px 40px 10px 14px; gap: 10px; border-radius: 12px;
+  }
+  .nudge-copy strong { font-size: .86rem; }
+  .nudge-quote { display: none; }                   /* the bar already has Get quote */
+  .nudge-wa { min-height: 40px; padding: 0 12px; font-size: .8rem; }
+  .nudge-close { top: 50%; transform: translateY(-50%); right: 4px; }
+  body:has(.nav-center.open) .nudge { display: none; }
+}
+@media print { .nudge { display: none !important; } }
+
+/* Concept wizard: a way out on every step. */
+.wiz-skip {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  flex-wrap: wrap;
+  margin: 0 0 18px; padding: 10px 14px;
+  border: 1px dashed var(--line, #d9d3c7); border-radius: 12px;
+  font-size: .88rem; color: var(--ink-2);
+}
+.wiz-skip-wa {
+  background: #25D366; border: 1px solid #25D366; color: #04240F; font-weight: 700;
+  min-height: 44px;
+}
+.wiz-skip-wa:hover { background: #1FB955; border-color: #1FB955; }
+/* #quote is the target of every "Request quote"/"Get quote" button: land the
+   form heading below the sticky header, not under it. */
+#quote { scroll-margin-top: 104px; }
+@media (max-width: 720px) {
+  #quote { scroll-margin-top: 96px; }
+  .nudge { bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
+}

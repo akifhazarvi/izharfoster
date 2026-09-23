@@ -121,7 +121,7 @@
     if (document.querySelector('.lc-root')) return;
     // Path prefix for the Quote link based on directory depth
     const inSubdir = /\/(services|blog|tools)\//.test(location.pathname);
-    const quoteHref = inSubdir ? '../contact.html' : 'contact.html';
+    const quoteHref = inSubdir ? '../contact.html#quote' : 'contact.html#quote';
 
     // Replace any legacy .fab-wa first
     const legacy = document.querySelector('.fab-wa');
@@ -723,7 +723,7 @@
     if (/\/(concept-wizard|roi-payback)(\.html)?\/?$/.test(location.pathname)) return;
 
     const inSub = /\/(services|blog|tools|projects)\//.test(location.pathname);
-    const quoteHref = (inSub ? '../' : '') + 'contact.html';
+    const quoteHref = (inSub ? '../' : '') + 'contact.html#quote';
 
     // Carry the page subject into the message so sales opens with context and
     // the buyer never has to restate what they were reading. Falls back to the
@@ -754,5 +754,86 @@
         ICO_DOC + '<span>Get quote</span></a>';
 
     document.body.appendChild(bar);
+  })();
+
+  /* ── Contact nudge (2026-09-24) ─────────────────────────────────────────
+     Guides and tools are where research happens — the cost guide alone gets
+     1,671 impressions a month — but nothing on them asked for the enquiry
+     once the reader was engaged. One sticky bar, copy matched to the page
+     type, shown after real engagement (35% scrolled, or a calculator input),
+     dismissible for the session. Desktop: bottom bar clear of the WhatsApp
+     FAB. Mobile: slim strip above the action bar. WhatsApp taps are counted
+     by track.js like any other wa.me link. */
+  (function buildNudge() {
+    const path = location.pathname;
+    if (/\/(contact|concept-wizard|roi-payback|privacy)(\.html)?\/?$/.test(path)) return;
+    try { if (sessionStorage.getItem('izhar_nudge_closed') === '1') return; } catch (_) {}
+    const mobile = window.matchMedia('(max-width: 720px)').matches;
+    // Mobile calculators already carry WhatsApp in the result sheet.
+    if (mobile && document.querySelector('.calc-result')) return;
+
+    const type = /\/blog\//.test(path) ? 'guide'
+      : /\/tools\//.test(path) ? 'tool'
+      : /\/services\//.test(path) ? 'service' : 'other';
+    const COPY = {
+      guide:   ['Planning this for real?', 'Send your product, size and city — an engineer replies with a sized price, usually the same day.'],
+      tool:    ['Want an engineer to check these numbers?', 'Send your result on WhatsApp — free, no obligation.'],
+      service: ['Get a price for your project', 'Share size, temperature and city on WhatsApp — usually answered the same day.'],
+      other:   ['Planning a cold store or panel order?', 'Talk to an engineer on WhatsApp — usually answered the same day.']
+    }[type];
+
+    const inSub = /\/(services|blog|tools|projects|industries)\//.test(path);
+    const h1 = document.querySelector('h1');
+    const subject = ((h1 && h1.textContent) || document.title || '').replace(/\s+/g, ' ').trim().slice(0, 72);
+    function waHref() {
+      // On a calculator, reuse the tool's own WhatsApp link: it carries the result.
+      const src = document.querySelector('#cta-wa, #wib-wa');
+      const h = src && src.getAttribute('href');
+      if (h && /wa\.me/.test(h)) return h;
+      const msg = 'Hi Izhar Foster — I was reading: ' + subject + '\nI\'d like a price for my project.\n\n— Sent from izharfoster.com';
+      return window.IzharWA ? window.IzharWA.link(msg) : 'https://wa.me/923215383544?text=' + encodeURIComponent(msg);
+    }
+
+    const el = document.createElement('aside');
+    el.className = 'nudge nudge-' + type;
+    el.setAttribute('aria-label', 'Contact an engineer');
+    el.setAttribute('data-track-section', 'nudge');
+    el.innerHTML =
+      '<div class="nudge-copy"><strong>' + COPY[0] + '</strong><span>' + COPY[1] + '</span></div>' +
+      '<div class="nudge-actions">' +
+        '<a class="nudge-wa" target="_blank" rel="noopener" href="#">WhatsApp an engineer</a>' +
+        '<a class="nudge-quote" href="' + (inSub ? '../' : '') + 'contact.html#quote">Get a quote</a>' +
+      '</div>' +
+      '<button type="button" class="nudge-close" aria-label="Dismiss">&times;</button>';
+    const wa = el.querySelector('.nudge-wa');
+    const refresh = () => { wa.href = waHref(); };
+    refresh();
+    wa.addEventListener('pointerdown', refresh);
+    wa.addEventListener('focus', refresh);
+    el.querySelector('.nudge-close').addEventListener('click', () => {
+      el.classList.remove('is-in');
+      try { sessionStorage.setItem('izhar_nudge_closed', '1'); } catch (_) {}
+      if (window.IzharTrack) window.IzharTrack.track('nudge_dismiss', { page_kind: type });
+    });
+
+    let shown = false;
+    function show() {
+      if (shown) return;
+      shown = true;
+      document.body.appendChild(el);
+      requestAnimationFrame(() => el.classList.add('is-in'));
+      if (window.IzharTrack) window.IzharTrack.track('nudge_view', { page_kind: type });
+      window.removeEventListener('scroll', onScroll);
+    }
+    function onScroll() {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      if (max > 0 && window.scrollY / max >= 0.35) show();
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    // Tools: using the calculator is the engagement signal.
+    const calc = document.querySelector('.calc-form, #wizard');
+    if (calc) calc.addEventListener('change', () => setTimeout(show, 1500), { once: true });
+    // Short pages that can't reach 35% still get it after a real read.
+    setTimeout(() => { if (document.documentElement.scrollHeight <= window.innerHeight * 1.6) show(); }, 20000);
   })();
 })();

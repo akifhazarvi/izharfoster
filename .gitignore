@@ -17,3 +17,5 @@ izhargroup_logo.jpeg
 .env
 .env.local
 .env.*.local
+.vercel
+.env*

@@ -214,6 +214,39 @@
     return lines.join('\n');
   }
 
+  // ----- skip to WhatsApp -----
+  // Five steps is a lot to ask of a buyer who already knows what they want,
+  // and this page hides the mobile WhatsApp bar (it is itself the flow). So
+  // every step carries a way out that keeps whatever has been answered so far.
+  function skipMessage(){
+    captureInputs();
+    var a = state.answers, lines = ['Hi Izhar Foster — I\'d like a quote. Please WhatsApp me.'];
+    if (a.sector) lines.push('• Sector: ' + (sectorLabels[a.sector] || a.sector));
+    if (a.capacity_tier) lines.push('• Capacity: ' + (capacityLabels[a.capacity_tier] || a.capacity_tier));
+    if (a.capacity_note) lines.push('• Detail: ' + a.capacity_note);
+    var city = a.pk_city || a.ksa_city || '';
+    if (city || a.country) lines.push('• Location: ' + (city ? city + ', ' : '') + (countryLabels[a.country] || a.country || ''));
+    if (a.timeline) lines.push('• Timeline: ' + (timelineLabels[a.timeline] || a.timeline));
+    if (a.name) lines.push('• Name: ' + a.name);
+    lines.push('— Sent via izharfoster.com/tools/concept-wizard');
+    return lines.join('\n');
+  }
+  function wireSkip(){
+    var wrap = document.querySelector('.wiz-progress-wrap');
+    if (!wrap || document.getElementById('wiz-skip')) return;
+    var bar = document.createElement('div');
+    bar.className = 'wiz-skip';
+    bar.innerHTML = '<span>In a hurry? Skip the questions.</span>' +
+      '<a id="wiz-skip" class="btn btn-sm wiz-skip-wa" target="_blank" rel="noopener" href="https://wa.me/' + waNumber() + '">WhatsApp us now</a>';
+    wrap.insertAdjacentElement('afterend', bar);
+    var a = document.getElementById('wiz-skip');
+    function refresh(){ a.href = 'https://wa.me/' + waNumber() + '?text=' + encodeURIComponent(skipMessage()); }
+    a.addEventListener('pointerdown', refresh);
+    a.addEventListener('focus', refresh);
+    a.addEventListener('click', function(){ refresh(); track('wizard_skip_whatsapp', { step: state.step }); }, true);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wireSkip); else wireSkip();
+
   function submit(){
     if (!validateStep5()) return;
     captureInputs();

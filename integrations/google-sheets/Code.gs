@@ -55,10 +55,12 @@ function doPost(e) {
     if (!e || !e.postData || e.postData.contents.length > 22000) return json_({ ok: false });
     var envelope = JSON.parse(e.postData.contents);
     var secret = PropertiesService.getScriptProperties().getProperty('LEAD_SHEETS_SECRET');
-    if (!secret || secret.length < 32 || typeof envelope.payload !== 'string' || !/^\d{13}$/.test(envelope.timestamp || '')) return json_({ ok: false });
-    if (Math.abs(Date.now() - Number(envelope.timestamp)) > 300000) return json_({ ok: false });
+    // Setup diagnostics: short codes only, never submitted data or the secret.
+    if (!secret || secret.length < 32) return json_({ ok: false, error: 'setup_secret_missing' });
+    if (typeof envelope.payload !== 'string' || !/^\d{13}$/.test(envelope.timestamp || '')) return json_({ ok: false, error: 'bad_envelope' });
+    if (Math.abs(Date.now() - Number(envelope.timestamp)) > 300000) return json_({ ok: false, error: 'stale_request' });
     var expected = hex_(Utilities.computeHmacSha256Signature(envelope.timestamp + '.' + envelope.payload, secret, Utilities.Charset.UTF_8));
-    if (!equal_(envelope.signature, expected)) return json_({ ok: false });
+    if (!equal_(envelope.signature, expected)) return json_({ ok: false, error: 'bad_signature' });
     var data = JSON.parse(envelope.payload), lead = data.lead;
     if (!lead || !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(lead.lead_id || '') || !/^[0-9a-f]{64}$/.test(data.rate_key || '')) return json_({ ok: false });
     var fingerprint = hex_(Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, JSON.stringify(lead), Utilities.Charset.UTF_8));
@@ -66,7 +68,8 @@ function doPost(e) {
     if (!lock.tryLock(5000)) return json_({ ok: false });
     locked = true;
     var sheet = SpreadsheetApp.openById(LEAD_SPREADSHEET_ID).getSheetByName(LEAD_TAB);
-    checkHeaders_(sheet);
+    if (!sheet) return json_({ ok: false, error: 'setup_tab_missing' });
+    try { checkHeaders_(sheet); } catch (_) { return json_({ ok: false, error: 'setup_headers_mismatch' }); }
     var last = sheet.getLastRow();
     if (last > 1) {
       var existing = sheet.getRange(2, 1, last - 1, 1).createTextFinder(lead.lead_id).matchEntireCell(true).findNext();
@@ -91,7 +94,7 @@ function doPost(e) {
     return json_({ ok: true, saved: true, lead_id: lead.lead_id });
   } catch (_) {
     // No submitted data in logs or errors. Never return success on write failure.
-    return json_({ ok: false });
+    return json_({ ok: false, error: 'write_failed' });
   } finally { if (locked) lock.releaseLock(); }
 }
 
