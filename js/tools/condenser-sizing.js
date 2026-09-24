@@ -27,7 +27,7 @@
     recommendedExplain: $('recommended-class-explain'),
     cuPick: $('cu-pick'),
     mathBody: $('math-body'),
-    ctaQuote: $('cta-quote'), ctaWa: $('cta-wa'),
+    ctaQuote: $('cta-quote'), ctaWa: $('cta-wa'), ctaEmail: $('cta-email'),
     // Known Model
     kmCuPick: $('km-cu-pick'), kmCuDisplay: $('km-cu-display'),
     kmRef: $('km-ref'), kmAppSeg: $('km-app-seg'),
@@ -287,6 +287,7 @@
     // CTAs
     const summary = `${fmt(qCond, 1)} kW condenser for ${Q_evap} kW ${ref.name} ${app} system at ${ambient}°C ambient`;
     els.ctaQuote.href = quoteUrl('condenser-sizing', summary);
+    if (els.ctaEmail) els.ctaEmail.href = mailtoUrl('Condenser Sizing', summary, summary);
     els.ctaWa.href = whatsappUrl(`Hello Izhar, I sized a condenser: ${summary}. Please advise on selection.`);
 
     // Hot Pakistan note
@@ -389,6 +390,7 @@
 
     const summary = `${knownModelCU.profileName || 'Manual unit'} ${ok ? 'fits' : 'undersized for'} ${Q_actual} kW ${ref.name} ${app} at ${ambient}°C ambient`;
     els.ctaQuote.href = quoteUrl('condenser-sizing', summary);
+    if (els.ctaEmail) els.ctaEmail.href = mailtoUrl('Condenser Sizing', summary, summary);
     els.ctaWa.href = whatsappUrl(`Hello Izhar, I'm checking a ${knownModelCU.profileName || 'condensing unit'} against ${Q_actual} kW load at ${ambient}°C ambient. ${ok ? 'Looks OK.' : 'Looks undersized.'} Please confirm.`);
 
     els.mathBody.textContent = [

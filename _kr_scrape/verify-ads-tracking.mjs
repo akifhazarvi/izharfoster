@@ -17,6 +17,14 @@ const check = (name, cond, detail = '') =>
   cond ? pass.push(name) : fails.push(`${name}${detail ? ' — ' + detail : ''}`);
 
 const browser = await chromium.launch();
+// Tests must never reach GA4: these runs fire real lead events (with a
+// simulated gclid) and were showing up in reports as paid leads.
+const _newContext = browser.newContext.bind(browser);
+browser.newContext = async (...a) => {
+  const c = await _newContext(...a);
+  await c.route(/google-analytics\.com\/(g|j)\/collect|analytics\.google\.com\/g\/collect/, r => r.abort());
+  return c;
+};
 const ctx = await browser.newContext();
 
 // Context-scoped so EVERY page gets it. Captures window.open targets without
