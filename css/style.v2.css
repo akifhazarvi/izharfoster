@@ -7348,3 +7348,23 @@ body:has(#wizard) .section { padding-top: 18px !important; }
   #quote { scroll-margin-top: 96px; }
   .nudge { bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
 }
+
+/* Contact page, stacked layout: the form comes FIRST (2026-09-24).
+   Source order puts channels, social, three addresses, directions and a
+   260px map before the form, so on a phone the form sat ~2,200px down —
+   effectively invisible to anyone who opened /contact without the #quote
+   jump. Visual order only; desktop keeps the two-column layout. */
+@media (max-width: 1100px) {
+  .contact-grid .form-card { order: -1; }
+  .contact-grid { gap: 36px; }
+}
+@media (max-width: 720px) {
+  /* Hero is a heading and one line on a phone; the form follows at once. */
+  .page-hero:has(+ .section .contact-grid) .lead { display: none; }
+  .page-hero:has(+ .section .contact-grid) { padding-bottom: 8px; }
+  .section:has(> .contact-grid) { padding-top: 16px; }
+}
+@media (max-width: 720px) {
+  .contact-grid .form-card { padding: 24px 18px; }
+  .contact-grid .form-card .form-group { margin-bottom: 16px; }
+}
