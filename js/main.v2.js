@@ -870,7 +870,7 @@
 
   (function inContentCtas() {
     if (/\/(contact|privacy|terms)(\.html)?\/?$/.test(location.pathname) || /\/tools\//.test(location.pathname)) return;
-    const body = document.querySelector('.prose, .ifx-prose, article') || document.createElement('div');
+    const body = document.querySelector('.prose, .ifx-prose, .post-content, article') || document.createElement('div');
     if (body.closest && body.closest('.calc-form')) return;
     const COPY = {
       guide:   ['Planning a project like this?', 'Send your product, capacity and city — an engineer replies with a sized price, usually the same day.', 'I read your guide: ' + PAGE.subject + '\nI\'d like a price for my project.'],
@@ -916,6 +916,18 @@
   })();
 
   (function closingBannerWhatsApp() {
+    // Banners that shipped without any WhatsApp (e.g. the cold-room guide):
+    // add one beside the existing buttons.
+    document.querySelectorAll('.cta-banner').forEach(bn => {
+      if (bn.querySelector('a[href*="wa.me"]')) return;
+      const box = bn.querySelector('.btns, .cta-actions');
+      if (!box) return;
+      const a = document.createElement('a');
+      a.className = 'btn btn-wa' + (box.querySelector('.btn-lg') ? ' btn-lg' : ''); a.target = '_blank'; a.rel = 'noopener';
+      a.textContent = 'WhatsApp our team';
+      a.href = 'https://wa.me/923215383544';
+      box.insertBefore(a, box.firstChild);
+    });
     document.querySelectorAll('.cta-banner a[href*="wa.me"]').forEach(a => {
       a.classList.add('btn-wa');
       a.setAttribute('data-track-section', 'cta-banner');
