@@ -130,6 +130,8 @@ check('programmatic wa.me URL gets the ref stamped',
 await p2.waitForTimeout(2100);
 const leadsBeforeForm = (await leads(p2)).length;
 await p2.fill('#n', 'Asad Mehmood Khan');
+// Optional details are collapsed at every width; open them like a visitor would.
+await p2.click('#form-more summary');
 await p2.fill('#c', 'Falcon Foods Pvt Ltd');
 await p2.fill('#p', '0333-9876543'); // deliberately NOT Izhar's own number
 await p2.fill('#e', 'Asad.Mehmood@FalconFoods.PK');
