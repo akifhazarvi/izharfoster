@@ -25,7 +25,7 @@
   // in 28 days, while visitors who reached a real wa.me link converted.
   function directWaUrl() {
     var h1 = document.querySelector('h1');
-    var subject = ((h1 && h1.textContent) || document.title || '').replace(/\s+/g, ' ').trim().slice(0, 72);
+    var subject = ((h1 && (h1.innerText || h1.textContent)) || document.title || '').replace(/\s+/g, ' ').trim().slice(0, 72);
     return 'https://wa.me/' + waNumber() + '?text=' + encodeURIComponent(
       'Hi Izhar Foster — I\'m enquiring about: ' + subject + '\n\n— Sent from izharfoster.com');
   }

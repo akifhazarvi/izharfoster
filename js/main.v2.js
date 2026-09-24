@@ -719,8 +719,9 @@
   // desktop sessions run 572 s and behave like research, not enquiry.
   (function buildMobileActionBar() {
     if (document.querySelector('.mact')) return;
-    // The wizard and ROI calculator ARE the conversion flow; don't stack on them.
-    if (/\/(concept-wizard|roi-payback)(\.html)?\/?$/.test(location.pathname)) return;
+    // The wizard and ROI calculator used to be excluded as "the conversion
+    // flow" — which left ROI with no WhatsApp at all on a phone and the wizard
+    // with none once its skip box scrolled away. One tap out, everywhere.
 
     const inSub = /\/(services|blog|tools|projects)\//.test(location.pathname);
     const quoteHref = (inSub ? '../' : '') + 'contact.html#quote';
@@ -729,7 +730,7 @@
     // the buyer never has to restate what they were reading. Falls back to the
     // line-1 number if waRouting hasn't initialised (it runs earlier in this file).
     const h1 = document.querySelector('h1');
-    const subject = ((h1 && h1.textContent) || document.title || '')
+    const subject = ((h1 && (h1.innerText || h1.textContent)) || document.title || '')
       .replace(/\s+/g, ' ').trim().slice(0, 72);
     const msg = 'Hi Izhar Foster — I\'m enquiring about: ' + subject +
                 '\n\n— Sent from izharfoster.com';
@@ -774,17 +775,23 @@
 
     const type = /\/blog\//.test(path) ? 'guide'
       : /\/tools\//.test(path) ? 'tool'
-      : /\/services\//.test(path) ? 'service' : 'other';
+      : /\/projects\//.test(path) ? 'project'
+      : /\/services\//.test(path) ? 'service'
+      : /\/cold-storage-[a-z]+/.test(path) ? 'city' : 'other';
+    const cm = path.match(/cold-storage-([a-z]+)/);
+    const city = cm && !/near|saudi|dairy|fruit|meat|pakistan/.test(cm[1]) ? cm[1][0].toUpperCase() + cm[1].slice(1) : '';
     const COPY = {
       guide:   ['Planning this for real?', 'Send your product, size and city — an engineer replies with a sized price, usually the same day.'],
       tool:    ['Want an engineer to check these numbers?', 'Send your result on WhatsApp — free, no obligation.'],
       service: ['Get a price for your project', 'Share size, temperature and city on WhatsApp — usually answered the same day.'],
+      project: ['Want a result like this?', 'Tell us what you store and where — an engineer replies on WhatsApp, usually the same day.'],
+      city:    [city ? 'Planning a cold store in ' + city + '?' : 'Planning a cold store near you?', 'Share the site, product and size on WhatsApp — usually answered the same day.'],
       other:   ['Planning a cold store or panel order?', 'Talk to an engineer on WhatsApp — usually answered the same day.']
     }[type];
 
     const inSub = /\/(services|blog|tools|projects|industries)\//.test(path);
     const h1 = document.querySelector('h1');
-    const subject = ((h1 && h1.textContent) || document.title || '').replace(/\s+/g, ' ').trim().slice(0, 72);
+    const subject = ((h1 && (h1.innerText || h1.textContent)) || document.title || '').replace(/\s+/g, ' ').trim().slice(0, 72);
     function waHref() {
       // On a calculator, reuse the tool's own WhatsApp link: it carries the result.
       const src = document.querySelector('#cta-wa, #wib-wa');
@@ -835,5 +842,114 @@
     if (calc) calc.addEventListener('change', () => setTimeout(show, 1500), { once: true });
     // Short pages that can't reach 35% still get it after a real read.
     setTimeout(() => { if (document.documentElement.scrollHeight <= window.innerHeight * 1.6) show(); }, 20000);
+  })();
+
+  /* ── In-content WhatsApp (2026-09-24) ───────────────────────────────────
+     Product, case-study, city and guide pages run 6,000–16,000px with zero
+     or one CTA inside the article body; the only asks were the header, the
+     sticky bar and a closing banner whose WhatsApp was a generic outline
+     button. So: (1) a card mid-article, before the h2 nearest the halfway
+     point; (2) an end card on guides with no closing banner; (3) the closing
+     banner's WhatsApp made green and page-aware. All copy by page type;
+     every link is a plain wa.me anchor, so track.js counts it. */
+  const PAGE = (() => {
+    const p = location.pathname;
+    const kind = /\/blog\//.test(p) ? 'guide' : /\/projects\//.test(p) ? 'project'
+      : /\/services\//.test(p) ? 'service' : /\/cold-storage-[a-z-]+/.test(p) ? 'city' : 'other';
+    const h1 = document.querySelector('h1');
+    const subject = ((h1 && (h1.innerText || h1.textContent)) || document.title || '').replace(/\s+/g, ' ').trim().slice(0, 72);
+    const cityM = p.match(/cold-storage-([a-z]+)/);
+    const city = cityM && !/near|saudi|dairy|fruit|meat|pakistan/.test(cityM[1]) ? cityM[1][0].toUpperCase() + cityM[1].slice(1) : '';
+    const inSub = /\/(services|blog|tools|projects|industries)\//.test(p);
+    return { kind, subject, city, quote: (inSub ? '../' : '') + 'contact.html#quote' };
+  })();
+  function waLink(msg) {
+    return window.IzharWA ? window.IzharWA.link(msg) : 'https://wa.me/923215383544?text=' + encodeURIComponent(msg);
+  }
+  const ICO = '<svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16 0C7.2 0 0 7.2 0 16c0 2.8.7 5.5 2.1 8L0 32l8.3-2.1c2.3 1.3 5 2.1 7.7 2.1 8.8 0 16-7.2 16-16S24.8 0 16 0zm7.3 22.6c-.3.9-1.9 1.8-2.7 1.9-.7.1-1.6.1-2.5-.2-.6-.2-1.3-.4-2.3-.8-4-1.7-6.7-5.8-6.9-6.1-.2-.3-1.6-2.2-1.6-4.2s1-2.9 1.4-3.4c.4-.4.8-.5 1.1-.5h.8c.2 0 .6-.1.9.7.3.8 1.2 2.8 1.2 3 .1.2.2.4 0 .7-.1.3-.2.4-.4.7l-.6.7c-.2.2-.4.4-.2.8.2.4 1 1.7 2.2 2.8 1.5 1.4 2.8 1.8 3.2 2 .4.2.6.2.9-.1.2-.3 1-1.2 1.3-1.6.3-.4.5-.3.9-.2.4.1 2.3 1.1 2.8 1.3.4.2.7.3.8.5 0 .2 0 1-.3 1.9z"/></svg>';
+
+  (function inContentCtas() {
+    if (/\/(contact|privacy|terms)(\.html)?\/?$/.test(location.pathname) || /\/tools\//.test(location.pathname)) return;
+    const body = document.querySelector('.prose, .ifx-prose, article') || document.createElement('div');
+    if (body.closest && body.closest('.calc-form')) return;
+    const COPY = {
+      guide:   ['Planning a project like this?', 'Send your product, capacity and city — an engineer replies with a sized price, usually the same day.', 'I read your guide: ' + PAGE.subject + '\nI\'d like a price for my project.'],
+      project: ['Want a result like this?', 'Tell us what you store and where — we\'ll share how we\'d build it, with an indicative budget.', 'I saw your project: ' + PAGE.subject + '\nI\'d like something similar.'],
+      service: ['Get a price for your project', 'Share size, temperature and city — usually answered the same day.', 'I\'d like a price for: ' + PAGE.subject],
+      city:    [PAGE.city ? 'Building in ' + PAGE.city + '?' : 'Building near you?', 'Tell us the site, product and size — our engineers reply the same day.', 'I\'m planning a cold store' + (PAGE.city ? ' in ' + PAGE.city : '') + '. ' + PAGE.subject],
+      other:   ['Talk to an engineer', 'Send your requirement on WhatsApp — usually answered the same day.', 'Enquiry from: ' + PAGE.subject]
+    }[PAGE.kind];
+    const msg = 'Hi Izhar Foster — ' + COPY[2] + '\n\n— Sent from izharfoster.com';
+    function card(where) {
+      const el = document.createElement('aside');
+      el.className = 'inline-cta';
+      el.setAttribute('data-track-section', 'inline-cta-' + where);
+      el.innerHTML = '<div class="inline-cta-copy"><strong>' + COPY[0] + '</strong><span>' + COPY[1] + '</span></div>' +
+        '<div class="inline-cta-actions"><a class="inline-cta-wa" target="_blank" rel="noopener" href="' + waLink(msg) + '">' + ICO + '<span>WhatsApp an engineer</span></a>' +
+        '<a class="inline-cta-quote" href="' + PAGE.quote + '">Get a quote</a></div>';
+      return el;
+    }
+    // Mid-article: before the h2 nearest 45% of the body, skipping the first.
+    if (body.offsetHeight > 1800) {
+      const h2s = [...body.querySelectorAll(':scope > h2, :scope > section > h2')].slice(1);
+      const target = body.offsetTop + body.offsetHeight * 0.45;
+      let best = null, bestD = Infinity;
+      for (const h of h2s) { const d = Math.abs(h.offsetTop - target); if (d < bestD) { best = h; bestD = d; } }
+      if (best) best.parentNode.insertBefore(card('mid'), best);
+    }
+    // Pages built from stacked <section>s (city pages) have a short .prose, so
+    // no h2 qualified: place the card between the sections nearest halfway.
+    if (!document.querySelector('.inline-cta') && document.documentElement.scrollHeight > 4000) {
+      const secs = [...document.querySelectorAll('body > section.section, main > section.section, .shell-content > section.section')].slice(1);
+      const target = document.documentElement.scrollHeight * 0.45;
+      let best = null, bestD = Infinity;
+      for (const sec of secs) { const d = Math.abs(sec.getBoundingClientRect().top + window.scrollY - target); if (d < bestD) { best = sec; bestD = d; } }
+      if (best) {
+        const wrap = document.createElement('div');
+        wrap.className = 'container inline-cta-wrap';
+        wrap.appendChild(card('mid'));
+        best.parentNode.insertBefore(wrap, best);
+      }
+    }
+    // End of article where the page has no closing banner of its own.
+    if (!document.querySelector('.cta-banner') && body.offsetHeight > 1200) body.appendChild(card('end'));
+  })();
+
+  (function closingBannerWhatsApp() {
+    document.querySelectorAll('.cta-banner a[href*="wa.me"]').forEach(a => {
+      a.classList.add('btn-wa');
+      a.setAttribute('data-track-section', 'cta-banner');
+      let t = '';
+      try { t = new URL(a.href).searchParams.get('text') || ''; } catch (_) {}
+      // Only replace the generic greeting; hand-written messages stay.
+      if (!t || /sent via izharfoster\.com\s*$/i.test(t) && t.length < 60) {
+        a.href = waLink('Hi Izhar Foster — I\'m enquiring about: ' + PAGE.subject + '\n\n— Sent from izharfoster.com');
+      }
+    });
+  })();
+
+  /* Calculators: "Send this result on WhatsApp" right under the headline
+     number (and in the titlebar), not below charts and breakdowns. Mirrors
+     the tool's own #cta-wa / #wib-wa, which carries the calculated result.
+     Mobile uses the result sheet's button instead (see wireCalcResultSheet). */
+  (function toolQuickWhatsApp() {
+    if (!/\/tools\//.test(location.pathname)) return;
+    const src = () => document.querySelector('#cta-wa, #wib-wa');
+    if (!src()) return;
+    const mk = (cls, label) => {
+      const a = document.createElement('a');
+      a.className = cls; a.target = '_blank'; a.rel = 'noopener';
+      a.setAttribute('data-track-section', 'tool-quick-wa');
+      a.innerHTML = ICO + '<span>' + label + '</span>';
+      const sync = () => { const h = src() && src().getAttribute('href'); a.href = (h && /wa\.me/.test(h)) ? h : waLink('Hi Izhar Foster — I was using: ' + PAGE.subject); };
+      sync(); a.addEventListener('pointerdown', sync); a.addEventListener('focus', sync); a.addEventListener('click', sync, true);
+      return a;
+    };
+    const head = document.querySelector('.calc-result-head');
+    if (head) head.insertAdjacentElement('afterend', mk('tool-quick-wa', 'Send this result on WhatsApp'));
+    const bar = document.querySelector('.calc-titlebar-actions');
+    if (bar) bar.insertBefore(mk('btn btn-sm tool-title-wa', 'WhatsApp result'), bar.firstChild);
+    const wib = document.querySelector('.wib-bar-nav');
+    if (wib) wib.insertBefore(mk('btn btn-sm tool-title-wa wib-bar-wa', 'WhatsApp'), wib.firstChild);
   })();
 })();
