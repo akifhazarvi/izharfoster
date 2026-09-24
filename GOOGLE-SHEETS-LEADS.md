@@ -21,7 +21,9 @@ Apps Script refuses anything that isn't signed with the shared secret.
 
 ## One-time setup (≈10 minutes)
 
-**Until these steps are done the form still works.** `/api/leads` answers
+**Status: live since 2026-09-24.** Production web app: `https://script.google.com/macros/s/AKfycby_aOw6x2USWkW9XUXn-MFAe5Mf75ph052TURATZid2iUcg8aVO7rqB-eUeM1mmvFDr9Q/exec`.
+
+If the connection ever breaks, the form still works: `/api/leads` answers
 `503 temporarily_unavailable` and every submit falls back to WhatsApp.
 
 1. **Open the sheet → Extensions → Apps Script.** Delete the sample code and
@@ -44,6 +46,8 @@ Apps Script refuses anything that isn't signed with the shared secret.
    Then redeploy (or push any commit).
 7. **Test:** submit the form on https://izharfoster.com/contact. The button
    should read **"Request received"** and a row should appear within seconds.
+
+**Troubleshooting:** a signed request returns a short code. `setup_secret_missing`: add the Script Property. `bad_signature`: the secret differs from Vercel's (check for stray spaces). `setup_tab_missing`: run `setupWebsiteLeads`. A plain `{"ok":false}` to a bad signature means the URL is still serving old code.
 
 If you change `Code.gs` later: Deploy → Manage deployments → edit → **New
 version**. Editing the code alone doesn't update the live web app.
