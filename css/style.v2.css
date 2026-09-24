@@ -7368,3 +7368,32 @@ body:has(#wizard) .section { padding-top: 18px !important; }
   .contact-grid .form-card { padding: 24px 18px; }
   .contact-grid .form-card .form-group { margin-bottom: 16px; }
 }
+/* Contact page, desktop: compact hero so the form is in the first screen.
+   At 1366x768 the standard 481px hero + 120px section padding pushed the
+   form card to 690px — the fold showed a heading and nothing to act on. */
+@media (min-width: 721px) {
+  .page-hero:has(+ .section .contact-grid) { padding-top: 44px; padding-bottom: 36px; }
+  .page-hero:has(+ .section .contact-grid) h1 { font-size: clamp(2rem, 3.2vw, 2.9rem); }
+  .page-hero:has(+ .section .contact-grid) .lead { margin-top: 10px; font-size: 1rem; }
+  .section:has(> .contact-grid) { padding-top: 44px; }
+}
+/* Wide screens: lift the form into the hero's empty right half so the whole
+   form — fields AND the Callback/WhatsApp buttons — sits in the first screen.
+   The hero copy is capped to the left column so the two never overlap. */
+@media (min-width: 1101px) {
+  .page-hero:has(+ .section .contact-grid) .container > div { max-width: 50%; }
+  .contact-grid .form-card {
+    margin-top: var(--contact-lift, -300px);
+    position: relative; z-index: 2;
+    background: var(--paper, #F5F2EC);
+    box-shadow: 0 24px 60px -24px rgba(10,31,61,.35);
+  }
+}
+@media (min-width: 1101px) {
+  .contact-grid .form-card { --contact-lift: -430px; padding: 28px 32px; }
+  .contact-grid .form-card h3 { margin-bottom: 2px; }
+  .contact-grid .form-card .sub { margin-bottom: 14px; }
+  .contact-grid .form-card .form-group { margin-bottom: 14px; }
+  .contact-grid .form-card textarea { min-height: 64px; }
+  .contact-grid .form-card .note { margin-top: 8px; }
+}

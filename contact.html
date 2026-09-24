@@ -54,7 +54,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"></noscript>
-<link rel="stylesheet" href="css/style.v2.css?v=20260924d">
+<link rel="stylesheet" href="css/style.v2.css?v=20260924g">
 
 <script type="application/ld+json">
 {
@@ -205,7 +205,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div>
       <div class="breadcrumb"><a href="/">Home</a><span class="sep">/</span><span>Contact</span></div>
       <h1>Tell us your <em>temperature.</em> We'll engineer the room.</h1>
-      <p class="lead">Share capacity, temperature, and location — our engineers respond within 24 hours with a sized concept and indicative budget. No pressure, no obligation.</p>
+      <p class="lead">Share capacity, temperature, and location — our engineers respond within one working day with a sized concept and indicative budget. No pressure, no obligation.</p>
     </div>
   </div>
 </section>
@@ -291,13 +291,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="form-group"><label for="t">Required temperature</label><input id="t" name="temperature" maxlength="80" placeholder="e.g. −20°C / +2 to +8°C"></div>
           </div>
         </details>
-        <script>
-          /* Desktop keeps the full form open — sessions there run 572 s and the
-             intent is research, so the extra fields cost nothing. Phones get it
-             collapsed. Runs inline, before paint, so there is no layout shift. */
-          (function(){var d=document.getElementById('form-more');
-            if(d&&window.matchMedia('(min-width:721px)').matches)d.open=true;})();
-        </script>
+        <!-- Optional details stay collapsed at every width (2026-09-24). Opened
+             on desktop they pushed Callback/WhatsApp to ~1,440px at 1366x768,
+             below the fold; desktop sent 4 form leads in 28 days. -->
         <div hidden aria-hidden="true"><label for="lead-website">Leave this field empty</label><input id="lead-website" name="website" tabindex="-1" autocomplete="off"></div>
         <!-- Two ways out, always side by side: save the request (we call back),
              or take the same details straight to WhatsApp for a faster reply.
