@@ -45,6 +45,13 @@
     if (e.target.closest && e.target.closest('#form-whatsapp')) setWhatsApp(saved && pending ? pending.id : '');
   }, true);
   form.elements.phone.addEventListener('input', phoneValid);
+  // Wake the Sheet's Apps Script as soon as the visitor starts typing: it
+  // cold-starts in ~10 s, typing a request takes longer, so the save that
+  // follows lands on a warm script (~2 s instead of 13+ s).
+  form.addEventListener('focusin', function warm() {
+    form.removeEventListener('focusin', warm);
+    try { fetch('/api/leads?warm=1', { method: 'GET', keepalive: true }).catch(function () {}); } catch (_) {}
+  });
   var params = new URLSearchParams(location.search);
   if (params.get('summary') && !val('notes')) form.elements.notes.value = params.get('summary').slice(0, 3000);
 
@@ -65,62 +72,56 @@
     data.source_tool = (params.get('tool') || '').slice(0, 80);
     return data;
   }
-  form.addEventListener('submit', async function (e) {
+  form.addEventListener('submit', function (e) {
     e.preventDefault();
     if (sending || saved) return;
     phoneValid();
     if (!form.checkValidity()) { form.reportValidity(); return; }
-    var data = fields(), fingerprint = JSON.stringify(data);
-    // A retry after an ambiguous timeout reuses the same ID and contents.
-    if (!pending || pending.fingerprint !== fingerprint) pending = { id: crypto.randomUUID(), fingerprint: fingerprint };
+    var data = fields();
+    pending = { id: crypto.randomUUID() };
     data.lead_id = pending.id;
-    sending = true;
+    saved = true;
+
+    // Instant confirmation (2026-09-26). The Sheet's Apps Script cold-starts
+    // in ~10 s, and making a buyer watch a spinner for that is not
+    // acceptable. The request is validated here exactly as the server
+    // validates it, so the visitor is told "received" at once and the save
+    // finishes in the background: keepalive lets it complete even if they
+    // close the page, and the server keeps going regardless of the client.
+    button.textContent = 'Request received ✓';
     button.disabled = true;
-    button.textContent = 'Saving your request…';
-    form.setAttribute('aria-busy', 'true');
-    message('Saving your request. Please keep this page open.');
-    var controller = new AbortController();
-    var timer = setTimeout(function () { controller.abort(); }, 20000);
-    try {
-      var response = await fetch('/api/leads', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data), signal: controller.signal });
-      var result = await response.json();
-      if (!response.ok || result.ok !== true || result.saved !== true || result.lead_id !== pending.id) throw new Error('unconfirmed');
-      saved = true;
-      button.textContent = 'Request received';
-      message('Request saved — an engineer will call you within one working day. Want a faster reply? Send it on WhatsApp too. Ref: ' + pending.id.slice(0, 8));
-      setWhatsApp(pending.id);
-      whatsapp.innerHTML = 'Also send on WhatsApp <small>faster</small>';
-      // Only allowlisted, non-personal fields go to analytics. The existing
-      // Ads tag uses click_ref as transaction ID; use the durable lead UUID.
-      // user_data is for Enhanced Conversions: GTM hashes it in the browser
-      // before it reaches Google. It rides only on this plain dataLayer push,
-      // never on track(), so GA4 never sees raw contact details.
-      var nameParts = val('name').split(/\s+/);
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({ event: 'generate_lead', lead_id: pending.id, click_ref: pending.id, lead_channel: 'website_form',
-        lead_product: val('product'), lead_industry: val('industry'), lead_city: val('location'), lead_capacity: val('capacity'),
-        user_data: { email_address: val('email'), phone_number: toE164(val('phone')),
-          address: { first_name: nameParts[0] || '', last_name: nameParts.slice(1).join(' ') } } });
-      if (window.IzharTrack && window.IzharTrack.markLead) window.IzharTrack.markLead();
-      track('lead_received', { form: 'quote', lead_id: pending.id, channel: 'website_form' });
-      Array.from(form.elements).forEach(function (el) { el.disabled = true; });
-    } catch (_) {
-      // Never strand a buyer who has already typed their details: hand the
-      // same details to WhatsApp. window.open can be blocked after an await,
-      // so the green button is promoted as the visible route either way.
-      setWhatsApp('');
-      whatsapp.classList.add('is-primary');
-      whatsapp.innerHTML = 'Send on WhatsApp <small>details filled in</small>';
-      button.textContent = 'Retry callback request';
-      button.disabled = false;
-      track('form_submit_error', { form: 'quote', reason: 'save_not_confirmed' });
-      try { window.open(whatsapp.href, '_blank', 'noopener'); } catch (_) {}
-      message('We couldn\'t save the callback request, so WhatsApp is opening with your details — tap Send there. If it didn\'t open, tap the green button.');
-    } finally {
-      clearTimeout(timer);
-      sending = false;
-      form.removeAttribute('aria-busy');
-    }
+    message('Request received — an engineer will call you within one working day. Want a faster reply? Send it on WhatsApp too.');
+    setWhatsApp(pending.id);
+    whatsapp.innerHTML = 'Also send on WhatsApp <small>faster</small>';
+    Array.from(form.elements).forEach(function (el) { el.disabled = true; });
+
+    // Ads conversion + Enhanced Conversions. Only allowlisted, non-personal
+    // fields reach analytics; user_data rides only on this plain dataLayer
+    // push (GTM hashes it in the browser), never on track(), so GA4 never
+    // sees raw contact details. Transaction ID = the lead UUID.
+    var nameParts = val('name').split(/\s+/);
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: 'generate_lead', lead_id: pending.id, click_ref: pending.id, lead_channel: 'website_form',
+      lead_product: val('product'), lead_industry: val('industry'), lead_city: val('location'), lead_capacity: val('capacity'),
+      user_data: { email_address: val('email'), phone_number: toE164(val('phone')),
+        address: { first_name: nameParts[0] || '', last_name: nameParts.slice(1).join(' ') } } });
+    if (window.IzharTrack && window.IzharTrack.markLead) window.IzharTrack.markLead();
+
+    fetch('/api/leads', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data), keepalive: true })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (res) {
+        if (!res.ok || res.j.ok !== true || res.j.saved !== true) throw new Error('unconfirmed');
+        track('lead_received', { form: 'quote', lead_id: pending.id, channel: 'website_form' });
+      })
+      .catch(function () {
+        // Rare (Google down). If they're still on the page, don't let the
+        // request vanish: ask for the one tap that guarantees we get it.
+        track('form_submit_error', { form: 'quote', reason: 'save_not_confirmed' });
+        setWhatsApp('');
+        whatsapp.classList.add('is-primary');
+        whatsapp.innerHTML = 'Send on WhatsApp <small>details filled in</small>';
+        message('One more tap, please: our system didn\'t confirm your request. Tap “Send on WhatsApp” — your details are already filled in.');
+      });
   });
 })();

@@ -27,10 +27,24 @@ function clean(body) {
 }
 
 function makeHandler({ env = process.env, fetchImpl = globalThis.fetch, now = Date.now } = {}) {
+  let lastWarm = 0;
   return async function handler(req, res) {
     res.setHeader('Cache-Control', 'no-store');
     res.setHeader('X-Content-Type-Options', 'nosniff');
     const reply = (status, data) => res.status(status).json(data);
+    // Warm-up ping. Apps Script cold-starts in ~10 s on this low-traffic
+    // property (measured 2026-09-26: 10.6 s cold vs ~1 s warm), which pushed
+    // real saves past the timeout. contact-lead.js calls this when a visitor
+    // starts the form, so the script is awake by the time they submit.
+    // doGet returns {ok:false} and touches no data; throttled per instance.
+    if (req.method === 'GET' && /[?&]warm=1(?:&|$)/.test(req.url || '')) {
+      const target = env.LEAD_SHEETS_WEBHOOK_URL || '';
+      if (/^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/.test(target) && now() - lastWarm > 60000) {
+        lastWarm = now();
+        try { await fetchImpl(target, { method: 'GET', signal: AbortSignal.timeout(15000), redirect: 'follow' }); } catch (_) {}
+      }
+      res.status(204); return res.end();
+    }
     if (req.method !== 'POST') {
       res.setHeader('Allow', 'POST');
       return reply(405, { ok: false, error: 'method_not_allowed' });
@@ -56,23 +70,31 @@ function makeHandler({ env = process.env, fetchImpl = globalThis.fetch, now = Da
     const ip = String(req.headers['x-vercel-forwarded-for'] || 'unknown').split(',')[0].trim();
     const rateKey = createHmac('sha256', secret).update(new Date(now()).toISOString().slice(0, 10) + ':' + ip).digest('hex');
     const payload = JSON.stringify({ lead, rate_key: rateKey });
-    const timestamp = String(now());
-    const signature = createHmac('sha256', secret).update(timestamp + '.' + payload).digest('hex');
-    try {
-      const response = await fetchImpl(url, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ timestamp, payload, signature }),
-        signal: AbortSignal.timeout(15000), redirect: 'follow'
-      });
-      if (!response.ok) throw new Error('upstream');
-      const result = await response.json();
-      if (result.error === 'rate_limited') return reply(429, { ok: false, error: 'please_try_later' });
-      if (result.ok !== true || result.lead_id !== lead.lead_id || result.saved !== true) throw new Error('unconfirmed');
-      return reply(200, { ok: true, saved: true, lead_id: lead.lead_id });
-    } catch (_) {
-      // A timed-out request may still have saved: retry the SAME lead_id.
-      return reply(503, { ok: false, error: 'save_not_confirmed' });
+    // The visitor is already told "received" (contact-lead.js), so spend the
+    // function's full 30 s making sure the row lands: one retry on failure.
+    // Re-sending the same lead_id is safe — the script dedupes on it.
+    const started = now();
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      const left = 28000 - (now() - started);
+      if (left < 4000) break;
+      const timestamp = String(now());
+      const signature = createHmac('sha256', secret).update(timestamp + '.' + payload).digest('hex');
+      try {
+        const response = await fetchImpl(url, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ timestamp, payload, signature }),
+          // A cold Apps Script alone takes ~10 s; maxDuration is 30.
+          signal: AbortSignal.timeout(Math.min(attempt === 1 ? 20000 : left, left)), redirect: 'follow'
+        });
+        if (!response.ok) throw new Error('upstream');
+        const result = await response.json();
+        if (result.error === 'rate_limited') return reply(429, { ok: false, error: 'please_try_later' });
+        if (result.ok === true && result.lead_id === lead.lead_id && result.saved === true) {
+          return reply(200, { ok: true, saved: true, lead_id: lead.lead_id });
+        }
+      } catch (_) { /* retry below if time allows */ }
     }
+    return reply(503, { ok: false, error: 'save_not_confirmed' });
   };
 }
 

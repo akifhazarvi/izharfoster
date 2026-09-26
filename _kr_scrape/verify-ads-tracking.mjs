@@ -87,7 +87,7 @@ check('rapid second WhatsApp click de-duplicated', dedupeLeads.length === 1, `${
 // ---------------------------------------------------------------------------
 // The contact form saves to the private Sheet via /api/leads before it counts
 // a lead. The local static server has no API, so confirm the save here.
-await ctx.route('**/api/leads', async r => {
+await ctx.route('**/api/leads', async r => { if (r.request().method() !== 'POST') return r.fulfill({ status: 204 });
   const body = JSON.parse(r.request().postData());
   globalThis.__lastLeadPost = body;
   await r.fulfill({ status: 200, contentType: 'application/json',
