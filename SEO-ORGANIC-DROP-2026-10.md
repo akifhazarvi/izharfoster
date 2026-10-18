@@ -117,8 +117,10 @@ before and after. Note the risk: a competitor's ad may take the top slot and
 organic CTR may not fully recover. Keep the negatives if total leads hold and
 spend falls; remove them if leads drop.
 
-Also confirm whether the **week-42 jump** in paid traffic (431 sessions,
-against ~250 a week before) was an intended budget increase.
+**Week-42 jump confirmed as an intended budget increase** (owner, 2026-10-18):
+paid sessions ~250 → 431 a week, paid lead taps ~49 → 91 a week. Run the
+holdout test on top of the new budget, so the before/after comparison uses
+the same spend level.
 
 ## Re-check
 
