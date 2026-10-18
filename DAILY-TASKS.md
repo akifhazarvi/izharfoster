@@ -1,10 +1,22 @@
 # Izhar Foster — Daily Task List
 
-**Last updated:** 2026-09-24
+**Last updated:** 2026-10-18
 **Score baseline:** 78/100 (ACTION-PLAN.md, 2026-05-02)
 **Canonical roadmap:** [GROWTH-PLAN.md](GROWTH-PLAN.md) | Resolved conflicts: [DECISIONS.md](DECISIONS.md)
 
 Work top-to-bottom. Mark done with `[x]`. Each PR title must reference the GROWTH-PLAN section it implements.
+
+---
+
+## 2026-10-18 — GP§6: organic drop diagnosed — mostly our own ads; titles/H1 fixed
+
+Full analysis: [SEO-ORGANIC-DROP-2026-10.md](SEO-ORGANIC-DROP-2026-10.md). Organic clicks −51% (669 → 328, 4 wks against peak); position steady; all key pages indexed.
+
+- [x] **Cause 1, about 60%: paid cannibalisation.** The PIR & PUF Panels campaign (from wk 34) sits above our own #1–4 organic listings. PIR organic 72 → 13 sessions/wk, paid 0 → 236. "sandwich panel price" CTR 14–16% → 3–4% at an unchanged position. Total lead taps are up ~7× (111/wk in wk 42).
+- [x] **Cause 2, about 20%: broad terms slipped to page 2** (cold storage, cold store, sandwich panel(s), puf insulated sheet price). PIR title now `PIR (PUF) Sandwich Panel Price in Pakistan 2026 | Izhar Foster`; H1 now contains "sandwich panels"; homepage title restored to `Cold Storage & PIR Sandwich Panels in Pakistan | Izhar Foster`.
+- [x] Causes 3–4 (brand demand −35%, deprioritised prefab) recorded; no action.
+- [ ] **Owner (Google Ads UI):** two-week holdout, with exact negatives on the six terms where we rank #1–4 (list in the report). Compare organic + paid `lead_intent` for the PIR page. Confirm the wk-42 paid spike was intended.
+- [ ] Re-pull around 2026-11-08.
 
 ---
 
